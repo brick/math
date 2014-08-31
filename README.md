@@ -3,9 +3,103 @@ Brick\Math
 
 Provides the `BigInteger` and `BigDecimal` classes to work with arbitrary precision numbers.
 
-This component uses the [GMP](http://php.net/manual/en/book.gmp.php) and [BCMath](http://php.net/manual/en/book.bc.php)
-extensions for fast computation when they are available, but can also fall back to a native PHP implementation,
-guaranteeing that it will work on any PHP installation. All of this is totally transparent to the developer, as the
-component auto-detects the fastest implementation available at runtime.
+[![Build Status](https://secure.travis-ci.org/brick/math.png?branch=master)](http://travis-ci.org/brick/math)
 
-`BigInteger` and `BigDecimal` are serializable.
+Installation
+------------
+
+This library is installable via [Composer](https://getcomposer.org/).
+Just define the following requirement in your `composer.json` file:
+
+    {
+        "require": {
+            "brick/math": "dev-master"
+        }
+    }
+
+Requirements
+------------
+
+This library requires PHP 5.5 or higher.
+
+Although the library can work on any PHP 5.5+ installation, it is highly recommended that you install the
+[GMP](http://php.net/manual/en/book.gmp.php) or [BCMath](http://php.net/manual/en/book.bc.php) extension
+to speed up calculations. The fastest available calculator implementation will be automatically selected at runtime.
+
+Overview
+--------
+
+### Instantiation
+
+The constructor of `BigInteger` and `BigDecimal` is private,
+you must use the `of()` factory method to obtain an instance:
+
+    $integer = BigInteger::of('123456');
+    $decimal = BigDecimal::of('123.456');
+
+The following types are accepted: `integer`, `float`, `string` as long as they can be safely converted to an integer
+in the case of `BigInteger::of()`, or to a decimal number in the case of `BigDecimal::of()`.
+
+Prefer instantiating from `string` or `integer` rather than `float`, as floating-point values are imprecise by design,
+and using them with `of()` defeats the purpose of using an arbitrary precision library.
+
+Only `string` allows you to safely instantiate a number with an unlimited number of digits.
+
+### Immutability
+
+The `BigInteger` and `BigDecimal` classes are immutable: their value never change, so that they can be safely passed around. All methods that return a `BigInteger` or `BigDecimal` return a new object, leaving the original object unaffected:
+
+    $ten = BigInteger::of(10);
+
+    echo $ten->plus(5); // 15
+    echo $ten->multipliedBy(3); // 30
+
+### Parameter types
+
+All methods that accept a number: `plus()`, `minus()`, `multipliedBy()`, etc. accept the same types as `of()`.
+As an example, given the following number:
+
+    $integer = BigInteger::of(123);
+
+The following lines are equivalent:
+
+    $integer->multipliedBy(123);
+    $integer->multipliedBy('123');
+    $integer->multipliedBy($integer);
+
+### Chaining
+
+All the methods that return a new number can be chained, for example:
+
+    echo BigInteger::of(10)->plus(5)->multipliedBy(3); // 45
+
+### Division & rounding modes
+
+When dividing numbers, if the remainder of the division if not zero, the result needs to be rounded up or down. By default, the library assumes that rounding is unnecessary, and throws an exception if the remainder of the division is not zero:
+
+    BigInteger::of(7)->dividedBy(2); // throws an ArithmeticException
+
+In that case, you need to explicitly provide a rounding mode:
+
+    echo BigInteger::of(7)->dividedBy(2, RoundingMode::DOWN); // 3
+    echo BigInteger::of(7)->dividedBy(2, RoundingMode::UP); // 4
+
+There are a number of rounding modes you can use:
+
+- `UNNECESSARY`: assumes that rounding is unnecessary, and throws an exception if rounding was in fact necessary.
+- `UP`: rounds away from zero.
+- `DOWN`: rounds towards zero.
+- `CEILING`: rounds towards positive infinity. If the result is positive, behaves as for `UP`; if negative, behaves as for `DOWN`.
+- `FLOOR`: rounds towards negative infinity. If the result is positive, behave as for `DOWN`; if negative, behave as for `UP`.
+- `HALF_UP`: rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round up. Behaves as for `UP` if the discarded fraction is >= 0.5; otherwise, behaves as for `DOWN`.
+- `HALF_DOWN`: rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round down. Behaves as for `UP` if the discarded fraction is > 0.5; otherwise, behaves as for `DOWN`.
+- `HALF_CEILING`: rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards positive infinity. If the result is positive, behaves as for `HALF_UP`; if negative, behaves as for `HALF_DOWN`.
+- `HALF_FLOOR`: rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards negative infinity. If the result is positive, behaves as for `HALF_DOWN`; if negative, behaves as for `HALF_UP`.
+- `HALF_EVEN`: rounds towards the "nearest neighbor" unless both neighbors are equidistant, in which case rounds towards the even neighbor. Behaves as for `HALF_UP` if the digit to the left of the discarded fraction is odd; behaves as for `HALF_DOWN` if it's even.
+
+### Serialization
+
+`BigInteger` and `BigDecimal` can be safely serialized:
+
+    $serializedInteger = serialize(BigInteger::of(123));
+    echo unserialize($serialiedInteger)->multipliedBy(2); // 246
