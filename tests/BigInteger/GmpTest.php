@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Tests\Math\BigInteger;
+namespace Brick\Math\Tests\BigInteger;
 
-use Brick\Tests\Math\BigIntegerTest;
+use Brick\Math\Tests\BigIntegerTest;
 use Brick\Math\Internal\Calculator\GmpCalculator;
 
 /**

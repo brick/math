@@ -1,6 +1,6 @@
 <?php
 
-namespace Brick\Tests\Math;
+namespace Brick\Math\Tests;
 
 use Brick\Math\ArithmeticException;
 use Brick\Math\Internal\Calculator;
