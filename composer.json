@@ -1,6 +1,6 @@
 {
     "name": "brick/math",
-    "description": "Arbitrary-precision arithmetic",
+    "description": "Arbitrary-precision arithmetic library",
     "type": "library",
     "keywords": [
         "Brick",
