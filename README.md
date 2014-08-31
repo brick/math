@@ -14,7 +14,7 @@ Just define the following requirement in your `composer.json` file:
 
     {
         "require": {
-            "brick/math": "dev-master"
+            "brick/math": "*"
         }
     }
 
@@ -26,6 +26,16 @@ This library requires PHP 5.5 or higher.
 Although the library can work on any PHP 5.5+ installation, it is highly recommended that you install the
 [GMP](http://php.net/manual/en/book.gmp.php) or [BCMath](http://php.net/manual/en/book.bc.php) extension
 to speed up calculations. The fastest available calculator implementation will be automatically selected at runtime.
+
+Package contents
+----------------
+
+This library provides the following public classes:
+
+- `Brick\Math\ArithmeticException`: exception thrown when an error occurs.
+- `Brick\Math\BigInteger`: represents an arbitrary-precision integer number.
+- `Brick\Math\BigDecimal`: represents an arbitrary-precision decimal number.
+- `Brick\Math\RoundingMode`: holds constants for the [rounding modes](#division--rounding-modes).
 
 Overview
 --------
