@@ -288,7 +288,9 @@ class BigDecimal implements \Serializable
     /**
      * Returns this number exponentiated.
      *
-     * @param integer $exponent The exponent, as a positive-or-zero integer.
+     * The exponent has a limit of 1 million.
+     *
+     * @param integer $exponent The exponent, between 0 and 1,000,000.
      *
      * @return BigDecimal
      */
@@ -296,8 +298,12 @@ class BigDecimal implements \Serializable
     {
         $exponent = (int) $exponent;
 
-        if ($exponent < 0) {
-            throw new \InvalidArgumentException('The exponent cannot be negative.');
+        if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
+            throw new \InvalidArgumentException(sprintf(
+                'The exponent %d is not in the range 0 to %d.',
+                $exponent,
+                Calculator::MAX_POWER
+            ));
         }
 
         return new BigDecimal(Calculator::get()->pow($this->value, $exponent), $this->scale * $exponent);

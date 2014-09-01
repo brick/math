@@ -18,6 +18,11 @@ use Brick\Math\RoundingMode;
 abstract class Calculator
 {
     /**
+     * The maximum exponent value allowed for the pow() method.
+     */
+    const MAX_POWER = 1000000;
+
+    /**
      * The Calculator instance in use.
      *
      * @var Calculator|null
@@ -265,7 +270,7 @@ abstract class Calculator
      * Exponentiates a number.
      *
      * @param string  $a The base.
-     * @param integer $e The exponent, must be a positive-or-zero integer.
+     * @param integer $e The exponent, validated as an integer between 0 and MAX_POWER.
      *
      * @return string The power.
      */

@@ -1191,8 +1191,8 @@ abstract class BigDecimalTest extends AbstractTestCase
             ['2',  3,   '8', 0],
             ['3',  3,  '27', 0],
 
-            ['0', 1000000000, '0', 0],
-            ['1', 1000000000, '1', 0],
+            ['0', 1000000, '0', 0],
+            ['1', 1000000, '1', 0],
 
             ['-2', 255, '-57896044618658097711785492504343953926634992332820282019728792003956564819968', 0],
             [ '2', 256, '115792089237316195423570985008687907853269984665640564039457584007913129639936', 0],
@@ -1206,11 +1206,25 @@ abstract class BigDecimalTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerPowerWithInvalidExponentThrowsException
      * @expectedException \InvalidArgumentException
+     *
+     * @param integer $power
      */
-    public function testPowerWithNegativeExponentThrowsException()
+    public function testPowerWithInvalidExponentThrowsException($power)
     {
-        BigDecimal::of(10)->power(-1);
+        BigDecimal::of(1)->power($power);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerPowerWithInvalidExponentThrowsException()
+    {
+        return [
+            [-1],
+            [1000001]
+        ];
     }
 
     /**
