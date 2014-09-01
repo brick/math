@@ -110,7 +110,4 @@ There are a number of rounding modes you can use:
 
 ### Serialization
 
-`BigInteger` and `BigDecimal` can be safely serialized:
-
-    $serializedInteger = serialize(BigInteger::of(123));
-    echo unserialize($serialiedInteger)->multipliedBy(2); // 246
+`BigInteger` and `BigDecimal` can be safely serialized.
