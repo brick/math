@@ -311,6 +311,32 @@ class BigInteger implements \Serializable
     }
 
     /**
+     * Returns this number exponentiated.
+     *
+     * The exponent has a limit of 1 million.
+     *
+     * @param integer $exponent The exponent, between 0 and 1,000,000.
+     *
+     * @return BigInteger
+     *
+     * @throws \InvalidArgumentException If the exponent is not in the allowed range.
+     */
+    public function power($exponent)
+    {
+        $exponent = (int) $exponent;
+
+        if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
+            throw new \InvalidArgumentException(sprintf(
+                'The exponent %d is not in the range 0 to %d.',
+                $exponent,
+                Calculator::MAX_POWER
+            ));
+        }
+
+        return new BigInteger(Calculator::get()->pow($this->value, $exponent));
+    }
+
+    /**
      * Returns the absolute value of this number.
      *
      * @return \Brick\Math\BigInteger

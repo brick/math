@@ -1095,6 +1095,92 @@ abstract class BigIntegerTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerPower
+     *
+     * @param string  $number   The base number.
+     * @param integer $exponent The exponent to apply.
+     * @param string  $expected The expected result.
+     */
+    public function testPower($number, $exponent, $expected)
+    {
+        $this->assertBigIntegerEquals($expected, BigInteger::of($number)->power($exponent));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerPower()
+    {
+        return [
+            ['-3', 0, '1'],
+            ['-2', 0, '1'],
+            ['-1', 0, '1'],
+            ['0',  0, '1'],
+            ['1',  0, '1'],
+            ['2',  0, '1'],
+            ['3',  0, '1'],
+
+            ['-3', 1, '-3'],
+            ['-2', 1, '-2'],
+            ['-1', 1, '-1'],
+            ['0',  1,  '0'],
+            ['1',  1,  '1'],
+            ['2',  1,  '2'],
+            ['3',  1,  '3'],
+
+            ['-3', 2, '9'],
+            ['-2', 2, '4'],
+            ['-1', 2, '1'],
+            ['0',  2, '0'],
+            ['1',  2, '1'],
+            ['2',  2, '4'],
+            ['3',  2, '9'],
+
+            ['-3', 3, '-27'],
+            ['-2', 3,  '-8'],
+            ['-1', 3,  '-1'],
+            ['0',  3,   '0'],
+            ['1',  3,   '1'],
+            ['2',  3,   '8'],
+            ['3',  3,  '27'],
+
+            ['0', 1000000, '0'],
+            ['1', 1000000, '1'],
+
+            ['-2', 255, '-57896044618658097711785492504343953926634992332820282019728792003956564819968'],
+            [ '2', 256, '115792089237316195423570985008687907853269984665640564039457584007913129639936'],
+
+            ['-123', 33, '-926549609804623448265268294182900512918058893428212027689876489708283'],
+            [ '123', 34, '113965602005968684136628000184496763088921243891670079405854808234118809'],
+
+            ['-123456789', 8, '53965948844821664748141453212125737955899777414752273389058576481'],
+            ['9876543210', 7, '9167159269868350921847491739460569765344716959834325922131706410000000']
+        ];
+    }
+
+    /**
+     * @dataProvider providerPowerWithInvalidExponentThrowsException
+     * @expectedException \InvalidArgumentException
+     *
+     * @param integer $power
+     */
+    public function testPowerWithInvalidExponentThrowsException($power)
+    {
+        BigInteger::of(1)->power($power);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerPowerWithInvalidExponentThrowsException()
+    {
+        return [
+            [-1],
+            [1000001]
+        ];
+    }
+
+    /**
      * @dataProvider providerAbs
      *
      * @param string $number   The number as a string.

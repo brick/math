@@ -293,6 +293,8 @@ class BigDecimal implements \Serializable
      * @param integer $exponent The exponent, between 0 and 1,000,000.
      *
      * @return BigDecimal
+     *
+     * @throws \InvalidArgumentException If the exponent is not in the allowed range.
      */
     public function power($exponent)
     {
