@@ -4,6 +4,7 @@ php:
   - 5.5
   - 5.6
   - hhvm
+  - hhvm-nightly
 
 before_script:
     - composer install
@@ -14,3 +15,7 @@ script:
 
 after_script:
   - vendor/bin/coveralls -v
+
+matrix:
+  allow_failures:
+    - php: hhvm-nightly
