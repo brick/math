@@ -58,7 +58,7 @@ Only `string` allows you to safely instantiate a number with an unlimited number
 
 ### Immutability
 
-The `BigInteger` and `BigDecimal` classes are immutable: their value never change, so that they can be safely passed around. All methods that return a `BigInteger` or `BigDecimal` return a new object, leaving the original object unaffected:
+The `BigInteger` and `BigDecimal` classes are immutable: their value never changes, so that they can be safely passed around. All methods that return a `BigInteger` or `BigDecimal` return a new object, leaving the original object unaffected:
 
     $ten = BigInteger::of(10);
 
