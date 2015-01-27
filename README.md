@@ -117,4 +117,5 @@ Rounding mode  | Description
 
 ### Serialization
 
-`BigInteger` and `BigDecimal` can be safely serialized.
+`BigInteger` and `BigDecimal` can be safely serialized on a machine and unserialized on another.
+No context is stored in the serialized variable, only the value.
