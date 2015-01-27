@@ -12,10 +12,7 @@ before_script:
   - mkdir -p build/cov build/logs
 
 script:
-  - CALCULATOR=GMP vendor/bin/phpunit --configuration phpunit-main.xml --coverage-php build/cov/coverage-main-GMP.cov
-  - CALCULATOR=BCMath vendor/bin/phpunit --configuration phpunit-main.xml --coverage-php build/cov/coverage-main-BCMath.cov
-  - CALCULATOR=Native vendor/bin/phpunit --configuration phpunit-main.xml --coverage-php build/cov/coverage-main-Native.cov
-  - vendor/bin/phpunit --configuration phpunit-detect.xml --coverage-php build/cov/coverage-detect.cov
+  - ./run-all-tests.sh build/cov
 
 after_script:
   - vendor/bin/phpcov merge --clover build/logs/clover.xml build/cov
