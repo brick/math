@@ -10,7 +10,7 @@ use Brick\Math\RoundingMode;
 /**
  * Unit tests for class BigInteger.
  */
-abstract class BigIntegerTest extends AbstractTestCase
+class BigIntegerTest extends AbstractTestCase
 {
     /**
      * @dataProvider providerOf

@@ -7,13 +7,17 @@ php:
   - hhvm-nightly
 
 before_script:
-    - composer install
+  - composer self-update
+  - composer install
 
 script:
-  - mkdir -p build/logs
-  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - mkdir -p build/cov build/logs
+  - CALCULATOR=GMP    vendor/bin/phpunit --coverage-php build/cov/coverage-GMP.cov
+  - CALCULATOR=BCMath vendor/bin/phpunit --coverage-php build/cov/coverage-BCMath.cov
+  - CALCULATOR=Native vendor/bin/phpunit --coverage-php build/cov/coverage-Native.cov
 
 after_script:
+  - vendor/bin/phpcov merge --clover build/logs/clover.xml build/cov
   - vendor/bin/coveralls -v
 
 matrix:

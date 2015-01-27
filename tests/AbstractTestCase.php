@@ -4,26 +4,12 @@ namespace Brick\Math\Tests;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
-use Brick\Math\Internal\Calculator;
 
 /**
  * Base class for BigInteger and BigDecimal test cases.
  */
 abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @return \Brick\Math\Internal\Calculator
-     */
-    abstract public function getCalculator();
-
-    /**
-     * @inheritdoc
-     */
-    public function setUp()
-    {
-        Calculator::set($this->getCalculator());
-    }
-
     /**
      * @param string     $expected The expected value as a string.
      * @param BigInteger $actual   The BigInteger instance to test.

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true" bootstrap="vendor/autoload.php">
+<phpunit colors="true" bootstrap="phpunit-bootstrap.php">
     <testsuites>
         <testsuite name="Brick\Math test suite">
             <directory>tests</directory>
