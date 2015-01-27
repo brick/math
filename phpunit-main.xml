@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true" bootstrap="phpunit-bootstrap.php">
+<phpunit colors="true" bootstrap="phpunit-main.php">
     <testsuites>
-        <testsuite name="Brick\Math test suite">
+        <testsuite>
             <directory>tests</directory>
             <exclude>tests/CalculatorDetectTest.php</exclude>
         </testsuite>
