@@ -102,16 +102,18 @@ When dividing a `BigDecimal`, you can also specify the scale of the result:
 
 There are a number of rounding modes you can use:
 
-- `UNNECESSARY`: assumes that rounding is unnecessary, and throws an exception if rounding was in fact necessary.
-- `UP`: rounds away from zero.
-- `DOWN`: rounds towards zero.
-- `CEILING`: rounds towards positive infinity. If the result is positive, behaves as for `UP`; if negative, behaves as for `DOWN`.
-- `FLOOR`: rounds towards negative infinity. If the result is positive, behave as for `DOWN`; if negative, behave as for `UP`.
-- `HALF_UP`: rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round up. Behaves as for `UP` if the discarded fraction is >= 0.5; otherwise, behaves as for `DOWN`.
-- `HALF_DOWN`: rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round down. Behaves as for `UP` if the discarded fraction is > 0.5; otherwise, behaves as for `DOWN`.
-- `HALF_CEILING`: rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards positive infinity. If the result is positive, behaves as for `HALF_UP`; if negative, behaves as for `HALF_DOWN`.
-- `HALF_FLOOR`: rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards negative infinity. If the result is positive, behaves as for `HALF_DOWN`; if negative, behaves as for `HALF_UP`.
-- `HALF_EVEN`: rounds towards the "nearest neighbor" unless both neighbors are equidistant, in which case rounds towards the even neighbor. Behaves as for `HALF_UP` if the digit to the left of the discarded fraction is odd; behaves as for `HALF_DOWN` if it's even.
+Rounding mode  | Description
+-------------- | -----------
+`UNNECESSARY`  | Assumes that no rounding is necessary, and throws an exception if it is.
+`UP`           | Rounds away from zero.
+`DOWN`         | Rounds towards zero.
+`CEILING`      | Rounds towards positive infinity. If the result is positive, behaves as for `UP`; if negative, behaves as for `DOWN`.
+`FLOOR`        | Rounds towards negative infinity. If the result is positive, behave as for `DOWN`; if negative, behave as for `UP`.
+`HALF_UP`      | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round up. Behaves as for `UP` if the discarded fraction is >= 0.5; otherwise, behaves as for `DOWN`.
+`HALF_DOWN`    | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round down. Behaves as for `UP` if the discarded fraction is > 0.5; otherwise, behaves as for `DOWN`.
+`HALF_CEILING` | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards positive infinity. If the result is positive, behaves as for `HALF_UP`; if negative, behaves as for `HALF_DOWN`.
+`HALF_FLOOR`   | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards negative infinity. If the result is positive, behaves as for `HALF_DOWN`; if negative, behaves as for `HALF_UP`.
+`HALF_EVEN`    | Rounds towards the "nearest neighbor" unless both neighbors are equidistant, in which case rounds towards the even neighbor. Behaves as for `HALF_UP` if the digit to the left of the discarded fraction is odd; behaves as for `HALF_DOWN` if it's even.
 
 ### Serialization
 
