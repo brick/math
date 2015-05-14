@@ -4,7 +4,6 @@ php:
   - 5.5
   - 5.6
   - hhvm
-  - hhvm-nightly
 
 before_script:
   - composer self-update
@@ -17,7 +16,3 @@ script:
 after_script:
   - vendor/bin/phpcov merge --clover build/logs/clover.xml build/cov
   - vendor/bin/coveralls -v
-
-matrix:
-  allow_failures:
-    - php: hhvm-nightly
