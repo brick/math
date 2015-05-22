@@ -21,9 +21,9 @@ Just define the following requirement in your `composer.json` file:
 Requirements
 ------------
 
-This library requires PHP 5.5 or higher. [HHVM](http://hhvm.com/) is officially supported.
+This library requires PHP 5.6, PHP 7 or [HHVM](http://hhvm.com/).
 
-Although the library can work on any PHP 5.5+ installation, it is highly recommended that you install the
+Although the library can work on any PHP installation, it is highly recommended that you install the
 [GMP](http://php.net/manual/en/book.gmp.php) or [BCMath](http://php.net/manual/en/book.bc.php) extension
 to speed up calculations. The fastest available calculator implementation will be automatically selected at runtime.
 
