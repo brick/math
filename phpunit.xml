@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true" bootstrap="phpunit-main.php">
+<phpunit colors="true" bootstrap="phpunit.php">
     <testsuites>
         <testsuite>
             <directory>tests</directory>
-            <exclude>tests/CalculatorDetectTest.php</exclude>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory>src</directory>
+            <directory suffix=".php">src</directory>
         </whitelist>
     </filter>
 </phpunit>

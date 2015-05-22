@@ -5,14 +5,18 @@ php:
   - 7
   - hhvm
 
+env:
+  - CALCULATOR=GMP
+  - CALCULATOR=BCMath
+  - CALCULATOR=Native
+
 before_script:
   - composer self-update
   - composer install
-  - mkdir -p build/cov build/logs
 
 script:
-  - ./run-all-tests.sh build/cov
+  - mkdir -p build/cov build/logs
+  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
-  - vendor/bin/phpcov merge --clover build/logs/clover.xml build/cov
   - vendor/bin/coveralls -v
