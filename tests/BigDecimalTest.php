@@ -258,7 +258,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testMin(array $values, $index)
     {
-        $this->assertTrue(BigDecimal::min($values)->isEqualTo($values[$index]));
+        $this->assertTrue(BigDecimal::min(...$values)->isEqualTo($values[$index]));
     }
 
     /**
@@ -287,7 +287,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testMinOfZeroValuesThrowsException()
     {
-        BigDecimal::min([]);
+        BigDecimal::min();
     }
 
     /**
@@ -298,7 +298,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testMax(array $values, $index)
     {
-        $this->assertTrue(BigDecimal::max($values)->isEqualTo($values[$index]));
+        $this->assertTrue(BigDecimal::max(...$values)->isEqualTo($values[$index]));
     }
 
     /**
@@ -331,7 +331,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testMaxOfZeroValuesThrowsException()
     {
-        BigDecimal::max([]);
+        BigDecimal::max();
     }
 
     /**

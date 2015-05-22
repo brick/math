@@ -138,13 +138,13 @@ class BigDecimal implements \Serializable
     /**
      * Returns the minimum of the given values.
      *
-     * @param array<Decimal|number|string> An array of decimals to return the minimum value of.
+     * @param BigDecimal|number|string ...$values The numbers to compare.
      *
-     * @return \Brick\Math\BigDecimal The minimum value.
+     * @return BigDecimal The minimum value.
      *
      * @throws \InvalidArgumentException If no values are given, or an invalid value is given.
      */
-    public static function min(array $values)
+    public static function min(...$values)
     {
         $min = null;
 
@@ -165,13 +165,13 @@ class BigDecimal implements \Serializable
     /**
      * Returns the maximum of the given values.
      *
-     * @param array<Decimal|number|string> An array of decimals to return the maximum value of.
+     * @param BigDecimal|number|string ...$values The numbers to compare.
      *
-     * @return \Brick\Math\BigDecimal The maximum value.
+     * @return BigDecimal The maximum value.
      *
      * @throws \InvalidArgumentException If no values are given, or an invalid value is given.
      */
-    public static function max(array $values)
+    public static function max(...$values)
     {
         $max = null;
 

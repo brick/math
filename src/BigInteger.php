@@ -162,13 +162,13 @@ class BigInteger implements \Serializable
     /**
      * Returns the minimum of the given values.
      *
-     * @param array<BigInteger|integer|string> An array of integers to return the minimum value of.
+     * @param BigInteger|integer|string ...$values The numbers to compare.
      *
-     * @return \Brick\Math\BigInteger The minimum value.
+     * @return BigInteger The minimum value.
      *
      * @throws \InvalidArgumentException If no values are given, or an invalid value is given.
      */
-    public static function min(array $values)
+    public static function min(...$values)
     {
         $min = null;
 
@@ -189,13 +189,13 @@ class BigInteger implements \Serializable
     /**
      * Returns the maximum of the given values.
      *
-     * @param array<BigInteger|integer|string> An array of integers to return the maximum value of.
+     * @param BigInteger|integer|string ...$values The numbers to compare.
      *
-     * @return \Brick\Math\BigInteger The maximum value.
+     * @return BigInteger The maximum value.
      *
      * @throws \InvalidArgumentException If no values are given, or an invalid value is given.
      */
-    public static function max(array $values)
+    public static function max(...$values)
     {
         $max = null;
 

@@ -321,7 +321,7 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testMin(array $values, $index)
     {
-        $this->assertTrue(BigInteger::min($values)->isEqualTo($values[$index]));
+        $this->assertTrue(BigInteger::min(...$values)->isEqualTo($values[$index]));
     }
 
     /**
@@ -345,7 +345,7 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testMinOfZeroValuesThrowsException()
     {
-        BigInteger::min([]);
+        BigInteger::min();
     }
 
     /**
@@ -356,7 +356,7 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testMax(array $values, $index)
     {
-        $this->assertTrue(BigInteger::max($values)->isEqualTo($values[$index]));
+        $this->assertTrue(BigInteger::max(...$values)->isEqualTo($values[$index]));
     }
 
     /**
@@ -381,7 +381,7 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testMaxOfZeroValuesThrowsException()
     {
-        BigInteger::max([]);
+        BigInteger::max();
     }
 
     /**
