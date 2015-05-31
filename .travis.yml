@@ -15,7 +15,7 @@ before_script:
   - composer install
 
 script:
-  - mkdir -p build/cov build/logs
+  - mkdir -p build/logs
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
