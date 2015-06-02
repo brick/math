@@ -393,7 +393,7 @@ class BigDecimal implements \Serializable
     }
 
     /**
-     * Returns the inverse of this number.
+     * Returns the negated value of this number.
      *
      * @return \Brick\Math\BigDecimal
      */
