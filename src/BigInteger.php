@@ -288,6 +288,8 @@ class BigInteger implements \Serializable
     }
 
     /**
+     * Returns the quotient and remainder of the division of this number and the given one.
+     *
      * @param BigInteger|integer|string $that The divisor.
      *
      * @return BigInteger[] An array containing the quotient and the remainder.

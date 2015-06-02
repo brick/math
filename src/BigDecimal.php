@@ -286,6 +286,38 @@ class BigDecimal implements \Serializable
     }
 
     /**
+     * Returns the quotient and remainder of the division of this number and the given one.
+     *
+     * The quotient has a scale of 0, and the remainder has the largest scale of the two numbers.
+     *
+     * @param BigDecimal|number|string $that The number to divide.
+     *
+     * @return BigDecimal[] An array containing the quotient and the remainder.
+     *
+     * @throws ArithmeticException If the divisor is zero.
+     */
+    public function divideAndRemainder($that)
+    {
+        $that = BigDecimal::of($that);
+
+        if ($that->isZero()) {
+            throw ArithmeticException::divisionByZero();
+        }
+
+        $p = $this->valueWithMinScale($that->scale);
+        $q = $that->valueWithMinScale($this->scale);
+
+        list ($quotient, $remainder) = Calculator::get()->div($p, $q);
+
+        $scale = max($this->scale, $that->scale);
+
+        $quotient = new BigDecimal($quotient, 0);
+        $remainder = new BigDecimal($remainder, $scale);
+
+        return [$quotient, $remainder];
+    }
+
+    /**
      * Returns this number exponentiated.
      *
      * The exponent has a limit of 1 million.
