@@ -1577,4 +1577,12 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->assertBigIntegerEquals($value, unserialize(serialize($number)));
     }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testDirectCallToUnserialize()
+    {
+        BigInteger::zero()->unserialize('123');
+    }
 }

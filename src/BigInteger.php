@@ -562,16 +562,20 @@ class BigInteger implements \Serializable
     /**
      * This method is required by interface Serializable and MUST NOT be accessed directly.
      *
-     * Accessing this method directly would bypass consistency checks and break immutability.
-     *
      * @internal
      *
      * @param string $value
      *
      * @return void
+     *
+     * @throws \LogicException
      */
     public function unserialize($value)
     {
+        if ($this->value !== null) {
+            throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
+        }
+
         $this->value = $value;
     }
 }

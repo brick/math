@@ -670,6 +670,10 @@ class BigDecimal implements \Serializable
      */
     public function unserialize($value)
     {
+        if ($this->value !== null || $this->scale !== null) {
+            throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
+        }
+
         list ($value, $scale) = explode(':', $value);
 
         $this->value = $value;

@@ -1956,4 +1956,12 @@ class BigDecimalTest extends AbstractTestCase
 
         $this->assertBigDecimalEquals($value, $scale, unserialize(serialize($number)));
     }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testDirectCallToUnserialize()
+    {
+        BigDecimal::zero()->unserialize('123:0');
+    }
 }
