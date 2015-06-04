@@ -51,7 +51,7 @@ class BigDecimal implements \Serializable
      *
      * @param BigDecimal|number|string $value
      *
-     * @return \Brick\Math\BigDecimal
+     * @return BigDecimal
      *
      * @throws \InvalidArgumentException If the number is malformed.
      */
@@ -194,7 +194,7 @@ class BigDecimal implements \Serializable
      *
      * @param BigDecimal|number|string $that
      *
-     * @return \Brick\Math\BigDecimal
+     * @return BigDecimal
      */
     public function plus($that)
     {
@@ -212,7 +212,7 @@ class BigDecimal implements \Serializable
      *
      * @param BigDecimal|number|string $that
      *
-     * @return \Brick\Math\BigDecimal
+     * @return BigDecimal
      */
     public function minus($that)
     {
@@ -230,7 +230,7 @@ class BigDecimal implements \Serializable
      *
      * @param BigDecimal|number|string $that
      *
-     * @return \Brick\Math\BigDecimal
+     * @return BigDecimal
      */
     public function multipliedBy($that)
     {
@@ -249,10 +249,10 @@ class BigDecimal implements \Serializable
      * @param integer|null             $scale        The scale, or null to use the scale of this number.
      * @param integer                  $roundingMode The rounding mode.
      *
-     * @return \Brick\Math\BigDecimal
+     * @return BigDecimal
      *
-     * @throws \Brick\Math\ArithmeticException If the divisor is zero or rounding is necessary.
-     * @throws \InvalidArgumentException       If the divisor, the scale or the rounding mode is invalid.
+     * @throws ArithmeticException       If the divisor is zero or rounding is necessary.
+     * @throws \InvalidArgumentException If the divisor, the scale or the rounding mode is invalid.
      */
     public function dividedBy($that, $scale = null, $roundingMode = RoundingMode::UNNECESSARY)
     {
@@ -349,7 +349,7 @@ class BigDecimal implements \Serializable
      * @param integer $scale
      * @param integer $roundingMode
      *
-     * @return \Brick\Math\BigDecimal
+     * @return BigDecimal
      */
     public function withScale($scale, $roundingMode = RoundingMode::UNNECESSARY)
     {
@@ -417,7 +417,7 @@ class BigDecimal implements \Serializable
     /**
      * Returns the absolute value of this number.
      *
-     * @return \Brick\Math\BigDecimal
+     * @return BigDecimal
      */
     public function abs()
     {
@@ -427,7 +427,7 @@ class BigDecimal implements \Serializable
     /**
      * Returns the negated value of this number.
      *
-     * @return \Brick\Math\BigDecimal
+     * @return BigDecimal
      */
     public function negated()
     {

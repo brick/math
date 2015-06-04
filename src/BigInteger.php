@@ -341,7 +341,7 @@ class BigInteger implements \Serializable
     /**
      * Returns the absolute value of this number.
      *
-     * @return \Brick\Math\BigInteger
+     * @return BigInteger
      */
     public function abs()
     {
@@ -351,7 +351,7 @@ class BigInteger implements \Serializable
     /**
      * Returns the inverse of this number.
      *
-     * @return \Brick\Math\BigInteger
+     * @return BigInteger
      */
     public function negated()
     {
