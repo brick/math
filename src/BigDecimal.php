@@ -246,15 +246,12 @@ class BigDecimal implements \Serializable
      * Returns the result of the division of this number and the given one.
      *
      * @param BigDecimal|number|string $that         The number to divide.
-     * @param integer|null             $scale        The scale, or null to use the scale of this number.
-     * @param integer                  $roundingMode The rounding mode.
+     * @param int                      $roundingMode The rounding mode.
+     * @param int|null                 $scale        The desired scale, or null to use the scale of this number.
      *
      * @return BigDecimal
-     *
-     * @throws ArithmeticException       If the divisor is zero or rounding is necessary.
-     * @throws \InvalidArgumentException If the divisor, the scale or the rounding mode is invalid.
      */
-    public function dividedBy($that, $scale = null, $roundingMode = RoundingMode::UNNECESSARY)
+    public function dividedBy($that, $roundingMode = RoundingMode::UNNECESSARY, $scale = null)
     {
         $that = BigDecimal::of($that);
 
@@ -357,7 +354,7 @@ class BigDecimal implements \Serializable
             return $this;
         }
 
-        return $this->dividedBy(1, $scale, $roundingMode);
+        return $this->dividedBy(1, $roundingMode, $scale);
     }
 
     /**
@@ -626,7 +623,7 @@ class BigDecimal implements \Serializable
             return BigInteger::of($this->value);
         }
 
-        return BigInteger::of($this->dividedBy(1, 0, $roundingMode)->value);
+        return BigInteger::of($this->dividedBy(1, $roundingMode, 0)->value);
     }
 
     /**

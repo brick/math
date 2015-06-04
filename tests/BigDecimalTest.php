@@ -544,7 +544,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testDividedBy($a, $b, $scale, $roundingMode, $unscaledValue, $expectedScale)
     {
-        $decimal = BigDecimal::of($a)->dividedBy($b, $scale, $roundingMode);
+        $decimal = BigDecimal::of($a)->dividedBy($b, $roundingMode, $scale);
         $this->assertBigDecimalEquals($unscaledValue, $expectedScale, $decimal);
     }
 
@@ -601,7 +601,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testDividedByWithRoundingNecessaryThrowsException($a, $b, $scale)
     {
-        BigDecimal::of($a)->dividedBy($b, $scale);
+        BigDecimal::of($a)->dividedBy($b, RoundingMode::UNNECESSARY, $scale);
     }
 
     /**
@@ -621,7 +621,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testDividedByWithNegativeScaleThrowsException()
     {
-        BigDecimal::of(1)->dividedBy(2, -1);
+        BigDecimal::of(1)->dividedBy(2, RoundingMode::UNNECESSARY, -1);
     }
 
     /**
@@ -629,7 +629,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testDividedByWithInvalidRoundingModeThrowsException()
     {
-        BigDecimal::of(1)->dividedBy(2, 1, -1);
+        BigDecimal::of(1)->dividedBy(2, -1);
     }
 
     /**
@@ -664,7 +664,7 @@ class BigDecimalTest extends AbstractTestCase
                 $this->setExpectedException(ArithmeticException::class);
             }
 
-            $actual = $number->dividedBy($divisor, $scale, $roundingMode);
+            $actual = $number->dividedBy($divisor, $roundingMode, $scale);
 
             if ($expected !== null) {
                 $this->assertBigDecimalEquals($expected, $scale, $actual);
@@ -1139,6 +1139,7 @@ class BigDecimalTest extends AbstractTestCase
             [RoundingMode::UNNECESSARY, '-3.501',   null,  null, null],
         ];
     }
+
     /**
      * @dataProvider providerDivideAndRemainder
      *
