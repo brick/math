@@ -1241,6 +1241,14 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
+     * @expectedException \Brick\Math\ArithmeticException
+     */
+    public function testDivideAndRemainderByZeroThrowsException()
+    {
+        BigDecimal::of(1.2)->divideAndRemainder(0);
+    }
+
+    /**
      * @dataProvider providerPower
      *
      * @param string  $number        The base number.
