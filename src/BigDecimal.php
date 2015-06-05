@@ -306,7 +306,7 @@ class BigDecimal implements \Serializable
 
         list ($quotient, $remainder) = Calculator::get()->div($p, $q);
 
-        $scale = max($this->scale, $that->scale);
+        $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
 
         $quotient = new BigDecimal($quotient, 0);
         $remainder = new BigDecimal($remainder, $scale);
