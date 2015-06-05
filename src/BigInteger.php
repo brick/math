@@ -64,7 +64,7 @@ class BigInteger implements \Serializable
      * The string can optionally be prefixed with the `+` or `-` sign.
      *
      * @param string  $number The number to parse.
-     * @param integer $base   The base of the number.
+     * @param integer $base   The base of the number, between 2 and 36.
      *
      * @return BigInteger
      *
@@ -223,6 +223,11 @@ class BigInteger implements \Serializable
     public function plus($that)
     {
         $that = BigInteger::of($that);
+
+        if ($that->value === '0') {
+            return $this;
+        }
+
         $value = Calculator::get()->add($this->value, $that->value);
 
         return new BigInteger($value);
@@ -238,6 +243,11 @@ class BigInteger implements \Serializable
     public function minus($that)
     {
         $that = BigInteger::of($that);
+
+        if ($that->value === '0') {
+            return $this;
+        }
+
         $value = Calculator::get()->sub($this->value, $that->value);
 
         return new BigInteger($value);
@@ -253,6 +263,11 @@ class BigInteger implements \Serializable
     public function multipliedBy($that)
     {
         $that = BigInteger::of($that);
+
+        if ($that->value === '1') {
+            return $this;
+        }
+
         $value = Calculator::get()->mul($this->value, $that->value);
 
         return new BigInteger($value);
@@ -273,7 +288,11 @@ class BigInteger implements \Serializable
     {
         $that = BigInteger::of($that);
 
-        if ($that->isZero()) {
+        if ($that->value === '1') {
+            return $this;
+        }
+
+        if ($that->value === '0') {
             throw ArithmeticException::divisionByZero();
         }
 
@@ -300,7 +319,7 @@ class BigInteger implements \Serializable
     {
         $that = BigInteger::of($that);
 
-        if ($that->isZero()) {
+        if ($that->value === '0') {
             throw ArithmeticException::divisionByZero();
         }
 
@@ -326,6 +345,10 @@ class BigInteger implements \Serializable
     public function power($exponent)
     {
         $exponent = (int) $exponent;
+
+        if ($exponent === 1) {
+            return $this;
+        }
 
         if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
             throw new \InvalidArgumentException(sprintf(

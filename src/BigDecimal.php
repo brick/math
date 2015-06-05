@@ -199,6 +199,11 @@ class BigDecimal implements \Serializable
     public function plus($that)
     {
         $that = BigDecimal::of($that);
+
+        if ($that->value === '0' && $that->scale <= $this->scale) {
+            return $this;
+        }
+
         $this->scaleValues($this, $that, $a, $b);
 
         $value = Calculator::get()->add($a, $b);
@@ -217,6 +222,11 @@ class BigDecimal implements \Serializable
     public function minus($that)
     {
         $that = BigDecimal::of($that);
+
+        if ($that->value === '0' && $that->scale <= $this->scale) {
+            return $this;
+        }
+
         $this->scaleValues($this, $that, $a, $b);
 
         $value = Calculator::get()->sub($a, $b);
@@ -235,6 +245,10 @@ class BigDecimal implements \Serializable
     public function multipliedBy($that)
     {
         $that = BigDecimal::of($that);
+
+        if ($that->value === '1' && $that->scale === 0) {
+            return $this;
+        }
 
         $value = Calculator::get()->mul($this->value, $that->value);
         $scale = $this->scale + $that->scale;
@@ -267,6 +281,10 @@ class BigDecimal implements \Serializable
             if ($scale < 0) {
                 throw new \InvalidArgumentException('Scale cannot be negative.');
             }
+        }
+
+        if ($that->value === '1' && $scale === $this->scale) {
+            return $this;
         }
 
         $p = $this->valueWithMinScale($that->scale + $scale);
@@ -328,6 +346,10 @@ class BigDecimal implements \Serializable
     public function power($exponent)
     {
         $exponent = (int) $exponent;
+
+        if ($exponent === 1) {
+            return $this;
+        }
 
         if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
             throw new \InvalidArgumentException(sprintf(
