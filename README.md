@@ -97,8 +97,8 @@ In that case, you need to explicitly provide a rounding mode:
 
 When dividing a `BigDecimal`, you can also specify the scale of the result:
 
-    echo BigDecimal::of(3)->dividedBy(11, 2, RoundingMode::UP); // 0.28
-    echo BigDecimal::of(3)->dividedBy(11, 6, RoundingMode::DOWN); // 0.272727
+    echo BigDecimal::of(3)->dividedBy(11, RoundingMode::UP, 2); // 0.28
+    echo BigDecimal::of(3)->dividedBy(11, RoundingMode::DOWN, 6); // 0.272727
 
 There are a number of rounding modes you can use:
 
