@@ -21,7 +21,8 @@ Just define the following requirement in your `composer.json` file:
 Requirements
 ------------
 
-This library requires PHP 5.6, PHP 7 or [HHVM](http://hhvm.com/).
+This library requires PHP 5.6 or PHP 7.
+[HHVM](http://hhvm.com/) will be supported as soon as [this bug](https://github.com/facebook/hhvm/issues/4858) is fixed.
 
 Although the library can work on any PHP installation, it is highly recommended that you install the
 [GMP](http://php.net/manual/en/book.gmp.php) or [BCMath](http://php.net/manual/en/book.bc.php) extension
