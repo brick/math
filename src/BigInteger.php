@@ -532,8 +532,6 @@ class BigInteger implements \Serializable
     }
 
     /**
-     * @todo test with negative numbers, probably broken
-     *
      * Returns a string representation of this number in the given base.
      *
      * @param integer $base
@@ -559,6 +557,12 @@ class BigInteger implements \Serializable
         $calc = Calculator::get();
 
         $value = $this->value;
+        $negative = ($value[0] === '-');
+
+        if ($negative) {
+            $value = substr($value, 1);
+        }
+
         $base = (string) $base;
         $result = '';
 
@@ -567,6 +571,10 @@ class BigInteger implements \Serializable
             $remainder = (int) $remainder;
 
             $result .= $dictionary[$remainder];
+        }
+
+        if ($negative) {
+            $result .= '-';
         }
 
         return strrev($result);

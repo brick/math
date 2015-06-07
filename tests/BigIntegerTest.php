@@ -1483,6 +1483,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testToString($number, $base, $expected)
     {
         $this->assertSame($expected, BigInteger::parse($number)->toString($base));
+        $this->assertSame('-' . $expected, BigInteger::parse('-' . $number)->toString($base));
     }
 
     /**
