@@ -456,6 +456,16 @@ class BigInteger implements \Serializable
     }
 
     /**
+     * Returns the sign of this number.
+     *
+     * @return int -1 if the number is negative, 0 if zero, 1 if positive.
+     */
+    public function getSign()
+    {
+        return ($this->value === '0') ? 0 : (($this->value[0] === '-') ? -1 : 1);
+    }
+
+    /**
      * Checks if this number equals zero.
      *
      * @return boolean

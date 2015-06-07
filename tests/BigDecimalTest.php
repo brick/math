@@ -1702,64 +1702,75 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerCompareToZero
+     * @dataProvider providerSign
      *
-     * @param string|number $number The number to test.
-     * @param boolean       $cmp    The comparison value.
+     * @param number|string $number The number to test.
+     * @param int           $sign   The sign of the number.
      */
-    public function testIsZero($number, $cmp)
+    public function testGetSign($number, $sign)
     {
-        $this->assertSame($cmp == 0, BigDecimal::of($number)->isZero());
+        $this->assertSame($sign, BigDecimal::of($number)->getSign());
     }
 
     /**
-     * @dataProvider providerCompareToZero
+     * @dataProvider providerSign
      *
-     * @param string|number $number The number to test.
-     * @param boolean       $cmp    The comparison value.
+     * @param number|string $number The number to test.
+     * @param int           $sign   The sign of the number.
      */
-    public function testIsNegative($number, $cmp)
+    public function testIsZero($number, $sign)
     {
-        $this->assertSame($cmp < 0, BigDecimal::of($number)->isNegative());
+        $this->assertSame($sign === 0, BigDecimal::of($number)->isZero());
     }
 
     /**
-     * @dataProvider providerCompareToZero
+     * @dataProvider providerSign
      *
-     * @param string|number $number The number to test.
-     * @param boolean       $cmp    The comparison value.
+     * @param number|string $number The number to test.
+     * @param int           $sign   The sign of the number.
      */
-    public function testIsNegativeOrZero($number, $cmp)
+    public function testIsNegative($number, $sign)
     {
-        $this->assertSame($cmp <= 0, BigDecimal::of($number)->isNegativeOrZero());
+        $this->assertSame($sign < 0, BigDecimal::of($number)->isNegative());
     }
 
     /**
-     * @dataProvider providerCompareToZero
+     * @dataProvider providerSign
      *
-     * @param string|number $number The number to test.
-     * @param boolean       $cmp    The comparison value.
+     * @param number|string $number The number to test.
+     * @param int           $sign   The sign of the number.
      */
-    public function testIsPositive($number, $cmp)
+    public function testIsNegativeOrZero($number, $sign)
     {
-        $this->assertSame($cmp > 0, BigDecimal::of($number)->isPositive());
+        $this->assertSame($sign <= 0, BigDecimal::of($number)->isNegativeOrZero());
     }
 
     /**
-     * @dataProvider providerCompareToZero
+     * @dataProvider providerSign
      *
-     * @param string|number $number The number to test.
-     * @param boolean       $cmp    The comparison value.
+     * @param number|string $number The number to test.
+     * @param int           $sign   The sign of the number.
      */
-    public function testIsPositiveOrZero($number, $cmp)
+    public function testIsPositive($number, $sign)
     {
-        $this->assertSame($cmp >= 0, BigDecimal::of($number)->isPositiveOrZero());
+        $this->assertSame($sign > 0, BigDecimal::of($number)->isPositive());
+    }
+
+    /**
+     * @dataProvider providerSign
+     *
+     * @param number|string $number The number to test.
+     * @param int           $sign   The sign of the number.
+     */
+    public function testIsPositiveOrZero($number, $sign)
+    {
+        $this->assertSame($sign >= 0, BigDecimal::of($number)->isPositiveOrZero());
     }
 
     /**
      * @return array
      */
-    public function providerCompareToZero()
+    public function providerSign()
     {
         return [
             [ 0,  0],
