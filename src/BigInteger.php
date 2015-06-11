@@ -332,6 +332,22 @@ class BigInteger implements \Serializable
     }
 
     /**
+     * Returns the remainder of the division of this number and the given one.
+     *
+     * @param BigInteger|int|string $that
+     *
+     * @return BigInteger
+     */
+    public function remainder($that)
+    {
+        $that = BigInteger::of($that);
+
+        list (, $remainder) = Calculator::get()->div($this->value, $that->value);
+
+        return new BigInteger($remainder);
+    }
+
+    /**
      * Returns this number exponentiated.
      *
      * The exponent has a limit of 1 million.

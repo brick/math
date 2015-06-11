@@ -1105,6 +1105,21 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerDivideAndRemainder
+     *
+     * @param string $dividend  The dividend.
+     * @param string $divisor   The divisor.
+     * @param string $quotient  The expected quotient (ignore for this test).
+     * @param string $remainder The expected remainder.
+     */
+    public function testRemainder($dividend, $divisor, $quotient, $remainder)
+    {
+        list (, $r) = BigInteger::of($dividend)->divideAndRemainder($divisor);
+
+        $this->assertSame($remainder, (string) $r);
+    }
+
+    /**
      * @dataProvider providerPower
      *
      * @param string  $number   The base number.
