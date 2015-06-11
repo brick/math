@@ -378,6 +378,30 @@ class BigInteger implements \Serializable
     }
 
     /**
+     * Returns the greatest common divisor of this number and the given one.
+     *
+     * The GCD is always positive.
+     *
+     * @param BigInteger|int|string $that
+     *
+     * @return BigInteger
+     */
+    public function gcd($that)
+    {
+        $that = BigInteger::of($that);
+
+        if ($that->isZero()) {
+            return $this->abs();
+        }
+
+        if ($this->isZero()) {
+            return $that->abs();
+        }
+
+        return $that->gcd($this->remainder($that));
+    }
+
+    /**
      * Returns the absolute value of this number.
      *
      * @return BigInteger
