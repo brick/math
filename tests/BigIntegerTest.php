@@ -3,7 +3,6 @@
 namespace Brick\Math\Tests;
 
 use Brick\Math\ArithmeticException;
-use Brick\Math\Internal\Calculator;
 use Brick\Math\BigInteger;
 use Brick\Math\RoundingMode;
 
