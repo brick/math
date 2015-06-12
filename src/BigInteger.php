@@ -274,17 +274,15 @@ class BigInteger implements \Serializable
     }
 
     /**
-     * Returns the result of the division of this number and the given one.
+     * Returns the quotient of the division of this number and the given one.
      *
      * @param BigInteger|integer|string $that
-     * @param integer                   $roundingMode
      *
      * @return BigInteger
      *
-     * @throws ArithmeticException       If the divisor is zero or rounding is necessary.
-     * @throws \InvalidArgumentException If the divisor or the rounding mode is invalid.
+     * @throws ArithmeticException If the divisor is zero.
      */
-    public function dividedBy($that, $roundingMode = RoundingMode::UNNECESSARY)
+    public function dividedBy($that)
     {
         $that = BigInteger::of($that);
 
@@ -296,14 +294,9 @@ class BigInteger implements \Serializable
             throw ArithmeticException::divisionByZero();
         }
 
-        $calculator = Calculator::get();
-        $result = $calculator->divRounded($this->value, $that->value, $roundingMode);
+        list($quotient) = Calculator::get()->div($this->value, $that->value);
 
-        if ($result === null) {
-            throw ArithmeticException::roundingNecessary();
-        }
-
-        return new BigInteger($result);
+        return new BigInteger($quotient);
     }
 
     /**
@@ -325,10 +318,10 @@ class BigInteger implements \Serializable
 
         list ($quotient, $remainder) = Calculator::get()->div($this->value, $that->value);
 
-        $quotient = new BigInteger($quotient);
-        $remainder = new BigInteger($remainder);
-
-        return [$quotient, $remainder];
+        return [
+            new BigInteger($quotient),
+            new BigInteger($remainder)
+        ];
     }
 
     /**

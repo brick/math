@@ -87,16 +87,33 @@ All the methods that return a new number can be chained, for example:
 
 ### Division & rounding modes
 
-When dividing numbers, if the remainder of the division if not zero, the result needs to be rounded up or down. By default, the library assumes that rounding is unnecessary, and throws an exception if the remainder of the division is not zero:
+#### BigInteger
 
-    BigInteger::of(7)->dividedBy(2); // throws an ArithmeticException
+Dividing a `BigInteger` always returns the *quotient* of the division:
+
+    echo BigInteger::of(1000)->dividedBy(3); // 333
+
+You can get the remainder of the division with the `remainder()` method:
+
+    echo BigInteger::of(1000)->remainder(3); // 1
+
+You can also get both the quotient and the remainder in a single method call:
+
+    list ($quotient, $remainder) = BigInteger::of(1000)->divideAndRemainder(3);
+
+#### BigDecimal
+
+When dividing a `BigDecimal`, if the number cannot be represented at the requested scale, the result needs to be rounded up or down.
+By default, the library assumes that rounding is unnecessary, and throws an exception if rouding was in fact necessary:
+
+    BigDecimal::of('1000.0')->dividedBy(3); // throws an ArithmeticException
 
 In that case, you need to explicitly provide a rounding mode:
 
-    echo BigInteger::of(7)->dividedBy(2, RoundingMode::DOWN); // 3
-    echo BigInteger::of(7)->dividedBy(2, RoundingMode::UP); // 4
+    echo BigDecimal::of('1000.0')->dividedBy(3, RoundingMode::DOWN); // 333.3
+    echo BigDecimal::of('1000.0')->dividedBy(3, RoundingMode::UP); // 333.4
 
-When dividing a `BigDecimal`, you can also specify the scale of the result:
+By default, the result has the same scale as the number, but you can also specify a different scale:
 
     echo BigDecimal::of(3)->dividedBy(11, RoundingMode::UP, 2); // 0.28
     echo BigDecimal::of(3)->dividedBy(11, RoundingMode::DOWN, 6); // 0.272727
