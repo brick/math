@@ -2,6 +2,7 @@
 
 namespace Brick\Math\Tests;
 
+use Brick\Math\BigInteger;
 use Brick\Math\BigRational;
 
 /**
@@ -63,6 +64,33 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @dataProvider providerParseInvalidString
+     * @expectedException \InvalidArgumentException
+     *
+     * @param string $string An invalid string representation.
+     */
+    public function testParseInvalidString($string)
+    {
+        BigRational::parse($string);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerParseInvalidString()
+    {
+        return [
+            ['123/-456'],
+            ['+123/456'],
+            ['123e4'],
+            ['1e4/2'],
+            ['1.2'],
+            [' 1/2'],
+            ['1/2 '],
+        ];
+    }
+
     public function testAccessors()
     {
         $rational = BigRational::of(123456789, 987654321);
@@ -90,7 +118,9 @@ class BigRationalTest extends AbstractTestCase
     public function providerPlus()
     {
         return [
-            ['123/456', '1', '579/456'],
+            ['123/456', 1, '579/456'],
+            ['123/456', BigInteger::of(2), '1035/456'],
+            ['123/456', BigRational::of(2, 3), '1281/1368'],
             ['234/567', '123/28', '76293/15876'],
             ['-1234567890123456789/497', '79394345/109859892', '-135629495075630790047217323/54600366324'],
             ['-1234567890123456789/999', '-98765/43210', '-53345678532234666518925/43166790'],
