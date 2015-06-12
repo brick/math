@@ -1,7 +1,7 @@
 Brick\Math
 ==========
 
-Provides the `BigInteger` and `BigDecimal` classes to work with arbitrary precision numbers.
+Provides the `BigInteger`, `BigDecimal` and `BigRational` classes to work with arbitrary precision numbers.
 
 [![Build Status](https://secure.travis-ci.org/brick/math.svg?branch=master)](http://travis-ci.org/brick/math)
 [![Coverage Status](https://coveralls.io/repos/brick/math/badge.svg?branch=master)](https://coveralls.io/r/brick/math?branch=master)
@@ -36,6 +36,7 @@ This library provides the following public classes:
 - `Brick\Math\ArithmeticException`: exception thrown when an error occurs.
 - `Brick\Math\BigInteger`: represents an arbitrary-precision integer number.
 - `Brick\Math\BigDecimal`: represents an arbitrary-precision decimal number.
+- `Brick\Math\BigRational`: represents an arbitrary-precision rational number (fraction).
 - `Brick\Math\RoundingMode`: holds constants for the [rounding modes](#division--rounding-modes).
 
 Overview
@@ -43,23 +44,25 @@ Overview
 
 ### Instantiation
 
-The constructor of `BigInteger` and `BigDecimal` is private,
-you must use the `of()` factory method to obtain an instance:
+The constructor of each class is private, you must use a factory method to obtain an instance:
 
-    $integer = BigInteger::of('123456');
-    $decimal = BigDecimal::of('123.456');
+    $integer = BigInteger::of('123456'); // accepts integers and strings
+    $decimal = BigDecimal::of('123.456'); // accepts floats, integers and strings
 
-The following types are accepted: `integer`, `float`, `string` as long as they can be safely converted to an integer
-in the case of `BigInteger::of()`, or to a decimal number in the case of `BigDecimal::of()`.
+    $rational = BigRational::of('123', '456'); // accepts BigInteger instances, integers and strings
+    $rational = BigRational::parse('123/456'); // accepts fraction strings
 
-Prefer instantiating from `string` or `integer` rather than `float`, as floating-point values are imprecise by design,
-and using them with `of()` defeats the purpose of using an arbitrary precision library.
+Avoid instantiating `BigDecimal` from a `float`: floating-point values are imprecise by design,
+and can lead to unexpected results. Always prefer instantiating from a `string`:
 
-Only `string` allows you to safely instantiate a number with an unlimited number of digits.
+    $decimal = BigDecimal::of(123.456); // avoid!
+    $decimal = BigDecimal::of('123.456'); // OK, supports an unlimited number of digits.
 
 ### Immutability
 
-The `BigInteger` and `BigDecimal` classes are immutable: their value never changes, so that they can be safely passed around. All methods that return a `BigInteger` or `BigDecimal` return a new object, leaving the original object unaffected:
+The `BigInteger`, `BigDecimal` and `BigRational` classes are immutable: their value never changes,
+so that they can be safely passed around. All methods that return a `BigInteger`, `BigDecimal` or `BigRational`
+return a new object, leaving the original object unaffected:
 
     $ten = BigInteger::of(10);
 
@@ -68,7 +71,7 @@ The `BigInteger` and `BigDecimal` classes are immutable: their value never chang
 
 ### Parameter types
 
-All methods that accept a number: `plus()`, `minus()`, `multipliedBy()`, etc. accept the same types as `of()`.
+All methods that accept a number: `plus()`, `minus()`, `multipliedBy()`, etc. accept the same types as `of()` / `parse()`.
 As an example, given the following number:
 
     $integer = BigInteger::of(123);
@@ -85,7 +88,7 @@ All the methods that return a new number can be chained, for example:
 
     echo BigInteger::of(10)->plus(5)->multipliedBy(3); // 45
 
-### Division & rounding modes
+### Division & rounding
 
 #### BigInteger
 
@@ -133,9 +136,16 @@ Rounding mode  | Description
 `HALF_FLOOR`   | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards negative infinity. If the result is positive, behaves as for `HALF_DOWN`; if negative, behaves as for `HALF_UP`.
 `HALF_EVEN`    | Rounds towards the "nearest neighbor" unless both neighbors are equidistant, in which case rounds towards the even neighbor. Behaves as for `HALF_UP` if the digit to the left of the discarded fraction is odd; behaves as for `HALF_DOWN` if it's even.
 
+#### BigRational
+
+The result of the division of a `BigRational` can always be represented exactly:
+
+    echo BigRational::parse('123/456')->dividedBy('7'); // 123/3192
+    echo BigRational::parse('123/456')->dividedBy('9/8'); // 984/4104
+
 ### Serialization
 
-`BigInteger` and `BigDecimal` can be safely serialized on a machine and unserialized on another,
+`BigInteger`, `BigDecimal` and `BigRational` can be safely serialized on a machine and unserialized on another,
 even if these machines do not share the same set of PHP extensions.
 
 For example, serializing on a machine with GMP support and unserializing on a machine that does not have this extension
