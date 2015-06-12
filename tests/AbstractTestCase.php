@@ -4,6 +4,7 @@ namespace Brick\Math\Tests;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
+use Brick\Math\BigRational;
 
 /**
  * Base class for BigInteger and BigDecimal test cases.
@@ -28,5 +29,16 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($unscaledValue, $actual->getUnscaledValue());
         $this->assertSame($scale, $actual->getScale());
+    }
+
+    /**
+     * @param string      $numerator
+     * @param string      $denominator
+     * @param BigRational $actual
+     */
+    protected function assertBigRationalEquals($numerator, $denominator, BigRational $actual)
+    {
+        $this->assertSame($numerator, (string) $actual->getNumerator());
+        $this->assertSame($denominator, (string) $actual->getDenominator());
     }
 }
