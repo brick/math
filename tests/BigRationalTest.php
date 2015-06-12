@@ -550,4 +550,22 @@ class BigRationalTest extends AbstractTestCase
             ['34327948737247817984738927598572389', '-1', '-34327948737247817984738927598572389'],
         ];
     }
+
+    public function testSerialize()
+    {
+        $numerator   = '-1234567890987654321012345678909876543210123456789';
+        $denominator = '347827348278374374263874681238374983729873401984091287439827467286';
+
+        $rational = BigRational::of($numerator, $denominator);
+
+        $this->assertBigRationalEquals($numerator, $denominator, unserialize(serialize($rational)));
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testDirectCallToUnserialize()
+    {
+        BigRational::of(1, 2)->unserialize('123/456');
+    }
 }

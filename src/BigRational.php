@@ -7,7 +7,7 @@ namespace Brick\Math;
  *
  * This class is immutable.
  */
-class BigRational
+class BigRational implements \Serializable
 {
     /**
      * The numerator.
@@ -386,5 +386,38 @@ class BigRational
         }
 
         return $this->numerator . '/' . $this->denominator;
+    }
+
+    /**
+     * This method is required by interface Serializable and SHOULD NOT be accessed directly.
+     *
+     * @internal
+     *
+     * @return string
+     */
+    public function serialize()
+    {
+        return $this->numerator . '/' . $this->denominator;
+    }
+
+    /**
+     * This method is required by interface Serializable and MUST NOT be accessed directly.
+     *
+     * @internal
+     *
+     * @param string $value
+     *
+     * @return void
+     */
+    public function unserialize($value)
+    {
+        if ($this->numerator !== null || $this->denominator !== null) {
+            throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
+        }
+
+        list ($numerator, $denominator) = explode('/', $value);
+
+        $this->numerator   = BigInteger::of($numerator);
+        $this->denominator = BigInteger::of($denominator);
     }
 }
