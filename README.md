@@ -135,5 +135,8 @@ Rounding mode  | Description
 
 ### Serialization
 
-`BigInteger` and `BigDecimal` can be safely serialized on a machine and unserialized on another.
-No context is stored in the serialized variable, only the value.
+`BigInteger` and `BigDecimal` can be safely serialized on a machine and unserialized on another,
+even if these machines do not share the same set of PHP extensions.
+
+For example, serializing on a machine with GMP support and unserializing on a machine that does not have this extension
+installed will still work as expected.
