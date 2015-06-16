@@ -498,6 +498,39 @@ class BigDecimal implements \Serializable
     }
 
     /**
+     * Returns a copy of this BigDecimal with any trailing zeros removed from the fractional part.
+     *
+     * @return BigDecimal
+     */
+    public function stripTrailingZeros()
+    {
+        if ($this->scale === 0) {
+            return $this;
+        }
+
+        $trimmedValue = rtrim($this->value, '0');
+
+        if ($trimmedValue === '') {
+            return new BigDecimal('0');
+        }
+
+        $trimmableZeros = strlen($this->value) - strlen($trimmedValue);
+
+        if ($trimmableZeros === 0) {
+            return $this;
+        }
+
+        if ($trimmableZeros > $this->scale) {
+            $trimmableZeros = $this->scale;
+        }
+
+        $value = substr($this->value, 0, -$trimmableZeros);
+        $scale = $this->scale - $trimmableZeros;
+
+        return new BigDecimal($value, $scale);
+    }
+
+    /**
      * Returns the absolute value of this number.
      *
      * @return BigDecimal

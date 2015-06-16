@@ -1535,6 +1535,55 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerStripTrailingZeros
+     *
+     * @param string $number   The number to trim.
+     * @param string $expected The expected result.
+     */
+    public function testStripTrailingZeros($number, $expected)
+    {
+        $actual = BigDecimal::of($number)->stripTrailingZeros();
+        $this->assertSame($expected, (string) $actual);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerStripTrailingZeros()
+    {
+        return [
+            ['0', '0'],
+            ['0.0', '0'],
+            ['0.00', '0'],
+            ['0.000', '0'],
+            ['0.1', '0.1'],
+            ['0.01', '0.01'],
+            ['0.001', '0.001'],
+            ['0.100', '0.1'],
+            ['0.0100', '0.01'],
+            ['0.00100', '0.001'],
+            ['1', '1'],
+            ['1.0', '1'],
+            ['1.00', '1'],
+            ['1.10', '1.1'],
+            ['1.123000', '1.123'],
+            ['10', '10'],
+            ['10.0', '10'],
+            ['10.00', '10'],
+            ['10.10', '10.1'],
+            ['10.01', '10.01'],
+            ['10.010', '10.01'],
+            ['100', '100'],
+            ['100.0', '100'],
+            ['100.00', '100'],
+            ['100.01', '100.01'],
+            ['100.10', '100.1'],
+            ['100.010', '100.01'],
+            ['100.100', '100.1'],
+        ];
+    }
+
+    /**
      * @dataProvider providerAbs
      *
      * @param string  $number        The number as a string.
