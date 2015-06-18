@@ -14,6 +14,13 @@ namespace Brick\Math;
 final class RoundingMode
 {
     /**
+     * Private constructor. This class is not instantiable.
+     */
+    private function __construct()
+    {
+    }
+
+    /**
      * Asserts that the requested operation has an exact result, hence no rounding is necessary.
      *
      * If this rounding mode is specified on an operation that yields a result that
