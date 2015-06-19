@@ -337,6 +337,78 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerIsFiniteDecimal
+     *
+     * @param string $rational        The rational number to test.
+     * @param bool   $isFiniteDecimal Whether the number can be represented as a finite decimal number.
+     */
+    public function testIsFiniteDecimal($rational, $isFiniteDecimal)
+    {
+        $this->assertSame($isFiniteDecimal, BigRational::parse($rational)->isFiniteDecimal());
+    }
+
+    /**
+     * @return array
+     */
+    public function providerIsFiniteDecimal()
+    {
+        return [
+            ['0', true],
+            ['1', true],
+            ['1/2', true],
+            ['2/2', true],
+            ['3/2', true],
+            ['1/3', false],
+            ['2/3', false],
+            ['3/3', true],
+            ['4/3', false],
+            ['1/4', true],
+            ['2/4', true],
+            ['1/5', true],
+            ['2/5', true],
+            ['1/6', false],
+            ['2/6', false],
+            ['3/6', true],
+            ['4/6', false],
+            ['5/6', false],
+            ['6/6', true],
+            ['7/6', false],
+            ['1/7', false],
+            ['2/7', false],
+            ['6/7', false],
+            ['7/7', true],
+            ['8/7', false],
+            ['1/8', true],
+            ['7/8', true],
+            ['1/9', false],
+            ['8/9', false],
+            ['9/9', true],
+            ['10/9', false],
+            ['17/9', false],
+            ['18/9', true],
+            ['19/9', false],
+            ['8/360', false],
+            ['9/360', true],
+            ['10/360', false],
+            ['17/360', false],
+            ['18/360', true],
+            ['19/360', false],
+
+            ['438002367448868006942618029488152554057431119072727/9', true],
+            ['438002367448868006942618029488152554057431119072728/9', false],
+
+            ['1278347892548908779/181664161764972047166111224214546382427215576171875', true],
+            ['1278347892548908779/363328323529944094332222448429092764854431152343750', true],
+            ['1278347892548908778/363328323529944094332222448429092764854431152343750', false],
+            ['1278347892548908779/363328323529944094332222448429092764854431152343751', false],
+
+            ['1274512848871262052662/181119169279677131024612890541902743279933929443359375', false],
+            ['1274512848871262052663/181119169279677131024612890541902743279933929443359375', true],
+            ['1274512848871262052664/181119169279677131024612890541902743279933929443359375', false],
+        ];
+    }
+
+    /**
      * @dataProvider providerCompareTo
      *
      * @param string $a   The first number to compare.

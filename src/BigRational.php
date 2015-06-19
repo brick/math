@@ -242,6 +242,29 @@ class BigRational implements \Serializable
     }
 
     /**
+     * Returns whether this rational number can be represented as a finite decimal.
+     *
+     * @return bool
+     */
+    public function isFiniteDecimal()
+    {
+        $denominator = $this->simplified()->denominator;
+
+        foreach ([2, 5] as $divisor) {
+            do {
+                list ($quotient, $remainder) = $denominator->divideAndRemainder($divisor);
+
+                if ($remainderIsZero = $remainder->isZero()) {
+                    $denominator = $quotient;
+                }
+            }
+            while ($remainderIsZero);
+        }
+
+        return $denominator->isEqualTo(1);
+    }
+
+    /**
      * Compares this number to the given one.
      *
      * @param BigRational|BigInteger|int|string $that
