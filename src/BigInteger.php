@@ -294,7 +294,7 @@ class BigInteger implements \Serializable
             throw ArithmeticException::divisionByZero();
         }
 
-        list($quotient) = Calculator::get()->div($this->value, $that->value);
+        list ($quotient) = Calculator::get()->div($this->value, $that->value);
 
         return new BigInteger($quotient);
     }
