@@ -15,7 +15,7 @@ Just define the following requirement in your `composer.json` file:
 
     {
         "require": {
-            "brick/math": "*"
+            "brick/math": "0.4.*"
         }
     }
 
