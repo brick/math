@@ -345,6 +345,7 @@ class BigRationalTest extends AbstractTestCase
     public function testIsFiniteDecimal($rational, $isFiniteDecimal)
     {
         $this->assertSame($isFiniteDecimal, BigRational::parse($rational)->isFiniteDecimal());
+        $this->assertSame($isFiniteDecimal, BigRational::parse('-' . $rational)->isFiniteDecimal());
     }
 
     /**
