@@ -756,6 +756,19 @@ class BigDecimal implements \Serializable
     }
 
     /**
+     * Converts this decimal number to a rational number, in its simplest form.
+     *
+     * @return BigRational
+     */
+    public function toBigRational()
+    {
+        $numerator = $this->value;
+        $denominator = '1' . str_repeat('0', $this->scale);
+
+        return BigRational::of($numerator, $denominator)->simplified();
+    }
+
+    /**
      * Returns a string representation of this number.
      *
      * @return string
