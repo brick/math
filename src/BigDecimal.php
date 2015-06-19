@@ -192,6 +192,8 @@ class BigDecimal implements \Serializable
     /**
      * Returns the sum of this number and the given one.
      *
+     * The result has a scale of `max($this->scale, $that->scale)`.
+     *
      * @param BigDecimal|number|string $that
      *
      * @return BigDecimal
@@ -214,6 +216,8 @@ class BigDecimal implements \Serializable
 
     /**
      * Returns the difference of this number and the given one.
+     *
+     * The result has a scale of `max($this->scale, $that->scale)`.
      *
      * @param BigDecimal|number|string $that
      *
@@ -238,6 +242,8 @@ class BigDecimal implements \Serializable
     /**
      * Returns the result of the multiplication of this number and the given one.
      *
+     * The result has a scale of `$this->scale + $that->scale`.
+     *
      * @param BigDecimal|number|string $that
      *
      * @return BigDecimal
@@ -259,7 +265,7 @@ class BigDecimal implements \Serializable
     /**
      * Returns the result of the division of this number and the given one.
      *
-     * @param BigDecimal|number|string $that         The number to divide.
+     * @param BigDecimal|number|string $that         The divisor.
      * @param int                      $roundingMode The rounding mode.
      * @param int|null                 $scale        The desired scale, or null to use the scale of this number.
      *
@@ -367,7 +373,7 @@ class BigDecimal implements \Serializable
     /**
      * Returns the quotient and remainder of the division of this number and the given one.
      *
-     * The quotient has a scale of 0, and the remainder has the largest scale of the two numbers.
+     * The quotient has a scale of `0`, and the remainder has a scale of `max($this->scale, $that->scale)`.
      *
      * @param BigDecimal|number|string $that The number to divide.
      *
