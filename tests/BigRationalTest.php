@@ -2,6 +2,7 @@
 
 namespace Brick\Math\Tests;
 
+use Brick\Math\ArithmeticException;
 use Brick\Math\BigInteger;
 use Brick\Math\BigRational;
 
@@ -591,6 +592,60 @@ class BigRationalTest extends AbstractTestCase
             ['-0/123456', 0],
             ['-1/23784738479837498273817307948739875387498374983749837984739874983749834384938493284934', -1],
             ['1/3478378924784729749873298479832792487498789012890843098490820480938092849032809480932840', 1],
+        ];
+    }
+
+    /**
+     * @dataProvider providerToBigDecimal
+     *
+     * @param string      $number   The rational number to convert.
+     * @param string|null $expected The expected decimal number, or null if an exception is expected.
+     */
+    public function testToBigDecimal($number, $expected)
+    {
+        if ($expected === null) {
+            $this->setExpectedException(ArithmeticException::class);
+        }
+
+        $actual = BigRational::parse($number)->toBigDecimal();
+
+        if ($expected !== null) {
+            $this->assertSame($expected, (string) $actual);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToBigDecimal()
+    {
+        return [
+            ['1', '1'],
+            ['1/2', '0.5'],
+            ['1/3', null],
+            ['1/4', '0.25'],
+            ['1/5', '0.2'],
+            ['1/6', null],
+            ['1/7', null],
+            ['1/8', '0.125'],
+            ['1/9', null],
+            ['1/10', '0.1'],
+            ['10/2', '5'],
+            ['10/20', '0.5'],
+            ['100/20', '5'],
+            ['100/2', '50'],
+            ['1/500', '0.002'],
+            ['1/600', null],
+            ['1/400', '0.0025'],
+            ['1/800', '0.00125'],
+            ['1/1600', '0.000625'],
+            ['2/1600', '0.00125'],
+            ['3/1600', '0.001875'],
+            ['4/1600', '0.0025'],
+            ['5/1600', '0.003125'],
+            ['669433117850846623944075755499/3723692145740642445161938667297363281250', '0.0000000001797767086134066979625344023536861184'],
+            ['669433117850846623944075755498/3723692145740642445161938667297363281250', null],
+            ['669433117850846623944075755499/3723692145740642445161938667297363281251', null],
         ];
     }
 

@@ -242,7 +242,7 @@ class BigRational implements \Serializable
     }
 
     /**
-     * Returns whether this rational number can be represented as a finite decimal.
+     * Returns whether this rational number can be represented as a finite decimal number.
      *
      * @return bool
      */
@@ -394,6 +394,51 @@ class BigRational implements \Serializable
     public function isPositiveOrZero()
     {
         return $this->numerator->isPositiveOrZero();
+    }
+
+    /**
+     * Returns a BigDecimal representing the exact value of this rational number.
+     *
+     * @return BigDecimal
+     *
+     * @throws ArithmeticException If this rational number cannot be represented as a finite decimal number.
+     */
+    public function toBigDecimal()
+    {
+        $simplified = $this->simplified();
+
+        $denominator = $simplified->denominator;
+
+        $counts = [
+            2 => 0,
+            5 => 0
+        ];
+
+        foreach ([2, 5] as $divisor) {
+            do {
+                list ($quotient, $remainder) = $denominator->divideAndRemainder($divisor);
+
+                if ($remainderIsZero = $remainder->isZero()) {
+                    $denominator = $quotient;
+                    $counts[$divisor]++;
+                }
+            }
+            while ($remainderIsZero);
+        }
+
+        if (! $denominator->isEqualTo(1)) {
+            throw new ArithmeticException('This rational number cannot be represented as a finite decimal number.');
+        }
+
+        $twos  = $counts[2];
+        $fives = $counts[5];
+
+        $maxDecimalPlaces = $twos + $fives - min($twos, $fives);
+
+        $result = BigDecimal::of($simplified->numerator)
+            ->dividedBy($simplified->denominator, RoundingMode::UNNECESSARY, $maxDecimalPlaces);
+
+        return $result->stripTrailingZeros();
     }
 
     /**
