@@ -1,7 +1,7 @@
 Brick\Math
 ==========
 
-Provides the `BigInteger`, `BigDecimal` and `BigRational` classes to work with arbitrary precision numbers.
+A library to work with arbitrary precision numbers.
 
 [![Build Status](https://secure.travis-ci.org/brick/math.svg?branch=master)](http://travis-ci.org/brick/math)
 [![Coverage Status](https://coveralls.io/repos/brick/math/badge.svg?branch=master)](https://coveralls.io/r/brick/math?branch=master)
@@ -27,6 +27,22 @@ This library requires PHP 5.6, PHP 7 or [HHVM](http://hhvm.com/).
 Although the library can work seamlessly on any PHP installation, it is highly recommended that you install the
 [GMP](http://php.net/manual/en/book.gmp.php) or [BCMath](http://php.net/manual/en/book.bc.php) extension
 to speed up calculations. The fastest available calculator implementation will be automatically selected at runtime.
+
+Project status & release process
+--------------------------------
+
+While this library is still under development, it is well tested and should be stable enough to use in production
+environments.
+
+The current releases are numbered `0.x.y`. When a non-breaking change is introduced (adding new methods, optimizing
+existing code, etc.), `y` is incremented.
+
+**When a breaking change is introduced, a new `0.x` version cycle is always started.**
+
+It is therefore safe to lock your project to a given release cycle, such as `0.4.*`.
+
+If you need to upgrade to a newer release cycle, check the [release history](https://github.com/brick/math/releases)
+for a list of changes introduced by each further `0.x.0` version.
 
 Package contents
 ----------------
