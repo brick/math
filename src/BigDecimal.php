@@ -46,8 +46,8 @@ class BigDecimal extends BigNumber implements \Serializable
      *
      * Note: you should avoid passing floating point numbers to this method.
      * Being imprecise by design, they might not convert to the decimal value you expect.
-     * This would defeat the whole purpose of using the Decimal type.
-     * Prefer passing decimal numbers as strings, e.g `Decimal::of('0.1')` over `Decimal::of(0.1)`.
+     * This would defeat the whole purpose of using the BigDecimal type.
+     * Prefer passing decimal numbers as strings, e.g `BigDecimal::of('0.1')` over `BigDecimal::of(0.1)`.
      *
      * @param BigNumber|number|string $value
      *
@@ -464,7 +464,7 @@ class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns a Decimal with the current value and the specified scale.
+     * Returns a BigDecimal with the current value and the specified scale.
      *
      * @param integer $scale
      * @param integer $roundingMode
