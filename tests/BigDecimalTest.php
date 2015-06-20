@@ -603,6 +603,53 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerDividedByExact
+     *
+     * @param string|number $number   The number to divide.
+     * @param string|number $divisor  The divisor.
+     * @param string|null   $expected The expected result, or null if an exception is expected.
+     */
+    public function testDividedByExact($number, $divisor, $expected)
+    {
+        if ($expected === null) {
+            $this->setExpectedException(ArithmeticException::class);
+        }
+
+        $actual = BigDecimal::of($number)->dividedByExact($divisor);
+
+        if ($expected !== null) {
+            $this->assertSame($expected, (string) $actual);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function providerDividedByExact()
+    {
+        return [
+            [1, 0, null],
+            [1, 1, '1'],
+            ['1.0', '1.00', '1.0'],
+            [1, 2, '0.5'],
+            [1, 3, null],
+            [1, 4, '0.25'],
+            [1, 5, '0.2'],
+            [1, 6, null],
+            [1, 7, null],
+            [1, 8, '0.125'],
+            [1, 9, null],
+            [1, 10, '0.1'],
+            ['1.0', 2, '0.5'],
+            ['1.00', 2, '0.50'],
+            ['1.0000', 8, '0.1250'],
+            [1, '4.000', '0.25'],
+            ['1', '0.125', '8'],
+            ['1.0', '0.125', '8.0'],
+        ];
+    }
+
+    /**
      * @dataProvider providerDividedByWithRoundingNecessaryThrowsException
      * @expectedException \Brick\Math\ArithmeticException
      *

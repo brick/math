@@ -371,6 +371,32 @@ class BigDecimal implements \Serializable
     }
 
     /**
+     * Returns the result of the division of this number and the given one.
+     *
+     * The result has a minimum scale of `$this->scale`, expandable to accommodate the exact result of the division.
+     *
+     * If the result cannot be represented as a finite decimal number, an exception is thrown.
+     *
+     * @param BigDecimal|number|string $that The divisor.
+     *
+     * @return BigDecimal
+     *
+     * @throws ArithmeticException If the result cannot be represented as a finite decimal number.
+     */
+    public function dividedByExact($that)
+    {
+        $that = BigDecimal::of($that);
+
+        $result = $this->toBigRational()->dividedBy($that->toBigRational())->toBigDecimal();
+
+        if ($result->scale < $this->scale) {
+            $result = $result->withScale($this->scale);
+        }
+
+        return $result;
+    }
+
+    /**
      * Returns the quotient and remainder of the division of this number and the given one.
      *
      * The quotient has a scale of `0`, and the remainder has a scale of `max($this->scale, $that->scale)`.
