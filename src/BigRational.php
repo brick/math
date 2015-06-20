@@ -7,7 +7,7 @@ namespace Brick\Math;
  *
  * This class is immutable.
  */
-class BigRational implements \Serializable
+class BigRational implements BigNumber, \Serializable
 {
     /**
      * The numerator.
@@ -397,11 +397,21 @@ class BigRational implements \Serializable
     }
 
     /**
-     * Returns a BigDecimal representing the exact value of this rational number.
-     *
-     * @return BigDecimal
-     *
-     * @throws ArithmeticException If this rational number cannot be represented as a finite decimal number.
+     * {@inheritdoc}
+     */
+    public function toBigInteger()
+    {
+        $simplified = $this->simplified();
+
+        if (! $simplified->denominator->isEqualTo(1)) {
+            throw new ArithmeticException('This rational number cannot be represented as an integer value.');
+        }
+
+        return $simplified->numerator;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function toBigDecimal()
     {
@@ -439,6 +449,14 @@ class BigRational implements \Serializable
             ->dividedBy($simplified->denominator, RoundingMode::UNNECESSARY, $maxDecimalPlaces);
 
         return $result->stripTrailingZeros();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toBigRational()
+    {
+        return $this;
     }
 
     /**

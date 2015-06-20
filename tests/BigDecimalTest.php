@@ -1954,13 +1954,12 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerToBigInteger
      *
-     * @param string  $decimal      The number to convert.
-     * @param integer $roundingMode The rounding mode.
-     * @param string  $expected     The expected value.
+     * @param string $decimal  The number to convert.=
+     * @param string $expected The expected value.
      */
-    public function testToBigInteger($decimal, $roundingMode, $expected)
+    public function testToBigInteger($decimal, $expected)
     {
-        $this->assertBigIntegerEquals($expected, BigDecimal::of($decimal)->toBigInteger($roundingMode));
+        $this->assertBigIntegerEquals($expected, BigDecimal::of($decimal)->toBigInteger());
     }
 
     /**
@@ -1969,26 +1968,11 @@ class BigDecimalTest extends AbstractTestCase
     public function providerToBigInteger()
     {
         return [
-            ['0',   RoundingMode::UNNECESSARY, '0'],
-            ['0',   RoundingMode::DOWN, '0'],
-            ['0',   RoundingMode::UP, '0'],
-            ['1',   RoundingMode::UNNECESSARY, '1'],
-            ['1',   RoundingMode::DOWN, '1'],
-            ['1',   RoundingMode::UP, '1'],
-            ['0.0', RoundingMode::UNNECESSARY, '0'],
-            ['0.0', RoundingMode::DOWN, '0'],
-            ['0.0', RoundingMode::UP, '0'],
-            ['0.1', RoundingMode::DOWN, '0'],
-            ['0.1', RoundingMode::UP, '1'],
-            ['1.0', RoundingMode::UNNECESSARY, '1'],
-            ['1.0', RoundingMode::DOWN, '1'],
-            ['1.0', RoundingMode::UP, '1'],
-            ['1.1', RoundingMode::DOWN,        '1'],
-            ['1.1', RoundingMode::UP, '2'],
-            ['0.01', RoundingMode::DOWN, '0'],
-            ['0.01', RoundingMode::UP, '1'],
-            ['1.01', RoundingMode::DOWN, '1'],
-            ['1.01', RoundingMode::UP, '2']
+            ['0', '0'],
+            ['1', '1'],
+            ['0.0', '0'],
+            ['1.0', '1'],
+            ['-45646540654984984654165151654557478978940.0000000000000', '-45646540654984984654165151654557478978940'],
         ];
     }
 
@@ -1996,11 +1980,29 @@ class BigDecimalTest extends AbstractTestCase
      * @dataProvider providerToBigIntegerThrowsExceptionWhenRoundingNecessary
      * @expectedException \Brick\Math\ArithmeticException
      *
-     * @param string $decimal
+     * @param string $decimal A decimal number with a non-zero fractional part.
      */
     public function testToBigIntegerThrowsExceptionWhenRoundingNecessary($decimal)
     {
         BigDecimal::of($decimal)->toBigInteger();
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToBigIntegerThrowsExceptionWhenRoundingNecessary()
+    {
+        return [
+            ['0.1'],
+            ['-0.1'],
+            ['0.01'],
+            ['-0.01'],
+            [ '1.002'],
+            [ '0.001'],
+            ['-1.002'],
+            ['-0.001'],
+            ['-45646540654984984654165151654557478978940.0000000000001'],
+        ];
     }
 
     /**
@@ -2069,23 +2071,6 @@ class BigDecimalTest extends AbstractTestCase
             ['0.9900', '99/100'],
 
             ['77867087546465423456465427464560454054654.4211684848', '48666929716540889660290892165350283784159013230303/625000000']
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function providerToBigIntegerThrowsExceptionWhenRoundingNecessary()
-    {
-        return [
-            ['0.1'],
-            ['-0.1'],
-            ['0.01'],
-            ['-0.01'],
-            [ '1.002'],
-            [ '0.001'],
-            ['-1.002'],
-            ['-0.001']
         ];
     }
 

@@ -10,7 +10,7 @@ use Brick\Math\Internal\Calculator;
  * All methods accepting a number as a parameter accept either a BigInteger instance,
  * an integer, or a string representing an arbitrary size integer.
  */
-class BigInteger implements \Serializable
+class BigInteger implements BigNumber, \Serializable
 {
     /**
      * The value, as a string of digits with optional leading minus sign.
@@ -546,6 +546,30 @@ class BigInteger implements \Serializable
     public function isPositiveOrZero()
     {
         return ($this->value[0] !== '-');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toBigInteger()
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toBigDecimal()
+    {
+        return BigDecimal::of($this->value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toBigRational()
+    {
+        return BigRational::of($this->value, 1);
     }
 
     /**

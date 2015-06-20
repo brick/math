@@ -7,7 +7,7 @@ use Brick\Math\Internal\Calculator;
 /**
  * Immutable, arbitrary-precision signed decimal numbers.
  */
-class BigDecimal implements \Serializable
+class BigDecimal implements BigNumber, \Serializable
 {
     /**
      * The unscaled value of this decimal number.
@@ -772,25 +772,29 @@ class BigDecimal implements \Serializable
     }
 
     /**
-     * Converts this BigDecimal to a BigInteger, using rounding if necessary.
-     *
-     * @param integer $roundingMode
-     *
-     * @return BigInteger
+     * {@inheritdoc}
      */
-    public function toBigInteger($roundingMode = RoundingMode::UNNECESSARY)
+    public function toBigInteger()
     {
         if ($this->scale === 0) {
-            return BigInteger::of($this->value);
+            $zeroScaleDecimal = $this;
+        } else {
+            $zeroScaleDecimal = $this->dividedBy(1, RoundingMode::UNNECESSARY, 0);
         }
 
-        return BigInteger::of($this->dividedBy(1, $roundingMode, 0)->value);
+        return BigInteger::of($zeroScaleDecimal->value);
     }
 
     /**
-     * Converts this decimal number to a rational number, in its simplest form.
-     *
-     * @return BigRational
+     * {@inheritdoc}
+     */
+    public function toBigDecimal()
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function toBigRational()
     {
