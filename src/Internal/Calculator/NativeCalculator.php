@@ -48,6 +48,32 @@ class NativeCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
+    public function cmp($a, $b)
+    {
+        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg, $aLen, $bLen);
+
+        if ($aNeg && ! $bNeg) {
+            return -1;
+        }
+
+        if ($bNeg && ! $aNeg) {
+            return 1;
+        }
+
+        if ($aLen < $bLen) {
+            $result = -1;
+        } elseif ($aLen > $bLen) {
+            $result = 1;
+        } else {
+            $result = strcmp($aDig, $bDig);
+        }
+
+        return $aNeg ? -$result : $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function add($a, $b)
     {
         if ($a === '0') {
