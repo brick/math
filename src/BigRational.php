@@ -265,11 +265,7 @@ class BigRational implements BigNumber, \Serializable
     }
 
     /**
-     * Compares this number to the given one.
-     *
-     * @param BigRational|BigInteger|int|string $that
-     *
-     * @return int [-1,0,1]
+     * {@inheritdoc}
      */
     public function compareTo($that)
     {
@@ -277,11 +273,7 @@ class BigRational implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is equal to the given one.
-     *
-     * @param BigInteger|int|string $that
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isEqualTo($that)
     {
@@ -289,11 +281,7 @@ class BigRational implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is strictly lower than the given one.
-     *
-     * @param BigInteger|int|string $that
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isLessThan($that)
     {
@@ -301,11 +289,7 @@ class BigRational implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is lower than or equal to the given one.
-     *
-     * @param BigInteger|int|string $that
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isLessThanOrEqualTo($that)
     {
@@ -313,11 +297,7 @@ class BigRational implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is strictly greater than the given one.
-     *
-     * @param BigInteger|int|string $that
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isGreaterThan($that)
     {
@@ -325,11 +305,7 @@ class BigRational implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is greater than or equal to the given one.
-     *
-     * @param BigInteger|int|string $that
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isGreaterThanOrEqualTo($that)
     {
@@ -337,9 +313,7 @@ class BigRational implements BigNumber, \Serializable
     }
 
     /**
-     * Returns the sign of this number.
-     *
-     * @return int -1 if the number is negative, 0 if zero, 1 if positive.
+     * {@inheritdoc}
      */
     public function getSign()
     {
@@ -347,9 +321,7 @@ class BigRational implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number equals zero.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isZero()
     {
@@ -357,9 +329,7 @@ class BigRational implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is strictly negative.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isNegative()
     {
@@ -367,9 +337,7 @@ class BigRational implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is negative or zero.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isNegativeOrZero()
     {
@@ -377,9 +345,7 @@ class BigRational implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is strictly positive.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isPositive()
     {
@@ -387,9 +353,7 @@ class BigRational implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is positive or zero.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isPositiveOrZero()
     {

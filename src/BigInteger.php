@@ -35,20 +35,25 @@ class BigInteger implements BigNumber, \Serializable
     /**
      * Returns a BigInteger of the given value.
      *
-     * The value can be a BigInteger, a native integer,
-     * or a string representing an integer in base 10,
-     * optionally prefixed with the `+` or `-` sign.
+     * The value can be a BigInteger, a native integer, a string representing an integer in base 10
+     * optionally prefixed with the `+` or `-` sign, or even a float as long as its string representation
+     * does not contain a decimal point.
      *
-     * @param BigInteger|integer|string $value The value.
+     * @param BigNumber|number|string $value The value.
      *
      * @return BigInteger
      *
-     * @throws \InvalidArgumentException If the argument is not a valid number.
+     * @throws \InvalidArgumentException If the argument is not a valid integer number.
+     * @throws ArithmeticException       If the argument is a BigNumber that cannot be safely converted to a BigInteger.
      */
     public static function of($value)
     {
         if ($value instanceof BigInteger) {
             return $value;
+        }
+
+        if ($value instanceof BigNumber) {
+            return $value->toBigInteger();
         }
 
         if (is_int($value)) {
@@ -59,7 +64,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Parses a string containing an integer in the given base.
+     * Parses a string containing an integer in an arbitrary base.
      *
      * The string can optionally be prefixed with the `+` or `-` sign.
      *
@@ -415,11 +420,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Compares this number to the given one.
-     *
-     * @param BigInteger|integer|string $that
-     *
-     * @return integer [-1,0,1]
+     * {@inheritdoc}
      */
     public function compareTo($that)
     {
@@ -429,11 +430,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is equal to the given one.
-     *
-     * @param BigInteger|integer|string $that
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isEqualTo($that)
     {
@@ -441,11 +438,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is strictly lower than the given one.
-     *
-     * @param BigInteger|integer|string $that
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isLessThan($that)
     {
@@ -453,11 +446,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is lower than or equal to the given one.
-     *
-     * @param BigInteger|integer|string $that
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isLessThanOrEqualTo($that)
     {
@@ -465,11 +454,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is strictly greater than the given one.
-     *
-     * @param BigInteger|integer|string $that
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isGreaterThan($that)
     {
@@ -477,11 +462,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is greater than or equal to the given one.
-     *
-     * @param BigInteger|integer|string $that
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isGreaterThanOrEqualTo($that)
     {
@@ -489,9 +470,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Returns the sign of this number.
-     *
-     * @return int -1 if the number is negative, 0 if zero, 1 if positive.
+     * {@inheritdoc}
      */
     public function getSign()
     {
@@ -499,9 +478,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number equals zero.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isZero()
     {
@@ -509,9 +486,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is strictly negative.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isNegative()
     {
@@ -519,9 +494,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is negative or zero.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isNegativeOrZero()
     {
@@ -529,9 +502,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is strictly positive.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isPositive()
     {
@@ -539,9 +510,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is positive or zero.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isPositiveOrZero()
     {

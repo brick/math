@@ -49,16 +49,21 @@ class BigDecimal implements BigNumber, \Serializable
      * This would defeat the whole purpose of using the Decimal type.
      * Prefer passing decimal numbers as strings, e.g `Decimal::of('0.1')` over `Decimal::of(0.1)`.
      *
-     * @param BigDecimal|number|string $value
+     * @param BigNumber|number|string $value
      *
      * @return BigDecimal
      *
      * @throws \InvalidArgumentException If the number is malformed.
+     * @throws ArithmeticException       If the argument is a BigNumber that cannot be safely converted to a BigDecimal.
      */
     public static function of($value)
     {
         if ($value instanceof BigDecimal) {
             return $value;
+        }
+
+        if ($value instanceof BigNumber) {
+            return $value->toBigDecimal();
         }
 
         if (is_int($value)) {
@@ -583,11 +588,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Compares this number to the given one.
-     *
-     * @param BigDecimal|number|string $that
-     *
-     * @return integer [-1,0,1]
+     * {@inheritdoc}
      */
     public function compareTo($that)
     {
@@ -598,11 +599,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is equal to the given one.
-     *
-     * @param BigDecimal|number|string $that
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isEqualTo($that)
     {
@@ -610,11 +607,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is strictly lower than the given one.
-     *
-     * @param BigDecimal|number|string $that
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isLessThan($that)
     {
@@ -622,11 +615,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is lower than or equal to the given one.
-     *
-     * @param BigDecimal|number|string $that
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isLessThanOrEqualTo($that)
     {
@@ -634,11 +623,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is strictly greater than the given one.
-     *
-     * @param BigDecimal|number|string $that
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isGreaterThan($that)
     {
@@ -646,11 +631,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is greater than or equal to the given one.
-     *
-     * @param BigDecimal|number|string $that
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isGreaterThanOrEqualTo($that)
     {
@@ -658,9 +639,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Returns the sign of this number.
-     *
-     * @return int -1 if the number is negative, 0 if zero, 1 if positive.
+     * {@inheritdoc}
      */
     public function getSign()
     {
@@ -668,9 +647,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number equals zero.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isZero()
     {
@@ -678,9 +655,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is strictly negative.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isNegative()
     {
@@ -688,9 +663,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is negative or zero.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isNegativeOrZero()
     {
@@ -698,9 +671,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is strictly positive.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isPositive()
     {
@@ -708,9 +679,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Checks if this number is positive or zero.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isPositiveOrZero()
     {
