@@ -805,9 +805,7 @@ class BigDecimal implements BigNumber, \Serializable
     }
 
     /**
-     * Returns a string representation of this number.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {

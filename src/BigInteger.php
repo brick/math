@@ -638,7 +638,7 @@ class BigInteger implements BigNumber, \Serializable
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {
