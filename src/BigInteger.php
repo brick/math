@@ -10,7 +10,7 @@ use Brick\Math\Internal\Calculator;
  * All methods accepting a number as a parameter accept either a BigInteger instance,
  * an integer, or a string representing an arbitrary size integer.
  */
-class BigInteger implements BigNumber, \Serializable
+class BigInteger extends BigNumber implements \Serializable
 {
     /**
      * The value, as a string of digits with optional leading minus sign.
@@ -432,89 +432,9 @@ class BigInteger implements BigNumber, \Serializable
     /**
      * {@inheritdoc}
      */
-    public function isEqualTo($that)
-    {
-        return $this->compareTo($that) === 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isLessThan($that)
-    {
-        return $this->compareTo($that) < 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isLessThanOrEqualTo($that)
-    {
-        return $this->compareTo($that) <= 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isGreaterThan($that)
-    {
-        return $this->compareTo($that) > 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isGreaterThanOrEqualTo($that)
-    {
-        return $this->compareTo($that) >= 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSign()
     {
         return ($this->value === '0') ? 0 : (($this->value[0] === '-') ? -1 : 1);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isZero()
-    {
-        return ($this->value === '0');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isNegative()
-    {
-        return ($this->value[0] === '-');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isNegativeOrZero()
-    {
-        return ($this->value === '0') || ($this->value[0] === '-');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isPositive()
-    {
-        return ($this->value !== '0') && ($this->value[0] !== '-');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isPositiveOrZero()
-    {
-        return ($this->value[0] !== '-');
     }
 
     /**

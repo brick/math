@@ -5,7 +5,7 @@ namespace Brick\Math;
 /**
  * Common interface for arbitrary-precision numbers.
  */
-interface BigNumber
+abstract class BigNumber
 {
     /**
      * Compares this number to the given one.
@@ -14,7 +14,7 @@ interface BigNumber
      *
      * @return integer [-1,0,1]
      */
-    public function compareTo($that);
+    abstract public function compareTo($that);
 
     /**
      * Checks if this number is equal to the given one.
@@ -23,7 +23,10 @@ interface BigNumber
      *
      * @return bool
      */
-    public function isEqualTo($that);
+    public function isEqualTo($that)
+    {
+        return $this->compareTo($that) == 0;
+    }
 
     /**
      * Checks if this number is strictly lower than the given one.
@@ -32,7 +35,10 @@ interface BigNumber
      *
      * @return bool
      */
-    public function isLessThan($that);
+    public function isLessThan($that)
+    {
+        return $this->compareTo($that) < 0;
+    }
 
     /**
      * Checks if this number is lower than or equal to the given one.
@@ -41,7 +47,10 @@ interface BigNumber
      *
      * @return bool
      */
-    public function isLessThanOrEqualTo($that);
+    public function isLessThanOrEqualTo($that)
+    {
+        return $this->compareTo($that) <= 0;
+    }
 
     /**
      * Checks if this number is strictly greater than the given one.
@@ -50,7 +59,10 @@ interface BigNumber
      *
      * @return bool
      */
-    public function isGreaterThan($that);
+    public function isGreaterThan($that)
+    {
+        return $this->compareTo($that) > 0;
+    }
 
     /**
      * Checks if this number is greater than or equal to the given one.
@@ -59,49 +71,67 @@ interface BigNumber
      *
      * @return bool
      */
-    public function isGreaterThanOrEqualTo($that);
+    public function isGreaterThanOrEqualTo($that)
+    {
+        return $this->compareTo($that) >= 0;
+    }
 
     /**
      * Returns the sign of this number.
      *
      * @return int -1 if the number is negative, 0 if zero, 1 if positive.
      */
-    public function getSign();
+    abstract public function getSign();
 
     /**
      * Checks if this number equals zero.
      *
      * @return bool
      */
-    public function isZero();
+    public function isZero()
+    {
+        return $this->getSign() == 0;
+    }
 
     /**
      * Checks if this number is strictly negative.
      *
      * @return bool
      */
-    public function isNegative();
+    public function isNegative()
+    {
+        return $this->getSign() < 0;
+    }
 
     /**
      * Checks if this number is negative or zero.
      *
      * @return bool
      */
-    public function isNegativeOrZero();
+    public function isNegativeOrZero()
+    {
+        return $this->getSign() <= 0;
+    }
 
     /**
      * Checks if this number is strictly positive.
      *
      * @return bool
      */
-    public function isPositive();
+    public function isPositive()
+    {
+        return $this->getSign() > 0;
+    }
 
     /**
      * Checks if this number is positive or zero.
      *
      * @return bool
      */
-    public function isPositiveOrZero();
+    public function isPositiveOrZero()
+    {
+        return $this->getSign() >= 0;
+    }
 
     /**
      * Converts this number to a BigInteger.
@@ -110,7 +140,7 @@ interface BigNumber
      *
      * @throws ArithmeticException If this number cannot be safely converted to a BigInteger.
      */
-    public function toBigInteger();
+    abstract public function toBigInteger();
 
     /**
      * Converts this number to a BigDecimal.
@@ -119,19 +149,19 @@ interface BigNumber
      *
      * @throws ArithmeticException If this number cannot be safely converted to a BigDecimal.
      */
-    public function toBigDecimal();
+    abstract public function toBigDecimal();
 
     /**
      * Converts this number to a BigRational.
      *
      * @return BigRational
      */
-    public function toBigRational();
+    abstract public function toBigRational();
 
     /**
      * Returns a string representation of this number.
      *
      * @return string
      */
-    public function __toString();
+    abstract public function __toString();
 }

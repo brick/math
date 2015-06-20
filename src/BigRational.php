@@ -7,7 +7,7 @@ namespace Brick\Math;
  *
  * This class is immutable.
  */
-class BigRational implements BigNumber, \Serializable
+class BigRational extends BigNumber implements \Serializable
 {
     /**
      * The numerator.
@@ -275,89 +275,9 @@ class BigRational implements BigNumber, \Serializable
     /**
      * {@inheritdoc}
      */
-    public function isEqualTo($that)
-    {
-        return $this->compareTo($that) === 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isLessThan($that)
-    {
-        return $this->compareTo($that) < 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isLessThanOrEqualTo($that)
-    {
-        return $this->compareTo($that) <= 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isGreaterThan($that)
-    {
-        return $this->compareTo($that) > 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isGreaterThanOrEqualTo($that)
-    {
-        return $this->compareTo($that) >= 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSign()
     {
         return $this->numerator->getSign();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isZero()
-    {
-        return $this->numerator->isZero();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isNegative()
-    {
-        return $this->numerator->isNegative();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isNegativeOrZero()
-    {
-        return $this->numerator->isNegativeOrZero();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isPositive()
-    {
-        return $this->numerator->isPositive();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isPositiveOrZero()
-    {
-        return $this->numerator->isPositiveOrZero();
     }
 
     /**

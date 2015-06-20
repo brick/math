@@ -7,7 +7,7 @@ use Brick\Math\Internal\Calculator;
 /**
  * Immutable, arbitrary-precision signed decimal numbers.
  */
-class BigDecimal implements BigNumber, \Serializable
+class BigDecimal extends BigNumber implements \Serializable
 {
     /**
      * The unscaled value of this decimal number.
@@ -601,89 +601,9 @@ class BigDecimal implements BigNumber, \Serializable
     /**
      * {@inheritdoc}
      */
-    public function isEqualTo($that)
-    {
-        return $this->compareTo($that) === 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isLessThan($that)
-    {
-        return $this->compareTo($that) < 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isLessThanOrEqualTo($that)
-    {
-        return $this->compareTo($that) <= 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isGreaterThan($that)
-    {
-        return $this->compareTo($that) > 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isGreaterThanOrEqualTo($that)
-    {
-        return $this->compareTo($that) >= 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSign()
     {
         return ($this->value === '0') ? 0 : (($this->value[0] === '-') ? -1 : 1);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isZero()
-    {
-        return ($this->value === '0');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isNegative()
-    {
-        return ($this->value[0] === '-');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isNegativeOrZero()
-    {
-        return ($this->value === '0') || ($this->value[0] === '-');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isPositive()
-    {
-        return ($this->value !== '0') && ($this->value[0] !== '-');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isPositiveOrZero()
-    {
-        return ($this->value[0] !== '-');
     }
 
     /**
