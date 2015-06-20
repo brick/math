@@ -440,10 +440,7 @@ class BigRational implements BigNumber, \Serializable
             throw new ArithmeticException('This rational number cannot be represented as a finite decimal number.');
         }
 
-        $twos  = $counts[2];
-        $fives = $counts[5];
-
-        $maxDecimalPlaces = $twos + $fives - min($twos, $fives);
+        $maxDecimalPlaces = max($counts[2], $counts[5]);
 
         $result = BigDecimal::of($simplified->numerator)
             ->dividedBy($simplified->denominator, RoundingMode::UNNECESSARY, $maxDecimalPlaces);
