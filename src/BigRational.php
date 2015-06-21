@@ -50,6 +50,26 @@ class BigRational extends BigNumber implements \Serializable
     }
 
     /**
+     * Returns a BigRational of the given value.
+     *
+     * @param string $number
+     *
+     * @return BigRational
+     *
+     * @throws \InvalidArgumentException If the string cannot be parsed.
+     */
+    public static function of($number)
+    {
+        if (preg_match('/^(\-?[0-9]+)(?:\/([0-9]+))?$/', $number, $matches) !== 1) {
+            throw new \InvalidArgumentException('Invalid BigRational string representation.');
+        }
+
+        return isset($matches[2])
+            ? BigRational::nd($matches[1], $matches[2])
+            : BigRational::nd($matches[1], 1);
+    }
+
+    /**
      * Creates a BigRational out of a numerator and a denominator.
      *
      * If the denominator is negative, the signs of both the numerator and the denominator
@@ -62,32 +82,12 @@ class BigRational extends BigNumber implements \Serializable
      *
      * @throws ArithmeticException If the denominator is zero.
      */
-    public static function of($numerator, $denominator)
+    public static function nd($numerator, $denominator)
     {
         $numerator   = BigInteger::of($numerator);
         $denominator = BigInteger::of($denominator);
 
         return new BigRational($numerator, $denominator, true);
-    }
-
-    /**
-     * Parses the string output of a BigRational.
-     *
-     * @param string $number
-     *
-     * @return BigRational
-     *
-     * @throws \InvalidArgumentException If the string cannot be parsed.
-     */
-    public static function parse($number)
-    {
-        if (preg_match('/^(\-?[0-9]+)(?:\/([0-9]+))?$/', $number, $matches) !== 1) {
-            throw new \InvalidArgumentException('Invalid BigRational string representation.');
-        }
-
-        return isset($matches[2])
-            ? BigRational::of($matches[1], $matches[2])
-            : BigRational::of($matches[1], 1);
     }
 
     /**
@@ -111,7 +111,7 @@ class BigRational extends BigNumber implements \Serializable
             return new BigRational(BigInteger::of($number), BigInteger::of(1), false);
         }
 
-        return BigRational::parse($number);
+        return BigRational::of($number);
     }
 
     /**

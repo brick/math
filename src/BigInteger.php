@@ -458,7 +458,7 @@ class BigInteger extends BigNumber implements \Serializable
      */
     public function toBigRational()
     {
-        return BigRational::of($this->value, 1);
+        return BigRational::nd($this->value, 1);
     }
 
     /**

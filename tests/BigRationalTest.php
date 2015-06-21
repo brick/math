@@ -16,11 +16,12 @@ class BigRationalTest extends AbstractTestCase
      *
      * @param string $numerator   The expected numerator.
      * @param string $denominator The expected denominator.
-     * @param mixed  ...$args     The arguments to the factory method.
+     * @param string $n           The input numerator.
+     * @param string $d           The input denominator.
      */
-    public function testOf($numerator, $denominator, ...$args)
+    public function testOf($numerator, $denominator, $n, $d)
     {
-        $rational = BigRational::of(... $args);
+        $rational = BigRational::nd($n, $d);
         $this->assertBigRationalEquals($numerator, $denominator, $rational);
     }
 
@@ -47,7 +48,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testParse($numerator, $denominator, $string)
     {
-        $rational = BigRational::parse($string);
+        $rational = BigRational::of($string);
         $this->assertBigRationalEquals($numerator, $denominator, $rational);
     }
 
@@ -73,7 +74,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testParseInvalidString($string)
     {
-        BigRational::parse($string);
+        BigRational::of($string);
     }
 
     /**
@@ -94,7 +95,7 @@ class BigRationalTest extends AbstractTestCase
 
     public function testAccessors()
     {
-        $rational = BigRational::of(123456789, 987654321);
+        $rational = BigRational::nd(123456789, 987654321);
 
         $this->assertBigIntegerEquals('123456789', $rational->getNumerator());
         $this->assertBigIntegerEquals('987654321', $rational->getDenominator());
@@ -109,7 +110,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testPlus($rational, $plus, $expected)
     {
-        $rational = BigRational::parse($rational);
+        $rational = BigRational::of($rational);
         $this->assertSame($expected, (string) $rational->plus($plus));
     }
 
@@ -121,7 +122,7 @@ class BigRationalTest extends AbstractTestCase
         return [
             ['123/456', 1, '579/456'],
             ['123/456', BigInteger::of(2), '1035/456'],
-            ['123/456', BigRational::of(2, 3), '1281/1368'],
+            ['123/456', BigRational::nd(2, 3), '1281/1368'],
             ['234/567', '123/28', '76293/15876'],
             ['-1234567890123456789/497', '79394345/109859892', '-135629495075630790047217323/54600366324'],
             ['-1234567890123456789/999', '-98765/43210', '-53345678532234666518925/43166790'],
@@ -138,7 +139,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testMinus($rational, $minus, $expected)
     {
-        $rational = BigRational::parse($rational);
+        $rational = BigRational::of($rational);
         $this->assertSame($expected, (string) $rational->minus($minus));
     }
 
@@ -165,7 +166,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testMultipliedBy($rational, $minus, $expected)
     {
-        $rational = BigRational::parse($rational);
+        $rational = BigRational::of($rational);
         $this->assertSame($expected, (string) $rational->multipliedBy($minus));
     }
 
@@ -194,7 +195,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testDividedBy($rational, $minus, $expected)
     {
-        $rational = BigRational::parse($rational);
+        $rational = BigRational::of($rational);
         $this->assertSame($expected, (string) $rational->dividedBy($minus));
     }
 
@@ -222,7 +223,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testReciprocal($rational, $expected)
     {
-        $rational = BigRational::parse($rational);
+        $rational = BigRational::of($rational);
         $this->assertSame($expected, (string) $rational->reciprocal());
     }
 
@@ -246,7 +247,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testReciprocalOfZeroThrowsException()
     {
-        BigRational::of(0, 2)->reciprocal();
+        BigRational::nd(0, 2)->reciprocal();
     }
 
     /**
@@ -257,7 +258,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testAbs($rational, $expected)
     {
-        $rational = BigRational::parse($rational);
+        $rational = BigRational::of($rational);
         $this->assertSame($expected, (string) $rational->abs());
     }
 
@@ -284,7 +285,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testNegated($rational, $expected)
     {
-        $rational = BigRational::parse($rational);
+        $rational = BigRational::of($rational);
         $this->assertSame($expected, (string) $rational->negated());
     }
 
@@ -312,7 +313,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testSimplified($rational, $expected)
     {
-        $rational = BigRational::parse($rational);
+        $rational = BigRational::of($rational);
         $this->assertSame($expected, (string) $rational->simplified());
     }
 
@@ -345,8 +346,8 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsFiniteDecimal($rational, $isFiniteDecimal)
     {
-        $this->assertSame($isFiniteDecimal, BigRational::parse($rational)->isFiniteDecimal());
-        $this->assertSame($isFiniteDecimal, BigRational::parse('-' . $rational)->isFiniteDecimal());
+        $this->assertSame($isFiniteDecimal, BigRational::of($rational)->isFiniteDecimal());
+        $this->assertSame($isFiniteDecimal, BigRational::of('-' . $rational)->isFiniteDecimal());
     }
 
     /**
@@ -419,7 +420,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testCompareTo($a, $b, $cmp)
     {
-        $this->assertSame($cmp, BigRational::parse($a)->compareTo($b));
+        $this->assertSame($cmp, BigRational::of($a)->compareTo($b));
     }
 
     /**
@@ -431,7 +432,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsEqualTo($a, $b, $cmp)
     {
-        $this->assertSame($cmp == 0, BigRational::parse($a)->isEqualTo($b));
+        $this->assertSame($cmp == 0, BigRational::of($a)->isEqualTo($b));
     }
 
     /**
@@ -443,7 +444,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsLessThan($a, $b, $cmp)
     {
-        $this->assertSame($cmp < 0, BigRational::parse($a)->isLessThan($b));
+        $this->assertSame($cmp < 0, BigRational::of($a)->isLessThan($b));
     }
 
     /**
@@ -455,7 +456,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsLessThanOrEqualTo($a, $b, $cmp)
     {
-        $this->assertSame($cmp <= 0, BigRational::parse($a)->isLessThanOrEqualTo($b));
+        $this->assertSame($cmp <= 0, BigRational::of($a)->isLessThanOrEqualTo($b));
     }
 
     /**
@@ -467,7 +468,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsGreaterThan($a, $b, $cmp)
     {
-        $this->assertSame($cmp > 0, BigRational::parse($a)->isGreaterThan($b));
+        $this->assertSame($cmp > 0, BigRational::of($a)->isGreaterThan($b));
     }
 
     /**
@@ -479,7 +480,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsGreaterThanOrEqualTo($a, $b, $cmp)
     {
-        $this->assertSame($cmp >= 0, BigRational::parse($a)->isGreaterThanOrEqualTo($b));
+        $this->assertSame($cmp >= 0, BigRational::of($a)->isGreaterThanOrEqualTo($b));
     }
 
     /**
@@ -520,7 +521,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testGetSign($number, $sign)
     {
-        $this->assertSame($sign, BigRational::parse($number)->getSign());
+        $this->assertSame($sign, BigRational::of($number)->getSign());
     }
 
     /**
@@ -531,7 +532,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsZero($number, $sign)
     {
-        $this->assertSame($sign == 0, BigRational::parse($number)->isZero());
+        $this->assertSame($sign == 0, BigRational::of($number)->isZero());
     }
 
     /**
@@ -542,7 +543,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsNegative($number, $sign)
     {
-        $this->assertSame($sign < 0, BigRational::parse($number)->isNegative());
+        $this->assertSame($sign < 0, BigRational::of($number)->isNegative());
     }
 
     /**
@@ -553,7 +554,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsNegativeOrZero($number, $sign)
     {
-        $this->assertSame($sign <= 0, BigRational::parse($number)->isNegativeOrZero());
+        $this->assertSame($sign <= 0, BigRational::of($number)->isNegativeOrZero());
     }
 
     /**
@@ -564,7 +565,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsPositive($number, $sign)
     {
-        $this->assertSame($sign > 0, BigRational::parse($number)->isPositive());
+        $this->assertSame($sign > 0, BigRational::of($number)->isPositive());
     }
 
     /**
@@ -575,7 +576,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsPositiveOrZero($number, $sign)
     {
-        $this->assertSame($sign >= 0, BigRational::parse($number)->isPositiveOrZero());
+        $this->assertSame($sign >= 0, BigRational::of($number)->isPositiveOrZero());
     }
 
     /**
@@ -607,7 +608,7 @@ class BigRationalTest extends AbstractTestCase
             $this->setExpectedException(ArithmeticException::class);
         }
 
-        $actual = BigRational::parse($number)->toBigDecimal();
+        $actual = BigRational::of($number)->toBigDecimal();
 
         if ($expected !== null) {
             $this->assertSame($expected, (string) $actual);
@@ -658,7 +659,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testToString($numerator, $denominator, $expected)
     {
-        $this->assertSame($expected, (string) BigRational::of($numerator, $denominator));
+        $this->assertSame($expected, (string) BigRational::nd($numerator, $denominator));
     }
 
     /**
@@ -684,7 +685,7 @@ class BigRationalTest extends AbstractTestCase
         $numerator   = '-1234567890987654321012345678909876543210123456789';
         $denominator = '347827348278374374263874681238374983729873401984091287439827467286';
 
-        $rational = BigRational::of($numerator, $denominator);
+        $rational = BigRational::nd($numerator, $denominator);
 
         $this->assertBigRationalEquals($numerator, $denominator, unserialize(serialize($rational)));
     }
@@ -694,6 +695,6 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testDirectCallToUnserialize()
     {
-        BigRational::of(1, 2)->unserialize('123/456');
+        BigRational::nd(1, 2)->unserialize('123/456');
     }
 }
