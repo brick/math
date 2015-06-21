@@ -66,6 +66,12 @@ class NativeCalculator extends Calculator
             $result = 1;
         } else {
             $result = strcmp($aDig, $bDig);
+
+            if ($result < 0) {
+                $result = -1;
+            } elseif ($result > 0) {
+                $result = 1;
+            }
         }
 
         return $aNeg ? -$result : $result;
