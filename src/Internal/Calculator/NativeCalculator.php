@@ -478,22 +478,11 @@ class NativeCalculator extends Calculator
         $aNeg = ($a[0] === '-');
         $bNeg = ($b[0] === '-');
 
-        $aLen = strlen($a);
-        $bLen = strlen($b);
+        $aDig = $aNeg ? substr($a, 1) : $a;
+        $bDig = $bNeg ? substr($b, 1) : $b;
 
-        if ($aNeg) {
-            $aDig = substr($a, 1);
-            $aLen--;
-        } else {
-            $aDig = $a;
-        }
-
-        if ($bNeg) {
-            $bDig = substr($b, 1);
-            $bLen--;
-        } else {
-            $bDig = $b;
-        }
+        $aLen = strlen($aDig);
+        $bLen = strlen($bDig);
     }
 
     /**
