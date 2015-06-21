@@ -117,9 +117,9 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerParse
      *
-     * @param string  $number   The number to create.
-     * @param integer $base     The base of the number.
-     * @param string  $expected The expected result in base 10.
+     * @param string $number   The number to create.
+     * @param int    $base     The base of the number.
+     * @param string $expected The expected result in base 10.
      */
     public function testParse($number, $base, $expected)
     {
@@ -224,8 +224,8 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerParseInvalidValueThrowsException
      * @expectedException \InvalidArgumentException
      *
-     * @param string  $value
-     * @param integer $base
+     * @param string $value
+     * @param int    $base
      */
     public function testParseInvalidValueThrowsException($value, $base)
     {
@@ -286,7 +286,7 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerParseWithInvalidBaseThrowsException
      * @expectedException \InvalidArgumentException
      *
-     * @param integer $base
+     * @param int $base
      */
     public function testParseWithInvalidBaseThrowsException($base)
     {
@@ -315,8 +315,8 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerMin
      *
-     * @param array  $values The values to test.
-     * @param integer $index The index of the minimum value in the test array.
+     * @param array $values The values to test.
+     * @param int   $index The index of the minimum value in the test array.
      */
     public function testMin(array $values, $index)
     {
@@ -350,8 +350,8 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerMax
      *
-     * @param array  $values The values to test.
-     * @param integer $index The index of the maximum value in the test array.
+     * @param array $values The values to test.
+     * @param int   $index The index of the maximum value in the test array.
      */
     public function testMax(array $values, $index)
     {
@@ -603,9 +603,9 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerPower
      *
-     * @param string  $number   The base number.
-     * @param integer $exponent The exponent to apply.
-     * @param string  $expected The expected result.
+     * @param string $number   The base number.
+     * @param int    $exponent The exponent to apply.
+     * @param string $expected The expected result.
      */
     public function testPower($number, $exponent, $expected)
     {
@@ -668,7 +668,7 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerPowerWithInvalidExponentThrowsException
      * @expectedException \InvalidArgumentException
      *
-     * @param integer $power
+     * @param int $power
      */
     public function testPowerWithInvalidExponentThrowsException($power)
     {
@@ -838,9 +838,9 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string  $a The base number as a string.
-     * @param string  $b The number to compare to as a string.
-     * @param integer $c The expected comparison result.
+     * @param string $a The base number as a string.
+     * @param string $b The number to compare to as a string.
+     * @param int    $c The expected comparison result.
      */
     public function testCompareTo($a, $b, $c)
     {
@@ -850,9 +850,9 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string  $a The base number as a string.
-     * @param string  $b The number to compare to as a string.
-     * @param integer $c The comparison result.
+     * @param string $a The base number as a string.
+     * @param string $b The number to compare to as a string.
+     * @param int    $c The comparison result.
      */
     public function testIsEqualTo($a, $b, $c)
     {
@@ -862,9 +862,9 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string  $a The base number as a string.
-     * @param string  $b The number to compare to as a string.
-     * @param integer $c The comparison result.
+     * @param string $a The base number as a string.
+     * @param string $b The number to compare to as a string.
+     * @param int    $c The comparison result.
      */
     public function testIsLessThan($a, $b, $c)
     {
@@ -874,9 +874,9 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string  $a The base number as a string.
-     * @param string  $b The number to compare to as a string.
-     * @param integer $c The comparison result.
+     * @param string $a The base number as a string.
+     * @param string $b The number to compare to as a string.
+     * @param int    $c The comparison result.
      */
     public function testIsLessThanOrEqualTo($a, $b, $c)
     {
@@ -886,9 +886,9 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string  $a The base number as a string.
-     * @param string  $b The number to compare to as a string.
-     * @param integer $c The comparison result.
+     * @param string $a The base number as a string.
+     * @param string $b The number to compare to as a string.
+     * @param int    $c The comparison result.
      */
     public function testIsGreaterThan($a, $b, $c)
     {
@@ -898,9 +898,9 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string  $a The base number as a string.
-     * @param string  $b The number to compare to as a string.
-     * @param integer $c The comparison result.
+     * @param string $a The base number as a string.
+     * @param string $b The number to compare to as a string.
+     * @param int    $c The comparison result.
      */
     public function testIsGreaterThanOrEqualTo($a, $b, $c)
     {
@@ -1033,7 +1033,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerToInteger
      *
-     * @param integer $number
+     * @param int $number
      */
     public function testToInteger($number)
     {
@@ -1075,9 +1075,9 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerToBase
      *
-     * @param string  $number   The number to convert.
-     * @param integer $base     The base to convert the number to.
-     * @param string  $expected The expected result.
+     * @param string $number   The number to convert.
+     * @param int    $base     The base to convert the number to.
+     * @param string $expected The expected result.
      */
     public function testToBase($number, $base, $expected)
     {

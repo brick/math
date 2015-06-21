@@ -68,8 +68,8 @@ class BigInteger extends BigNumber implements \Serializable
      *
      * The string can optionally be prefixed with the `+` or `-` sign.
      *
-     * @param string  $number The number to parse.
-     * @param integer $base   The base of the number, between 2 and 36.
+     * @param string $number The number to parse.
+     * @param int    $base   The base of the number, between 2 and 36.
      *
      * @return BigInteger
      *
@@ -167,7 +167,7 @@ class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns the minimum of the given values.
      *
-     * @param BigInteger|integer|string ...$values The numbers to compare.
+     * @param BigInteger|int|string ...$values The numbers to compare.
      *
      * @return BigInteger The minimum value.
      *
@@ -194,7 +194,7 @@ class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns the maximum of the given values.
      *
-     * @param BigInteger|integer|string ...$values The numbers to compare.
+     * @param BigInteger|int|string ...$values The numbers to compare.
      *
      * @return BigInteger The maximum value.
      *
@@ -221,7 +221,7 @@ class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns the sum of this number and the given one.
      *
-     * @param BigInteger|integer|string $that
+     * @param BigInteger|int|string $that
      *
      * @return BigInteger
      */
@@ -241,7 +241,7 @@ class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns the difference of this number and the given one.
      *
-     * @param BigInteger|integer|string $that
+     * @param BigInteger|int|string $that
      *
      * @return BigInteger
      */
@@ -261,7 +261,7 @@ class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns the result of the multiplication of this number and the given one.
      *
-     * @param BigInteger|integer|string $that
+     * @param BigInteger|int|string $that
      *
      * @return BigInteger
      */
@@ -281,7 +281,7 @@ class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns the quotient of the division of this number and the given one.
      *
-     * @param BigInteger|integer|string $that
+     * @param BigInteger|int|string $that
      *
      * @return BigInteger
      *
@@ -307,7 +307,7 @@ class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns the quotient and remainder of the division of this number and the given one.
      *
-     * @param BigInteger|integer|string $that The divisor.
+     * @param BigInteger|int|string $that The divisor.
      *
      * @return BigInteger[] An array containing the quotient and the remainder.
      *
@@ -350,7 +350,7 @@ class BigInteger extends BigNumber implements \Serializable
      *
      * The exponent has a limit of 1 million.
      *
-     * @param integer $exponent The exponent, between 0 and 1,000,000.
+     * @param int $exponent The exponent, between 0 and 1,000,000.
      *
      * @return BigInteger
      *
@@ -464,7 +464,7 @@ class BigInteger extends BigNumber implements \Serializable
     /**
      * Converts this BigInteger to an integer.
      *
-     * @return integer The integer value.
+     * @return int The integer value.
      *
      * @throws ArithmeticException If this BigInteger exceeds the capacity of an integer.
      */
@@ -480,7 +480,7 @@ class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns a string representation of this number in the given base.
      *
-     * @param integer $base
+     * @param int $base
      *
      * @return string
      *

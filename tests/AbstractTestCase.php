@@ -22,7 +22,7 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string     $unscaledValue The expected unscaled value.
-     * @param integer    $scale         The expected scale.
+     * @param int        $scale         The expected scale.
      * @param BigDecimal $actual        The BigDecimal instance to test.
      */
     protected function assertBigDecimalEquals($unscaledValue, $scale, BigDecimal $actual)

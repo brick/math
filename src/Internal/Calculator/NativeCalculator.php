@@ -14,14 +14,14 @@ class NativeCalculator extends Calculator
     /**
      * The max number of digits the platform can natively add, subtract or divide without overflow.
      *
-     * @var integer
+     * @var int
      */
     private $maxDigitsAddDiv = 0;
 
     /**
      * The max number of digits the platform can natively multiply without overflow.
      *
-     * @var integer
+     * @var int
      */
     private $maxDigitsMul = 0;
 
@@ -235,10 +235,10 @@ class NativeCalculator extends Calculator
     /**
      * Performs the addition of two non-signed large integers.
      *
-     * @param string  $a The first operand.
-     * @param string  $b The second operand.
-     * @param integer $x The length of the first operand.
-     * @param integer $y The length of the second operand.
+     * @param string $a The first operand.
+     * @param string $b The second operand.
+     * @param int    $x The length of the first operand.
+     * @param int    $y The length of the second operand.
      *
      * @return string
      */
@@ -272,10 +272,10 @@ class NativeCalculator extends Calculator
     /**
      * Performs the subtraction of two non-signed large integers.
      *
-     * @param string  $a The first operand.
-     * @param string  $b The second operand.
-     * @param integer $x The length of the first operand.
-     * @param integer $y The length of the second operand.
+     * @param string $a The first operand.
+     * @param string $b The second operand.
+     * @param int    $x The length of the first operand.
+     * @param int    $y The length of the second operand.
      *
      * @return string
      */
@@ -330,10 +330,10 @@ class NativeCalculator extends Calculator
     /**
      * Performs the multiplication of two non-signed large integers.
      *
-     * @param string  $a The first operand.
-     * @param string  $b The second operand.
-     * @param integer $x The length of the first operand.
-     * @param integer $y The length of the second operand.
+     * @param string $a The first operand.
+     * @param string $b The second operand.
+     * @param int    $x The length of the first operand.
+     * @param int    $y The length of the second operand.
      *
      * @return string
      */
@@ -368,10 +368,10 @@ class NativeCalculator extends Calculator
     /**
      * Performs the division of two non-signed large integers.
      *
-     * @param string  $a The first operand.
-     * @param string  $b The second operand.
-     * @param integer $x The length of the first operand.
-     * @param integer $y The length of the second operand.
+     * @param string $a The first operand.
+     * @param string $b The second operand.
+     * @param int    $x The length of the first operand.
+     * @param int    $y The length of the second operand.
      *
      * @return string[] The quotient and remainder.
      */
@@ -428,12 +428,12 @@ class NativeCalculator extends Calculator
     /**
      * Compares two non-signed large numbers.
      *
-     * @param string  $a The first operand.
-     * @param string  $b The second operand.
-     * @param integer $x The length of the first operand.
-     * @param integer $y The length of the second operand.
+     * @param string $a The first operand.
+     * @param string $b The second operand.
+     * @param int    $x The length of the first operand.
+     * @param int    $y The length of the second operand.
      *
-     * @return integer [-1, 0, 1]
+     * @return int [-1, 0, 1]
      */
     private function doCmp($a, $b, $x, $y)
     {
@@ -462,14 +462,14 @@ class NativeCalculator extends Calculator
     /**
      * Initializes the variables needed by the public methods.
      *
-     * @param string  $a    The first operand.
-     * @param string  $b    The second operand.
-     * @param string  $aDig A variable to store the digits of the first operand.
-     * @param string  $bDig A variable to store the digits of the second operand.
-     * @param boolean $aNeg A variable to store whether the first operand is negative.
-     * @param boolean $bNeg A variable to store whether the second operand is negative.
-     * @param boolean $aLen A variable to store the number of digits in the first operand.
-     * @param boolean $bLen A variable to store the number of digits in the second operand.
+     * @param string $a    The first operand.
+     * @param string $b    The second operand.
+     * @param string $aDig A variable to store the digits of the first operand.
+     * @param string $bDig A variable to store the digits of the second operand.
+     * @param bool   $aNeg A variable to store whether the first operand is negative.
+     * @param bool   $bNeg A variable to store whether the second operand is negative.
+     * @param bool   $aLen A variable to store the number of digits in the first operand.
+     * @param bool   $bLen A variable to store the number of digits in the second operand.
      *
      * @return void
      */
@@ -490,12 +490,12 @@ class NativeCalculator extends Calculator
      *
      * The numbers must only consist of digits, without leading minus sign.
      *
-     * @param string  $a The first operand.
-     * @param string  $b The second operand.
-     * @param integer $x The length of the first operand.
-     * @param integer $y The length of the second operand.
+     * @param string $a The first operand.
+     * @param string $b The second operand.
+     * @param int    $x The length of the first operand.
+     * @param int    $y The length of the second operand.
      *
-     * @return integer The length of both strings.
+     * @return int The length of both strings.
      */
     private function pad(& $a, & $b, $x, $y)
     {

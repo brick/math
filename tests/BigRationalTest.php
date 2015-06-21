@@ -654,11 +654,11 @@ class BigRationalTest extends AbstractTestCase
      *
      * @param string $numerator   The numerator.
      * @param string $denominator The denominator.
-     * @param string $toString    The expected string output.
+     * @param string $expected    The expected string output.
      */
-    public function testToString($numerator, $denominator, $toString)
+    public function testToString($numerator, $denominator, $expected)
     {
-        $this->assertSame($toString, (string) BigRational::of($numerator, $denominator));
+        $this->assertSame($expected, (string) BigRational::of($numerator, $denominator));
     }
 
     /**

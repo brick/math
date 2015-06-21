@@ -12,7 +12,7 @@ abstract class BigNumber
      *
      * @param BigNumber|number|string $that
      *
-     * @return integer [-1,0,1]
+     * @return int [-1,0,1]
      */
     abstract public function compareTo($that);
 

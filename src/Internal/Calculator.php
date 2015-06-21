@@ -116,7 +116,7 @@ abstract class Calculator
      *
      * @param string $n
      *
-     * @return integer [-1, 0, 1] If the number is negative, zero, or positive.
+     * @return int [-1, 0, 1] If the number is negative, zero, or positive.
      */
     public function sign($n)
     {
@@ -137,7 +137,7 @@ abstract class Calculator
      * @param string $a The first number.
      * @param string $b The second number.
      *
-     * @return integer [-1, 0, 1] If the first number is less than, equal to, or greater than the second number.
+     * @return int [-1, 0, 1] If the first number is less than, equal to, or greater than the second number.
      */
     public function cmp($a, $b)
     {
@@ -187,8 +187,8 @@ abstract class Calculator
     /**
      * Exponentiates a number.
      *
-     * @param string  $a The base.
-     * @param integer $e The exponent, validated as an integer between 0 and MAX_POWER.
+     * @param string $a The base.
+     * @param int    $e The exponent, validated as an integer between 0 and MAX_POWER.
      *
      * @return string The power.
      */

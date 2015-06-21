@@ -16,7 +16,7 @@ class BigDecimalTest extends AbstractTestCase
      *
      * @param string|number $value         The value to convert to a BigDecimal.
      * @param string        $unscaledValue The expected unscaled value.
-     * @param integer       $scale         The expected scale.
+     * @param int           $scale         The expected scale.
      */
     public function testOf($value, $unscaledValue, $scale)
     {
@@ -199,9 +199,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerOfUnscaledValue
      *
-     * @param string|integer $unscaledValue  The unscaled value of the BigDecimal to create.
-     * @param integer $scale                 The scale of the BigDecimal to create.
-     * @param string  $expectedUnscaledValue The expected result unscaled value.
+     * @param string|int $unscaledValue         The unscaled value of the BigDecimal to create.
+     * @param int        $scale                 The scale of the BigDecimal to create.
+     * @param string     $expectedUnscaledValue The expected result unscaled value.
      */
     public function testOfUnscaledValue($unscaledValue, $scale, $expectedUnscaledValue)
     {
@@ -252,8 +252,8 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerMin
      *
-     * @param array  $values The values to test.
-     * @param integer $index The index of the minimum value in the test array.
+     * @param array $values The values to test.
+     * @param int   $index  The index of the minimum value in the test array.
      */
     public function testMin(array $values, $index)
     {
@@ -292,8 +292,8 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerMax
      *
-     * @param array  $values The values to test.
-     * @param integer $index The index of the maximum value in the test array.
+     * @param array $values The values to test.
+     * @param int   $index  The index of the maximum value in the test array.
      */
     public function testMax(array $values, $index)
     {
@@ -336,10 +336,10 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerPlus
      *
-     * @param string  $a             The base number.
-     * @param string  $b             The number to add.
-     * @param string  $unscaledValue The expected unscaled value.
-     * @param integer $scale         The expected scale.
+     * @param string $a             The base number.
+     * @param string $b             The number to add.
+     * @param string $unscaledValue The expected unscaled value.
+     * @param int    $scale         The expected scale.
      */
     public function testPlus($a, $b, $unscaledValue, $scale)
     {
@@ -405,10 +405,10 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerMinus
      *
-     * @param string  $a             The base number.
-     * @param string  $b             The number to subtract.
-     * @param string  $unscaledValue The expected unscaled value.
-     * @param integer $scale         The expected scale.
+     * @param string $a             The base number.
+     * @param string $b             The number to subtract.
+     * @param string $unscaledValue The expected unscaled value.
+     * @param int    $scale         The expected scale.
      */
     public function testMinus($a, $b, $unscaledValue, $scale)
     {
@@ -474,10 +474,10 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerMultipliedBy
      *
-     * @param string  $a             The base number.
-     * @param string  $b             The number to multiply.
-     * @param string  $unscaledValue The expected unscaled value.
-     * @param integer $scale         The expected scale.
+     * @param string $a             The base number.
+     * @param string $b             The number to multiply.
+     * @param string $unscaledValue The expected unscaled value.
+     * @param int    $scale         The expected scale.
      */
     public function testMultipliedBy($a, $b, $unscaledValue, $scale)
     {
@@ -543,12 +543,12 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerDividedBy
      *
-     * @param string       $a             The base number.
-     * @param string       $b             The number to multiply.
-     * @param integer|null $scale         The desired scale of the result, or null to skip the parameter.
-     * @param integer      $roundingMode  The rounding mode.
-     * @param string       $unscaledValue The expected unscaled value of the result.
-     * @param integer      $expectedScale The expected scale of the result.
+     * @param string   $a             The base number.
+     * @param string   $b             The number to multiply.
+     * @param int|null $scale         The desired scale of the result, or null to skip the parameter.
+     * @param int      $roundingMode  The rounding mode.
+     * @param string   $unscaledValue The expected unscaled value of the result.
+     * @param int      $expectedScale The expected scale of the result.
      */
     public function testDividedBy($a, $b, $scale, $roundingMode, $unscaledValue, $expectedScale)
     {
@@ -653,9 +653,9 @@ class BigDecimalTest extends AbstractTestCase
      * @dataProvider providerDividedByWithRoundingNecessaryThrowsException
      * @expectedException \Brick\Math\ArithmeticException
      *
-     * @param string       $a     The base number.
-     * @param string       $b     The number to divide by.
-     * @param integer|null $scale The desired scale, or null to skip the parameter.
+     * @param string   $a     The base number.
+     * @param string   $b     The number to divide by.
+     * @param int|null $scale The desired scale, or null to skip the parameter.
      */
     public function testDividedByWithRoundingNecessaryThrowsException($a, $b, $scale)
     {
@@ -693,7 +693,7 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerRoundingMode
      *
-     * @param integer     $roundingMode The rounding mode.
+     * @param int         $roundingMode The rounding mode.
      * @param string      $number       The number to round.
      * @param string|null $two          The expected rounding to a scale of two, or null if an exception is expected.
      * @param string|null $one          The expected rounding to a scale of one, or null if an exception is expected.
@@ -708,7 +708,7 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @param integer     $roundingMode The rounding mode.
+     * @param int         $roundingMode The rounding mode.
      * @param BigDecimal  $number       The number to round.
      * @param string      $divisor      The divisor.
      * @param string|null $two          The expected rounding to a scale of two, or null if an exception is expected.
@@ -1298,9 +1298,9 @@ class BigDecimalTest extends AbstractTestCase
      * @dataProvider providerPower
      *
      * @param string  $number        The base number.
-     * @param integer $exponent      The exponent to apply.
+     * @param int     $exponent      The exponent to apply.
      * @param string  $unscaledValue The expected unscaled value of the result.
-     * @param integer $scale         The expected scale of the result.
+     * @param int     $scale         The expected scale of the result.
      */
     public function testPower($number, $exponent, $unscaledValue, $scale)
     {
@@ -1363,7 +1363,7 @@ class BigDecimalTest extends AbstractTestCase
      * @dataProvider providerPowerWithInvalidExponentThrowsException
      * @expectedException \InvalidArgumentException
      *
-     * @param integer $power
+     * @param int $power
      */
     public function testPowerWithInvalidExponentThrowsException($power)
     {
@@ -1384,11 +1384,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider withScaleProvider
      *
-     * @param string  $number        The number to scale.
-     * @param integer $withScale     The scale to apply.
-     * @param integer $roundingMode  The rounding mode to apply.
-     * @param string  $unscaledValue The expected unscaled value of the result.
-     * @param integer $scale         The expected scale of the result.
+     * @param string $number        The number to scale.
+     * @param int    $withScale     The scale to apply.
+     * @param int    $roundingMode  The rounding mode to apply.
+     * @param string $unscaledValue The expected unscaled value of the result.
+     * @param int    $scale         The expected scale of the result.
      */
     public function testWithScale($number, $withScale, $roundingMode, $unscaledValue, $scale)
     {
@@ -1412,9 +1412,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerWithPointMovedLeft
      *
-     * @param string  $number   The decimal number as a string.
-     * @param integer $places   The number of decimal places to move left.
-     * @param string  $expected The expected result.
+     * @param string $number   The decimal number as a string.
+     * @param int    $places   The number of decimal places to move left.
+     * @param string $expected The expected result.
      */
     public function testWithPointMovedLeft($number, $places, $expected)
     {
@@ -1498,9 +1498,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerWithPointMovedRight
      *
-     * @param string  $number   The decimal number as a string.
-     * @param integer $places   The number of decimal places to move right.
-     * @param string  $expected The expected result.
+     * @param string $number   The decimal number as a string.
+     * @param int    $places   The number of decimal places to move right.
+     * @param string $expected The expected result.
      */
     public function testWithPointMovedRight($number, $places, $expected)
     {
@@ -1633,9 +1633,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerAbs
      *
-     * @param string  $number        The number as a string.
-     * @param string  $unscaledValue The expected unscaled value of the absolute result.
-     * @param integer $scale         The expected scale of the absolute result.
+     * @param string $number        The number as a string.
+     * @param string $unscaledValue The expected unscaled value of the absolute result.
+     * @param int    $scale         The expected scale of the absolute result.
      */
     public function testAbs($number, $unscaledValue, $scale)
     {
@@ -1658,9 +1658,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerNegated
      *
-     * @param string  $number        The number to negate as a string.
-     * @param string  $unscaledValue The expected unscaled value of the result.
-     * @param integer $scale         The expected scale of the result.
+     * @param string $number        The number to negate as a string.
+     * @param string $unscaledValue The expected unscaled value of the result.
+     * @param int    $scale         The expected scale of the result.
      */
     public function testNegated($number, $unscaledValue, $scale)
     {
@@ -1683,9 +1683,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string  $a The base number as a string.
-     * @param string  $b The number to compare to as a string.
-     * @param integer $c The expected comparison result.
+     * @param string $a The base number as a string.
+     * @param string $b The number to compare to as a string.
+     * @param int    $c The expected comparison result.
      */
     public function testCompareTo($a, $b, $c)
     {
@@ -1695,9 +1695,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string  $a The base number as a string.
-     * @param string  $b The number to compare to as a string.
-     * @param integer $c The comparison result.
+     * @param string $a The base number as a string.
+     * @param string $b The number to compare to as a string.
+     * @param int    $c The comparison result.
      */
     public function testIsEqualTo($a, $b, $c)
     {
@@ -1707,9 +1707,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string  $a The base number as a string.
-     * @param string  $b The number to compare to as a string.
-     * @param integer $c The comparison result.
+     * @param string $a The base number as a string.
+     * @param string $b The number to compare to as a string.
+     * @param int    $c The comparison result.
      */
     public function testIsLessThan($a, $b, $c)
     {
@@ -1719,9 +1719,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string  $a The base number as a string.
-     * @param string  $b The number to compare to as a string.
-     * @param integer $c The comparison result.
+     * @param string $a The base number as a string.
+     * @param string $b The number to compare to as a string.
+     * @param int    $c The comparison result.
      */
     public function testIsLessThanOrEqualTo($a, $b, $c)
     {
@@ -1731,9 +1731,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string  $a The base number as a string.
-     * @param string  $b The number to compare to as a string.
-     * @param integer $c The comparison result.
+     * @param string $a The base number as a string.
+     * @param string $b The number to compare to as a string.
+     * @param int    $c The comparison result.
      */
     public function testIsGreaterThan($a, $b, $c)
     {
@@ -1743,9 +1743,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string  $a The base number as a string.
-     * @param string  $b The number to compare to as a string.
-     * @param integer $c The comparison result.
+     * @param string $a The base number as a string.
+     * @param string $b The number to compare to as a string.
+     * @param int    $c The comparison result.
      */
     public function testIsGreaterThanOrEqualTo($a, $b, $c)
     {
@@ -2077,9 +2077,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerToString
      *
-     * @param string  $unscaledValue The unscaled value.
-     * @param integer $scale         The scale.
-     * @param string  $expected      The expected string representation.
+     * @param string $unscaledValue The unscaled value.
+     * @param int    $scale         The scale.
+     * @param string $expected      The expected string representation.
      */
     public function testToString($unscaledValue, $scale, $expected)
     {

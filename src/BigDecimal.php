@@ -25,15 +25,15 @@ class BigDecimal extends BigNumber implements \Serializable
      *
      * This must be zero or more.
      *
-     * @var integer
+     * @var int
      */
     private $scale;
 
     /**
      * Private constructor. Use the factory methods.
      *
-     * @param string  $value The unscaled value, validated.
-     * @param integer $scale The scale, validated.
+     * @param string $value The unscaled value, validated.
+     * @param int    $scale The scale, validated.
      */
     private function __construct($value, $scale = 0)
     {
@@ -98,8 +98,8 @@ class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
-     * @param BigInteger|integer|string $value An integer representing the unscaled value of the number.
-     * @param integer                   $scale The scale of the number.
+     * @param BigInteger|int|string $value An integer representing the unscaled value of the number.
+     * @param int                   $scale The scale of the number.
      *
      * @return BigDecimal
      */
@@ -438,7 +438,7 @@ class BigDecimal extends BigNumber implements \Serializable
      *
      * The exponent has a limit of 1 million.
      *
-     * @param integer $exponent The exponent, between 0 and 1,000,000.
+     * @param int $exponent The exponent, between 0 and 1,000,000.
      *
      * @return BigDecimal
      *
@@ -466,8 +466,8 @@ class BigDecimal extends BigNumber implements \Serializable
     /**
      * Returns a BigDecimal with the current value and the specified scale.
      *
-     * @param integer $scale
-     * @param integer $roundingMode
+     * @param int $scale
+     * @param int $roundingMode
      *
      * @return BigDecimal
      */
@@ -483,7 +483,7 @@ class BigDecimal extends BigNumber implements \Serializable
     /**
      * Returns a copy of this BigDecimal with the decimal point moved $n places to the left.
      *
-     * @param integer $n
+     * @param int $n
      *
      * @return BigDecimal
      */
@@ -505,7 +505,7 @@ class BigDecimal extends BigNumber implements \Serializable
     /**
      * Returns a copy of this BigDecimal with the decimal point moved $n places to the right.
      *
-     * @param integer $n
+     * @param int $n
      *
      * @return BigDecimal
      */
@@ -615,7 +615,7 @@ class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getScale()
     {
@@ -763,7 +763,7 @@ class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
-     * @param integer $scale
+     * @param int $scale
      *
      * @return string
      */
