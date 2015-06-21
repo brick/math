@@ -1073,22 +1073,22 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerToString
+     * @dataProvider providerToBase
      *
      * @param string  $number   The number to convert.
      * @param integer $base     The base to convert the number to.
      * @param string  $expected The expected result.
      */
-    public function testToString($number, $base, $expected)
+    public function testToBase($number, $base, $expected)
     {
-        $this->assertSame($expected, BigInteger::parse($number)->toString($base));
-        $this->assertSame('-' . $expected, BigInteger::parse('-' . $number)->toString($base));
+        $this->assertSame($expected, BigInteger::parse($number)->toBase($base));
+        $this->assertSame('-' . $expected, BigInteger::parse('-' . $number)->toBase($base));
     }
 
     /**
      * @return array
      */
-    public function providerToString()
+    public function providerToBase()
     {
         return [
             ['640998479760579495168036691627608949', 36, '110011001100110011001111'],
@@ -1166,20 +1166,20 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerToStringWithInvalidBaseThrowsException
+     * @dataProvider providerToInvalidBaseThrowsException
      * @expectedException \InvalidArgumentException
      *
-     * @param integer $base
+     * @param int $base
      */
-    public function testToStringWithInvalidBaseThrowsException($base)
+    public function testToInvalidBaseThrowsException($base)
     {
-        BigInteger::of(0)->toString($base);
+        BigInteger::of(0)->toBase($base);
     }
 
     /**
      * @return array
      */
-    public function providerToStringWithInvalidBaseThrowsException()
+    public function providerToInvalidBaseThrowsException()
     {
         return [
             [-2],

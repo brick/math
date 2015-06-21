@@ -486,7 +486,7 @@ class BigInteger extends BigNumber implements \Serializable
      *
      * @throws \InvalidArgumentException If the base is out of range.
      */
-    public function toString($base)
+    public function toBase($base)
     {
         $base = (int) $base;
 
