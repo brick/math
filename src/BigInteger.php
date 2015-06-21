@@ -100,7 +100,7 @@ class BigInteger extends BigNumber implements \Serializable
             $sign = '';
         }
 
-        if ($number === false) {
+        if ($number === false /* PHP 5 */ || $number === '' /* PHP 7 */) {
             throw new \InvalidArgumentException('The value cannot be empty.');
         }
 
