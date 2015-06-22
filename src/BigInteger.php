@@ -23,44 +23,13 @@ class BigInteger extends BigNumber implements \Serializable
     private $value;
 
     /**
-     * Private constructor. Use the factory methods.
+     * Protected constructor. Use the factory methods.
      *
      * @param string $value A string of digits, with optional leading minus sign.
      */
-    private function __construct($value)
+    protected function __construct($value)
     {
         $this->value = $value;
-    }
-
-    /**
-     * Returns a BigInteger of the given value.
-     *
-     * The value can be a BigInteger, a native integer, a string representing an integer in base 10
-     * optionally prefixed with the `+` or `-` sign, or even a float as long as its string representation
-     * does not contain a decimal point.
-     *
-     * @param BigNumber|number|string $value The value.
-     *
-     * @return BigInteger
-     *
-     * @throws \InvalidArgumentException If the argument is not a valid integer number.
-     * @throws ArithmeticException       If the argument is a BigNumber that cannot be safely converted to a BigInteger.
-     */
-    public static function of($value)
-    {
-        if ($value instanceof BigInteger) {
-            return $value;
-        }
-
-        if ($value instanceof BigNumber) {
-            return $value->toBigInteger();
-        }
-
-        if (is_int($value)) {
-            return new BigInteger((string) $value);
-        }
-
-        return BigInteger::parse($value);
     }
 
     /**

@@ -30,71 +30,15 @@ class BigDecimal extends BigNumber implements \Serializable
     private $scale;
 
     /**
-     * Private constructor. Use the factory methods.
+     * Protected constructor. Use the factory methods.
      *
      * @param string $value The unscaled value, validated.
-     * @param int    $scale The scale, validated.
+     * @param int    $scale The scale, validated as a positive or zero integer.
      */
-    private function __construct($value, $scale = 0)
+    protected function __construct($value, $scale = 0)
     {
         $this->value = $value;
         $this->scale = $scale;
-    }
-
-    /**
-     * Returns a decimal of the given value.
-     *
-     * Note: you should avoid passing floating point numbers to this method.
-     * Being imprecise by design, they might not convert to the decimal value you expect.
-     * This would defeat the whole purpose of using the BigDecimal type.
-     * Prefer passing decimal numbers as strings, e.g `BigDecimal::of('0.1')` over `BigDecimal::of(0.1)`.
-     *
-     * @param BigNumber|number|string $value
-     *
-     * @return BigDecimal
-     *
-     * @throws \InvalidArgumentException If the number is malformed.
-     * @throws ArithmeticException       If the argument is a BigNumber that cannot be safely converted to a BigDecimal.
-     */
-    public static function of($value)
-    {
-        if ($value instanceof BigDecimal) {
-            return $value;
-        }
-
-        if ($value instanceof BigNumber) {
-            return $value->toBigDecimal();
-        }
-
-        if (is_int($value)) {
-            return new BigDecimal((string) $value);
-        }
-
-        $value = (string) $value;
-
-        if (preg_match('/^([\-\+])?([0-9]+)(?:\.([0-9]+))?(?:[eE]([\-\+]?[0-9]+))?()$/', $value, $matches) === 0) {
-            throw new \InvalidArgumentException(sprintf('%s does not represent a valid decimal number.', $value));
-        }
-
-        list (, $sign, $integer, $fraction, $exponent) = $matches;
-
-        if ($sign === '+') {
-            $sign = '';
-        }
-
-        $value = ltrim($integer . $fraction, '0');
-        $value = ($value === '') ? '0' : $sign . $value;
-
-        $scale = strlen($fraction) - $exponent;
-
-        if ($scale < 0) {
-            if ($value !== '0') {
-                $value .= str_repeat('0', - $scale);
-            }
-            $scale = 0;
-        }
-
-        return new BigDecimal($value, $scale);
     }
 
     /**

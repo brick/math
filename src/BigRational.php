@@ -24,7 +24,7 @@ class BigRational extends BigNumber implements \Serializable
     private $denominator;
 
     /**
-     * Private constructor. Use a factory method to obtain an instance.
+     * Protected constructor. Use a factory method to obtain an instance.
      *
      * @param BigInteger $numerator        The numerator.
      * @param BigInteger $denominator      The denominator.
@@ -32,7 +32,7 @@ class BigRational extends BigNumber implements \Serializable
      *
      * @throws ArithmeticException If the denominator is zero.
      */
-    public function __construct(BigInteger $numerator, BigInteger $denominator, $checkDemominator)
+    protected function __construct(BigInteger $numerator, BigInteger $denominator, $checkDemominator)
     {
         if ($checkDemominator) {
             if ($denominator->isZero()) {
@@ -47,26 +47,6 @@ class BigRational extends BigNumber implements \Serializable
 
         $this->numerator   = $numerator;
         $this->denominator = $denominator;
-    }
-
-    /**
-     * Returns a BigRational of the given value.
-     *
-     * @param string $number
-     *
-     * @return BigRational
-     *
-     * @throws \InvalidArgumentException If the string cannot be parsed.
-     */
-    public static function of($number)
-    {
-        if (preg_match('/^(\-?[0-9]+)(?:\/([0-9]+))?$/', $number, $matches) !== 1) {
-            throw new \InvalidArgumentException('Invalid BigRational string representation.');
-        }
-
-        return isset($matches[2])
-            ? BigRational::nd($matches[1], $matches[2])
-            : BigRational::nd($matches[1], 1);
     }
 
     /**

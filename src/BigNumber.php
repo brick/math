@@ -8,6 +8,170 @@ namespace Brick\Math;
 abstract class BigNumber
 {
     /**
+     * The regular expression used to parse integer, decimal and rational numbers.
+     */
+    const REGEXP =
+        '/^' .
+        '(?<integral>[\-\+]?[0-9]+)' .
+        '(?:' .
+            '(?:' .
+                '(?:\.(?<fractional>[0-9]+))?' .
+                '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
+            ')' . '|' . '(?:' .
+                '(?:\/(?<denominator>[0-9]+))?' .
+            ')' .
+        ')?' .
+        '$/';
+
+    /**
+     * Creates a BigNumber of the given value.
+     *
+     * The concrete return type is dependent on the given value, with the following rules:
+     *
+     * - BigNumber instances are returned as is
+     * - integer numbers are returned as BigInteger
+     * - floating point numbers are returned as BigDecimal
+     * - strings containing a `/` character are returned as BigRational
+     * - strings containing a `.` character or using an exponentional notation are returned as BigDecimal
+     * - strings containing only digits with an optional leading `+` or `-` sign are returned as BigInteger
+     *
+     * @param BigNumber|number|string $value
+     *
+     * @return static
+     *
+     * @throws \InvalidArgumentException If the number is not valid.
+     */
+    public static function of($value)
+    {
+        try {
+            if ($value instanceof BigNumber) {
+                switch (static::class) {
+                    case BigInteger::class:
+                        return $value->toBigInteger();
+
+                    case BigDecimal::class:
+                        return $value->toBigDecimal();
+
+                    case BigRational::class:
+                        return $value->toBigRational();
+
+                    default:
+                        return $value;
+                }
+            }
+
+            if (is_int($value)) {
+                switch (static::class) {
+                    case BigDecimal::class:
+                        return new BigDecimal((string) $value);
+
+                    case BigRational::class:
+                        return new BigRational(new BigInteger((string) $value), new BigInteger('1'));
+
+                    default:
+                        return new BigInteger((string) $value);
+                }
+            }
+
+            $value = (string) $value;
+
+            if (preg_match(BigNumber::REGEXP, $value, $matches) !== 1) {
+                throw new \InvalidArgumentException('The given value does not represent a valid number.');
+            }
+
+            if (isset($matches['denominator'])) {
+                $numerator   = BigNumber::cleanUp($matches['integral']);
+                $denominator = BigNumber::cleanUp($matches['denominator']); // @todo doesn't need sign check
+
+                $result = new BigRational(new BigInteger($numerator), new BigInteger($denominator), true);
+
+                switch (static::class) {
+                    case BigInteger::class:
+                        return $result->toBigInteger();
+
+                    case BigDecimal::class:
+                        return $result->toBigDecimal();
+
+                    default:
+                        return $result;
+                }
+            } elseif (isset($matches['fractional']) || isset($matches['exponent'])) {
+                $fractional = isset($matches['fractional']) ? $matches['fractional'] : '';
+                $exponent = isset($matches['exponent']) ? (int) $matches['exponent'] : 0;
+
+                $unscaledValue = BigNumber::cleanUp($matches['integral'] . $fractional);
+
+                $scale = strlen($fractional) - $exponent;
+
+                if ($scale < 0) {
+                    if ($unscaledValue !== '0') {
+                        $unscaledValue .= str_repeat('0', - $scale);
+                    }
+                    $scale = 0;
+                }
+
+                $result = new BigDecimal($unscaledValue, $scale);
+
+                switch (static::class) {
+                    case BigInteger::class:
+                        return $result->toBigInteger();
+
+                    case BigRational::class:
+                        return $result->toBigRational();
+
+                    default:
+                        return $result;
+                }
+            } else {
+                $integral = BigNumber::cleanUp($matches['integral']);
+
+                switch (static::class) {
+                    case BigDecimal::class:
+                        return new BigDecimal($integral);
+
+                    case BigRational::class:
+                        return new BigRational(new BigInteger($integral), new BigInteger('1'), false);
+
+                    default:
+                        return new BigInteger($integral);
+                }
+            }
+        } catch (ArithmeticException $e) {
+            $className = substr(static::class, strrpos(static::class, '\\') + 1);
+
+            throw new \InvalidArgumentException('Cannot convert value to a ' . $className . ' without losing precision.');
+        }
+    }
+
+    /**
+     * Removes optional leading zeros and + sign from the given number.
+     *
+     * @param string $number The number, validated as a non-empty string of digits with optional sign.
+     *
+     * @return string
+     */
+    private static function cleanUp($number)
+    {
+        $firstChar = $number[0];
+
+        if ($firstChar === '+' || $firstChar === '-') {
+            $number = substr($number, 1);
+        }
+
+        $number = ltrim($number, '0');
+
+        if ($number === '') {
+            return '0';
+        }
+
+        if ($firstChar === '-') {
+            return '-' . $number;
+        }
+
+        return $number;
+    }
+
+    /**
      * Compares this number to the given one.
      *
      * @param BigNumber|number|string $that

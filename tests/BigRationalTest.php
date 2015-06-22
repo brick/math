@@ -12,14 +12,14 @@ use Brick\Math\BigRational;
 class BigRationalTest extends AbstractTestCase
 {
     /**
-     * @dataProvider providerOf
+     * @dataProvider providerNd
      *
      * @param string $numerator   The expected numerator.
      * @param string $denominator The expected denominator.
      * @param string $n           The input numerator.
      * @param string $d           The input denominator.
      */
-    public function testOf($numerator, $denominator, $n, $d)
+    public function testNd($numerator, $denominator, $n, $d)
     {
         $rational = BigRational::nd($n, $d);
         $this->assertBigRationalEquals($numerator, $denominator, $rational);
@@ -28,7 +28,7 @@ class BigRationalTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function providerOf()
+    public function providerNd()
     {
         return [
             ['7', '1', '7', 1],
@@ -40,13 +40,13 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerParse
+     * @dataProvider providerOf
      *
      * @param string $numerator   The expected numerator.
      * @param string $denominator The expected denominator.
      * @param string $string      The string to parse.
      */
-    public function testParse($numerator, $denominator, $string)
+    public function testOf($numerator, $denominator, $string)
     {
         $rational = BigRational::of($string);
         $this->assertBigRationalEquals($numerator, $denominator, $rational);
@@ -55,14 +55,17 @@ class BigRationalTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function providerParse()
+    public function providerOf()
     {
         return [
             ['123', '456', '123/456'],
+            ['123', '456', '+123/456'],
             ['-2345', '6789', '-2345/6789'],
             ['123456', '1', '123456'],
             ['-1234567', '1', '-1234567'],
             ['-1234567890987654321012345678909876543210', '9999', '-1234567890987654321012345678909876543210/9999'],
+            ['1230000', '1', '123e4'],
+            ['9', '8', '1.125'],
         ];
     }
 
@@ -84,12 +87,12 @@ class BigRationalTest extends AbstractTestCase
     {
         return [
             ['123/-456'],
-            ['+123/456'],
-            ['123e4'],
             ['1e4/2'],
-            ['1.2'],
             [' 1/2'],
             ['1/2 '],
+            ['+'],
+            ['-'],
+            ['/',]
         ];
     }
 
