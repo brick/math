@@ -48,6 +48,8 @@ final class BigDecimal extends BigNumber implements \Serializable
      * @param int                   $scale The scale of the number.
      *
      * @return BigDecimal
+     *
+     * @throws \InvalidArgumentException
      */
     public static function ofUnscaledValue($value, $scale = 0)
     {

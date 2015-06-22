@@ -87,12 +87,12 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerOfInvalidValueThrowsException
-     * @expectedException \InvalidArgumentException
+     * @dataProvider providerOfInvalidFormatThrowsException
+     * @expectedException \Brick\Math\Exception\NumberFormatException
      *
      * @param string|number $value
      */
-    public function testOfInvalidValueThrowsException($value)
+    public function testOfInvalidFormatThrowsException($value)
     {
         BigInteger::of($value);
     }
@@ -100,11 +100,9 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function providerOfInvalidValueThrowsException()
+    public function providerOfInvalidFormatThrowsException()
     {
         return [
-            [1.1],
-
             [''],
             ['a'],
             [' 1'],
@@ -113,7 +111,34 @@ class BigIntegerTest extends AbstractTestCase
             ['+'],
             ['-'],
             ['+a'],
-            ['-a']
+            ['-a'],
+            ['a0'],
+            ['0a'],
+            ['1.a'],
+            ['a.1'],
+        ];
+    }
+
+    /**
+     * @dataProvider providerOfNonConvertibleValueThrowsException
+     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
+     *
+     * @param float|string $value
+     */
+    public function testOfNonConvertibleValueThrowsException($value)
+    {
+        BigInteger::of($value);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerOfNonConvertibleValueThrowsException()
+    {
+        return [
+            [1.1],
+            ['1e-1'],
+            ['7/9'],
         ];
     }
 

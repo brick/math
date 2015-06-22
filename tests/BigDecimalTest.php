@@ -163,7 +163,7 @@ class BigDecimalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerOfInvalidValueThrowsException
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Brick\Math\Exception\NumberFormatException
      *
      * @param string $value
      */

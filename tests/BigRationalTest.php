@@ -86,12 +86,12 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerParseInvalidString
-     * @expectedException \InvalidArgumentException
+     * @dataProvider providerOfInvalidString
+     * @expectedException \Brick\Math\Exception\NumberFormatException
      *
      * @param string $string An invalid string representation.
      */
-    public function testParseInvalidString($string)
+    public function testOfInvalidString($string)
     {
         BigRational::of($string);
     }
@@ -99,7 +99,7 @@ class BigRationalTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function providerParseInvalidString()
+    public function providerOfInvalidString()
     {
         return [
             ['123/-456'],
