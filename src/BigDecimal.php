@@ -2,8 +2,8 @@
 
 namespace Brick\Math;
 
-use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -222,9 +222,9 @@ final class BigDecimal extends BigNumber implements \Serializable
      *
      * @return BigDecimal
      *
-     * @throws DivisionByZeroException   If the divisor is zero.
-     * @throws ArithmeticException       If RoundingMode::UNNECESSARY is provided and rounding was necessary.
-     * @throws \InvalidArgumentException If any of the arguments is not valid.
+     * @throws DivisionByZeroException    If the divisor is zero.
+     * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided and rounding was necessary.
+     * @throws \InvalidArgumentException  If any of the arguments is not valid.
      */
     public function dividedBy($that, $roundingMode = RoundingMode::UNNECESSARY, $scale = null)
     {
@@ -270,7 +270,7 @@ final class BigDecimal extends BigNumber implements \Serializable
         switch ($roundingMode) {
             case RoundingMode::UNNECESSARY:
                 if ($hasDiscardedFraction) {
-                    throw ArithmeticException::roundingNecessary();
+                    throw RoundingNecessaryException::roundingNecessary();
                 }
                 break;
 
@@ -333,7 +333,7 @@ final class BigDecimal extends BigNumber implements \Serializable
      *
      * @return BigDecimal
      *
-     * @throws ArithmeticException If the result cannot be represented as a finite decimal number.
+     * @throws RoundingNecessaryException If the result cannot be represented as a finite decimal number.
      */
     public function dividedByExact($that)
     {

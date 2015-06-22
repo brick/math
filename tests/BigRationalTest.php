@@ -2,9 +2,9 @@
 
 namespace Brick\Math\Tests;
 
-use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\BigInteger;
 use Brick\Math\BigRational;
+use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
  * Unit tests for class BigRational.
@@ -624,7 +624,7 @@ class BigRationalTest extends AbstractTestCase
     public function testToBigDecimal($number, $expected)
     {
         if ($expected === null) {
-            $this->setExpectedException(ArithmeticException::class);
+            $this->setExpectedException(RoundingNecessaryException::class);
         }
 
         $actual = BigRational::of($number)->toBigDecimal();

@@ -2,9 +2,9 @@
 
 namespace Brick\Math\Tests;
 
-use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
+use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
  * Unit tests for class BigDecimal.
@@ -614,7 +614,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testDividedByExact($number, $divisor, $expected)
     {
         if ($expected === null) {
-            $this->setExpectedException(ArithmeticException::class);
+            $this->setExpectedException(RoundingNecessaryException::class);
         }
 
         $actual = BigDecimal::of($number)->dividedByExact($divisor);
@@ -630,7 +630,6 @@ class BigDecimalTest extends AbstractTestCase
     public function providerDividedByExact()
     {
         return [
-            [1, 0, null],
             [1, 1, '1'],
             ['1.0', '1.00', '1.0'],
             [1, 2, '0.5'],
@@ -652,8 +651,16 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
+     * @expectedException \Brick\Math\Exception\DivisionByZeroException
+     */
+    public function testDividedByExactZero()
+    {
+        BigDecimal::of(1)->dividedByExact(0);
+    }
+
+    /**
      * @dataProvider providerDividedByWithRoundingNecessaryThrowsException
-     * @expectedException \Brick\Math\Exception\ArithmeticException
+     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
      *
      * @param string   $a     The base number.
      * @param string   $b     The number to divide by.
@@ -721,7 +728,7 @@ class BigDecimalTest extends AbstractTestCase
     {
         foreach ([$zero, $one, $two] as $scale => $expected) {
             if ($expected === null) {
-                $this->setExpectedException(ArithmeticException::class);
+                $this->setExpectedException(RoundingNecessaryException::class);
             }
 
             $actual = $number->dividedBy($divisor, $roundingMode, $scale);
@@ -1980,7 +1987,7 @@ class BigDecimalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerToBigIntegerThrowsExceptionWhenRoundingNecessary
-     * @expectedException \Brick\Math\Exception\ArithmeticException
+     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
      *
      * @param string $decimal A decimal number with a non-zero fractional part.
      */

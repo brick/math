@@ -2,9 +2,7 @@
 
 namespace Brick\Math\Tests;
 
-use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\BigInteger;
-use Brick\Math\RoundingMode;
 
 /**
  * Unit tests for class BigInteger.

@@ -20,12 +20,4 @@ class ArithmeticException extends \RuntimeException
 
         return new self(sprintf($message, (string) $value, ~PHP_INT_MAX, PHP_INT_MAX));
     }
-
-    /**
-     * @return ArithmeticException
-     */
-    public static function roundingNecessary()
-    {
-        return new self('Rounding is necessary to represent the result of the operation at this scale.');
-    }
 }

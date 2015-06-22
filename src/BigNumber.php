@@ -2,8 +2,8 @@
 
 namespace Brick\Math;
 
-use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
  * Common interface for arbitrary-precision numbers.
@@ -44,6 +44,8 @@ abstract class BigNumber
      *
      * @throws \InvalidArgumentException If the number is not valid.
      * @throws DivisionByZeroException   If the value represents a rational number with a denominator of zero.
+     * @throws RoundingNecessaryException If the value represents a valid number, but this number cannot be converted
+     *                                    to the subclass this method has been called on, without rounding.
      */
     public static function of($value)
     {
@@ -62,7 +64,7 @@ abstract class BigNumber
                     default:
                         return $value;
                 }
-            } catch (ArithmeticException $e) {
+            } catch (RoundingNecessaryException $e) {
                 $className = substr(static::class, strrpos(static::class, '\\') + 1);
 
                 throw new \InvalidArgumentException('Cannot convert value to a ' . $className . ' without losing precision.');
@@ -109,7 +111,7 @@ abstract class BigNumber
                     default:
                         return $result;
                 }
-            } catch (ArithmeticException $e) {
+            } catch (RoundingNecessaryException $e) {
                 $className = substr(static::class, strrpos(static::class, '\\') + 1);
 
                 throw new \InvalidArgumentException('Cannot convert value to a ' . $className . ' without losing precision.');
@@ -142,7 +144,7 @@ abstract class BigNumber
                     default:
                         return $result;
                 }
-            } catch (ArithmeticException $e) {
+            } catch (RoundingNecessaryException $e) {
                 $className = substr(static::class, strrpos(static::class, '\\') + 1);
 
                 throw new \InvalidArgumentException('Cannot convert value to a ' . $className . ' without losing precision.');
@@ -320,25 +322,25 @@ abstract class BigNumber
     /**
      * Converts this number to a BigInteger.
      *
-     * @return BigInteger
+     * @return BigInteger The converted number.
      *
-     * @throws ArithmeticException If this number cannot be safely converted to a BigInteger.
+     * @throws RoundingNecessaryException If this number cannot be converted to a BigInteger without rounding.
      */
     abstract public function toBigInteger();
 
     /**
      * Converts this number to a BigDecimal.
      *
-     * @return BigDecimal
+     * @return BigDecimal The converted number.
      *
-     * @throws ArithmeticException If this number cannot be safely converted to a BigDecimal.
+     * @throws RoundingNecessaryException If this number cannot be converted to a BigDecimal without rounding.
      */
     abstract public function toBigDecimal();
 
     /**
      * Converts this number to a BigRational.
      *
-     * @return BigRational
+     * @return BigRational The converted number.
      */
     abstract public function toBigRational();
 

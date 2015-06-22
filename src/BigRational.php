@@ -2,8 +2,8 @@
 
 namespace Brick\Math;
 
-use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
  * An arbitrarily large rational number.
@@ -271,7 +271,7 @@ final class BigRational extends BigNumber implements \Serializable
         $simplified = $this->simplified();
 
         if (! $simplified->denominator->isEqualTo(1)) {
-            throw new ArithmeticException('This rational number cannot be represented as an integer value.');
+            throw new RoundingNecessaryException('This rational number cannot be represented as an integer value without rounding.');
         }
 
         return $simplified->numerator;
@@ -304,7 +304,7 @@ final class BigRational extends BigNumber implements \Serializable
         }
 
         if (! $denominator->isEqualTo(1)) {
-            throw new ArithmeticException('This rational number cannot be represented as a finite decimal number.');
+            throw new RoundingNecessaryException('This rational number cannot be represented as a finite decimal number without rounding.');
         }
 
         $maxDecimalPlaces = max($counts[2], $counts[5]);
