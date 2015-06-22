@@ -7,7 +7,7 @@ use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
- * Common interface for arbitrary-precision numbers.
+ * Common interface for arbitrary-precision rational numbers.
  */
 abstract class BigNumber
 {
