@@ -72,7 +72,7 @@ abstract class BigNumber
                     return new BigDecimal((string) $value);
 
                 case BigRational::class:
-                    return new BigRational(new BigInteger((string) $value), new BigInteger('1'));
+                    return new BigRational(new BigInteger((string) $value), new BigInteger('1'), false);
 
                 default:
                     return new BigInteger((string) $value);

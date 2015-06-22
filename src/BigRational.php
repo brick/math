@@ -74,30 +74,6 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * Internal factory method transparently used by methods accepting mixed numbers.
-     *
-     * @param BigRational|BigInteger|int|string $number
-     *
-     * @return BigRational
-     */
-    private static function get($number)
-    {
-        if ($number instanceof BigRational) {
-            return $number;
-        }
-
-        if ($number instanceof BigInteger) {
-            return new BigRational($number, BigInteger::of(1), false);
-        }
-
-        if (is_int($number)) {
-            return new BigRational(BigInteger::of($number), BigInteger::of(1), false);
-        }
-
-        return BigRational::of($number);
-    }
-
-    /**
      * @return BigInteger
      */
     public function getNumerator()
@@ -114,13 +90,13 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * @param BigRational|BigInteger|int|string $that
+     * @param BigNumber|number|string $that
      *
      * @return BigRational
      */
     public function plus($that)
     {
-        $that = BigRational::get($that);
+        $that = BigRational::of($that);
 
         $numerator   = $this->numerator->multipliedBy($that->denominator);
         $numerator   = $numerator->plus($that->numerator->multipliedBy($this->denominator));
@@ -130,13 +106,13 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * @param BigRational|BigInteger|int|string $that
+     * @param BigNumber|number|string $that
      *
      * @return BigRational
      */
     public function minus($that)
     {
-        $that = BigRational::get($that);
+        $that = BigRational::of($that);
 
         $numerator   = $this->numerator->multipliedBy($that->denominator);
         $numerator   = $numerator->minus($that->numerator->multipliedBy($this->denominator));
@@ -146,13 +122,13 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * @param BigRational|BigInteger|int|string $that
+     * @param BigNumber|number|string $that
      *
      * @return BigRational
      */
     public function multipliedBy($that)
     {
-        $that = BigRational::get($that);
+        $that = BigRational::of($that);
 
         $numerator   = $this->numerator->multipliedBy($that->numerator);
         $denominator = $this->denominator->multipliedBy($that->denominator);
@@ -161,13 +137,13 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * @param BigRational|BigInteger|int|string $that
+     * @param BigNumber|number|string $that
      *
      * @return BigRational
      */
     public function dividedBy($that)
     {
-        $that = BigRational::get($that);
+        $that = BigRational::of($that);
 
         $numerator   = $this->numerator->multipliedBy($that->denominator);
         $denominator = $this->denominator->multipliedBy($that->numerator);
