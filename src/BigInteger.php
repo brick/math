@@ -2,6 +2,7 @@
 
 namespace Brick\Math;
 
+use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Internal\Calculator;
 
 /**

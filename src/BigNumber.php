@@ -2,6 +2,8 @@
 
 namespace Brick\Math;
 
+use Brick\Math\Exception\ArithmeticException;
+
 /**
  * Common interface for arbitrary-precision numbers.
  */

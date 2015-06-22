@@ -1,6 +1,8 @@
 <?php
 
-namespace Brick\Math;
+namespace Brick\Math\Exception;
+
+use Brick\Math\BigInteger;
 
 /**
  * Exception thrown when arithmetic operations fail.

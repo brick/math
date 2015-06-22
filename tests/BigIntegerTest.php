@@ -2,7 +2,7 @@
 
 namespace Brick\Math\Tests;
 
-use Brick\Math\ArithmeticException;
+use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\BigInteger;
 use Brick\Math\RoundingMode;
 
@@ -505,7 +505,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\ArithmeticException
+     * @expectedException \Brick\Math\Exception\ArithmeticException
      */
     public function testDividedByZeroThrowsException()
     {
@@ -583,7 +583,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\ArithmeticException
+     * @expectedException \Brick\Math\Exception\ArithmeticException
      */
     public function testDivideAndRemainderByZeroThrowsException()
     {
@@ -1062,7 +1062,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\ArithmeticException
+     * @expectedException \Brick\Math\Exception\ArithmeticException
      */
     public function testToIntegerNegativeOverflowThrowsException()
     {
@@ -1070,7 +1070,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\ArithmeticException
+     * @expectedException \Brick\Math\Exception\ArithmeticException
      */
     public function testToIntegerPositiveOverflowThrowsException()
     {

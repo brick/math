@@ -2,7 +2,7 @@
 
 namespace Brick\Math\Tests;
 
-use Brick\Math\ArithmeticException;
+use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 
@@ -583,7 +583,7 @@ class BigDecimalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerDividedByZeroThrowsException
-     * @expectedException \Brick\Math\ArithmeticException
+     * @expectedException \Brick\Math\Exception\ArithmeticException
      *
      * @param string|number $zero
      */
@@ -653,7 +653,7 @@ class BigDecimalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerDividedByWithRoundingNecessaryThrowsException
-     * @expectedException \Brick\Math\ArithmeticException
+     * @expectedException \Brick\Math\Exception\ArithmeticException
      *
      * @param string   $a     The base number.
      * @param string   $b     The number to divide by.
@@ -1289,7 +1289,7 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\ArithmeticException
+     * @expectedException \Brick\Math\Exception\ArithmeticException
      */
     public function testDivideAndRemainderByZeroThrowsException()
     {
@@ -1980,7 +1980,7 @@ class BigDecimalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerToBigIntegerThrowsExceptionWhenRoundingNecessary
-     * @expectedException \Brick\Math\ArithmeticException
+     * @expectedException \Brick\Math\Exception\ArithmeticException
      *
      * @param string $decimal A decimal number with a non-zero fractional part.
      */

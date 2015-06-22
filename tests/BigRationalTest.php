@@ -2,7 +2,7 @@
 
 namespace Brick\Math\Tests;
 
-use Brick\Math\ArithmeticException;
+use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\BigInteger;
 use Brick\Math\BigRational;
 
@@ -246,7 +246,7 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\ArithmeticException
+     * @expectedException \Brick\Math\Exception\ArithmeticException
      */
     public function testReciprocalOfZeroThrowsException()
     {
