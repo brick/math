@@ -7,7 +7,7 @@ use Brick\Math\Internal\Calculator;
 /**
  * Immutable, arbitrary-precision signed decimal numbers.
  */
-class BigDecimal extends BigNumber implements \Serializable
+final class BigDecimal extends BigNumber implements \Serializable
 {
     /**
      * The unscaled value of this decimal number.

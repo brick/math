@@ -10,7 +10,7 @@ use Brick\Math\Internal\Calculator;
  * All methods accepting a number as a parameter accept either a BigInteger instance,
  * an integer, or a string representing an arbitrary size integer.
  */
-class BigInteger extends BigNumber implements \Serializable
+final class BigInteger extends BigNumber implements \Serializable
 {
     /**
      * The value, as a string of digits with optional leading minus sign.

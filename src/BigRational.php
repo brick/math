@@ -7,7 +7,7 @@ namespace Brick\Math;
  *
  * This class is immutable.
  */
-class BigRational extends BigNumber implements \Serializable
+final class BigRational extends BigNumber implements \Serializable
 {
     /**
      * The numerator.
