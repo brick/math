@@ -395,9 +395,13 @@ final class BigInteger extends BigNumber implements \Serializable
      */
     public function compareTo($that)
     {
-        $that = BigInteger::of($that);
+        $that = BigNumber::of($that);
 
-        return Calculator::get()->cmp($this->value, $that->value);
+        if ($that instanceof BigInteger) {
+            return Calculator::get()->cmp($this->value, $that->value);
+        }
+
+        return - $that->compareTo($this);
     }
 
     /**

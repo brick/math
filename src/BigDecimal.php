@@ -541,10 +541,19 @@ final class BigDecimal extends BigNumber implements \Serializable
      */
     public function compareTo($that)
     {
-        $that = BigDecimal::of($that);
-        $this->scaleValues($this, $that, $a, $b);
+        $that = BigNumber::of($that);
 
-        return Calculator::get()->cmp($a, $b);
+        if ($that instanceof BigInteger) {
+            $that = $that->toBigDecimal();
+        }
+
+        if ($that instanceof BigDecimal) {
+            $this->scaleValues($this, $that, $a, $b);
+
+            return Calculator::get()->cmp($a, $b);
+        }
+
+        return - $that->compareTo($this);
     }
 
     /**
