@@ -40,6 +40,14 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
+     * @expectedException \Brick\Math\Exception\DivisionByZeroException
+     */
+    public function testNdWithZeroDenominator()
+    {
+        BigRational::nd(1, 0);
+    }
+
+    /**
      * @dataProvider providerOf
      *
      * @param string $numerator   The expected numerator.
@@ -67,6 +75,14 @@ class BigRationalTest extends AbstractTestCase
             ['1230000', '1', '123e4'],
             ['9', '8', '1.125'],
         ];
+    }
+
+    /**
+     * @expectedException \Brick\Math\Exception\DivisionByZeroException
+     */
+    public function testOfWithZeroDenominator()
+    {
+        BigRational::of('2/0');
     }
 
     /**
@@ -246,7 +262,7 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\Exception\ArithmeticException
+     * @expectedException \Brick\Math\Exception\DivisionByZeroException
      */
     public function testReciprocalOfZeroThrowsException()
     {

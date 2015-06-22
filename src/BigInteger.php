@@ -3,6 +3,7 @@
 namespace Brick\Math;
 
 use Brick\Math\Exception\ArithmeticException;
+use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -255,7 +256,7 @@ final class BigInteger extends BigNumber implements \Serializable
      *
      * @return BigInteger
      *
-     * @throws ArithmeticException If the divisor is zero.
+     * @throws DivisionByZeroException If the divisor is zero.
      */
     public function dividedBy($that)
     {
@@ -266,7 +267,7 @@ final class BigInteger extends BigNumber implements \Serializable
         }
 
         if ($that->value === '0') {
-            throw ArithmeticException::divisionByZero();
+            throw DivisionByZeroException::divisionByZero();
         }
 
         list ($quotient) = Calculator::get()->div($this->value, $that->value);
@@ -281,14 +282,14 @@ final class BigInteger extends BigNumber implements \Serializable
      *
      * @return BigInteger[] An array containing the quotient and the remainder.
      *
-     * @throws ArithmeticException If the divisor is zero.
+     * @throws DivisionByZeroException If the divisor is zero.
      */
     public function divideAndRemainder($that)
     {
         $that = BigInteger::of($that);
 
         if ($that->value === '0') {
-            throw ArithmeticException::divisionByZero();
+            throw DivisionByZeroException::divisionByZero();
         }
 
         list ($quotient, $remainder) = Calculator::get()->div($this->value, $that->value);

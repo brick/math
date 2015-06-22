@@ -3,6 +3,7 @@
 namespace Brick\Math;
 
 use Brick\Math\Exception\ArithmeticException;
+use Brick\Math\Exception\DivisionByZeroException;
 
 /**
  * An arbitrarily large rational number.
@@ -32,13 +33,13 @@ final class BigRational extends BigNumber implements \Serializable
      * @param BigInteger $denominator      The denominator.
      * @param bool       $checkDemominator Whether to check the denominator for negative and zero.
      *
-     * @throws ArithmeticException If the denominator is zero.
+     * @throws DivisionByZeroException If the denominator is zero.
      */
     protected function __construct(BigInteger $numerator, BigInteger $denominator, $checkDemominator)
     {
         if ($checkDemominator) {
             if ($denominator->isZero()) {
-                throw new ArithmeticException('The denominator must not be zero.');
+                throw DivisionByZeroException::denominatorMustNotBeZero();
             }
 
             if ($denominator->isNegative()) {
@@ -62,7 +63,7 @@ final class BigRational extends BigNumber implements \Serializable
      *
      * @return BigRational
      *
-     * @throws ArithmeticException If the denominator is zero.
+     * @throws DivisionByZeroException If the denominator is zero.
      */
     public static function nd($numerator, $denominator)
     {
@@ -181,7 +182,7 @@ final class BigRational extends BigNumber implements \Serializable
      *
      * @return BigRational
      *
-     * @throws ArithmeticException If the numerator is zero.
+     * @throws DivisionByZeroException If the numerator is zero.
      */
     public function reciprocal()
     {

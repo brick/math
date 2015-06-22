@@ -505,7 +505,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\Exception\ArithmeticException
+     * @expectedException \Brick\Math\Exception\DivisionByZeroException
      */
     public function testDividedByZeroThrowsException()
     {
@@ -583,7 +583,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\Exception\ArithmeticException
+     * @expectedException \Brick\Math\Exception\DivisionByZeroException
      */
     public function testDivideAndRemainderByZeroThrowsException()
     {

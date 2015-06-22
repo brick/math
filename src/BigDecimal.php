@@ -3,6 +3,7 @@
 namespace Brick\Math;
 
 use Brick\Math\Exception\ArithmeticException;
+use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -221,6 +222,7 @@ final class BigDecimal extends BigNumber implements \Serializable
      *
      * @return BigDecimal
      *
+     * @throws DivisionByZeroException   If the divisor is zero.
      * @throws ArithmeticException       If RoundingMode::UNNECESSARY is provided and rounding was necessary.
      * @throws \InvalidArgumentException If any of the arguments is not valid.
      */
@@ -229,7 +231,7 @@ final class BigDecimal extends BigNumber implements \Serializable
         $that = BigDecimal::of($that);
 
         if ($that->isZero()) {
-            throw ArithmeticException::divisionByZero();
+            throw DivisionByZeroException::divisionByZero();
         }
 
         if ($scale === null) {
@@ -355,14 +357,14 @@ final class BigDecimal extends BigNumber implements \Serializable
      *
      * @return BigDecimal[] An array containing the quotient and the remainder.
      *
-     * @throws ArithmeticException If the divisor is zero.
+     * @throws DivisionByZeroException If the divisor is zero.
      */
     public function divideAndRemainder($that)
     {
         $that = BigDecimal::of($that);
 
         if ($that->isZero()) {
-            throw ArithmeticException::divisionByZero();
+            throw DivisionByZeroException::divisionByZero();
         }
 
         $p = $this->valueWithMinScale($that->scale);

@@ -583,7 +583,7 @@ class BigDecimalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerDividedByZeroThrowsException
-     * @expectedException \Brick\Math\Exception\ArithmeticException
+     * @expectedException \Brick\Math\Exception\DivisionByZeroException
      *
      * @param string|number $zero
      */
@@ -1289,7 +1289,7 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\Exception\ArithmeticException
+     * @expectedException \Brick\Math\Exception\DivisionByZeroException
      */
     public function testDivideAndRemainderByZeroThrowsException()
     {

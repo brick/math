@@ -3,6 +3,7 @@
 namespace Brick\Math;
 
 use Brick\Math\Exception\ArithmeticException;
+use Brick\Math\Exception\DivisionByZeroException;
 
 /**
  * Common interface for arbitrary-precision numbers.
@@ -42,11 +43,12 @@ abstract class BigNumber
      * @return static
      *
      * @throws \InvalidArgumentException If the number is not valid.
+     * @throws DivisionByZeroException   If the value represents a rational number with a denominator of zero.
      */
     public static function of($value)
     {
-        try {
-            if ($value instanceof BigNumber) {
+        if ($value instanceof BigNumber) {
+            try {
                 switch (static::class) {
                     case BigInteger::class:
                         return $value->toBigInteger();
@@ -60,33 +62,43 @@ abstract class BigNumber
                     default:
                         return $value;
                 }
+            } catch (ArithmeticException $e) {
+                $className = substr(static::class, strrpos(static::class, '\\') + 1);
+
+                throw new \InvalidArgumentException('Cannot convert value to a ' . $className . ' without losing precision.');
+            }
+        }
+
+        if (is_int($value)) {
+            switch (static::class) {
+                case BigDecimal::class:
+                    return new BigDecimal((string) $value);
+
+                case BigRational::class:
+                    return new BigRational(new BigInteger((string) $value), new BigInteger('1'));
+
+                default:
+                    return new BigInteger((string) $value);
+            }
+        }
+
+        $value = (string) $value;
+
+        if (preg_match(BigNumber::REGEXP, $value, $matches) !== 1) {
+            throw new \InvalidArgumentException('The given value does not represent a valid number.');
+        }
+
+        if (isset($matches['denominator'])) {
+            $numerator   = BigNumber::cleanUp($matches['integral']);
+            $denominator = ltrim($matches['denominator'], '0');
+
+            if ($denominator === '') {
+                throw DivisionByZeroException::denominatorMustNotBeZero();
             }
 
-            if (is_int($value)) {
-                switch (static::class) {
-                    case BigDecimal::class:
-                        return new BigDecimal((string) $value);
+            $result = new BigRational(new BigInteger($numerator), new BigInteger($denominator), false);
 
-                    case BigRational::class:
-                        return new BigRational(new BigInteger((string) $value), new BigInteger('1'));
-
-                    default:
-                        return new BigInteger((string) $value);
-                }
-            }
-
-            $value = (string) $value;
-
-            if (preg_match(BigNumber::REGEXP, $value, $matches) !== 1) {
-                throw new \InvalidArgumentException('The given value does not represent a valid number.');
-            }
-
-            if (isset($matches['denominator'])) {
-                $numerator   = BigNumber::cleanUp($matches['integral']);
-                $denominator = BigNumber::cleanUp($matches['denominator']); // @todo doesn't need sign check
-
-                $result = new BigRational(new BigInteger($numerator), new BigInteger($denominator), true);
-
+            try {
                 switch (static::class) {
                     case BigInteger::class:
                         return $result->toBigInteger();
@@ -97,23 +109,29 @@ abstract class BigNumber
                     default:
                         return $result;
                 }
-            } elseif (isset($matches['fractional']) || isset($matches['exponent'])) {
-                $fractional = isset($matches['fractional']) ? $matches['fractional'] : '';
-                $exponent = isset($matches['exponent']) ? (int) $matches['exponent'] : 0;
+            } catch (ArithmeticException $e) {
+                $className = substr(static::class, strrpos(static::class, '\\') + 1);
 
-                $unscaledValue = BigNumber::cleanUp($matches['integral'] . $fractional);
+                throw new \InvalidArgumentException('Cannot convert value to a ' . $className . ' without losing precision.');
+            }
+        } elseif (isset($matches['fractional']) || isset($matches['exponent'])) {
+            $fractional = isset($matches['fractional']) ? $matches['fractional'] : '';
+            $exponent = isset($matches['exponent']) ? (int) $matches['exponent'] : 0;
 
-                $scale = strlen($fractional) - $exponent;
+            $unscaledValue = BigNumber::cleanUp($matches['integral'] . $fractional);
 
-                if ($scale < 0) {
-                    if ($unscaledValue !== '0') {
-                        $unscaledValue .= str_repeat('0', - $scale);
-                    }
-                    $scale = 0;
+            $scale = strlen($fractional) - $exponent;
+
+            if ($scale < 0) {
+                if ($unscaledValue !== '0') {
+                    $unscaledValue .= str_repeat('0', - $scale);
                 }
+                $scale = 0;
+            }
 
-                $result = new BigDecimal($unscaledValue, $scale);
+            $result = new BigDecimal($unscaledValue, $scale);
 
+            try {
                 switch (static::class) {
                     case BigInteger::class:
                         return $result->toBigInteger();
@@ -124,24 +142,24 @@ abstract class BigNumber
                     default:
                         return $result;
                 }
-            } else {
-                $integral = BigNumber::cleanUp($matches['integral']);
+            } catch (ArithmeticException $e) {
+                $className = substr(static::class, strrpos(static::class, '\\') + 1);
 
-                switch (static::class) {
-                    case BigDecimal::class:
-                        return new BigDecimal($integral);
-
-                    case BigRational::class:
-                        return new BigRational(new BigInteger($integral), new BigInteger('1'), false);
-
-                    default:
-                        return new BigInteger($integral);
-                }
+                throw new \InvalidArgumentException('Cannot convert value to a ' . $className . ' without losing precision.');
             }
-        } catch (ArithmeticException $e) {
-            $className = substr(static::class, strrpos(static::class, '\\') + 1);
+        } else {
+            $integral = BigNumber::cleanUp($matches['integral']);
 
-            throw new \InvalidArgumentException('Cannot convert value to a ' . $className . ' without losing precision.');
+            switch (static::class) {
+                case BigDecimal::class:
+                    return new BigDecimal($integral);
+
+                case BigRational::class:
+                    return new BigRational(new BigInteger($integral), new BigInteger('1'), false);
+
+                default:
+                    return new BigInteger($integral);
+            }
         }
     }
 
