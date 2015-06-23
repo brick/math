@@ -254,12 +254,15 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerMin
      *
-     * @param array $values The values to test.
-     * @param int   $index  The index of the minimum value in the test array.
+     * @param array  $values      The values to test.
+     * @param string $expectedMin The expected minimum value.
      */
-    public function testMin(array $values, $index)
+    public function testMin(array $values, $expectedMin)
     {
-        $this->assertTrue(BigDecimal::min(...$values)->isEqualTo($values[$index]));
+        $actualMin = BigDecimal::min(... $values);
+
+        $this->assertInstanceOf(BigDecimal::class, $actualMin);
+        $this->assertSame($expectedMin, (string) $actualMin);
     }
 
     /**
@@ -268,18 +271,18 @@ class BigDecimalTest extends AbstractTestCase
     public function providerMin()
     {
         return [
-            [[0, 1, -1], 2],
-            [[0, 1, -1, -1.2], 3],
-            [['1e30', '123456789123456789123456789', 2e25], 2],
-            [['1e30', '123456789123456789123456789', 2e26], 1],
-            [[0, '10', '5989', '-1'], 3],
-            [['-0.0000000000000000000000000000001', '0'], 0],
-            [['0.00000000000000000000000000000001', '0'], 1],
-            [['-1', '1', '2', '3', '-99.1'], 4],
-            [['999999999999999999999999999.99999999999', '1000000000000000000000000000'], 0],
-            [['-999999999999999999999999999.99999999999', '-1000000000000000000000000000'], 1],
-            [['9.9e50', '1e50'], 1],
-            [['9.9e50', '1e51'], 0],
+            [[0, 1, -1], '-1'],
+            [[0, 1, -1, -1.2], '-1.2'],
+            [['1e30', '123456789123456789123456789', 2e25], '20000000000000000000000000'],
+            [['1e30', '123456789123456789123456789', 2e26], '123456789123456789123456789'],
+            [[0, '10', '5989', '-3/3'], '-1'],
+            [['-0.0000000000000000000000000000001', '0'], '-0.0000000000000000000000000000001'],
+            [['0.00000000000000000000000000000001', '0'], '0'],
+            [['-1', '1', '2', '3', '-2973/30'], '-99.1'],
+            [['999999999999999999999999999.99999999999', '1000000000000000000000000000'], '999999999999999999999999999.99999999999'],
+            [['-999999999999999999999999999.99999999999', '-1000000000000000000000000000'], '-1000000000000000000000000000'],
+            [['9.9e50', '1e50'], '100000000000000000000000000000000000000000000000000'],
+            [['9.9e50', '1e51'], '990000000000000000000000000000000000000000000000000'],
         ];
     }
 
@@ -292,14 +295,25 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
+     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
+     */
+    public function testMinOfNonDecimalValuesThrowsException()
+    {
+        BigDecimal::min(1, '1/3');
+    }
+
+    /**
      * @dataProvider providerMax
      *
-     * @param array $values The values to test.
-     * @param int   $index  The index of the maximum value in the test array.
+     * @param array  $values      The values to test.
+     * @param string $expectedMax The expected maximum value.
      */
-    public function testMax(array $values, $index)
+    public function testMax(array $values, $expectedMax)
     {
-        $this->assertTrue(BigDecimal::max(...$values)->isEqualTo($values[$index]));
+        $actualMax = BigDecimal::max(... $values);
+
+        $this->assertInstanceOf(BigDecimal::class, $actualMax);
+        $this->assertSame($expectedMax, (string) $actualMax);
     }
 
     /**
@@ -308,22 +322,22 @@ class BigDecimalTest extends AbstractTestCase
     public function providerMax()
     {
         return [
-            [[0, 0.9, -1.00], 1],
-            [[0, 0.01, -1, -1.2], 1],
-            [[0, 0.01, -1, -1.2, '2e-1'], 4],
-            [['1e-30', '123456789123456789123456789', 2e25], 1],
-            [['1e-30', '123456789123456789123456789', 2e26], 2],
-            [[0, '10', '5989', '-1'], 2],
-            [[0, '10', '5989', '5989.000000000000000000000000000000001', '-1'], 3],
-            [[0, '10', '5989', '5989.000000000000000000000000000000001', '-1', '5990'], 5],
-            [['-0.0000000000000000000000000000001', '0'], 1],
-            [['0.00000000000000000000000000000001', '0'], 0],
-            [['-1', '1', '2', '3', '-99.1'], 3],
-            [['-1', '1', '2', '3', '-99.1', '3.1'], 5],
-            [['999999999999999999999999999.99999999999', '1000000000000000000000000000'], 1],
-            [['-999999999999999999999999999.99999999999', '-1000000000000000000000000000'], 0],
-            [['9.9e50', '1e50'], 0],
-            [['9.9e50', '1e51'], 1],
+            [[0, 0.9, -1.00], '0.9'],
+            [[0, 0.01, -1, -1.2], '0.01'],
+            [[0, 0.01, -1, -1.2, '2e-1'], '0.2'],
+            [['1e-30', '123456789123456789123456789', 2e25], '123456789123456789123456789'],
+            [['1e-30', '123456789123456789123456789', 2e26], '200000000000000000000000000'],
+            [[0, '10', '5989', '-1'], '5989'],
+            [[0, '10', '5989', '5989.000000000000000000000000000000001', '-1'], '5989.000000000000000000000000000000001'],
+            [[0, '10', '5989', '5989.000000000000000000000000000000001', '-1', '5990'], '5990'],
+            [['-0.0000000000000000000000000000001', 0], '0'],
+            [['0.00000000000000000000000000000001', '0'], '0.00000000000000000000000000000001'],
+            [['-1', '1', '2', '3', '-99.1'], '3'],
+            [['-1', '1', '2', '3', '-99.1', '31/10'], '3.1'],
+            [['999999999999999999999999999.99999999999', '1000000000000000000000000000'], '1000000000000000000000000000'],
+            [['-999999999999999999999999999.99999999999', '-1000000000000000000000000000'], '-999999999999999999999999999.99999999999'],
+            [['9.9e50', '1e50'], '990000000000000000000000000000000000000000000000000'],
+            [['9.9e50', '1e51'], '1000000000000000000000000000000000000000000000000000'],
         ];
     }
 
@@ -333,6 +347,14 @@ class BigDecimalTest extends AbstractTestCase
     public function testMaxOfZeroValuesThrowsException()
     {
         BigDecimal::max();
+    }
+
+    /**
+     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
+     */
+    public function testMaxOfNonDecimalValuesThrowsException()
+    {
+        BigDecimal::min(1, '3/7');
     }
 
     /**

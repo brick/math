@@ -121,6 +121,79 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerMin
+     *
+     * @param array  $values      The values to test.
+     * @param string $expectedMin The expected minimum value, in rational form.
+     */
+    public function testMin(array $values, $expectedMin)
+    {
+        $actualMin = BigRational::min(... $values);
+
+        $this->assertInstanceOf(BigRational::class, $actualMin);
+        $this->assertSame($expectedMin, (string) $actualMin);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerMin()
+    {
+        return [
+            [['1/2', '1/4', '1/3'], '1/4'],
+            [['1/2', '0.1', '1/3'], '1/10'],
+            [['-0.25', '-0.3', '-1/8', '123456789123456789123456789', 2e25], '-3/10'],
+            [['1e30', '123456789123456789123456789/3', 2e26], '123456789123456789123456789/3'],
+        ];
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testMinOfZeroValuesThrowsException()
+    {
+        BigRational::min();
+    }
+
+    /**
+     * @dataProvider providerMax
+     *
+     * @param array  $values      The values to test.
+     * @param string $expectedMax The expected maximum value, in rational form.
+     */
+    public function testMax(array $values, $expectedMax)
+    {
+        $actualMax = BigRational::max(... $values);
+
+        $this->assertInstanceOf(BigRational::class, $actualMax);
+        $this->assertSame($expectedMax, (string) $actualMax);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerMax()
+    {
+        return [
+            [['-5532146515641651651321321064580/32453', '-1/2', '-1/99'], '-1/99'],
+            [['1e-30', '123456789123456789123456789/2', 2e25], '123456789123456789123456789/2'],
+            [['999/1000', '1'], '1'],
+            [[0, 0.9, -1.00], '9/10'],
+            [[0, 0.01, -1, -1.2], '1/100'],
+            [['1e-30', '15185185062185185062185185047/123', 2e25], '15185185062185185062185185047/123'],
+            [['1e-30', '15185185062185185062185185047/123', 2e26], '200000000000000000000000000'],
+        ];
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testMaxOfZeroValuesThrowsException()
+    {
+        BigRational::max();
+    }
+
+    /**
      * @dataProvider providerPlus
      *
      * @param string $rational The rational number to test.

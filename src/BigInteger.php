@@ -136,60 +136,6 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the minimum of the given values.
-     *
-     * @param BigInteger|int|string ...$values The numbers to compare.
-     *
-     * @return BigInteger The minimum value.
-     *
-     * @throws \InvalidArgumentException If no values are given, or an invalid value is given.
-     */
-    public static function min(...$values)
-    {
-        $min = null;
-
-        foreach ($values as $value) {
-            $value = BigInteger::of($value);
-            if ($min === null || $value->isLessThan($min)) {
-                $min = $value;
-            }
-        }
-
-        if ($min === null) {
-            throw new \InvalidArgumentException(__METHOD__ . '() expects at least one value.');
-        }
-
-        return $min;
-    }
-
-    /**
-     * Returns the maximum of the given values.
-     *
-     * @param BigInteger|int|string ...$values The numbers to compare.
-     *
-     * @return BigInteger The maximum value.
-     *
-     * @throws \InvalidArgumentException If no values are given, or an invalid value is given.
-     */
-    public static function max(...$values)
-    {
-        $max = null;
-
-        foreach ($values as $value) {
-            $value = BigInteger::of($value);
-            if ($max === null || $value->isGreaterThan($max)) {
-                $max = $value;
-            }
-        }
-
-        if ($max === null) {
-            throw new \InvalidArgumentException(__METHOD__ . '() expects at least one value.');
-        }
-
-        return $max;
-    }
-
-    /**
      * Returns the sum of this number and the given one.
      *
      * @param BigInteger|int|string $that

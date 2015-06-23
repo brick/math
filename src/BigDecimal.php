@@ -89,60 +89,6 @@ final class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the minimum of the given values.
-     *
-     * @param BigDecimal|number|string ...$values The numbers to compare.
-     *
-     * @return BigDecimal The minimum value.
-     *
-     * @throws \InvalidArgumentException If no values are given, or an invalid value is given.
-     */
-    public static function min(...$values)
-    {
-        $min = null;
-
-        foreach ($values as $value) {
-            $value = BigDecimal::of($value);
-            if ($min === null || $value->isLessThan($min)) {
-                $min = $value;
-            }
-        }
-
-        if ($min === null) {
-            throw new \InvalidArgumentException(__METHOD__ . '() expects at least one value.');
-        }
-
-        return $min;
-    }
-
-    /**
-     * Returns the maximum of the given values.
-     *
-     * @param BigDecimal|number|string ...$values The numbers to compare.
-     *
-     * @return BigDecimal The maximum value.
-     *
-     * @throws \InvalidArgumentException If no values are given, or an invalid value is given.
-     */
-    public static function max(...$values)
-    {
-        $max = null;
-
-        foreach ($values as $value) {
-            $value = BigDecimal::of($value);
-            if ($max === null || $value->isGreaterThan($max)) {
-                $max = $value;
-            }
-        }
-
-        if ($max === null) {
-            throw new \InvalidArgumentException(__METHOD__ . '() expects at least one value.');
-        }
-
-        return $max;
-    }
-
-    /**
      * Returns the sum of this number and the given one.
      *
      * The result has a scale of `max($this->scale, $that->scale)`.

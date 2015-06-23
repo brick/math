@@ -343,12 +343,15 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerMin
      *
-     * @param array $values The values to test.
-     * @param int   $index The index of the minimum value in the test array.
+     * @param array  $values      The values to test.
+     * @param string $expectedMin The expected minimum value.
      */
-    public function testMin(array $values, $index)
+    public function testMin(array $values, $expectedMin)
     {
-        $this->assertTrue(BigInteger::min(...$values)->isEqualTo($values[$index]));
+        $actualMin = BigInteger::min(... $values);
+
+        $this->assertInstanceOf(BigInteger::class, $actualMin);
+        $this->assertSame($expectedMin, (string) $actualMin);
     }
 
     /**
@@ -357,13 +360,13 @@ class BigIntegerTest extends AbstractTestCase
     public function providerMin()
     {
         return [
-            [[0, 1, -1], 2],
-            [[0, '10', '5989'], 0],
-            [[0, '10', '5989', '-1'], 3],
-            [['-1', '1'], 0],
-            [['-1', '1', '2', '3', '-100'], 4],
-            [['999999999999999999999999999', '1000000000000000000000000000'], 0],
-            [['-999999999999999999999999999', '-1000000000000000000000000000'], 1]
+            [[0, 1, -1], '-1'],
+            [[0, '10', '5989'], '0'],
+            [[0, '10', '5989', '-1.00'], '-1'],
+            [['-2/2', '1'], '-1'],
+            [['-1.0', '1', '2', '-300/4', '-100'], '-100'],
+            [['999999999999999999999999999', '1000000000000000000000000000'], '999999999999999999999999999'],
+            [['-999999999999999999999999999', '-1000000000000000000000000000'], '-1000000000000000000000000000']
         ];
     }
 
@@ -376,14 +379,25 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
+     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
+     */
+    public function testMinOfNonIntegerValuesThrowsException()
+    {
+        BigInteger::min(1, 1.2);
+    }
+
+    /**
      * @dataProvider providerMax
      *
-     * @param array $values The values to test.
-     * @param int   $index The index of the maximum value in the test array.
+     * @param array  $values      The values to test.
+     * @param string $expectedMax The expected maximum value.
      */
-    public function testMax(array $values, $index)
+    public function testMax(array $values, $expectedMax)
     {
-        $this->assertTrue(BigInteger::max(...$values)->isEqualTo($values[$index]));
+        $actualMax = BigInteger::max(... $values);
+
+        $this->assertInstanceOf(BigInteger::class, $actualMax);
+        $this->assertSame($expectedMax, (string) $actualMax);
     }
 
     /**
@@ -392,14 +406,14 @@ class BigIntegerTest extends AbstractTestCase
     public function providerMax()
     {
         return [
-            [[0, 1, -1], 1],
-            [[0, '10', '5989'], 2],
-            [[0, '10', '5989', '-1'], 2],
-            [[0, '10', '5989', '-1', '6000'], 4],
-            [['-1', '0'], 1],
-            [['-1', '1', '2', '3', '-100'], 3],
-            [['999999999999999999999999999', '1000000000000000000000000000'], 1],
-            [['-999999999999999999999999999', '-1000000000000000000000000000'], 0]
+            [[0, 1, -1], '1'],
+            [[0, '10', '5989.0'], '5989'],
+            [[0, '10', '5989', '-1'], '5989'],
+            [[0, '10', '5989', '-1', 6000.0], '6000'],
+            [['-1', '0'], '0'],
+            [['-1', '1', '2', '27/9', '-100'], '3'],
+            [['999999999999999999999999999', '1000000000000000000000000000'], '1000000000000000000000000000'],
+            [['-999999999999999999999999999', '-1000000000000000000000000000'], '-999999999999999999999999999']
         ];
     }
 
@@ -409,6 +423,14 @@ class BigIntegerTest extends AbstractTestCase
     public function testMaxOfZeroValuesThrowsException()
     {
         BigInteger::max();
+    }
+
+    /**
+     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
+     */
+    public function testMaxOfNonIntegerValuesThrowsException()
+    {
+        BigInteger::max(1, '3/2');
     }
 
     /**

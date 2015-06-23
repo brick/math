@@ -2,6 +2,7 @@
 
 namespace Brick\Math;
 
+use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
@@ -146,6 +147,64 @@ abstract class BigNumber
                     return new BigInteger($integral);
             }
         }
+    }
+
+    /**
+     * Returns the minimum of the given values.
+     *
+     * @param BigNumber|number|string ...$values The numbers to compare.
+     *
+     * @return static The minimum value.
+     *
+     * @throws \InvalidArgumentException If no values are given.
+     * @throws ArithmeticException       If an argument is not valid.
+     */
+    public static function min(...$values)
+    {
+        $min = null;
+
+        foreach ($values as $value) {
+            $value = static::of($value);
+
+            if ($min === null || $value->isLessThan($min)) {
+                $min = $value;
+            }
+        }
+
+        if ($min === null) {
+            throw new \InvalidArgumentException(__METHOD__ . '() expects at least one value.');
+        }
+
+        return $min;
+    }
+
+    /**
+     * Returns the maximum of the given values.
+     *
+     * @param BigNumber|number|string ...$values The numbers to compare.
+     *
+     * @return static The maximum value.
+     *
+     * @throws \InvalidArgumentException If no values are given.
+     * @throws ArithmeticException       If an argument is not valid.
+     */
+    public static function max(...$values)
+    {
+        $max = null;
+
+        foreach ($values as $value) {
+            $value = static::of($value);
+
+            if ($max === null || $value->isGreaterThan($max)) {
+                $max = $value;
+            }
+        }
+
+        if ($max === null) {
+            throw new \InvalidArgumentException(__METHOD__ . '() expects at least one value.');
+        }
+
+        return $max;
     }
 
     /**
