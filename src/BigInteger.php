@@ -25,7 +25,7 @@ final class BigInteger extends BigNumber implements \Serializable
     private $value;
 
     /**
-     * Protected constructor. Use the factory methods.
+     * Protected constructor. Use a factory method to obtain an instance.
      *
      * @param string $value A string of digits, with optional leading minus sign.
      */

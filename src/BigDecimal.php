@@ -32,7 +32,7 @@ final class BigDecimal extends BigNumber implements \Serializable
     private $scale;
 
     /**
-     * Protected constructor. Use the factory methods.
+     * Protected constructor. Use a factory method to obtain an instance.
      *
      * @param string $value The unscaled value, validated.
      * @param int    $scale The scale, validated as a positive or zero integer.
@@ -45,7 +45,7 @@ final class BigDecimal extends BigNumber implements \Serializable
 
     /**
      * @param BigInteger|int|string $value An integer representing the unscaled value of the number.
-     * @param int                   $scale The scale of the number.
+     * @param int                   $scale The scale of the number, positive or zero.
      *
      * @return BigDecimal
      *

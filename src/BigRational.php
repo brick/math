@@ -3,6 +3,7 @@
 namespace Brick\Math;
 
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
@@ -20,7 +21,7 @@ final class BigRational extends BigNumber implements \Serializable
     private $numerator;
 
     /**
-     * The denominator.
+     * The denominator. Must not be zero.
      *
      * @var BigInteger
      */
@@ -58,12 +59,14 @@ final class BigRational extends BigNumber implements \Serializable
      * If the denominator is negative, the signs of both the numerator and the denominator
      * will be inverted to ensure that the denominator is always positive.
      *
-     * @param BigInteger|int|string $numerator   The numerator.
-     * @param BigInteger|int|string $denominator The denominator.
+     * @param BigNumber|number|string $numerator   The numerator.
+     * @param BigNumber|number|string $denominator The denominator.
      *
      * @return BigRational
      *
-     * @throws DivisionByZeroException If the denominator is zero.
+     * @throws NumberFormatException      If an argument does not represent a valid number.
+     * @throws RoundingNecessaryException If an argument represents a non-integer number.
+     * @throws DivisionByZeroException    If the denominator is zero.
      */
     public static function nd($numerator, $denominator)
     {
