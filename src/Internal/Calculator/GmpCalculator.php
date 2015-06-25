@@ -55,4 +55,12 @@ class GmpCalculator extends Calculator
     {
         return gmp_strval(gmp_pow($a, $e));
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function gcd($a, $b)
+    {
+        return gmp_strval(gmp_gcd($a, $b));
+    }
 }

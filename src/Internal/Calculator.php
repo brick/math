@@ -193,4 +193,30 @@ abstract class Calculator
      * @return string The power.
      */
     abstract public function pow($a, $e);
+
+    /**
+     * Returns the greatest common divisor of the two numbers.
+     *
+     * This method can be overridden by the concrete implementation if the underlying library
+     * has built-in support for GCD calculations.
+     *
+     * @param string $a The first number.
+     * @param string $b The second number.
+     *
+     * @return string The GCD, always positive, or zero if both arguments are zero.
+     */
+    public function gcd($a, $b)
+    {
+        if ($a === '0') {
+            return $this->abs($b);
+        }
+
+        if ($b === '0') {
+            return $this->abs($a);
+        }
+
+        list (, $r) = $this->div($a, $b);
+
+        return $this->gcd($b, $r);
+    }
 }

@@ -322,7 +322,7 @@ final class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns the greatest common divisor of this number and the given one.
      *
-     * The GCD is always positive.
+     * The GCD is always positive, unless both operands are zero, in which case it is zero.
      *
      * @param BigInteger|int|string $that
      *
@@ -332,15 +332,17 @@ final class BigInteger extends BigNumber implements \Serializable
     {
         $that = BigInteger::of($that);
 
-        if ($that->isZero()) {
-            return $this->abs();
+        if ($that->value === '0' && $this->value[0] !== '-') {
+            return $this;
         }
 
-        if ($this->isZero()) {
-            return $that->abs();
+        if ($this->value === '0' && $that->value[0] !== '-') {
+            return $that;
         }
 
-        return $that->gcd($this->remainder($that));
+        $value = Calculator::get()->gcd($this->value, $that->value);
+
+        return new BigInteger($value);
     }
 
     /**
