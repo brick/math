@@ -80,6 +80,32 @@ abstract class Calculator
     }
 
     /**
+     * Extracts the digits, sign, and length of the operands.
+     *
+     * @param string $a    The first operand.
+     * @param string $b    The second operand.
+     * @param string $aDig A variable to store the digits of the first operand.
+     * @param string $bDig A variable to store the digits of the second operand.
+     * @param bool   $aNeg A variable to store whether the first operand is negative.
+     * @param bool   $bNeg A variable to store whether the second operand is negative.
+     * @param bool   $aLen A variable to store the number of digits in the first operand.
+     * @param bool   $bLen A variable to store the number of digits in the second operand.
+     *
+     * @return void
+     */
+    final protected function init($a, $b, & $aDig, & $bDig, & $aNeg, & $bNeg, & $aLen, & $bLen)
+    {
+        $aNeg = ($a[0] === '-');
+        $bNeg = ($b[0] === '-');
+
+        $aDig = $aNeg ? substr($a, 1) : $a;
+        $bDig = $bNeg ? substr($b, 1) : $b;
+
+        $aLen = strlen($aDig);
+        $bLen = strlen($bDig);
+    }
+
+    /**
      * Returns the absolute value of a number.
      *
      * @param string $n The number.
@@ -141,7 +167,31 @@ abstract class Calculator
      */
     public function cmp($a, $b)
     {
-        return $this->sign($this->sub($a, $b));
+        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg, $aLen, $bLen);
+
+        if ($aNeg && ! $bNeg) {
+            return -1;
+        }
+
+        if ($bNeg && ! $aNeg) {
+            return 1;
+        }
+
+        if ($aLen < $bLen) {
+            $result = -1;
+        } elseif ($aLen > $bLen) {
+            $result = 1;
+        } else {
+            $result = strcmp($aDig, $bDig);
+
+            if ($result < 0) {
+                $result = -1;
+            } elseif ($result > 0) {
+                $result = 1;
+            }
+        }
+
+        return $aNeg ? -$result : $result;
     }
 
     /**
