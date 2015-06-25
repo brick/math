@@ -1,7 +1,7 @@
 Brick\Math
 ==========
 
-A library to work with arbitrary precision rational numbers.
+A library to work with arbitrary precision numbers.
 
 [![Build Status](https://secure.travis-ci.org/brick/math.svg?branch=master)](http://travis-ci.org/brick/math)
 [![Coverage Status](https://coveralls.io/repos/brick/math/badge.svg?branch=master)](https://coveralls.io/r/brick/math?branch=master)

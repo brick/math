@@ -155,6 +155,24 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function power($exponent)
+    {
+        $exponent = (int) $exponent;
+
+        if ($exponent === 1) {
+            return $this;
+        }
+
+        return new BigRational(
+            $this->numerator->power($exponent),
+            $this->denominator->power($exponent),
+            false
+        );
+    }
+
+    /**
      * Returns the reciprocal of this BigRational.
      *
      * The reciprocal has the numerator and denominator swapped.
@@ -197,8 +215,8 @@ final class BigRational extends BigNumber implements \Serializable
     {
         $gcd = $this->numerator->gcd($this->denominator);
 
-        $numerator = $this->numerator->dividedBy($gcd);
-        $denominator = $this->denominator->dividedBy($gcd);
+        $numerator = $this->numerator->quotient($gcd);
+        $denominator = $this->denominator->quotient($gcd);
 
         return new BigRational($numerator, $denominator, false);
     }
@@ -214,7 +232,7 @@ final class BigRational extends BigNumber implements \Serializable
 
         foreach ([2, 5] as $divisor) {
             do {
-                list ($quotient, $remainder) = $denominator->divideAndRemainder($divisor);
+                list ($quotient, $remainder) = $denominator->quotientAndRemainder($divisor);
 
                 if ($remainderIsZero = $remainder->isZero()) {
                     $denominator = $quotient;
@@ -272,7 +290,7 @@ final class BigRational extends BigNumber implements \Serializable
 
         foreach ([2, 5] as $divisor) {
             do {
-                list ($quotient, $remainder) = $denominator->divideAndRemainder($divisor);
+                list ($quotient, $remainder) = $denominator->quotientAndRemainder($divisor);
 
                 if ($remainderIsZero = $remainder->isZero()) {
                     $denominator = $quotient;
@@ -289,7 +307,7 @@ final class BigRational extends BigNumber implements \Serializable
         $maxDecimalPlaces = max($counts[2], $counts[5]);
 
         $result = BigDecimal::of($simplified->numerator)
-            ->dividedBy($simplified->denominator, RoundingMode::UNNECESSARY, $maxDecimalPlaces);
+            ->dividedByWithRounding($simplified->denominator, RoundingMode::UNNECESSARY, $maxDecimalPlaces);
 
         return $result->stripTrailingZeros();
     }

@@ -4,6 +4,7 @@ namespace Brick\Math;
 
 use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -136,11 +137,7 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the sum of this number and the given one.
-     *
-     * @param BigInteger|int|string $that
-     *
-     * @return BigInteger
+     * {@inheritdoc
      */
     public function plus($that)
     {
@@ -156,11 +153,7 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the difference of this number and the given one.
-     *
-     * @param BigInteger|int|string $that
-     *
-     * @return BigInteger
+     * {@inheritdoc}
      */
     public function minus($that)
     {
@@ -176,35 +169,63 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the result of the multiplication of this number and the given one.
-     *
-     * @param BigInteger|int|string $that
-     *
-     * @return BigInteger
+     * {@inheritdoc}
      */
     public function multipliedBy($that)
     {
-        $that = BigInteger::of($that);
+        $that = BigNumber::of($that);
 
-        if ($that->value === '1') {
-            return $this;
+        if ($that instanceof BigInteger) {
+            if ($that->value === '1') {
+                return $this;
+            }
+
+            $value = Calculator::get()->mul($this->value, $that->value);
+
+            return new BigInteger($value);
         }
 
-        $value = Calculator::get()->mul($this->value, $that->value);
+        return $that->multipliedBy($this)->toBigInteger();
+    }
 
-        return new BigInteger($value);
+    /**
+     * {@inheritdoc}
+     */
+    public function dividedBy($that)
+    {
+        $that = BigNumber::of($that);
+
+        if ($that instanceof BigInteger) {
+            if ($that->value === '1') {
+                return $this;
+            }
+
+            if ($that->value === '0') {
+                throw DivisionByZeroException::divisionByZero();
+            }
+
+            list ($quotient, $remainder) = Calculator::get()->div($this->value, $that->value);
+
+            if ($remainder !== '0') {
+                throw RoundingNecessaryException::roundingNecessary();
+            }
+
+            return new BigInteger($quotient);
+        }
+
+        return $this->toBigRational()->dividedBy($that)->toBigInteger();
     }
 
     /**
      * Returns the quotient of the division of this number and the given one.
      *
-     * @param BigInteger|int|string $that
+     * @param BigNumber|number|string $that The divisor. Must be convertible to an integer number.
      *
      * @return BigInteger
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function dividedBy($that)
+    public function quotient($that)
     {
         $that = BigInteger::of($that);
 
@@ -222,6 +243,28 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
+     * Returns the remainder of the division of this number and the given one.
+     *
+     * @param BigInteger|int|string $that
+     *
+     * @return BigInteger
+     *
+     * @throws DivisionByZeroException If the divisor is zero.
+     */
+    public function remainder($that)
+    {
+        $that = BigInteger::of($that);
+
+        if ($that->value === '0') {
+            throw DivisionByZeroException::divisionByZero();
+        }
+
+        list (, $remainder) = Calculator::get()->div($this->value, $that->value);
+
+        return new BigInteger($remainder);
+    }
+
+    /**
      * Returns the quotient and remainder of the division of this number and the given one.
      *
      * @param BigInteger|int|string $that The divisor.
@@ -230,7 +273,7 @@ final class BigInteger extends BigNumber implements \Serializable
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function divideAndRemainder($that)
+    public function quotientAndRemainder($that)
     {
         $that = BigInteger::of($that);
 
@@ -244,22 +287,6 @@ final class BigInteger extends BigNumber implements \Serializable
             new BigInteger($quotient),
             new BigInteger($remainder)
         ];
-    }
-
-    /**
-     * Returns the remainder of the division of this number and the given one.
-     *
-     * @param BigInteger|int|string $that
-     *
-     * @return BigInteger
-     */
-    public function remainder($that)
-    {
-        $that = BigInteger::of($that);
-
-        list (, $remainder) = Calculator::get()->div($this->value, $that->value);
-
-        return new BigInteger($remainder);
     }
 
     /**

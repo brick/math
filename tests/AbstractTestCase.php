@@ -15,7 +15,7 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
      * @param string     $expected The expected value as a string.
      * @param BigInteger $actual   The BigInteger instance to test.
      */
-    protected function assertBigIntegerEquals($expected, BigInteger $actual)
+    final protected function assertBigIntegerEquals($expected, BigInteger $actual)
     {
         $this->assertSame($expected, (string) $actual);
     }
@@ -25,7 +25,7 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
      * @param int        $scale         The expected scale.
      * @param BigDecimal $actual        The BigDecimal instance to test.
      */
-    protected function assertBigDecimalEquals($unscaledValue, $scale, BigDecimal $actual)
+    final protected function assertBigDecimalEquals($unscaledValue, $scale, BigDecimal $actual)
     {
         $this->assertSame($unscaledValue, $actual->getUnscaledValue());
         $this->assertSame($scale, $actual->getScale());
@@ -36,9 +36,19 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
      * @param string      $denominator
      * @param BigRational $actual
      */
-    protected function assertBigRationalEquals($numerator, $denominator, BigRational $actual)
+    final protected function assertBigRationalEquals($numerator, $denominator, BigRational $actual)
     {
         $this->assertSame($numerator, (string) $actual->getNumerator());
         $this->assertSame($denominator, (string) $actual->getDenominator());
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    final protected function isException($name)
+    {
+        return substr($name, -9) === 'Exception';
     }
 }

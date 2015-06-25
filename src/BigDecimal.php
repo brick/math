@@ -89,13 +89,7 @@ final class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the sum of this number and the given one.
-     *
-     * The result has a scale of `max($this->scale, $that->scale)`.
-     *
-     * @param BigDecimal|number|string $that
-     *
-     * @return BigDecimal
+     * {@inheritdoc}
      */
     public function plus($that)
     {
@@ -114,13 +108,7 @@ final class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the difference of this number and the given one.
-     *
-     * The result has a scale of `max($this->scale, $that->scale)`.
-     *
-     * @param BigDecimal|number|string $that
-     *
-     * @return BigDecimal
+     * {@inheritdoc}
      */
     public function minus($that)
     {
@@ -139,26 +127,36 @@ final class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the result of the multiplication of this number and the given one.
-     *
-     * The result has a scale of `$this->scale + $that->scale`.
-     *
-     * @param BigDecimal|number|string $that
-     *
-     * @return BigDecimal
+     * {@inheritdoc}
      */
     public function multipliedBy($that)
     {
-        $that = BigDecimal::of($that);
+        $that = BigNumber::of($that);
 
-        if ($that->value === '1' && $that->scale === 0) {
-            return $this;
+        if ($that instanceof BigInteger) {
+            $that = $that->toBigDecimal();
         }
 
-        $value = Calculator::get()->mul($this->value, $that->value);
-        $scale = $this->scale + $that->scale;
+        if ($that instanceof BigDecimal) {
+            if ($that->value === '1' && $that->scale === 0) {
+                return $this;
+            }
 
-        return new BigDecimal($value, $scale);
+            $value = Calculator::get()->mul($this->value, $that->value);
+            $scale = $this->scale + $that->scale;
+
+            return new BigDecimal($value, $scale);
+        }
+
+        return $that->multipliedBy($this)->toBigDecimal();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dividedBy($that)
+    {
+        return $this->toBigRational()->dividedBy($that)->toBigDecimal();
     }
 
     /**
@@ -174,7 +172,7 @@ final class BigDecimal extends BigNumber implements \Serializable
      * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided and rounding was necessary.
      * @throws \InvalidArgumentException  If any of the arguments is not valid.
      */
-    public function dividedBy($that, $roundingMode = RoundingMode::UNNECESSARY, $scale = null)
+    public function dividedByWithRounding($that, $roundingMode = RoundingMode::UNNECESSARY, $scale = null)
     {
         $that = BigDecimal::of($that);
 
@@ -372,7 +370,7 @@ final class BigDecimal extends BigNumber implements \Serializable
             return $this;
         }
 
-        return $this->dividedBy(1, $roundingMode, $scale);
+        return $this->dividedByWithRounding(1, $roundingMode, $scale);
     }
 
     /**
@@ -572,7 +570,7 @@ final class BigDecimal extends BigNumber implements \Serializable
         if ($this->scale === 0) {
             $zeroScaleDecimal = $this;
         } else {
-            $zeroScaleDecimal = $this->dividedBy(1, RoundingMode::UNNECESSARY, 0);
+            $zeroScaleDecimal = $this->dividedByWithRounding(1, RoundingMode::UNNECESSARY, 0);
         }
 
         return BigInteger::of($zeroScaleDecimal->value);

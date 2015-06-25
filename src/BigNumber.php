@@ -236,11 +236,66 @@ abstract class BigNumber
     }
 
     /**
+     * Returns the sum of this number and the given one.
+     *
+     * @param BigNumber|number|string $that
+     *
+     * @return static
+     *
+     * @throws ArithmeticException If the number is not valid, or the result cannot be represented by the current type.
+     */
+    abstract public function plus($that);
+
+    /**
+     * Returns the difference of this number and the given one.
+     *
+     * @param BigNumber|number|string $that
+     *
+     * @return static
+     *
+     * @throws ArithmeticException If the number is not valid, or the result cannot be represented by the current type.
+     */
+    abstract public function minus($that);
+
+    /**
+     * Returns the product of this number and the given one.
+     *
+     * @param BigNumber|number|string $that
+     *
+     * @return static
+     *
+     * @throws ArithmeticException If the number is not valid, or the result cannot be represented by the current type.
+     */
+    abstract public function multipliedBy($that);
+
+    /**
+     * Returns the exact result of the division of this number by the given one.
+     *
+     * @param BigNumber|number|string $that
+     *
+     * @return static
+     *
+     * @throws ArithmeticException If the number is not valid, or the result cannot be represented by the current type, or the divisor is zero.
+     */
+    abstract public function dividedBy($that);
+
+    /**
+     * @param int $exponent
+     *
+     * @return static
+     *
+     * @throws ArithmeticException If the number is not valid.
+     */
+    abstract public function power($exponent);
+
+    /**
      * Compares this number to the given one.
      *
      * @param BigNumber|number|string $that
      *
      * @return int [-1,0,1]
+     *
+     * @throws ArithmeticException If the number is not valid.
      */
     abstract public function compareTo($that);
 
