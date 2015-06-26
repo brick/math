@@ -138,26 +138,6 @@ abstract class Calculator
     }
 
     /**
-     * Returns an integer representing the sign of the given number.
-     *
-     * @param string $n
-     *
-     * @return int [-1, 0, 1] If the number is negative, zero, or positive.
-     */
-    public function sign($n)
-    {
-        if ($n === '0') {
-            return 0;
-        }
-
-        if ($n[0] === '-') {
-            return -1;
-        }
-
-        return 1;
-    }
-
-    /**
      * Compares two numbers.
      *
      * @param string $a The first number.
