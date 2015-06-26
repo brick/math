@@ -156,7 +156,15 @@ final class BigDecimal extends BigNumber implements \Serializable
      */
     public function dividedBy($that)
     {
-        return $this->toBigRational()->dividedBy($that)->toBigDecimal();
+        $that = BigDecimal::of($that);
+
+        $result = $this->toBigRational()->dividedBy($that->toBigRational())->toBigDecimal();
+
+        if ($result->scale < $this->scale) {
+            $result = $result->withScale($this->scale);
+        }
+
+        return $result;
     }
 
     /**
@@ -266,32 +274,6 @@ final class BigDecimal extends BigNumber implements \Serializable
         }
 
         return new BigDecimal($result, $scale);
-    }
-
-    /**
-     * Returns the result of the division of this number and the given one.
-     *
-     * The result has a minimum scale of `$this->scale`, expandable to accommodate the exact result of the division.
-     *
-     * If the result cannot be represented as a finite decimal number, an exception is thrown.
-     *
-     * @param BigDecimal|number|string $that The divisor.
-     *
-     * @return BigDecimal
-     *
-     * @throws RoundingNecessaryException If the result cannot be represented as a finite decimal number.
-     */
-    public function dividedByExact($that)
-    {
-        $that = BigDecimal::of($that);
-
-        $result = $this->toBigRational()->dividedBy($that->toBigRational())->toBigDecimal();
-
-        if ($result->scale < $this->scale) {
-            $result = $result->withScale($this->scale);
-        }
-
-        return $result;
     }
 
     /**
