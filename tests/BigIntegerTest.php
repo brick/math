@@ -169,6 +169,13 @@ class BigIntegerTest extends AbstractTestCase
             ['-00', 16, '0'],
             ['+00', 16, '0'],
 
+            ['1', 10, '1'],
+            ['-1', 10, '-1'],
+            ['+1', 10, '1'],
+            ['01', 8, '1'],
+            ['-01', 8, '-1'],
+            ['+01', 8, '1'],
+
             ['123', 10, '123'],
             ['+456', 10, '456'],
             ['-789', 10, '-789'],
@@ -518,7 +525,9 @@ class BigIntegerTest extends AbstractTestCase
             ['15892588375910581333', '2485910409339228962451', '39507550875019745254366764864945838527183'],
             ['341581435989834012309', '-91050393818389238433', '-31101124267925302088072082300643257871797'],
             ['-1204902920503999920003', '1984389583950290232332', '-2390996805119422027350037939263960284136996'],
-            ['-991230349304902390122', '-3483910549230593053437', '3453357870660875087266990729629471366949314']
+            ['-991230349304902390122', '-3483910549230593053437', '3453357870660875087266990729629471366949314'],
+            ['1274837942798479387498237897498734984', '2.5', '3187094856996198468745594743746837460'],
+            ['1274837942798479387498237897498734984', '1/2', '637418971399239693749118948749367492'],
         ];
     }
 
@@ -564,32 +573,15 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerQuotient
+     * @dataProvider providerQuotientAndRemainder
      *
-     * @param string $a The base number.
-     * @param string $b The divisor.
-     * @param string $r The expected result.
+     * @param string $dividend The dividend.
+     * @param string $divisor  The divisor.
+     * @param string $quotient The expected quotient.
      */
-    public function testQuotient($a, $b, $r)
+    public function testQuotient($dividend, $divisor, $quotient)
     {
-        $this->assertBigIntegerEquals($r, BigInteger::of($a)->quotient($b));
-    }
-
-    /**
-     * @return array
-     */
-    public function providerQuotient()
-    {
-        return [
-            ['123456789098765432101234567890987654321', '1', '123456789098765432101234567890987654321'],
-            ['123456789098765432101234567890987654321', '-1', '-123456789098765432101234567890987654321'],
-            ['1282493059039502950823948435791053205342314', '24342491090593053', '52685366270303839158198740'],
-            ['1000000000000000000000000000000000000000000000', '7777777777777777', '128571428571428584285714285714'],
-            ['999999999999999999999999999999999999999999999', '22221222222', '45002025091579141312274843781092897'],
-            ['49283205308081983923480483094304390249024223', '-23981985358744892239240813', '-2055009398548863185'],
-            ['-8378278174814983902084304176539029302438924', '384758527893793829309012129991', '-21775419041855'],
-            ['-444444444444444444444444444444444444411111', '-33333333333333', '13333333333333466666666666667']
-        ];
+        $this->assertBigIntegerEquals($quotient, BigInteger::of($dividend)->quotient($divisor));
     }
 
     /**
@@ -605,6 +597,27 @@ class BigIntegerTest extends AbstractTestCase
      *
      * @param string $dividend  The dividend.
      * @param string $divisor   The divisor.
+     * @param string $quotient  The expected quotient (ignore for this test).
+     * @param string $remainder The expected remainder.
+     */
+    public function testRemainder($dividend, $divisor, $quotient, $remainder)
+    {
+        $this->assertBigIntegerEquals($remainder, BigInteger::of($dividend)->remainder($divisor));
+    }
+
+    /**
+     * @expectedException \Brick\Math\Exception\DivisionByZeroException
+     */
+    public function testRemainerOfZeroThrowsException()
+    {
+        BigInteger::of(1)->remainder(0);
+    }
+
+    /**
+     * @dataProvider providerQuotientAndRemainder
+     *
+     * @param string $dividend  The dividend.
+     * @param string $divisor   The divisor.
      * @param string $quotient  The expected quotient.
      * @param string $remainder The expected remainder.
      */
@@ -612,8 +625,16 @@ class BigIntegerTest extends AbstractTestCase
     {
         list ($q, $r) = BigInteger::of($dividend)->quotientAndRemainder($divisor);
 
-        $this->assertSame($quotient, (string) $q);
-        $this->assertSame($remainder, (string) $r);
+        $this->assertBigIntegerEquals($quotient, $q);
+        $this->assertBigIntegerEquals($remainder, $r);
+    }
+
+    /**
+     * @expectedException \Brick\Math\Exception\DivisionByZeroException
+     */
+    public function testQuotientAndRemainerOfZeroThrowsException()
+    {
+        BigInteger::of(1)->quotientAndRemainder(0);
     }
 
     /**
@@ -667,6 +688,15 @@ class BigIntegerTest extends AbstractTestCase
             ['123456789123456789123456789', '-87654321987654321', '-1408450676', '65623397056685793'],
             ['-123456789123456789123456789', '7654321987654321', '-16129030020', '-1834176331740369'],
             ['-123456789123456789123456789', '-654321987654321', '188678955396', '-205094497790673'],
+
+            ['123456789098765432101234567890987654321', '1', '123456789098765432101234567890987654321', '0'],
+            ['123456789098765432101234567890987654321', '-1', '-123456789098765432101234567890987654321', '0'],
+            ['1282493059039502950823948435791053205342314', '24342491090593053', '52685366270303839158198740', '4167539367989094'],
+            ['1000000000000000000000000000000000000000000000', '7777777777777777', '128571428571428584285714285714', '2232222222222222'],
+            ['999999999999999999999999999999999999999999999', '22221222222', '45002025091579141312274843781092897', '13737242865'],
+            ['49283205308081983923480483094304390249024223', '-23981985358744892239240813', '-2055009398548863185', '20719258837232321643854818'],
+            ['-8378278174814983902084304176539029302438924', '384758527893793829309012129991', '-21775419041855', '-367584271343844173835372665619'],
+            ['-444444444444444444444444444444444444411111', '-33333333333333', '13333333333333466666666666667', '-33333333300000'],
         ];
     }
 
@@ -676,21 +706,6 @@ class BigIntegerTest extends AbstractTestCase
     public function testQuotientAndRemainderByZeroThrowsException()
     {
         BigInteger::of(1)->quotientAndRemainder(0);
-    }
-
-    /**
-     * @dataProvider providerQuotientAndRemainder
-     *
-     * @param string $dividend  The dividend.
-     * @param string $divisor   The divisor.
-     * @param string $quotient  The expected quotient (ignore for this test).
-     * @param string $remainder The expected remainder.
-     */
-    public function testRemainder($dividend, $divisor, $quotient, $remainder)
-    {
-        list (, $r) = BigInteger::of($dividend)->quotientAndRemainder($divisor);
-
-        $this->assertSame($remainder, (string) $r);
     }
 
     /**
