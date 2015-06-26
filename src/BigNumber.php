@@ -150,6 +150,18 @@ abstract class BigNumber
     }
 
     /**
+     * Proxy method to access protected constructors from sibling classes.
+     *
+     * @param mixed ...$args The arguments to the constructor.
+     *
+     * @return static
+     */
+    protected static function create(... $args)
+    {
+        return new static(... $args);
+    }
+
+    /**
      * Returns the minimum of the given values.
      *
      * @param BigNumber|number|string ...$values The numbers to compare.

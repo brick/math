@@ -400,7 +400,7 @@ final class BigInteger extends BigNumber implements \Serializable
      */
     public function toBigDecimal()
     {
-        return BigDecimal::of($this->value);
+        return BigDecimal::create($this->value);
     }
 
     /**
@@ -408,7 +408,7 @@ final class BigInteger extends BigNumber implements \Serializable
      */
     public function toBigRational()
     {
-        return BigRational::nd($this->value, 1);
+        return BigRational::create($this, new BigInteger('1'), false);
     }
 
     /**

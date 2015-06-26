@@ -555,7 +555,7 @@ final class BigDecimal extends BigNumber implements \Serializable
             $zeroScaleDecimal = $this->dividedByWithRounding(1, RoundingMode::UNNECESSARY, 0);
         }
 
-        return BigInteger::of($zeroScaleDecimal->value);
+        return BigInteger::create($zeroScaleDecimal->value);
     }
 
     /**
@@ -571,10 +571,10 @@ final class BigDecimal extends BigNumber implements \Serializable
      */
     public function toBigRational()
     {
-        $numerator = $this->value;
-        $denominator = '1' . str_repeat('0', $this->scale);
+        $numerator = BigInteger::create($this->value);
+        $denominator = BigInteger::create('1' . str_repeat('0', $this->scale));
 
-        return BigRational::nd($numerator, $denominator)->simplified();
+        return BigRational::create($numerator, $denominator, false)->simplified();
     }
 
     /**
