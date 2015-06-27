@@ -93,9 +93,7 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * @param BigNumber|number|string $that
-     *
-     * @return BigRational
+     * {@inheritdoc}
      */
     public function plus($that)
     {
@@ -109,9 +107,7 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * @param BigNumber|number|string $that
-     *
-     * @return BigRational
+     * {@inheritdoc}
      */
     public function minus($that)
     {
@@ -125,9 +121,7 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * @param BigNumber|number|string $that
-     *
-     * @return BigRational
+     * {@inheritdoc}
      */
     public function multipliedBy($that)
     {
@@ -140,9 +134,7 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * @param BigNumber|number|string $that
-     *
-     * @return BigRational
+     * {@inheritdoc}
      */
     public function dividedBy($that)
     {

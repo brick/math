@@ -131,24 +131,16 @@ final class BigDecimal extends BigNumber implements \Serializable
      */
     public function multipliedBy($that)
     {
-        $that = BigNumber::of($that);
+        $that = BigDecimal::of($that);
 
-        if ($that instanceof BigInteger) {
-            $that = $that->toBigDecimal();
+        if ($that->value === '1' && $that->scale === 0) {
+            return $this;
         }
 
-        if ($that instanceof BigDecimal) {
-            if ($that->value === '1' && $that->scale === 0) {
-                return $this;
-            }
+        $value = Calculator::get()->mul($this->value, $that->value);
+        $scale = $this->scale + $that->scale;
 
-            $value = Calculator::get()->mul($this->value, $that->value);
-            $scale = $this->scale + $that->scale;
-
-            return new BigDecimal($value, $scale);
-        }
-
-        return $that->multipliedBy($this)->toBigDecimal();
+        return new BigDecimal($value, $scale);
     }
 
     /**
@@ -165,6 +157,28 @@ final class BigDecimal extends BigNumber implements \Serializable
         }
 
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function power($exponent)
+    {
+        $exponent = (int) $exponent;
+
+        if ($exponent === 1) {
+            return $this;
+        }
+
+        if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
+            throw new \InvalidArgumentException(sprintf(
+                'The exponent %d is not in the range 0 to %d.',
+                $exponent,
+                Calculator::MAX_POWER
+            ));
+        }
+
+        return new BigDecimal(Calculator::get()->pow($this->value, $exponent), $this->scale * $exponent);
     }
 
     /**
@@ -302,36 +316,6 @@ final class BigDecimal extends BigNumber implements \Serializable
         $remainder = new BigDecimal($remainder, $scale);
 
         return [$quotient, $remainder];
-    }
-
-    /**
-     * Returns this number exponentiated.
-     *
-     * The exponent has a limit of 1 million.
-     *
-     * @param int $exponent The exponent, between 0 and 1,000,000.
-     *
-     * @return BigDecimal
-     *
-     * @throws \InvalidArgumentException If the exponent is not in the allowed range.
-     */
-    public function power($exponent)
-    {
-        $exponent = (int) $exponent;
-
-        if ($exponent === 1) {
-            return $this;
-        }
-
-        if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
-            throw new \InvalidArgumentException(sprintf(
-                'The exponent %d is not in the range 0 to %d.',
-                $exponent,
-                Calculator::MAX_POWER
-            ));
-        }
-
-        return new BigDecimal(Calculator::get()->pow($this->value, $exponent), $this->scale * $exponent);
     }
 
     /**

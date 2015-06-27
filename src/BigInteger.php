@@ -173,19 +173,15 @@ final class BigInteger extends BigNumber implements \Serializable
      */
     public function multipliedBy($that)
     {
-        $that = BigNumber::of($that);
+        $that = BigInteger::of($that);
 
-        if ($that instanceof BigInteger) {
-            if ($that->value === '1') {
-                return $this;
-            }
-
-            $value = Calculator::get()->mul($this->value, $that->value);
-
-            return new BigInteger($value);
+        if ($that->value === '1') {
+            return $this;
         }
 
-        return $that->multipliedBy($this)->toBigInteger();
+        $value = Calculator::get()->mul($this->value, $that->value);
+
+        return new BigInteger($value);
     }
 
     /**
@@ -193,27 +189,45 @@ final class BigInteger extends BigNumber implements \Serializable
      */
     public function dividedBy($that)
     {
-        $that = BigNumber::of($that);
+        $that = BigInteger::of($that);
 
-        if ($that instanceof BigInteger) {
-            if ($that->value === '1') {
-                return $this;
-            }
-
-            if ($that->value === '0') {
-                throw DivisionByZeroException::divisionByZero();
-            }
-
-            list ($quotient, $remainder) = Calculator::get()->div($this->value, $that->value);
-
-            if ($remainder !== '0') {
-                throw RoundingNecessaryException::roundingNecessary();
-            }
-
-            return new BigInteger($quotient);
+        if ($that->value === '1') {
+            return $this;
         }
 
-        return $this->toBigRational()->dividedBy($that)->toBigInteger();
+        if ($that->value === '0') {
+            throw DivisionByZeroException::divisionByZero();
+        }
+
+        list ($quotient, $remainder) = Calculator::get()->div($this->value, $that->value);
+
+        if ($remainder !== '0') {
+            throw RoundingNecessaryException::roundingNecessary();
+        }
+
+        return new BigInteger($quotient);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function power($exponent)
+    {
+        $exponent = (int) $exponent;
+
+        if ($exponent === 1) {
+            return $this;
+        }
+
+        if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
+            throw new \InvalidArgumentException(sprintf(
+                'The exponent %d is not in the range 0 to %d.',
+                $exponent,
+                Calculator::MAX_POWER
+            ));
+        }
+
+        return new BigInteger(Calculator::get()->pow($this->value, $exponent));
     }
 
     /**
@@ -287,36 +301,6 @@ final class BigInteger extends BigNumber implements \Serializable
             new BigInteger($quotient),
             new BigInteger($remainder)
         ];
-    }
-
-    /**
-     * Returns this number exponentiated.
-     *
-     * The exponent has a limit of 1 million.
-     *
-     * @param int $exponent The exponent, between 0 and 1,000,000.
-     *
-     * @return BigInteger
-     *
-     * @throws \InvalidArgumentException If the exponent is not in the allowed range.
-     */
-    public function power($exponent)
-    {
-        $exponent = (int) $exponent;
-
-        if ($exponent === 1) {
-            return $this;
-        }
-
-        if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
-            throw new \InvalidArgumentException(sprintf(
-                'The exponent %d is not in the range 0 to %d.',
-                $exponent,
-                Calculator::MAX_POWER
-            ));
-        }
-
-        return new BigInteger(Calculator::get()->pow($this->value, $exponent));
     }
 
     /**

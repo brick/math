@@ -250,6 +250,8 @@ abstract class BigNumber
     /**
      * Returns the sum of this number and the given one.
      *
+     * The given number must be convertible to an instance of the class this method is called on.
+     *
      * @param BigNumber|number|string $that
      *
      * @return static
@@ -260,6 +262,8 @@ abstract class BigNumber
 
     /**
      * Returns the difference of this number and the given one.
+     *
+     * The given number must be convertible to an instance of the class this method is called on.
      *
      * @param BigNumber|number|string $that
      *
@@ -272,6 +276,8 @@ abstract class BigNumber
     /**
      * Returns the product of this number and the given one.
      *
+     * The given number must be convertible to an instance of the class this method is called on.
+     *
      * @param BigNumber|number|string $that
      *
      * @return static
@@ -282,6 +288,8 @@ abstract class BigNumber
 
     /**
      * Returns the exact result of the division of this number by the given one.
+     *
+     * The given number must be convertible to an instance of the class this method is called on.
      *
      * @param BigNumber|number|string $that
      *
