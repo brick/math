@@ -168,19 +168,15 @@ final class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the result of the division of this number and the given one.
+     * Divides this number by the given divisor, to the given scale.
      *
      * @param BigDecimal|number|string $that         The divisor.
-     * @param int                      $roundingMode The rounding mode.
-     * @param int|null                 $scale        The desired scale, or null to use the scale of this number.
+     * @param int                      $scale        The desired scale.
+     * @param int                      $roundingMode An optional rounding mode.
      *
      * @return BigDecimal
-     *
-     * @throws DivisionByZeroException    If the divisor is zero.
-     * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided and rounding was necessary.
-     * @throws \InvalidArgumentException  If any of the arguments is not valid.
      */
-    public function dividedByWithRounding($that, $roundingMode = RoundingMode::UNNECESSARY, $scale = null)
+    public function dividedToScale($that, $scale, $roundingMode = RoundingMode::UNNECESSARY)
     {
         $that = BigDecimal::of($that);
 
@@ -352,7 +348,7 @@ final class BigDecimal extends BigNumber implements \Serializable
             return $this;
         }
 
-        return $this->dividedByWithRounding(1, $roundingMode, $scale);
+        return $this->dividedToScale(1, $scale, $roundingMode);
     }
 
     /**
@@ -552,7 +548,7 @@ final class BigDecimal extends BigNumber implements \Serializable
         if ($this->scale === 0) {
             $zeroScaleDecimal = $this;
         } else {
-            $zeroScaleDecimal = $this->dividedByWithRounding(1, RoundingMode::UNNECESSARY, 0);
+            $zeroScaleDecimal = $this->dividedToScale(1, 0);
         }
 
         return BigInteger::create($zeroScaleDecimal->value);

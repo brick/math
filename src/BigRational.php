@@ -306,10 +306,10 @@ final class BigRational extends BigNumber implements \Serializable
 
         $maxDecimalPlaces = max($counts[2], $counts[5]);
 
-        $result = $simplified->numerator->toBigDecimal()
-            ->dividedByWithRounding($simplified->denominator, RoundingMode::UNNECESSARY, $maxDecimalPlaces);
-
-        return $result->stripTrailingZeros();
+        return $simplified->numerator
+            ->toBigDecimal()
+            ->dividedToScale($simplified->denominator, $maxDecimalPlaces)
+            ->stripTrailingZeros();
     }
 
     /**
