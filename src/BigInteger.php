@@ -137,7 +137,7 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * {@inheritdoc
+     * {@inheritdoc}
      */
     public function plus($that)
     {
