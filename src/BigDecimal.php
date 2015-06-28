@@ -150,7 +150,31 @@ final class BigDecimal extends BigNumber implements \Serializable
     {
         $that = BigDecimal::of($that);
 
-        $result = $this->toBigRational()->dividedBy($that->toBigRational())->toBigDecimal();
+        if ($that->value === '0') {
+            throw DivisionByZeroException::denominatorMustNotBeZero();
+        }
+
+        $this->scaleValues($this, $that, $a, $b);
+
+        $d = rtrim($b, '0');
+        $scale = strlen($b) - strlen($d);
+
+        $calculator = Calculator::get();
+
+        foreach ([5, 2] as $prime) {
+            for (;;) {
+                $lastDigit = (int) substr($d, -1);
+
+                if ($lastDigit % $prime !== 0) {
+                    break;
+                }
+
+                list ($d) = $calculator->div($d, (string) $prime);
+                $scale++;
+            }
+        }
+
+        $result = $this->dividedToScale($that, $scale)->stripTrailingZeros();
 
         if ($result->scale < $this->scale) {
             $result = $result->withScale($this->scale);

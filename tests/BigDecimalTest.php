@@ -3,6 +3,7 @@
 namespace Brick\Math\Tests;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\RoundingMode;
 use Brick\Math\Exception\RoundingNecessaryException;
 
@@ -633,17 +634,20 @@ class BigDecimalTest extends AbstractTestCase
      *
      * @param string|number $number   The number to divide.
      * @param string|number $divisor  The divisor.
-     * @param string|null   $expected The expected result, or null if an exception is expected.
+     * @param string        $expected The expected result, or a class name if an exception is expected.
      */
     public function testDividedBy($number, $divisor, $expected)
     {
-        if ($expected === null) {
-            $this->setExpectedException(RoundingNecessaryException::class);
+        $number = BigDecimal::of($number);
+
+        if ($this->isException($expected)) {
+            $this->setExpectedException($expected);
         }
 
-        $actual = BigDecimal::of($number)->dividedBy($divisor);
+        $actual = $number->dividedBy($divisor);
 
-        if ($expected !== null) {
+        if (! $this->isException($expected)) {
+            $this->assertInstanceOf(BigDecimal::class, $actual);
             $this->assertSame($expected, (string) $actual);
         }
     }
@@ -657,13 +661,13 @@ class BigDecimalTest extends AbstractTestCase
             [1, 1, '1'],
             ['1.0', '1.00', '1.0'],
             [1, 2, '0.5'],
-            [1, 3, null],
+            [1, 3, RoundingNecessaryException::class],
             [1, 4, '0.25'],
             [1, 5, '0.2'],
-            [1, 6, null],
-            [1, 7, null],
+            [1, 6, RoundingNecessaryException::class],
+            [1, 7, RoundingNecessaryException::class],
             [1, 8, '0.125'],
-            [1, 9, null],
+            [1, 9, RoundingNecessaryException::class],
             [1, 10, '0.1'],
             ['1.0', 2, '0.5'],
             ['1.00', 2, '0.50'],
@@ -675,6 +679,8 @@ class BigDecimalTest extends AbstractTestCase
             ['1234.5678', '4', '308.64195'],
             ['1234.5678', '8', '154.320975'],
             ['1234.5678', '6.4', '192.90121875'],
+            ['123', '0', DivisionByZeroException::class],
+            [-789, '0.0', DivisionByZeroException::class],
         ];
     }
 

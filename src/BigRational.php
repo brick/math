@@ -271,37 +271,7 @@ final class BigRational extends BigNumber implements \Serializable
      */
     public function toBigDecimal()
     {
-        $simplified = $this->simplified();
-
-        $denominator = $simplified->denominator;
-
-        $counts = [
-            2 => 0,
-            5 => 0
-        ];
-
-        foreach ([2, 5] as $divisor) {
-            do {
-                list ($quotient, $remainder) = $denominator->quotientAndRemainder($divisor);
-
-                if ($remainderIsZero = $remainder->isZero()) {
-                    $denominator = $quotient;
-                    $counts[$divisor]++;
-                }
-            }
-            while ($remainderIsZero);
-        }
-
-        if (! $denominator->isEqualTo(1)) {
-            throw new RoundingNecessaryException('This rational number cannot be represented as a finite decimal number without rounding.');
-        }
-
-        $maxDecimalPlaces = max($counts[2], $counts[5]);
-
-        return $simplified->numerator
-            ->toBigDecimal()
-            ->dividedToScale($simplified->denominator, $maxDecimalPlaces)
-            ->stripTrailingZeros();
+        return $this->numerator->toBigDecimal()->dividedBy($this->denominator);
     }
 
     /**
