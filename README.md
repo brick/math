@@ -145,7 +145,7 @@ Rounding mode  | Description
 `UP`           | Rounds away from zero.
 `DOWN`         | Rounds towards zero.
 `CEILING`      | Rounds towards positive infinity. If the result is positive, behaves as for `UP`; if negative, behaves as for `DOWN`.
-`FLOOR`        | Rounds towards negative infinity. If the result is positive, behave as for `DOWN`; if negative, behave as for `UP`.
+`FLOOR`        | Rounds towards negative infinity. If the result is positive, behaves as for `DOWN`; if negative, behaves as for `UP`.
 `HALF_UP`      | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round up. Behaves as for `UP` if the discarded fraction is >= 0.5; otherwise, behaves as for `DOWN`.
 `HALF_DOWN`    | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round down. Behaves as for `UP` if the discarded fraction is > 0.5; otherwise, behaves as for `DOWN`.
 `HALF_CEILING` | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards positive infinity. If the result is positive, behaves as for `HALF_UP`; if negative, behaves as for `HALF_DOWN`.
