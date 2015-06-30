@@ -188,7 +188,10 @@ class BigDecimalTest extends AbstractTestCase
             ['+'],
             ['-'],
             ['+a'],
-            ['-a']
+            ['-a'],
+            [INF],
+            [-INF],
+            [NAN],
         ];
     }
 
