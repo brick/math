@@ -2,11 +2,14 @@
 
 namespace Brick\Math\Internal;
 
+use Brick\Math\RoundingMode;
+use Brick\Math\Exception\RoundingNecessaryException;
+
 /**
  * Performs basic operations on arbitrary size integers.
  *
  * All parameters must be validated as non-empty strings of digits,
- * without leading zero, and with an optional leading minus sign.
+ * without leading zero, and with an optional leading minus sign if the number is not zero.
  *
  * Any other parameter format will lead to undefined behaviour.
  * All methods must return strings respecting this format.
@@ -264,5 +267,90 @@ abstract class Calculator
         }
 
         return $this->gcd($b, $this->divR($a, $b));
+    }
+
+    /**
+     * Performs a rounded division.
+     *
+     * Rounding is performed when the remainder of the division is not zero.
+     *
+     * @param string $a            The dividend.
+     * @param string $b            The divisor.
+     * @param int    $roundingMode The rounding mode.
+     *
+     * @return string
+     *
+     * @throws \InvalidArgumentException  If the rounding mode is invalid.
+     * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided but rounding is necessary.
+     */
+    public function divRound($a, $b, $roundingMode)
+    {
+        list ($quotient, $remainder) = $this->divQR($a, $b);
+
+        $hasDiscardedFraction = ($remainder !== '0');
+        $isPositiveOrZero = ($a[0] === '-') === ($b[0] === '-');
+
+        $discardedFractionSign = function() use ($remainder, $b) {
+            $r = $this->abs($this->mul($remainder, '2'));
+            $b = $this->abs($b);
+
+            return $this->cmp($r, $b);
+        };
+
+        $increment = false;
+
+        switch ($roundingMode) {
+            case RoundingMode::UNNECESSARY:
+                if ($hasDiscardedFraction) {
+                    throw RoundingNecessaryException::roundingNecessary();
+                }
+                break;
+
+            case RoundingMode::UP:
+                $increment = $hasDiscardedFraction;
+                break;
+
+            case RoundingMode::DOWN:
+                break;
+
+            case RoundingMode::CEILING:
+                $increment = $hasDiscardedFraction && $isPositiveOrZero;
+                break;
+
+            case RoundingMode::FLOOR:
+                $increment = $hasDiscardedFraction && ! $isPositiveOrZero;
+                break;
+
+            case RoundingMode::HALF_UP:
+                $increment = $discardedFractionSign() >= 0;
+                break;
+
+            case RoundingMode::HALF_DOWN:
+                $increment = $discardedFractionSign() > 0;
+                break;
+
+            case RoundingMode::HALF_CEILING:
+                $increment = $isPositiveOrZero ? $discardedFractionSign() >= 0 : $discardedFractionSign() > 0;
+                break;
+
+            case RoundingMode::HALF_FLOOR:
+                $increment = $isPositiveOrZero ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
+                break;
+
+            case RoundingMode::HALF_EVEN:
+                $lastDigit = (int) substr($quotient, -1);
+                $lastDigitIsEven = ($lastDigit % 2 === 0);
+                $increment = $lastDigitIsEven ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
+                break;
+
+            default:
+                throw new \InvalidArgumentException('Invalid rounding mode.');
+        }
+
+        if ($increment) {
+            return $this->add($quotient, $isPositiveOrZero ? '1' : '-1');
+        }
+
+        return $quotient;
     }
 }

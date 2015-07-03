@@ -294,11 +294,14 @@ final class BigDecimal extends BigNumber implements \Serializable
     /**
      * Divides this number by the given divisor, to the given scale.
      *
-     * @param BigDecimal|number|string $that         The divisor.
-     * @param int                      $scale        The desired scale.
-     * @param int                      $roundingMode An optional rounding mode.
+     * @param BigNumber|number|string $that         The divisor.
+     * @param int                     $scale        The desired scale.
+     * @param int                     $roundingMode An optional rounding mode.
      *
      * @return BigDecimal
+     *
+     * @throws \InvalidArgumentException If the rounding mode is invalid.
+     * @throws ArithmeticException       If the number is invalid, is zero, or rounding was necessary.
      */
     public function dividedToScale($that, $scale, $roundingMode = RoundingMode::UNNECESSARY)
     {
@@ -325,73 +328,7 @@ final class BigDecimal extends BigNumber implements \Serializable
         $p = $this->valueWithMinScale($that->scale + $scale);
         $q = $that->valueWithMinScale($this->scale - $scale);
 
-        $calculator = Calculator::get();
-
-        list ($result, $remainder) = $calculator->divQR($p, $q);
-
-        $hasDiscardedFraction = ($remainder !== '0');
-        $isPositiveOrZero = ($p[0] === '-') === ($q[0] === '-');
-
-        $discardedFractionSign = function() use ($calculator, $remainder, $q) {
-            $r = $calculator->abs($calculator->mul($remainder, '2'));
-            $q = $calculator->abs($q);
-
-            return $calculator->cmp($r, $q);
-        };
-
-        $increment = false;
-
-        switch ($roundingMode) {
-            case RoundingMode::UNNECESSARY:
-                if ($hasDiscardedFraction) {
-                    throw RoundingNecessaryException::roundingNecessary();
-                }
-                break;
-
-            case RoundingMode::UP:
-                $increment = $hasDiscardedFraction;
-                break;
-
-            case RoundingMode::DOWN:
-                break;
-
-            case RoundingMode::CEILING:
-                $increment = $hasDiscardedFraction && $isPositiveOrZero;
-                break;
-
-            case RoundingMode::FLOOR:
-                $increment = $hasDiscardedFraction && ! $isPositiveOrZero;
-                break;
-
-            case RoundingMode::HALF_UP:
-                $increment = $discardedFractionSign() >= 0;
-                break;
-
-            case RoundingMode::HALF_DOWN:
-                $increment = $discardedFractionSign() > 0;
-                break;
-
-            case RoundingMode::HALF_CEILING:
-                $increment = $isPositiveOrZero ? $discardedFractionSign() >= 0 : $discardedFractionSign() > 0;
-                break;
-
-            case RoundingMode::HALF_FLOOR:
-                $increment = $isPositiveOrZero ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
-                break;
-
-            case RoundingMode::HALF_EVEN:
-                $lastDigit = (int) substr($result, -1);
-                $lastDigitIsEven = ($lastDigit % 2 === 0);
-                $increment = $lastDigitIsEven ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
-                break;
-
-            default:
-                throw new \InvalidArgumentException('Invalid rounding mode.');
-        }
-
-        if ($increment) {
-            $result = $calculator->add($result, $isPositiveOrZero ? '1' : '-1');
-        }
+        $result = Calculator::get()->divRound($p, $q, $roundingMode);
 
         return new BigDecimal($result, $scale);
     }
@@ -457,7 +394,7 @@ final class BigDecimal extends BigNumber implements \Serializable
      *
      * The quotient has a scale of `0`, and the remainder has a scale of `max($this->scale, $that->scale)`.
      *
-     * @param BigDecimal|number|string $that The divisor. Must be convertible to a BigDecimal.
+     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigDecimal.
      *
      * @return BigDecimal[] An array containing the quotient and the remainder.
      *
