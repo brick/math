@@ -247,14 +247,15 @@ final class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns the result of the division of this number by the given one.
      *
-     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigInteger.
+     * @param BigNumber|number|string $that         The divisor. Must be convertible to a BigInteger.
+     * @param int                     $roundingMode An optional rounding mode.
      *
      * @return BigInteger The result.
      *
      * @throws ArithmeticException If the divisor is not a valid number, is not convertible to a BigInteger, is zero,
-     *                             or the remainder of the division is not zero.
+     *                             or RoundingMode::UNNECESSARY is used and the remainder is not zero.
      */
-    public function dividedBy($that)
+    public function dividedBy($that, $roundingMode = RoundingMode::UNNECESSARY)
     {
         $that = BigInteger::of($that);
 
@@ -266,13 +267,9 @@ final class BigInteger extends BigNumber implements \Serializable
             throw DivisionByZeroException::divisionByZero();
         }
 
-        list ($quotient, $remainder) = Calculator::get()->divQR($this->value, $that->value);
+        $result = Calculator::get()->divRound($this->value, $that->value, $roundingMode);
 
-        if ($remainder !== '0') {
-            throw RoundingNecessaryException::roundingNecessary();
-        }
-
-        return new BigInteger($quotient);
+        return new BigInteger($result);
     }
 
     /**
