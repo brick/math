@@ -1251,16 +1251,16 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerDivideAndRemainder
+     * @dataProvider providerQuotientAndRemainder
      *
      * @param string $dividend  The dividend.
      * @param string $divisor   The divisor.
      * @param string $quotient  The expected quotient.
      * @param string $remainder The expected remainder.
      */
-    public function testDivideAndRemainder($dividend, $divisor, $quotient, $remainder)
+    public function testQuotientAndRemainder($dividend, $divisor, $quotient, $remainder)
     {
-        list ($q, $r) = BigDecimal::of($dividend)->divideAndRemainder($divisor);
+        list ($q, $r) = BigDecimal::of($dividend)->quotientAndRemainder($divisor);
 
         $this->assertBigDecimalEquals($quotient, $q);
         $this->assertBigDecimalEquals($remainder, $r);
@@ -1269,7 +1269,7 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function providerDivideAndRemainder()
+    public function providerQuotientAndRemainder()
     {
         return [
             ['1', '123', '0', '1'],
@@ -1341,9 +1341,9 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @expectedException \Brick\Math\Exception\DivisionByZeroException
      */
-    public function testDivideAndRemainderByZeroThrowsException()
+    public function testQuotientAndRemainderOfZeroThrowsException()
     {
-        BigDecimal::of(1.2)->divideAndRemainder(0);
+        BigDecimal::of(1.2)->quotientAndRemainder(0);
     }
 
     /**

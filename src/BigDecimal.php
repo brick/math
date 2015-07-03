@@ -407,7 +407,7 @@ final class BigDecimal extends BigNumber implements \Serializable
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function divideAndRemainder($that)
+    public function quotientAndRemainder($that)
     {
         $that = BigDecimal::of($that);
 
