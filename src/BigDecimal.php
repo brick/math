@@ -477,9 +477,9 @@ final class BigDecimal extends BigNumber implements \Serializable
         $scale = $this->scale - $n;
 
         if ($scale < 0) {
-            $calculator = Calculator::get();
-            $power = $calculator->pow('10', -$scale);
-            $value = $calculator->mul($value, $power);
+            if ($value !== '0') {
+                $value .= str_repeat('0', -$scale);
+            }
             $scale = 0;
         }
 
