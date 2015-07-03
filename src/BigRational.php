@@ -184,7 +184,7 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the sum of this number and the given one.
      *
      * @param BigNumber|number|string $that The number to add.
      *
@@ -204,7 +204,7 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the difference of this number and the given one.
      *
      * @param BigNumber|number|string $that The number to subtract.
      *
@@ -224,7 +224,7 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the product of this number and the given one.
      *
      * @param BigNumber|number|string $that The multiplier.
      *
@@ -243,7 +243,7 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the result of the division of this number by the given one.
      *
      * @param BigNumber|number|string $that The divisor.
      *
@@ -262,7 +262,7 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
-     * {@inheritdoc}
+     * Returns this number exponentiated to the given value.
      *
      * @param int $exponent The exponent.
      *
@@ -398,7 +398,7 @@ final class BigRational extends BigNumber implements \Serializable
      */
     public function toBigDecimal()
     {
-        return $this->numerator->toBigDecimal()->dividedBy($this->denominator);
+        return $this->numerator->toBigDecimal()->exactlyDividedBy($this->denominator);
     }
 
     /**

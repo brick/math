@@ -179,7 +179,7 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the sum of this number and the given one.
      *
      * @param BigNumber|number|string $that The number to add. Must be convertible to a BigInteger.
      *
@@ -201,7 +201,7 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the difference of this number and the given one.
      *
      * @param BigNumber|number|string $that The number to subtract. Must be convertible to a BigInteger.
      *
@@ -223,7 +223,7 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the product of this number and the given one.
      *
      * @param BigNumber|number|string $that The multiplier. Must be convertible to a BigInteger.
      *
@@ -245,7 +245,7 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the result of the division of this number by the given one.
      *
      * @param BigNumber|number|string $that The divisor. Must be convertible to a BigInteger.
      *
@@ -276,7 +276,7 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * {@inheritdoc}
+     * Returns this number exponentiated to the given value.
      *
      * @param int $exponent The exponent.
      *

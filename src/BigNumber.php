@@ -200,73 +200,6 @@ abstract class BigNumber
     }
 
     /**
-     * Returns the sum of this number and the given one.
-     *
-     * @param BigNumber|number|string $that The number to add.
-     *
-     * @return BigNumber The result.
-     *
-     * @throws ArithmeticException If the number is not convertible to an instance of the concrete class.
-     */
-    abstract public function plus($that);
-
-    /**
-     * Returns the difference of this number and the given one.
-     *
-     * @param BigNumber|number|string $that The number to subtract.
-     *
-     * @return BigNumber The result.
-     *
-     * @throws ArithmeticException If the number is not convertible to an instance of the concrete class.
-     */
-    abstract public function minus($that);
-
-    /**
-     * Returns the product of this number and the given one.
-     *
-     * @param BigNumber|number|string $that The multiplier.
-     *
-     * @return BigNumber The result.
-     *
-     * @throws ArithmeticException If the number is not convertible to an instance of the concrete class.
-     */
-    abstract public function multipliedBy($that);
-
-    /**
-     * Returns the exact result of the division of this number by the given one.
-     *
-     * @param BigNumber|number|string $that The divisor.
-     *
-     * @return BigNumber The result.
-     *
-     * @throws ArithmeticException If the number is not convertible to an instance of the concrete class, is zero,
-     *                             or the result is not representable by the concrete class without rounding.
-     */
-    abstract public function dividedBy($that);
-
-    /**
-     * Returns this number exponentiated to the given value.
-     *
-     * @param int $exponent The exponent.
-     *
-     * @return BigNumber The result.
-     *
-     * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
-     */
-    abstract public function power($exponent);
-
-    /**
-     * Compares this number to the given one.
-     *
-     * @param BigNumber|number|string $that
-     *
-     * @return int [-1,0,1]
-     *
-     * @throws ArithmeticException If the number is not valid.
-     */
-    abstract public function compareTo($that);
-
-    /**
      * Checks if this number is equal to the given one.
      *
      * @param BigNumber|number|string $that
@@ -327,13 +260,6 @@ abstract class BigNumber
     }
 
     /**
-     * Returns the sign of this number.
-     *
-     * @return int -1 if the number is negative, 0 if zero, 1 if positive.
-     */
-    abstract public function sign();
-
-    /**
      * Checks if this number equals zero.
      *
      * @return bool
@@ -384,6 +310,24 @@ abstract class BigNumber
     }
 
     /**
+     * Returns the sign of this number.
+     *
+     * @return int -1 if the number is negative, 0 if zero, 1 if positive.
+     */
+    abstract public function sign();
+
+    /**
+     * Compares this number to the given one.
+     *
+     * @param BigNumber|number|string $that
+     *
+     * @return int [-1,0,1] If `$this` is lower than, equal to, or greater than `$that`.
+     *
+     * @throws ArithmeticException If the number is not valid.
+     */
+    abstract public function compareTo($that);
+
+    /**
      * Converts this number to a BigInteger.
      *
      * @return BigInteger The converted number.
@@ -416,7 +360,7 @@ abstract class BigNumber
      *
      * @return int The converted value.
      *
-     * @throws ArithmeticException If this number cannot be converted to a native integer without losing precision.
+     * @throws ArithmeticException If this number cannot be exactly converted to a native integer.
      */
     abstract public function toInteger();
 
