@@ -630,7 +630,7 @@ final class BigDecimal extends BigNumber implements \Serializable
         $numerator = BigInteger::create($this->value);
         $denominator = BigInteger::create('1' . str_repeat('0', $this->scale));
 
-        return BigRational::create($numerator, $denominator, false)->simplified();
+        return BigRational::create($numerator, $denominator, false);
     }
 
     /**
