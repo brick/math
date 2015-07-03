@@ -106,6 +106,36 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
+     * Returns the quotient of the division of the numerator by the denominator.
+     *
+     * @return BigInteger
+     */
+    public function quotient()
+    {
+        return $this->numerator->quotient($this->denominator);
+    }
+
+    /**
+     * Returns the remainder of the division of the numerator by the denominator.
+     *
+     * @return BigInteger
+     */
+    public function remainder()
+    {
+        return $this->numerator->remainder($this->denominator);
+    }
+
+    /**
+     * Returns the quotient and remainder of the division of the numerator by the denominator.
+     *
+     * @return BigInteger[]
+     */
+    public function quotientAndRemainder()
+    {
+        return $this->numerator->quotientAndRemainder($this->denominator);
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @param BigNumber|number|string $that The number to add.

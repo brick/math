@@ -194,6 +194,39 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerQuotientAndRemainder
+     *
+     * @param string $rational  The rational number to test.
+     * @param string $quotient  The expected quotient.
+     * @param string $remainder The expected remainder.
+     */
+    public function testQuotientAndRemainder($rational, $quotient, $remainder)
+    {
+        $rational = BigRational::of($rational);
+
+        $this->assertBigIntegerEquals($quotient, $rational->quotient());
+        $this->assertBigIntegerEquals($remainder, $rational->remainder());
+
+        $quotientAndRemainder = $rational->quotientAndRemainder();
+
+        $this->assertBigIntegerEquals($quotient, $quotientAndRemainder[0]);
+        $this->assertBigIntegerEquals($remainder, $quotientAndRemainder[1]);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerQuotientAndRemainder()
+    {
+        return [
+            ['1000/3', '333', '1'],
+            ['895/400', '2', '95'],
+            ['-2.5', '-2', '-1'],
+            [-2, '-2', '0'],
+        ];
+    }
+
+    /**
      * @dataProvider providerPlus
      *
      * @param string $rational The rational number to test.

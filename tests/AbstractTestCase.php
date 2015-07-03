@@ -15,8 +15,9 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
      * @param string     $expected The expected value as a string.
      * @param BigInteger $actual   The BigInteger instance to test.
      */
-    final protected function assertBigIntegerEquals($expected, BigInteger $actual)
+    final protected function assertBigIntegerEquals($expected, $actual)
     {
+        $this->assertInstanceOf(BigInteger::class, $actual);
         $this->assertSame($expected, (string) $actual);
     }
 
