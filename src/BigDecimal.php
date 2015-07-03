@@ -45,6 +45,8 @@ final class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
+     * Creates a BigDecimal of the given value.
+     *
      * @param BigNumber|number|string $value
      *
      * @return BigDecimal
@@ -57,12 +59,16 @@ final class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
-     * @param BigInteger|int|string $value An integer representing the unscaled value of the number.
-     * @param int                   $scale The scale of the number, positive or zero.
+     * Creates a BigDecimal from an unscaled value and a scale.
+     *
+     * Example: `(12345, 3)` will result in the BigDecimal `12.345`.
+     *
+     * @param BigNumber|number|string $value The unscaled value. Must be convertible to a BigInteger.
+     * @param int                     $scale The scale of the number, positive or zero.
      *
      * @return BigDecimal
      *
-     * @throws \InvalidArgumentException
+     * @throws \InvalidArgumentException If the scale is negative.
      */
     public static function ofUnscaledValue($value, $scale = 0)
     {

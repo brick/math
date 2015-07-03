@@ -55,6 +55,8 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
+     * Creates a BigRational of the given value.
+     *
      * @param BigNumber|number|string $value
      *
      * @return BigRational

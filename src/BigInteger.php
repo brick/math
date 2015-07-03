@@ -36,6 +36,8 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
+     * Creates a BigInteger of the given value.
+     *
      * @param BigNumber|number|string $value
      *
      * @return BigInteger

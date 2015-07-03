@@ -102,6 +102,8 @@ abstract class BigNumber
     /**
      * Proxy method to access protected constructors from sibling classes.
      *
+     * @internal
+     *
      * @param mixed ...$args The arguments to the constructor.
      *
      * @return static
