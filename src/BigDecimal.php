@@ -78,15 +78,7 @@ final class BigDecimal extends BigNumber implements \Serializable
             throw new \InvalidArgumentException('The scale cannot be negative.');
         }
 
-        if (is_int($value)) {
-            return new BigDecimal((string) $value, $scale);
-        }
-
-        if (! $value instanceof BigInteger) {
-            $value = BigInteger::of($value);
-        }
-
-        return new BigDecimal((string) $value, $scale);
+        return new BigDecimal((string) BigInteger::of($value), $scale);
     }
 
     /**
