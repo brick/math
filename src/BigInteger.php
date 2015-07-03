@@ -473,11 +473,7 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * Safely converts this BigInteger to an integer.
-     *
-     * @return int The integer value.
-     *
-     * @throws ArithmeticException If this BigInteger exceeds the capacity of an integer.
+     * {@inheritdoc}
      */
     public function toInteger()
     {
@@ -486,6 +482,14 @@ final class BigInteger extends BigNumber implements \Serializable
         }
 
         return (int) $this->value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toFloat()
+    {
+        return (float) $this->value;
     }
 
     /**

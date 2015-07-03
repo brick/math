@@ -2114,6 +2114,84 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerToInteger
+     *
+     * @param int $number The decimal number to test.
+     */
+    public function testToInteger($number)
+    {
+        $this->assertSame($number, BigDecimal::of($number)->toInteger());
+        $this->assertSame($number, BigDecimal::of($number . '.0')->toInteger());
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToInteger()
+    {
+        return [
+            [~PHP_INT_MAX],
+            [-123456789],
+            [-1],
+            [0],
+            [1],
+            [123456789],
+            [PHP_INT_MAX]
+        ];
+    }
+
+    /**
+     * @dataProvider providerToIntegerThrowsException
+     * @expectedException \Brick\Math\Exception\ArithmeticException
+     *
+     * @param string $number A valid decimal number that cannot safely be converted to a native integer.
+     */
+    public function testToIntegerThrowsException($number)
+    {
+        BigDecimal::of($number)->toInteger();
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToIntegerThrowsException()
+    {
+        return [
+            ['-999999999999999999999999999999'],
+            ['9999999999999999999999999999999'],
+            ['1.2'],
+            ['-1.2'],
+        ];
+    }
+
+    /**
+     * @dataProvider providerToFloat
+     *
+     * @param string $value The big decimal value.
+     * @param float  $float The expected float value.
+     */
+    public function testToFloat($value, $float)
+    {
+        $this->assertSame($float, BigDecimal::of($value)->toFloat());
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToFloat()
+    {
+        return [
+            ['0', 0.0],
+            ['1.6', 1.6],
+            ['-1.6', -1.6],
+            ['9.999999999999999999999999999999999999999999999999999999999999', 9.999999999999999999999999999999],
+            ['-9.999999999999999999999999999999999999999999999999999999999999', -9.999999999999999999999999999999],
+            ['9.9e3000', INF],
+            ['-9.9e3000', -INF],
+        ];
+    }
+
+    /**
      * @dataProvider providerToString
      *
      * @param string $unscaledValue The unscaled value.

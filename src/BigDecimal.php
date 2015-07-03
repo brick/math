@@ -670,6 +670,22 @@ final class BigDecimal extends BigNumber implements \Serializable
     /**
      * {@inheritdoc}
      */
+    public function toInteger()
+    {
+        return $this->toBigInteger()->toInteger();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toFloat()
+    {
+        return (float) (string) $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function __toString()
     {
         if ($this->scale === 0) {

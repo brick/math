@@ -409,7 +409,32 @@ abstract class BigNumber
     abstract public function toBigRational();
 
     /**
+     * Returns the exact value of this number as a native integer.
+     *
+     * If this number cannot be converted to a native integer without losing precision, an exception is thrown.
+     * Note that the acceptable range for an integer depends on the platform and differs for 32-bit and 64-bit.
+     *
+     * @return int The converted value.
+     *
+     * @throws ArithmeticException If this number cannot be converted to a native integer without losing precision.
+     */
+    abstract public function toInteger();
+
+    /**
+     * Returns an approximation of this number as a floating-point value.
+     *
+     * Note that this method can discard information as the precision of a floating-point value
+     * is inherently limited.
+     *
+     * @return float The converted value.
+     */
+    abstract public function toFloat();
+
+    /**
      * Returns a string representation of this number.
+     *
+     * The output of this method can be parsed by the `of()` factory method;
+     * this will yield an object equal to this one, without any information loss.
      *
      * @return string
      */

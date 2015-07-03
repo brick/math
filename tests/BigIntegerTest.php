@@ -1202,6 +1202,33 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerToFloat
+     *
+     * @param string $value The big integer value.
+     * @param float  $float The expected float value.
+     */
+    public function testToFloat($value, $float)
+    {
+        $this->assertSame($float, BigInteger::of($value)->toFloat());
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToFloat()
+    {
+        return [
+            ['0', 0.0],
+            ['1', 1.0],
+            ['-1', -1.0],
+            ['100000000000000000000000000000000000000000000000000', 1e50],
+            ['-100000000000000000000000000000000000000000000000000', -1e50],
+            ['1e3000', INF],
+            ['-1e3000', -INF],
+        ];
+    }
+
+    /**
      * @dataProvider providerToBase
      *
      * @param string $number   The number to convert.

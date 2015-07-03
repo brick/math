@@ -849,6 +849,87 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerToInteger
+     *
+     * @param string $rational The rational number to test.
+     * @param int    $integer  The expected integer value.
+     */
+    public function testToInteger($rational, $integer)
+    {
+        $this->assertSame($integer, BigRational::of($rational)->toInteger());
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToInteger()
+    {
+        return [
+            [PHP_INT_MAX, PHP_INT_MAX],
+            [~PHP_INT_MAX, ~PHP_INT_MAX],
+            [PHP_INT_MAX . '0/10', PHP_INT_MAX],
+            [~PHP_INT_MAX . '0/10', ~PHP_INT_MAX],
+            ['246913578/2', 123456789],
+            ['-246913578/2', -123456789],
+            ['625/25', 25],
+            ['-625/25', -25],
+            ['0/3', 0],
+            ['-0/3', 0],
+        ];
+    }
+
+    /**
+     * @dataProvider providerToIntegerThrowsException
+     * @expectedException \Brick\Math\Exception\ArithmeticException
+     *
+     * @param string $number A valid rational number that cannot safely be converted to a native integer.
+     */
+    public function testToIntegerThrowsException($number)
+    {
+        BigRational::of($number)->toInteger();
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToIntegerThrowsException()
+    {
+        return [
+            ['-999999999999999999999999999999'],
+            ['9999999999999999999999999999999/2'],
+            ['1/2'],
+            ['2/3'],
+        ];
+    }
+
+    /**
+     * @dataProvider providerToFloat
+     *
+     * @param string $value The big decimal value.
+     * @param float  $float The expected float value.
+     */
+    public function testToFloat($value, $float)
+    {
+        $this->assertSame($float, BigRational::of($value)->toFloat());
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToFloat()
+    {
+        return [
+            ['0', 0.0],
+            ['1.6', 1.6],
+            ['-1.6', -1.6],
+            ['1000000000000000000000000000000000000000/3', 3.3333333333333333333333333333333333e+38],
+            ['-2/300000000000000000000000000000000000000', -6.666666666666666666666666666666666e-39],
+            ['9.9e3000', INF],
+            ['-9.9e3000', -INF],
+        ];
+    }
+
+    /**
      * @dataProvider providerToString
      *
      * @param string $numerator   The numerator.

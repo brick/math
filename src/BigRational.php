@@ -412,6 +412,22 @@ final class BigRational extends BigNumber implements \Serializable
     /**
      * {@inheritdoc}
      */
+    public function toInteger()
+    {
+        return $this->toBigInteger()->toInteger();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toFloat()
+    {
+        return $this->numerator->toFloat() / $this->denominator->toFloat();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function __toString()
     {
         $numerator   = (string) $this->numerator;
