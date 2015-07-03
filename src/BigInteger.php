@@ -308,9 +308,9 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the quotient of the division of this number and the given one.
+     * Returns the quotient of the division of this number by the given one.
      *
-     * @param BigNumber|number|string $that The divisor. Must be convertible to an integer number.
+     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @return BigInteger
      *
@@ -334,9 +334,9 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the remainder of the division of this number and the given one.
+     * Returns the remainder of the division of this number by the given one.
      *
-     * @param BigNumber|number|string $that The divisor. Must be convertible to an integer number.
+     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @return BigInteger
      *
@@ -356,9 +356,9 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the quotient and remainder of the division of this number and the given one.
+     * Returns the quotient and remainder of the division of this number by the given one.
      *
-     * @param BigNumber|number|string $that The divisor. Must be convertible to an integer number.
+     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @return BigInteger[] An array containing the quotient and the remainder.
      *

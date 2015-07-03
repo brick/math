@@ -397,15 +397,71 @@ final class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns the quotient and remainder of the division of this number and the given one.
+     * Returns the quotient of the division of this number by this given one.
+     *
+     * The quotient has a scale of `0`.
+     *
+     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigDecimal.
+     *
+     * @return BigDecimal The quotient.
+     *
+     * @throws ArithmeticException If the divisor is not a valid decimal number, or is zero.
+     */
+    public function quotient($that)
+    {
+        $that = BigDecimal::of($that);
+
+        if ($that->isZero()) {
+            throw DivisionByZeroException::divisionByZero();
+        }
+
+        $p = $this->valueWithMinScale($that->scale);
+        $q = $that->valueWithMinScale($this->scale);
+
+        $quotient = Calculator::get()->divQ($p, $q);
+
+        return new BigDecimal($quotient, 0);
+    }
+
+    /**
+     * Returns the remainder of the division of this number by this given one.
+     *
+     * The remainder has a scale of `max($this->scale, $that->scale)`.
+     *
+     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigDecimal.
+     *
+     * @return BigDecimal The remainder.
+     *
+     * @throws ArithmeticException If the divisor is not a valid decimal number, or is zero.
+     */
+    public function remainder($that)
+    {
+        $that = BigDecimal::of($that);
+
+        if ($that->isZero()) {
+            throw DivisionByZeroException::divisionByZero();
+        }
+
+        $p = $this->valueWithMinScale($that->scale);
+        $q = $that->valueWithMinScale($this->scale);
+
+        $remainder = Calculator::get()->divR($p, $q);
+
+        $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
+
+        return new BigDecimal($remainder, $scale);
+    }
+
+    /**
+     * Returns the quotient and remainder of the division of this number by the given one.
      *
      * The quotient has a scale of `0`, and the remainder has a scale of `max($this->scale, $that->scale)`.
      *
-     * @param BigDecimal|number|string $that The number to divide.
+     * @param BigDecimal|number|string $that The divisor. Must be convertible to a BigDecimal.
      *
      * @return BigDecimal[] An array containing the quotient and the remainder.
      *
-     * @throws DivisionByZeroException If the divisor is zero.
+     * @throws ArithmeticException If the divisor is not a valid decimal number, or is zero.
      */
     public function quotientAndRemainder($that)
     {

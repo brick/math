@@ -1260,7 +1260,12 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testQuotientAndRemainder($dividend, $divisor, $quotient, $remainder)
     {
-        list ($q, $r) = BigDecimal::of($dividend)->quotientAndRemainder($divisor);
+        $dividend = BigDecimal::of($dividend);
+
+        $this->assertBigDecimalEquals($quotient, $dividend->quotient($divisor));
+        $this->assertBigDecimalEquals($remainder, $dividend->remainder($divisor));
+
+        list ($q, $r) = $dividend->quotientAndRemainder($divisor);
 
         $this->assertBigDecimalEquals($quotient, $q);
         $this->assertBigDecimalEquals($remainder, $r);
@@ -1336,6 +1341,22 @@ class BigDecimalTest extends AbstractTestCase
             ['-1000000000000000000000000000000.0', '-13.7', '72992700729927007299270072992', '-9.6'],
             ['0.99999999999999999999999999999999', '0.215', '4', '0.13999999999999999999999999999999'],
         ];
+    }
+
+    /**
+     * @expectedException \Brick\Math\Exception\DivisionByZeroException
+     */
+    public function testQuotientOfZeroThrowsException()
+    {
+        BigDecimal::of(1.2)->quotient(0);
+    }
+
+    /**
+     * @expectedException \Brick\Math\Exception\DivisionByZeroException
+     */
+    public function testRemainderOfZeroThrowsException()
+    {
+        BigDecimal::of(1.2)->remainder(0);
     }
 
     /**
