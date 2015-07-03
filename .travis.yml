@@ -11,7 +11,6 @@ env:
   - CALCULATOR=Native
 
 before_script:
-  - composer self-update
   - composer install
 
 script:
