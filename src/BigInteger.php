@@ -36,6 +36,18 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
+     * @param BigNumber|number|string $value
+     *
+     * @return BigInteger
+     *
+     * @throws ArithmeticException If the value cannot be converted to a BigInteger.
+     */
+    public static function of($value)
+    {
+        return parent::of($value)->toBigInteger();
+    }
+
+    /**
      * Parses a string containing an integer in an arbitrary base.
      *
      * The string can optionally be prefixed with the `+` or `-` sign.
@@ -138,6 +150,12 @@ final class BigInteger extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * @param BigNumber|number|string $that The number to add. Must be convertible to a BigInteger.
+     *
+     * @return BigInteger The result.
+     *
+     * @throws ArithmeticException If the number is not valid, or is not convertible to a BigInteger.
      */
     public function plus($that)
     {
@@ -154,6 +172,12 @@ final class BigInteger extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * @param BigNumber|number|string $that The number to subtract. Must be convertible to a BigInteger.
+     *
+     * @return BigInteger The result.
+     *
+     * @throws ArithmeticException If the number is not valid, or is not convertible to a BigInteger.
      */
     public function minus($that)
     {
@@ -170,6 +194,12 @@ final class BigInteger extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * @param BigNumber|number|string $that The multiplier. Must be convertible to a BigInteger.
+     *
+     * @return BigInteger The result.
+     *
+     * @throws ArithmeticException If the multiplier is not a valid number, or is not convertible to a BigInteger.
      */
     public function multipliedBy($that)
     {
@@ -186,6 +216,13 @@ final class BigInteger extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigInteger.
+     *
+     * @return BigInteger The result.
+     *
+     * @throws ArithmeticException If the divisor is not a valid number, is not convertible to a BigInteger, is zero,
+     *                             or the remainder of the division is not zero.
      */
     public function dividedBy($that)
     {
@@ -210,6 +247,12 @@ final class BigInteger extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * @param int $exponent The exponent.
+     *
+     * @return BigInteger The result.
+     *
+     * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      */
     public function power($exponent)
     {
@@ -259,7 +302,7 @@ final class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns the remainder of the division of this number and the given one.
      *
-     * @param BigInteger|int|string $that
+     * @param BigNumber|number|string $that The divisor. Must be convertible to an integer number.
      *
      * @return BigInteger
      *
@@ -281,7 +324,7 @@ final class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns the quotient and remainder of the division of this number and the given one.
      *
-     * @param BigInteger|int|string $that The divisor.
+     * @param BigNumber|number|string $that The divisor. Must be convertible to an integer number.
      *
      * @return BigInteger[] An array containing the quotient and the remainder.
      *
@@ -308,7 +351,7 @@ final class BigInteger extends BigNumber implements \Serializable
      *
      * The GCD is always positive, unless both operands are zero, in which case it is zero.
      *
-     * @param BigInteger|int|string $that
+     * @param BigNumber|number|string $that The operand. Must be convertible to an integer number.
      *
      * @return BigInteger
      */
@@ -396,7 +439,7 @@ final class BigInteger extends BigNumber implements \Serializable
     }
 
     /**
-     * Converts this BigInteger to an integer.
+     * Safely converts this BigInteger to an integer.
      *
      * @return int The integer value.
      *

@@ -2,6 +2,7 @@
 
 namespace Brick\Math;
 
+use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
@@ -41,6 +42,18 @@ final class BigDecimal extends BigNumber implements \Serializable
     {
         $this->value = $value;
         $this->scale = $scale;
+    }
+
+    /**
+     * @param BigNumber|number|string $value
+     *
+     * @return BigDecimal
+     *
+     * @throws ArithmeticException If the value cannot be converted to a BigInteger.
+     */
+    public static function of($value)
+    {
+        return parent::of($value)->toBigDecimal();
     }
 
     /**
@@ -90,6 +103,14 @@ final class BigDecimal extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * The result has a scale of `max($this->scale, $that->scale)`.
+     *
+     * @param BigNumber|number|string $that The number to add. Must be convertible to a BigDecimal.
+     *
+     * @return BigDecimal The result.
+     *
+     * @throws ArithmeticException If the number is not valid, or is not convertible to a BigDecimal.
      */
     public function plus($that)
     {
@@ -109,6 +130,14 @@ final class BigDecimal extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * The result has a scale of `max($this->scale, $that->scale)`.
+     *
+     * @param BigNumber|number|string $that The number to subtract. Must be convertible to a BigDecimal.
+     *
+     * @return BigDecimal The result.
+     *
+     * @throws ArithmeticException If the number is not valid, or is not convertible to a BigDecimal.
      */
     public function minus($that)
     {
@@ -128,6 +157,14 @@ final class BigDecimal extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * The result has a scale of `$this->scale + $that->scale`.
+     *
+     * @param BigNumber|number|string $that The multiplier. Must be convertible to a BigDecimal.
+     *
+     * @return BigDecimal The result.
+     *
+     * @throws ArithmeticException If the multiplier is not a valid number, or is not convertible to a BigDecimal.
      */
     public function multipliedBy($that)
     {
@@ -145,6 +182,15 @@ final class BigDecimal extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * The result has a minimum scale of `$this->scale`; the scale can be expanded to fit the result.
+     *
+     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigDecimal.
+     *
+     * @return BigInteger The result.
+     *
+     * @throws ArithmeticException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero,
+     *                             or the result yields an infinite number of digits.
      */
     public function dividedBy($that)
     {
@@ -185,6 +231,12 @@ final class BigDecimal extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * @param int $exponent The exponent.
+     *
+     * @return BigDecimal The result.
+     *
+     * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      */
     public function power($exponent)
     {

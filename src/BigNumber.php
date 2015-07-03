@@ -14,8 +14,10 @@ abstract class BigNumber
 {
     /**
      * The regular expression used to parse integer, decimal and rational numbers.
+     *
+     * @var string
      */
-    const REGEXP =
+    private static $regexp =
         '/^' .
         '(?<integral>[\-\+]?[0-9]+)' .
         '(?:' .
@@ -42,75 +44,43 @@ abstract class BigNumber
      *
      * @param BigNumber|number|string $value
      *
-     * @return static
+     * @return BigNumber
      *
-     * @throws NumberFormatException      If the format of the number is not valid.
-     * @throws DivisionByZeroException    If the value represents a rational number with a denominator of zero.
-     * @throws RoundingNecessaryException If the value represents a valid number, but this number cannot be converted
-     *                                    to the subclass this method has been called on, without rounding.
+     * @throws NumberFormatException   If the format of the number is not valid.
+     * @throws DivisionByZeroException If the value represents a rational number with a denominator of zero.
      */
     public static function of($value)
     {
         if ($value instanceof BigNumber) {
-            switch (static::class) {
-                case BigInteger::class:
-                    return $value->toBigInteger();
-
-                case BigDecimal::class:
-                    return $value->toBigDecimal();
-
-                case BigRational::class:
-                    return $value->toBigRational();
-
-                default:
-                    return $value;
-            }
+            return $value;
         }
 
         if (is_int($value)) {
-            switch (static::class) {
-                case BigDecimal::class:
-                    return new BigDecimal((string) $value);
-
-                case BigRational::class:
-                    return new BigRational(new BigInteger((string) $value), new BigInteger('1'), false);
-
-                default:
-                    return new BigInteger((string) $value);
-            }
+            return new BigInteger((string) $value);
         }
 
         $value = (string) $value;
 
-        if (preg_match(BigNumber::REGEXP, $value, $matches) !== 1) {
+        if (preg_match(self::$regexp, $value, $matches) !== 1) {
             throw new NumberFormatException('The given value does not represent a valid number.');
         }
 
         if (isset($matches['denominator'])) {
-            $numerator   = BigNumber::cleanUp($matches['integral']);
+            $numerator   = self::cleanUp($matches['integral']);
             $denominator = ltrim($matches['denominator'], '0');
 
             if ($denominator === '') {
                 throw DivisionByZeroException::denominatorMustNotBeZero();
             }
 
-            $result = new BigRational(new BigInteger($numerator), new BigInteger($denominator), false);
+            return new BigRational(new BigInteger($numerator), new BigInteger($denominator), false);
+        }
 
-            switch (static::class) {
-                case BigInteger::class:
-                    return $result->toBigInteger();
-
-                case BigDecimal::class:
-                    return $result->toBigDecimal();
-
-                default:
-                    return $result;
-            }
-        } elseif (isset($matches['fractional']) || isset($matches['exponent'])) {
+        if (isset($matches['fractional']) || isset($matches['exponent'])) {
             $fractional = isset($matches['fractional']) ? $matches['fractional'] : '';
             $exponent = isset($matches['exponent']) ? (int) $matches['exponent'] : 0;
 
-            $unscaledValue = BigNumber::cleanUp($matches['integral'] . $fractional);
+            $unscaledValue = self::cleanUp($matches['integral'] . $fractional);
 
             $scale = strlen($fractional) - $exponent;
 
@@ -121,32 +91,12 @@ abstract class BigNumber
                 $scale = 0;
             }
 
-            $result = new BigDecimal($unscaledValue, $scale);
-
-            switch (static::class) {
-                case BigInteger::class:
-                    return $result->toBigInteger();
-
-                case BigRational::class:
-                    return $result->toBigRational();
-
-                default:
-                    return $result;
-            }
-        } else {
-            $integral = BigNumber::cleanUp($matches['integral']);
-
-            switch (static::class) {
-                case BigDecimal::class:
-                    return new BigDecimal($integral);
-
-                case BigRational::class:
-                    return new BigRational(new BigInteger($integral), new BigInteger('1'), false);
-
-                default:
-                    return new BigInteger($integral);
-            }
+            return new BigDecimal($unscaledValue, $scale);
         }
+
+        $integral = self::cleanUp($matches['integral']);
+
+        return new BigInteger($integral);
     }
 
     /**
@@ -164,7 +114,8 @@ abstract class BigNumber
     /**
      * Returns the minimum of the given values.
      *
-     * @param BigNumber|number|string ...$values The numbers to compare.
+     * @param BigNumber|number|string ...$values The numbers to compare. All the numbers need to be convertible
+     *                                           to an instance of the class this method is called on.
      *
      * @return static The minimum value.
      *
@@ -193,7 +144,8 @@ abstract class BigNumber
     /**
      * Returns the maximum of the given values.
      *
-     * @param BigNumber|number|string ...$values The numbers to compare.
+     * @param BigNumber|number|string ...$values The numbers to compare. All the numbers need to be convertible
+     *                                           to an instance of the class this method is called on.
      *
      * @return static The maximum value.
      *
@@ -250,61 +202,56 @@ abstract class BigNumber
     /**
      * Returns the sum of this number and the given one.
      *
-     * The given number must be convertible to an instance of the class this method is called on.
+     * @param BigNumber|number|string $that The number to add.
      *
-     * @param BigNumber|number|string $that
+     * @return BigNumber The result.
      *
-     * @return static
-     *
-     * @throws ArithmeticException If the number is not valid, or the result cannot be represented by the current type.
+     * @throws ArithmeticException If the number is not convertible to an instance of the concrete class.
      */
     abstract public function plus($that);
 
     /**
      * Returns the difference of this number and the given one.
      *
-     * The given number must be convertible to an instance of the class this method is called on.
+     * @param BigNumber|number|string $that The number to subtract.
      *
-     * @param BigNumber|number|string $that
+     * @return BigNumber The result.
      *
-     * @return static
-     *
-     * @throws ArithmeticException If the number is not valid, or the result cannot be represented by the current type.
+     * @throws ArithmeticException If the number is not convertible to an instance of the concrete class.
      */
     abstract public function minus($that);
 
     /**
      * Returns the product of this number and the given one.
      *
-     * The given number must be convertible to an instance of the class this method is called on.
+     * @param BigNumber|number|string $that The multiplier.
      *
-     * @param BigNumber|number|string $that
+     * @return BigNumber The result.
      *
-     * @return static
-     *
-     * @throws ArithmeticException If the number is not valid, or the result cannot be represented by the current type.
+     * @throws ArithmeticException If the number is not convertible to an instance of the concrete class.
      */
     abstract public function multipliedBy($that);
 
     /**
      * Returns the exact result of the division of this number by the given one.
      *
-     * The given number must be convertible to an instance of the class this method is called on.
+     * @param BigNumber|number|string $that The divisor.
      *
-     * @param BigNumber|number|string $that
+     * @return BigNumber The result.
      *
-     * @return static
-     *
-     * @throws ArithmeticException If the number is not valid, or the result cannot be represented by the current type, or the divisor is zero.
+     * @throws ArithmeticException If the number is not convertible to an instance of the concrete class, is zero,
+     *                             or the result is not representable by the concrete class without rounding.
      */
     abstract public function dividedBy($that);
 
     /**
-     * @param int $exponent
+     * Returns this number exponentiated to the given value.
      *
-     * @return static
+     * @param int $exponent The exponent.
      *
-     * @throws ArithmeticException If the number is not valid.
+     * @return BigNumber The result.
+     *
+     * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      */
     abstract public function power($exponent);
 

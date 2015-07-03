@@ -2,6 +2,7 @@
 
 namespace Brick\Math;
 
+use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
@@ -54,6 +55,18 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
+     * @param BigNumber|number|string $value
+     *
+     * @return BigRational
+     *
+     * @throws ArithmeticException If the value cannot be converted to a BigInteger.
+     */
+    public static function of($value)
+    {
+        return parent::of($value)->toBigRational();
+    }
+
+    /**
      * Creates a BigRational out of a numerator and a denominator.
      *
      * If the denominator is negative, the signs of both the numerator and the denominator
@@ -94,6 +107,12 @@ final class BigRational extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * @param BigNumber|number|string $that The number to add.
+     *
+     * @return BigRational The result.
+     *
+     * @throws ArithmeticException If the number is not valid.
      */
     public function plus($that)
     {
@@ -108,6 +127,12 @@ final class BigRational extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * @param BigNumber|number|string $that The number to subtract.
+     *
+     * @return BigRational The result.
+     *
+     * @throws ArithmeticException If the number is not valid.
      */
     public function minus($that)
     {
@@ -122,6 +147,12 @@ final class BigRational extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * @param BigNumber|number|string $that The multiplier.
+     *
+     * @return BigRational The result.
+     *
+     * @throws ArithmeticException If the multiplier is not a valid number.
      */
     public function multipliedBy($that)
     {
@@ -135,6 +166,12 @@ final class BigRational extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * @param BigNumber|number|string $that The divisor.
+     *
+     * @return BigRational The result.
+     *
+     * @throws ArithmeticException If the divisor is not a valid number, or is zero.
      */
     public function dividedBy($that)
     {
@@ -148,6 +185,12 @@ final class BigRational extends BigNumber implements \Serializable
 
     /**
      * {@inheritdoc}
+     *
+     * @param int $exponent The exponent.
+     *
+     * @return BigRational The result.
+     *
+     * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      */
     public function power($exponent)
     {
