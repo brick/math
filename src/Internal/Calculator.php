@@ -205,14 +205,34 @@ abstract class Calculator
     abstract public function mul($a, $b);
 
     /**
-     * Divides two numbers.
+     * Returns the quotient of the division of two numbers.
+     *
+     * @param string $a The dividend.
+     * @param string $b The divisor, must not be zero.
+     *
+     * @return string The quotient.
+     */
+    abstract public function divQ($a, $b);
+
+    /**
+     * Returns the remainder of the division of two numbers.
+     *
+     * @param string $a The dividend.
+     * @param string $b The divisor, must not be zero.
+     *
+     * @return string The remainder.
+     */
+    abstract public function divR($a, $b);
+
+    /**
+     * Returns the quotient and remainder of the division of two numbers.
      *
      * @param string $a The dividend.
      * @param string $b The divisor, must not be zero.
      *
      * @return string[] An array containing the quotient and remainder.
      */
-    abstract public function div($a, $b);
+    abstract public function divQR($a, $b);
 
     /**
      * Exponentiates a number.
@@ -245,8 +265,6 @@ abstract class Calculator
             return $this->abs($a);
         }
 
-        list (, $r) = $this->div($a, $b);
-
-        return $this->gcd($b, $r);
+        return $this->gcd($b, $this->divR($a, $b));
     }
 }

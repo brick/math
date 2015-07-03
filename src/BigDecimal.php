@@ -215,7 +215,7 @@ final class BigDecimal extends BigNumber implements \Serializable
                     break;
                 }
 
-                list ($d) = $calculator->div($d, (string) $prime);
+                $d = $calculator->divQ($d, (string) $prime);
                 $scale++;
             }
         }
@@ -293,7 +293,7 @@ final class BigDecimal extends BigNumber implements \Serializable
 
         $calculator = Calculator::get();
 
-        list ($result, $remainder) = $calculator->div($p, $q);
+        list ($result, $remainder) = $calculator->divQR($p, $q);
 
         $hasDiscardedFraction = ($remainder !== '0');
         $isPositiveOrZero = ($p[0] === '-') === ($q[0] === '-');
@@ -384,7 +384,7 @@ final class BigDecimal extends BigNumber implements \Serializable
         $p = $this->valueWithMinScale($that->scale);
         $q = $that->valueWithMinScale($this->scale);
 
-        list ($quotient, $remainder) = Calculator::get()->div($p, $q);
+        list ($quotient, $remainder) = Calculator::get()->divQR($p, $q);
 
         $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
 

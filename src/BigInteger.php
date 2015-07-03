@@ -236,7 +236,7 @@ final class BigInteger extends BigNumber implements \Serializable
             throw DivisionByZeroException::divisionByZero();
         }
 
-        list ($quotient, $remainder) = Calculator::get()->div($this->value, $that->value);
+        list ($quotient, $remainder) = Calculator::get()->divQR($this->value, $that->value);
 
         if ($remainder !== '0') {
             throw RoundingNecessaryException::roundingNecessary();
@@ -294,7 +294,7 @@ final class BigInteger extends BigNumber implements \Serializable
             throw DivisionByZeroException::divisionByZero();
         }
 
-        list ($quotient) = Calculator::get()->div($this->value, $that->value);
+        $quotient = Calculator::get()->divQ($this->value, $that->value);
 
         return new BigInteger($quotient);
     }
@@ -316,7 +316,7 @@ final class BigInteger extends BigNumber implements \Serializable
             throw DivisionByZeroException::divisionByZero();
         }
 
-        list (, $remainder) = Calculator::get()->div($this->value, $that->value);
+        $remainder = Calculator::get()->divR($this->value, $that->value);
 
         return new BigInteger($remainder);
     }
@@ -338,7 +338,7 @@ final class BigInteger extends BigNumber implements \Serializable
             throw DivisionByZeroException::divisionByZero();
         }
 
-        list ($quotient, $remainder) = Calculator::get()->div($this->value, $that->value);
+        list ($quotient, $remainder) = Calculator::get()->divQR($this->value, $that->value);
 
         return [
             new BigInteger($quotient),
@@ -490,7 +490,7 @@ final class BigInteger extends BigNumber implements \Serializable
         $result = '';
 
         while ($value !== '0') {
-            list ($value, $remainder) = $calc->div($value, $base);
+            list ($value, $remainder) = $calc->divQR($value, $base);
             $remainder = (int) $remainder;
 
             $result .= $dictionary[$remainder];

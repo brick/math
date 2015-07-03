@@ -128,7 +128,23 @@ class NativeCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function div($a, $b)
+    public function divQ($a, $b)
+    {
+        return $this->divQR($a, $b)[0];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function divR($a, $b)
+    {
+        return $this->divQR($a, $b)[1];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function divQR($a, $b)
     {
         if ($a === '0') {
             return ['0', '0'];

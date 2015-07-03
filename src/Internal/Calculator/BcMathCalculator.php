@@ -38,7 +38,23 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function div($a, $b)
+    public function divQ($a, $b)
+    {
+        return bcdiv($a, $b, 0);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function divR($a, $b)
+    {
+        return bcmod($a, $b);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function divQR($a, $b)
     {
         $q = bcdiv($a, $b, 0);
         $r = bcmod($a, $b);
