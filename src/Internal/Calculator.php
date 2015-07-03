@@ -2,8 +2,6 @@
 
 namespace Brick\Math\Internal;
 
-use Brick\Math\RoundingMode;
-
 /**
  * Performs basic operations on arbitrary size integers.
  *
