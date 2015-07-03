@@ -49,8 +49,8 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
     final protected function assertBigDecimalInternalValues($unscaledValue, $scale, $actual)
     {
         $this->assertInstanceOf(BigDecimal::class, $actual);
-        $this->assertSame($unscaledValue, $actual->getUnscaledValue());
-        $this->assertSame($scale, $actual->getScale());
+        $this->assertSame($unscaledValue, $actual->unscaledValue());
+        $this->assertSame($scale, $actual->scale());
     }
 
     /**
@@ -61,8 +61,8 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
     final protected function assertBigRationalInternalValues($numerator, $denominator, $actual)
     {
         $this->assertInstanceOf(BigRational::class, $actual);
-        $this->assertSame($numerator, (string) $actual->getNumerator());
-        $this->assertSame($denominator, (string) $actual->getDenominator());
+        $this->assertSame($numerator, (string) $actual->numerator());
+        $this->assertSame($denominator, (string) $actual->denominator());
     }
 
     /**

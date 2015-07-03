@@ -140,7 +140,7 @@ final class BigRational extends BigNumber implements \Serializable
     /**
      * @return BigInteger
      */
-    public function getNumerator()
+    public function numerator()
     {
         return $this->numerator;
     }
@@ -148,7 +148,7 @@ final class BigRational extends BigNumber implements \Serializable
     /**
      * @return BigInteger
      */
-    public function getDenominator()
+    public function denominator()
     {
         return $this->denominator;
     }
@@ -368,15 +368,15 @@ final class BigRational extends BigNumber implements \Serializable
      */
     public function compareTo($that)
     {
-        return $this->minus($that)->getSign();
+        return $this->minus($that)->sign();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSign()
+    public function sign()
     {
-        return $this->numerator->getSign();
+        return $this->numerator->sign();
     }
 
     /**

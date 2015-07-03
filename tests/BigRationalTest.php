@@ -134,8 +134,8 @@ class BigRationalTest extends AbstractTestCase
     {
         $rational = BigRational::nd(123456789, 987654321);
 
-        $this->assertBigIntegerEquals('123456789', $rational->getNumerator());
-        $this->assertBigIntegerEquals('987654321', $rational->getDenominator());
+        $this->assertBigIntegerEquals('123456789', $rational->numerator());
+        $this->assertBigIntegerEquals('987654321', $rational->denominator());
     }
 
     /**
@@ -717,9 +717,9 @@ class BigRationalTest extends AbstractTestCase
      * @param string $number The rational number to test.
      * @param int    $sign   The sign of the number.
      */
-    public function testGetSign($number, $sign)
+    public function testSign($number, $sign)
     {
-        $this->assertSame($sign, BigRational::of($number)->getSign());
+        $this->assertSame($sign, BigRational::of($number)->sign());
     }
 
     /**

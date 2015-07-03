@@ -575,7 +575,7 @@ final class BigDecimal extends BigNumber implements \Serializable
     /**
      * {@inheritdoc}
      */
-    public function getSign()
+    public function sign()
     {
         return ($this->value === '0') ? 0 : (($this->value[0] === '-') ? -1 : 1);
     }
@@ -583,7 +583,7 @@ final class BigDecimal extends BigNumber implements \Serializable
     /**
      * @return string
      */
-    public function getUnscaledValue()
+    public function unscaledValue()
     {
         return $this->value;
     }
@@ -591,7 +591,7 @@ final class BigDecimal extends BigNumber implements \Serializable
     /**
      * @return int
      */
-    public function getScale()
+    public function scale()
     {
         return $this->scale;
     }
@@ -603,7 +603,7 @@ final class BigDecimal extends BigNumber implements \Serializable
      *
      * @return string
      */
-    public function getIntegral()
+    public function integral()
     {
         if ($this->scale === 0) {
             return $this->value;
@@ -623,7 +623,7 @@ final class BigDecimal extends BigNumber implements \Serializable
      *
      * @return string
      */
-    public function getFraction()
+    public function fraction()
     {
         if ($this->scale === 0) {
             return '';

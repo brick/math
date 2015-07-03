@@ -331,7 +331,7 @@ abstract class BigNumber
      *
      * @return int -1 if the number is negative, 0 if zero, 1 if positive.
      */
-    abstract public function getSign();
+    abstract public function sign();
 
     /**
      * Checks if this number equals zero.
@@ -340,7 +340,7 @@ abstract class BigNumber
      */
     public function isZero()
     {
-        return $this->getSign() == 0;
+        return $this->sign() == 0;
     }
 
     /**
@@ -350,7 +350,7 @@ abstract class BigNumber
      */
     public function isNegative()
     {
-        return $this->getSign() < 0;
+        return $this->sign() < 0;
     }
 
     /**
@@ -360,7 +360,7 @@ abstract class BigNumber
      */
     public function isNegativeOrZero()
     {
-        return $this->getSign() <= 0;
+        return $this->sign() <= 0;
     }
 
     /**
@@ -370,7 +370,7 @@ abstract class BigNumber
      */
     public function isPositive()
     {
-        return $this->getSign() > 0;
+        return $this->sign() > 0;
     }
 
     /**
@@ -380,7 +380,7 @@ abstract class BigNumber
      */
     public function isPositiveOrZero()
     {
-        return $this->getSign() >= 0;
+        return $this->sign() >= 0;
     }
 
     /**

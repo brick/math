@@ -443,7 +443,7 @@ final class BigInteger extends BigNumber implements \Serializable
     /**
      * {@inheritdoc}
      */
-    public function getSign()
+    public function sign()
     {
         return ($this->value === '0') ? 0 : (($this->value[0] === '-') ? -1 : 1);
     }
