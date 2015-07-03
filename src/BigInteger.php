@@ -92,7 +92,7 @@ final class BigInteger extends BigNumber implements \Serializable
 
         if ($number === '') {
             // The result will be the same in any base, avoid further calculation.
-            return new BigInteger('0');
+            return BigInteger::zero();
         }
 
         if ($number === '1') {
@@ -133,19 +133,49 @@ final class BigInteger extends BigNumber implements \Serializable
     /**
      * Returns a BigInteger representing zero.
      *
-     * This value is cached to optimize memory consumption as it is frequently used.
-     *
      * @return BigInteger
      */
     public static function zero()
     {
-        static $zero = null;
+        static $zero;
 
         if ($zero === null) {
             $zero = new BigInteger('0');
         }
 
         return $zero;
+    }
+
+    /**
+     * Returns a BigInteger representing one.
+     *
+     * @return BigInteger
+     */
+    public static function one()
+    {
+        static $one;
+
+        if ($one === null) {
+            $one = new BigInteger('1');
+        }
+
+        return $one;
+    }
+
+    /**
+     * Returns a BigInteger representing ten.
+     *
+     * @return BigInteger
+     */
+    public static function ten()
+    {
+        static $ten;
+
+        if ($ten === null) {
+            $ten = new BigInteger('10');
+        }
+
+        return $ten;
     }
 
     /**
@@ -257,6 +287,10 @@ final class BigInteger extends BigNumber implements \Serializable
     public function power($exponent)
     {
         $exponent = (int) $exponent;
+
+        if ($exponent === 0) {
+            return BigInteger::one();
+        }
 
         if ($exponent === 1) {
             return $this;
@@ -435,7 +469,7 @@ final class BigInteger extends BigNumber implements \Serializable
      */
     public function toBigRational()
     {
-        return BigRational::create($this, new BigInteger('1'), false);
+        return BigRational::create($this, BigInteger::one(), false);
     }
 
     /**

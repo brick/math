@@ -253,6 +253,19 @@ class BigDecimalTest extends AbstractTestCase
     public function testZero()
     {
         $this->assertBigDecimalEquals('0', 0, BigDecimal::zero());
+        $this->assertSame(BigDecimal::zero(), BigDecimal::zero());
+    }
+
+    public function testOne()
+    {
+        $this->assertBigDecimalEquals('1', 0, BigDecimal::one());
+        $this->assertSame(BigDecimal::one(), BigDecimal::one());
+    }
+
+    public function testTen()
+    {
+        $this->assertBigDecimalEquals('10', 0, BigDecimal::ten());
+        $this->assertSame(BigDecimal::ten(), BigDecimal::ten());
     }
 
     /**
@@ -1397,6 +1410,8 @@ class BigDecimalTest extends AbstractTestCase
             ['-2', 255, '-57896044618658097711785492504343953926634992332820282019728792003956564819968', 0],
             [ '2', 256, '115792089237316195423570985008687907853269984665640564039457584007913129639936', 0],
 
+            ['-1.23', 0, '1', 0],
+            ['-1.23', 0, '1', 0],
             ['-1.23', 33, '-926549609804623448265268294182900512918058893428212027689876489708283', 66],
             [ '1.23', 34, '113965602005968684136628000184496763088921243891670079405854808234118809', 68],
 

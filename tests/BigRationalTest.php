@@ -112,6 +112,24 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
+    public function testZero()
+    {
+        $this->assertBigRationalEquals('0', '1', BigRational::zero());
+        $this->assertSame(BigRational::zero(), BigRational::zero());
+    }
+
+    public function testOne()
+    {
+        $this->assertBigRationalEquals('1', '1', BigRational::one());
+        $this->assertSame(BigRational::one(), BigRational::one());
+    }
+
+    public function testTen()
+    {
+        $this->assertBigRationalEquals('10', '1', BigRational::ten());
+        $this->assertSame(BigRational::ten(), BigRational::ten());
+    }
+
     public function testAccessors()
     {
         $rational = BigRational::nd(123456789, 987654321);

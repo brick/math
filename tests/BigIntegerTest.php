@@ -347,6 +347,19 @@ class BigIntegerTest extends AbstractTestCase
     public function testZero()
     {
         $this->assertBigIntegerEquals('0', BigInteger::zero());
+        $this->assertSame(BigInteger::zero(), BigInteger::zero());
+    }
+
+    public function testOne()
+    {
+        $this->assertBigIntegerEquals('1', BigInteger::one());
+        $this->assertSame(BigInteger::one(), BigInteger::one());
+    }
+
+    public function testTen()
+    {
+        $this->assertBigIntegerEquals('10', BigInteger::ten());
+        $this->assertSame(BigInteger::ten(), BigInteger::ten());
     }
 
     /**

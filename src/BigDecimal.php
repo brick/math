@@ -84,9 +84,7 @@ final class BigDecimal extends BigNumber implements \Serializable
     }
 
     /**
-     * Returns a decimal number representing zero.
-     *
-     * This value is cached to optimize memory consumption as it is frequently used.
+     * Returns a BigDecimal representing zero, with a scale of zero.
      *
      * @return BigDecimal
      */
@@ -99,6 +97,38 @@ final class BigDecimal extends BigNumber implements \Serializable
         }
 
         return $zero;
+    }
+
+    /**
+     * Returns a BigDecimal representing one, with a scale of zero.
+     *
+     * @return BigDecimal
+     */
+    public static function one()
+    {
+        static $one = null;
+
+        if ($one === null) {
+            $one = new BigDecimal('1');
+        }
+
+        return $one;
+    }
+
+    /**
+     * Returns a BigDecimal representing ten, with a scale of zero.
+     *
+     * @return BigDecimal
+     */
+    public static function ten()
+    {
+        static $ten = null;
+
+        if ($ten === null) {
+            $ten = new BigDecimal('10');
+        }
+
+        return $ten;
     }
 
     /**
@@ -241,6 +271,10 @@ final class BigDecimal extends BigNumber implements \Serializable
     public function power($exponent)
     {
         $exponent = (int) $exponent;
+
+        if ($exponent === 0) {
+            return BigDecimal::one();
+        }
 
         if ($exponent === 1) {
             return $this;
@@ -479,7 +513,7 @@ final class BigDecimal extends BigNumber implements \Serializable
         $trimmedValue = rtrim($this->value, '0');
 
         if ($trimmedValue === '') {
-            return new BigDecimal('0');
+            return BigDecimal::zero();
         }
 
         $trimmableZeros = strlen($this->value) - strlen($trimmedValue);

@@ -90,6 +90,54 @@ final class BigRational extends BigNumber implements \Serializable
     }
 
     /**
+     * Returns a BigRational representing zero.
+     *
+     * @return BigRational
+     */
+    public static function zero()
+    {
+        static $zero;
+
+        if ($zero === null) {
+            $zero = new BigRational(BigInteger::zero(), BigInteger::one(), false);
+        }
+
+        return $zero;
+    }
+
+    /**
+     * Returns a BigRational representing one.
+     *
+     * @return BigRational
+     */
+    public static function one()
+    {
+        static $one;
+
+        if ($one === null) {
+            $one = new BigRational(BigInteger::one(), BigInteger::one(), false);
+        }
+
+        return $one;
+    }
+
+    /**
+     * Returns a BigRational representing ten.
+     *
+     * @return BigRational
+     */
+    public static function ten()
+    {
+        static $ten;
+
+        if ($ten === null) {
+            $ten = new BigRational(BigInteger::ten(), BigInteger::one(), false);
+        }
+
+        return $ten;
+    }
+
+    /**
      * @return BigInteger
      */
     public function getNumerator()
@@ -225,6 +273,12 @@ final class BigRational extends BigNumber implements \Serializable
     public function power($exponent)
     {
         $exponent = (int) $exponent;
+
+        if ($exponent === 0) {
+            $one = BigInteger::one();
+
+            return new BigRational($one, $one, false);
+        }
 
         if ($exponent === 1) {
             return $this;
