@@ -217,7 +217,7 @@ final class BigDecimal extends BigNumber implements \Serializable
      *
      * @param BigNumber|number|string $that The divisor. Must be convertible to a BigDecimal.
      *
-     * @return BigInteger The result.
+     * @return BigDecimal The result.
      *
      * @throws ArithmeticException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero,
      *                             or the result yields an infinite number of digits.
