@@ -153,7 +153,7 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testParse($number, $base, $expected)
     {
-        $this->assertSame($expected, (string) BigInteger::parse($number, $base));
+        $this->assertBigIntegerEquals($expected, BigInteger::parse($number, $base));
     }
 
     /**
@@ -365,15 +365,12 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerMin
      *
-     * @param array  $values      The values to test.
-     * @param string $expectedMin The expected minimum value.
+     * @param array  $values The values to test.
+     * @param string $min    The expected minimum value.
      */
-    public function testMin(array $values, $expectedMin)
+    public function testMin(array $values, $min)
     {
-        $actualMin = BigInteger::min(... $values);
-
-        $this->assertInstanceOf(BigInteger::class, $actualMin);
-        $this->assertSame($expectedMin, (string) $actualMin);
+        $this->assertBigIntegerEquals($min, BigInteger::min(... $values));
     }
 
     /**
@@ -411,15 +408,12 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerMax
      *
-     * @param array  $values      The values to test.
-     * @param string $expectedMax The expected maximum value.
+     * @param array  $values The values to test.
+     * @param string $max    The expected maximum value.
      */
-    public function testMax(array $values, $expectedMax)
+    public function testMax(array $values, $max)
     {
-        $actualMax = BigInteger::max(... $values);
-
-        $this->assertInstanceOf(BigInteger::class, $actualMax);
-        $this->assertSame($expectedMax, (string) $actualMax);
+        $this->assertBigIntegerEquals($max, BigInteger::max(... $values));
     }
 
     /**
@@ -566,8 +560,7 @@ class BigIntegerTest extends AbstractTestCase
         $actual = $number->dividedBy($divisor);
 
         if (! $this->isException($expected)) {
-            $this->assertInstanceOf(BigInteger::class, $actual);
-            $this->assertSame($expected, (string) $actual);
+            $this->assertBigIntegerEquals($expected, $actual);
         }
     }
 

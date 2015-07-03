@@ -3,8 +3,8 @@
 namespace Brick\Math\Tests;
 
 use Brick\Math\BigDecimal;
-use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\RoundingMode;
+use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
@@ -21,7 +21,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testOf($value, $unscaledValue, $scale)
     {
-        $this->assertBigDecimalEquals($unscaledValue, $scale, BigDecimal::of($value));
+        $this->assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($value));
     }
 
     /**
@@ -212,7 +212,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testOfUnscaledValue($unscaledValue, $scale, $expectedUnscaledValue)
     {
         $number = BigDecimal::ofUnscaledValue($unscaledValue, $scale);
-        $this->assertBigDecimalEquals($expectedUnscaledValue, $scale, $number);
+        $this->assertBigDecimalInternalValues($expectedUnscaledValue, $scale, $number);
     }
 
     /**
@@ -252,34 +252,31 @@ class BigDecimalTest extends AbstractTestCase
 
     public function testZero()
     {
-        $this->assertBigDecimalEquals('0', 0, BigDecimal::zero());
+        $this->assertBigDecimalInternalValues('0', 0, BigDecimal::zero());
         $this->assertSame(BigDecimal::zero(), BigDecimal::zero());
     }
 
     public function testOne()
     {
-        $this->assertBigDecimalEquals('1', 0, BigDecimal::one());
+        $this->assertBigDecimalInternalValues('1', 0, BigDecimal::one());
         $this->assertSame(BigDecimal::one(), BigDecimal::one());
     }
 
     public function testTen()
     {
-        $this->assertBigDecimalEquals('10', 0, BigDecimal::ten());
+        $this->assertBigDecimalInternalValues('10', 0, BigDecimal::ten());
         $this->assertSame(BigDecimal::ten(), BigDecimal::ten());
     }
 
     /**
      * @dataProvider providerMin
      *
-     * @param array  $values      The values to test.
-     * @param string $expectedMin The expected minimum value.
+     * @param array  $values The values to test.
+     * @param string $min    The expected minimum value.
      */
-    public function testMin(array $values, $expectedMin)
+    public function testMin(array $values, $min)
     {
-        $actualMin = BigDecimal::min(... $values);
-
-        $this->assertInstanceOf(BigDecimal::class, $actualMin);
-        $this->assertSame($expectedMin, (string) $actualMin);
+        $this->assertBigDecimalEquals($min, BigDecimal::min(... $values));
     }
 
     /**
@@ -322,15 +319,12 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerMax
      *
-     * @param array  $values      The values to test.
-     * @param string $expectedMax The expected maximum value.
+     * @param array  $values The values to test.
+     * @param string $max    The expected maximum value.
      */
-    public function testMax(array $values, $expectedMax)
+    public function testMax(array $values, $max)
     {
-        $actualMax = BigDecimal::max(... $values);
-
-        $this->assertInstanceOf(BigDecimal::class, $actualMax);
-        $this->assertSame($expectedMax, (string) $actualMax);
+        $this->assertBigDecimalEquals($max, BigDecimal::max(... $values));
     }
 
     /**
@@ -384,7 +378,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testPlus($a, $b, $unscaledValue, $scale)
     {
-        $this->assertBigDecimalEquals($unscaledValue, $scale, BigDecimal::of($a)->plus($b));
+        $this->assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($a)->plus($b));
     }
 
     /**
@@ -453,7 +447,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testMinus($a, $b, $unscaledValue, $scale)
     {
-        $this->assertBigDecimalEquals($unscaledValue, $scale, BigDecimal::of($a)->minus($b));
+        $this->assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($a)->minus($b));
     }
 
     /**
@@ -522,7 +516,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testMultipliedBy($a, $b, $unscaledValue, $scale)
     {
-        $this->assertBigDecimalEquals($unscaledValue, $scale, BigDecimal::of($a)->multipliedBy($b));
+        $this->assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($a)->multipliedBy($b));
     }
 
     /**
@@ -594,7 +588,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testDividedToScale($a, $b, $scale, $roundingMode, $unscaledValue, $expectedScale)
     {
         $decimal = BigDecimal::of($a)->dividedToScale($b, $scale, $roundingMode);
-        $this->assertBigDecimalEquals($unscaledValue, $expectedScale, $decimal);
+        $this->assertBigDecimalInternalValues($unscaledValue, $expectedScale, $decimal);
     }
 
     /**
@@ -663,8 +657,7 @@ class BigDecimalTest extends AbstractTestCase
         $actual = $number->dividedBy($divisor);
 
         if (! $this->isException($expected)) {
-            $this->assertInstanceOf(BigDecimal::class, $actual);
-            $this->assertSame($expected, (string) $actual);
+            $this->assertBigDecimalEquals($expected, $actual);
         }
     }
 
@@ -784,7 +777,7 @@ class BigDecimalTest extends AbstractTestCase
             $actual = $number->dividedToScale($divisor, $scale, $roundingMode);
 
             if ($expected !== null) {
-                $this->assertBigDecimalEquals($expected, $scale, $actual);
+                $this->assertBigDecimalInternalValues($expected, $scale, $actual);
             }
         }
     }
@@ -1269,8 +1262,8 @@ class BigDecimalTest extends AbstractTestCase
     {
         list ($q, $r) = BigDecimal::of($dividend)->divideAndRemainder($divisor);
 
-        $this->assertSame($quotient, (string) $q);
-        $this->assertSame($remainder, (string) $r);
+        $this->assertBigDecimalEquals($quotient, $q);
+        $this->assertBigDecimalEquals($remainder, $r);
     }
 
     /**
@@ -1363,7 +1356,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testPower($number, $exponent, $unscaledValue, $scale)
     {
-        $this->assertBigDecimalEquals($unscaledValue, $scale, BigDecimal::of($number)->power($exponent));
+        $this->assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->power($exponent));
     }
 
     /**
@@ -1454,7 +1447,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testWithScale($number, $withScale, $roundingMode, $unscaledValue, $scale)
     {
         $decimal = BigDecimal::of($number)->withScale($withScale, $roundingMode);
-        $this->assertBigDecimalEquals($unscaledValue, $scale, $decimal);
+        $this->assertBigDecimalInternalValues($unscaledValue, $scale, $decimal);
     }
 
     /**
@@ -1479,7 +1472,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testWithPointMovedLeft($number, $places, $expected)
     {
-        $this->assertSame($expected, (string) BigDecimal::of($number)->withPointMovedLeft($places));
+        $this->assertBigDecimalEquals($expected, BigDecimal::of($number)->withPointMovedLeft($places));
     }
 
     /**
@@ -1565,7 +1558,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testWithPointMovedRight($number, $places, $expected)
     {
-        $this->assertSame($expected, (string) BigDecimal::of($number)->withPointMovedRight($places));
+        $this->assertBigDecimalEquals($expected, BigDecimal::of($number)->withPointMovedRight($places));
     }
 
     /**
@@ -1650,8 +1643,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testStripTrailingZeros($number, $expected)
     {
-        $actual = BigDecimal::of($number)->stripTrailingZeros();
-        $this->assertSame($expected, (string) $actual);
+        $this->assertBigDecimalEquals($expected, BigDecimal::of($number)->stripTrailingZeros());
     }
 
     /**
@@ -1700,7 +1692,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testAbs($number, $unscaledValue, $scale)
     {
-        $this->assertBigDecimalEquals($unscaledValue, $scale, BigDecimal::of($number)->abs());
+        $this->assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->abs());
     }
 
     /**
@@ -1725,7 +1717,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testNegated($number, $unscaledValue, $scale)
     {
-        $this->assertBigDecimalEquals($unscaledValue, $scale, BigDecimal::of($number)->negated());
+        $this->assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->negated());
     }
 
     /**
@@ -2082,7 +2074,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testToBigRational($decimal, $rational)
     {
-        $this->assertSame($rational, (string) BigDecimal::of($decimal)->toBigRational());
+        $this->assertBigRationalEquals($rational, BigDecimal::of($decimal)->toBigRational());
     }
 
     /**
@@ -2182,7 +2174,7 @@ class BigDecimalTest extends AbstractTestCase
 
         $number = BigDecimal::ofUnscaledValue($value, $scale);
 
-        $this->assertBigDecimalEquals($value, $scale, unserialize(serialize($number)));
+        $this->assertBigDecimalInternalValues($value, $scale, unserialize(serialize($number)));
     }
 
     /**
