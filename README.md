@@ -195,7 +195,7 @@ The result of the division of a `BigRational` can always be represented exactly:
 
 ### Rounding modes
 
-Here are the RoundingMode constants available:
+Here are the `RoundingMode` constants available:
 
 Rounding mode  | Description
 -------------- | -----------

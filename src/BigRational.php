@@ -74,8 +74,8 @@ final class BigRational extends BigNumber implements \Serializable
      * If the denominator is negative, the signs of both the numerator and the denominator
      * will be inverted to ensure that the denominator is always positive.
      *
-     * @param BigNumber|number|string $numerator   The numerator.
-     * @param BigNumber|number|string $denominator The denominator.
+     * @param BigNumber|number|string $numerator   The numerator. Must be convertible to a BigInteger.
+     * @param BigNumber|number|string $denominator The denominator. Must be convertible to a BigInteger.
      *
      * @return BigRational
      *
