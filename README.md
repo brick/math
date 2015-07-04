@@ -7,6 +7,8 @@ A library to work with arbitrary precision numbers.
 [![Coverage Status](https://coveralls.io/repos/brick/math/badge.svg?branch=master)](https://coveralls.io/r/brick/math?branch=master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
+For a complete list of classes and methods, check the [API documentation](http://brick.io/math/).
+
 Installation
 ------------
 
@@ -47,20 +49,20 @@ for a list of changes introduced by each further `0.x.0` version.
 Package contents
 ----------------
 
-This library provides the following public classes in the `Brick\Math` namespace:
+This library provides the following public classes in the [Brick\Math](http://brick.io/math/namespace-Brick.Math.html) namespace:
 
-- `BigNumber`: base class for `BigInteger`, `BigDecimal` and `BigRational`
-- `BigInteger`: represents an arbitrary-precision integer number.
-- `BigDecimal`: represents an arbitrary-precision decimal number.
-- `BigRational`: represents an arbitrary-precision rational number (fraction).
-- `RoundingMode`: holds constants for the [rounding modes](#rounding-modes).
+- [BigNumber](http://brick.io/math/class-Brick.Math.BigNumber.html): base class for `BigInteger`, `BigDecimal` and `BigRational`
+- [BigInteger](http://brick.io/math/class-Brick.Math.BigInteger.html): represents an arbitrary-precision integer number.
+- [BigDecimal](http://brick.io/math/class-Brick.Math.BigDecimal.html): represents an arbitrary-precision decimal number.
+- [BigRational](http://brick.io/math/class-Brick.Math.BigRational.html): represents an arbitrary-precision rational number (fraction).
+- [RoundingMode](http://brick.io/math/class-Brick.Math.RoundingMode.html): holds constants for the [rounding modes](http://brick.io/math/class-Brick.Math.RoundingMode.html).
 
-And the following exceptions in the `Brick\Math\Exception` namespace:
+And the following exceptions in the [Brick\Math\Exception](http://brick.io/math/namespace-Brick.Math.Exception.html) namespace:
 
-- `ArithmeticException`: base class for all exceptions
-- `DivisionByZeroException`: thrown when a division by zero occurs
-- `NumberFormatException`: thrown when parsing a number string in an invalid format
-- `RoundingNecessaryException`: thrown when the result of the operation cannot be represented without explicit rounding
+- [ArithmeticException](http://brick.io/math/class-Brick.Math.Exception.ArithmeticException.html): base class for all exceptions
+- [DivisionByZeroException](http://brick.io/math/class-Brick.Math.Exception.DivisionByZeroException.html): thrown when a division by zero occurs
+- [NumberFormatException](http://brick.io/math/class-Brick.Math.Exception.NumberFormatException.html): thrown when parsing a number string in an invalid format
+- [RoundingNecessaryException](http://brick.io/math/class-Brick.Math.Exception.RoundingNecessaryException.html): thrown when the result of the operation cannot be represented without explicit rounding
 
 Overview
 --------
@@ -155,7 +157,7 @@ of the division is not zero:
     echo BigInteger::of(999)->dividedBy(3); // 333
     echo BigInteger::of(1000)->dividedBy(3); // RoundingNecessaryException
 
-You can pass an optional [rounding mode](#rounding-modes) to round the result, if necessary:
+You can pass an optional [rounding mode](http://brick.io/math/class-Brick.Math.RoundingMode.html) to round the result, if necessary:
 
     echo BigInteger::of(1000)->dividedBy(3, RoundingMode::DOWN); // 333
     echo BigInteger::of(1000)->dividedBy(3, RoundingMode::UP); 334
@@ -172,7 +174,7 @@ You can even get both at the same time:
 #### BigDecimal
 
 Dividing a `BigDecimal` always requires a scale to be specified. If the exact result of the division does not fit in
-the given scale, a [rounding mode](#rounding-modes) must be provided.
+the given scale, a [rounding mode](http://brick.io/math/class-Brick.Math.RoundingMode.html) must be provided.
 
     echo BigDecimal::of(1)->dividedBy('8', 3); // 0.125
     echo BigDecimal::of(1)->dividedBy('8', 2); // RoundingNecessaryException
@@ -192,23 +194,6 @@ The result of the division of a `BigRational` can always be represented exactly:
 
     echo BigRational::of('123/456')->dividedBy('7'); // 123/3192
     echo BigRational::of('123/456')->dividedBy('9/8'); // 984/4104
-
-### Rounding modes
-
-Here are the `RoundingMode` constants available:
-
-Rounding mode  | Description
--------------- | -----------
-`UNNECESSARY`  | Assumes that no rounding is necessary, and throws an exception if it is.
-`UP`           | Rounds away from zero.
-`DOWN`         | Rounds towards zero.
-`CEILING`      | Rounds towards positive infinity. If the result is positive, behaves as for `UP`; if negative, behaves as for `DOWN`.
-`FLOOR`        | Rounds towards negative infinity. If the result is positive, behaves as for `DOWN`; if negative, behaves as for `UP`.
-`HALF_UP`      | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round up. Behaves as for `UP` if the discarded fraction is >= 0.5; otherwise, behaves as for `DOWN`.
-`HALF_DOWN`    | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round down. Behaves as for `UP` if the discarded fraction is > 0.5; otherwise, behaves as for `DOWN`.
-`HALF_CEILING` | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards positive infinity. If the result is positive, behaves as for `HALF_UP`; if negative, behaves as for `HALF_DOWN`.
-`HALF_FLOOR`   | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards negative infinity. If the result is positive, behaves as for `HALF_DOWN`; if negative, behaves as for `HALF_UP`.
-`HALF_EVEN`    | Rounds towards the "nearest neighbor" unless both neighbors are equidistant, in which case rounds towards the even neighbor. Behaves as for `HALF_UP` if the digit to the left of the discarded fraction is odd; behaves as for `HALF_DOWN` if it's even.
 
 ### Serialization
 
