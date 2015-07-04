@@ -741,11 +741,11 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @return array
+     * @return \Generator
      */
     public function providerToBigDecimal()
     {
-        return [
+        $tests = [
             ['1', '1'],
             ['1/2', '0.5'],
             ['2/2', '1'],
@@ -826,6 +826,11 @@ class BigRationalTest extends AbstractTestCase
             ['1274512848871262052663/181119169279677131024612890541902743279933929443359375', '0.0000000000000000000000000000000070368744177664'],
             ['1274512848871262052664/181119169279677131024612890541902743279933929443359375', null],
         ];
+
+        foreach ($tests as list ($number, $expected)) {
+            yield [$number, $expected];
+            yield ['-' . $number, $expected === null ? null : '-' . $expected];
+        }
     }
 
     /**
