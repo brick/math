@@ -15,7 +15,7 @@ Just define the following requirement in your `composer.json` file:
 
     {
         "require": {
-            "brick/math": "0.4.*"
+            "brick/math": "0.5.*"
         }
     }
 
@@ -39,7 +39,7 @@ existing code, etc.), `y` is incremented.
 
 **When a breaking change is introduced, a new `0.x` version cycle is always started.**
 
-It is therefore safe to lock your project to a given release cycle, such as `0.4.*`.
+It is therefore safe to lock your project to a given release cycle, such as `0.5.*`.
 
 If you need to upgrade to a newer release cycle, check the [release history](https://github.com/brick/math/releases)
 for a list of changes introduced by each further `0.x.0` version.
@@ -47,34 +47,71 @@ for a list of changes introduced by each further `0.x.0` version.
 Package contents
 ----------------
 
-This library provides the following public classes:
+This library provides the following public classes in the `Brick\Math` namespace:
 
-- `Brick\Math\ArithmeticException`: exception thrown when an error occurs.
-- `Brick\Math\BigInteger`: represents an arbitrary-precision integer number.
-- `Brick\Math\BigDecimal`: represents an arbitrary-precision decimal number.
-- `Brick\Math\BigRational`: represents an arbitrary-precision rational number (fraction).
-- `Brick\Math\RoundingMode`: holds constants for the [rounding modes](#division--rounding-modes).
+- `BigNumber`: base class for `BigInteger`, `BigDecimal` and `BigRational`
+- `BigInteger`: represents an arbitrary-precision integer number.
+- `BigDecimal`: represents an arbitrary-precision decimal number.
+- `BigRational`: represents an arbitrary-precision rational number (fraction).
+- `RoundingMode`: holds constants for the [rounding modes](#rounding-modes).
+
+And the following exceptions in the `Brick\Math\Exception` namespace:
+
+- `ArithmeticException`: base class for all exceptions
+- `DivisionByZeroException`: thrown when a division by zero occurs
+- `NumberFormatException`: thrown when parsing a number string in an invalid format
+- `RoundingNecessaryException`: thrown when the result of the operation cannot be represented without explicit rounding
 
 Overview
 --------
 
 ### Instantiation
 
-The constructor of each class is private, you must use a factory method to obtain an instance:
+The constructors of the classes are not public, you must use a factory method to obtain an instance.
 
-    $integer = BigInteger::of('123456'); // accepts integers and strings
-    $decimal = BigDecimal::of('123.456'); // accepts floats, integers and strings
+All classes provide an `of()` factory method that accepts any of the following types:
 
-    $rational = BigRational::of('123', '456'); // accepts BigInteger instances, integers and strings
-    $rational = BigRational::parse('123/456'); // accepts fraction strings
+- `BigNumber` instances
+- `int` numbers
+- `float` numbers
+- `string` representations of integer, decimal and rational numbers
 
-Avoid instantiating `BigDecimal` from a `float`: floating-point values are imprecise by design,
-and can lead to unexpected results. Always prefer instantiating from a `string`:
+Example:
 
-    $decimal = BigDecimal::of(123.456); // avoid!
-    $decimal = BigDecimal::of('123.456'); // OK, supports an unlimited number of digits.
+    BigInteger::of(123546);
+    BigInteger::of('9999999999999999999999999999999999999999999');
 
-### Immutability
+    BigDecimal::of(1.2);
+    BigDecimal::of('9.99999999999999999999999999999999999999999999');
+
+    BigRational::of('2/3');
+    BigRational::of('1.1'); // 11/10
+
+Note that all `of()` methods accept all of the representations above, *as long as it can be safely converted to
+the current type*:
+
+    BigInteger::of('1.00'); // 1
+    BigInteger::of('1.01'); // ArithmeticException
+
+    BigDecimal::of('1/8'); // 0.125
+    BigDecimal::of('1/3'); // ArithmeticException
+
+Note about native integers: instantiating from an `int` is safe *as long as you don't exceed the maximum
+value for your platform* (`PHP_INT_MAX`), in which case it would be transparently converted to `float` by PHP without
+notice, and could result in a loss of information. In doubt, prefer instantiating from a `string`, which supports
+an unlimited numbers of digits:
+
+    echo BigInteger::of(999999999999999999999); // 1000000000000000000000
+    echo BigInteger::of('999999999999999999999'); // 999999999999999999999
+
+Note about floating-point values: instantiating from a `float` might be unsafe, as floating-point values are
+imprecise by design, and could result in a loss of information. Always prefer instantiating from a `string`, which
+supports an unlimited number of digits:
+
+    echo BigDecimal::of(1.99999999999999999999); // 2
+    echo BigDecimal::of('1.99999999999999999999'); // 1.99999999999999999999
+
+### Immutability & chaining
 
 The `BigInteger`, `BigDecimal` and `BigRational` classes are immutable: their value never changes,
 so that they can be safely passed around. All methods that return a `BigInteger`, `BigDecimal` or `BigRational`
@@ -85,10 +122,14 @@ return a new object, leaving the original object unaffected:
     echo $ten->plus(5); // 15
     echo $ten->multipliedBy(3); // 30
 
+The methods can be chained for better readability:
+
+    echo BigInteger::of(10)->plus(5)->multipliedBy(3); // 30
+
 ### Parameter types
 
-All methods that accept a number: `plus()`, `minus()`, `multipliedBy()`, etc. accept the same types as `of()` / `parse()`.
-As an example, given the following number:
+All methods that accept a number: `plus()`, `minus()`, `multipliedBy()`, etc. accept the same types as `of()`.
+For example, given the following number:
 
     $integer = BigInteger::of(123);
 
@@ -98,46 +139,63 @@ The following lines are equivalent:
     $integer->multipliedBy('123');
     $integer->multipliedBy($integer);
 
-### Chaining
+Just like `of()`, other types of `BigNumber` are acceptable, as long as they can be safely converted to the current type:
 
-All the methods that return a new number can be chained, for example:
-
-    echo BigInteger::of(10)->plus(5)->multipliedBy(3); // 45
+    echo BigInteger::of(2)->multipliedBy(BigDecimal::of('2.0')); // 4
+    echo BigInteger::of(2)->multipliedBy(BigDecimal::of('2.5')); // ArithmeticException
+    echo BigDecimal::of(2.5)->multipliedBy(BigInteger::of(2)); // 5.0
 
 ### Division & rounding
 
 #### BigInteger
 
-Dividing a `BigInteger` always returns the *quotient* of the division:
+By default, dividing a `BigInteger` returns the exact result of the division, or throws an exception if the remainder
+of the division is not zero:
 
-    echo BigInteger::of(1000)->dividedBy(3); // 333
+    echo BigInteger::of(999)->dividedBy(3); // 333
+    echo BigInteger::of(1000)->dividedBy(3); // RoundingNecessaryException
 
-You can get the remainder of the division with the `remainder()` method:
+You can pass an optional [rounding mode](#rounding-modes) to round the result, if necessary:
 
+    echo BigInteger::of(1000)->dividedBy(3, RoundingMode::DOWN); // 333
+    echo BigInteger::of(1000)->dividedBy(3, RoundingMode::UP); 334
+
+If you're into quotients and remainders, there are methods for this, too:
+
+    echo BigInteger::of(1000)->quotient(3); // 333
     echo BigInteger::of(1000)->remainder(3); // 1
 
-You can also get both the quotient and the remainder in a single method call:
+You can even get both at the same time:
 
-    list ($quotient, $remainder) = BigInteger::of(1000)->divideAndRemainder(3);
+    list ($quotient, $remainder) = BigInteger::of(1000)->quotientAndRemainder(3);
 
 #### BigDecimal
 
-When dividing a `BigDecimal`, if the number cannot be represented at the requested scale, the result needs to be rounded up or down.
-By default, the library assumes that rounding is unnecessary, and throws an exception if rouding was in fact necessary:
+Dividing a `BigDecimal` always requires a scale to be specified. If the exact result of the division does not fit in
+the given scale, a [rounding mode](#rounding-modes) must be provided.
 
-    BigDecimal::of('1000.0')->dividedBy(3); // throws an ArithmeticException
+    echo BigDecimal::of(1)->dividedBy('8', 3); // 0.125
+    echo BigDecimal::of(1)->dividedBy('8', 2); // RoundingNecessaryException
+    echo BigDecimal::of(1)->dividedBy('8', 2, RoundingMode::HALF_DOWN); // 0.12
+    echo BigDecimal::of(1)->dividedBy('8', 2, RoundingMode::HALF_UP); // 0.13
 
-In that case, you need to explicitly provide a rounding mode:
+If you know that the division yields a finite number of decimals places, you can use `exactlyDividedBy()`, which will
+automatically compute the required scale to fit the result, or throw an exception if the division yields an infinite
+repeating decimal:
 
-    echo BigDecimal::of('1000.0')->dividedBy(3, RoundingMode::DOWN); // 333.3
-    echo BigDecimal::of('1000.0')->dividedBy(3, RoundingMode::UP); // 333.4
+    echo BigDecimal::of(1)->exactlyDividedBy(256); // 0.00390625
+    echo BigDecimal::of(1)->exactlyDividedBy(11); // RoundingNecessaryException
 
-By default, the result has the same scale as the number, but you can also specify a different scale:
+#### BigRational
 
-    echo BigDecimal::of(3)->dividedBy(11, RoundingMode::UP, 2); // 0.28
-    echo BigDecimal::of(3)->dividedBy(11, RoundingMode::DOWN, 6); // 0.272727
+The result of the division of a `BigRational` can always be represented exactly:
 
-There are a number of rounding modes you can use:
+    echo BigRational::of('123/456')->dividedBy('7'); // 123/3192
+    echo BigRational::of('123/456')->dividedBy('9/8'); // 984/4104
+
+### Rounding modes
+
+Here are the RoundingMode constants available:
 
 Rounding mode  | Description
 -------------- | -----------
@@ -151,13 +209,6 @@ Rounding mode  | Description
 `HALF_CEILING` | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards positive infinity. If the result is positive, behaves as for `HALF_UP`; if negative, behaves as for `HALF_DOWN`.
 `HALF_FLOOR`   | Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards negative infinity. If the result is positive, behaves as for `HALF_DOWN`; if negative, behaves as for `HALF_UP`.
 `HALF_EVEN`    | Rounds towards the "nearest neighbor" unless both neighbors are equidistant, in which case rounds towards the even neighbor. Behaves as for `HALF_UP` if the digit to the left of the discarded fraction is odd; behaves as for `HALF_DOWN` if it's even.
-
-#### BigRational
-
-The result of the division of a `BigRational` can always be represented exactly:
-
-    echo BigRational::parse('123/456')->dividedBy('7'); // 123/3192
-    echo BigRational::parse('123/456')->dividedBy('9/8'); // 984/4104
 
 ### Serialization
 
