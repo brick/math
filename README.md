@@ -5,7 +5,8 @@ A library to work with arbitrary precision numbers.
 
 [![Build Status](https://secure.travis-ci.org/brick/math.svg?branch=master)](http://travis-ci.org/brick/math)
 [![Coverage Status](https://coveralls.io/repos/brick/math/badge.svg?branch=master)](https://coveralls.io/r/brick/math?branch=master)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
+[![Latest Stable Version](https://poser.pugx.org/brick/math/v/stable)](https://packagist.org/packages/brick/math)
+[![License](https://poser.pugx.org/brick/math/license)](https://packagist.org/packages/brick/math)
 
 For a complete list of classes and methods, check the [API documentation](http://brick.io/math/).
 
@@ -42,6 +43,8 @@ existing code, etc.), `y` is incremented.
 **When a breaking change is introduced, a new `0.x` version cycle is always started.**
 
 It is therefore safe to lock your project to a given release cycle, such as `0.5.*`.
+
+If you want to use the latest version, and receive any non-breaking update, use `~0.5.1`.
 
 If you need to upgrade to a newer release cycle, check the [release history](https://github.com/brick/math/releases)
 for a list of changes introduced by each further `0.x.0` version.
