@@ -355,6 +355,16 @@ abstract class BigNumber
     abstract public function toBigRational();
 
     /**
+     * Converts this number to a BigDecimal with the given scale, using rounding if necessary.
+     *
+     * @param int $scale        The scale of the resulting `BigDecimal`.
+     * @param int $roundingMode A `RoundingMode` constant.
+     *
+     * @return BigDecimal
+     */
+    abstract public function toScale($scale, $roundingMode = RoundingMode::UNNECESSARY);
+
+    /**
      * Returns the exact value of this number as a native integer.
      *
      * If this number cannot be converted to a native integer without losing precision, an exception is thrown.

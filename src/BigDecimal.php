@@ -418,6 +418,8 @@ final class BigDecimal extends BigNumber implements \Serializable
     /**
      * Returns a BigDecimal with the current value and the specified scale.
      *
+     * @deprecated Use `toScale()`.
+     *
      * @param int $scale
      * @param int $roundingMode
      *
@@ -425,11 +427,7 @@ final class BigDecimal extends BigNumber implements \Serializable
      */
     public function withScale($scale, $roundingMode = RoundingMode::UNNECESSARY)
     {
-        if ($scale == $this->scale) {
-            return $this;
-        }
-
-        return $this->dividedBy(1, $scale, $roundingMode);
+        return $this->toScale($scale, $roundingMode);
     }
 
     /**
@@ -652,6 +650,20 @@ final class BigDecimal extends BigNumber implements \Serializable
         $denominator = BigInteger::create('1' . str_repeat('0', $this->scale));
 
         return BigRational::create($numerator, $denominator, false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toScale($scale, $roundingMode = RoundingMode::UNNECESSARY)
+    {
+        $scale = (int) $scale;
+
+        if ($scale === $this->scale) {
+            return $this;
+        }
+
+        return $this->dividedBy(BigDecimal::one(), $scale, $roundingMode);
     }
 
     /**

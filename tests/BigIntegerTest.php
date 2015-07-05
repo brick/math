@@ -1679,6 +1679,30 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerToScale
+     *
+     * @param string $number
+     * @param int    $scale
+     * @param string $expected
+     */
+    public function testToScale($number, $scale, $expected)
+    {
+        $this->assertBigDecimalEquals($expected, BigInteger::of($number)->toScale($scale));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToScale()
+    {
+        return [
+            ['12345678901234567890123456789', 0, '12345678901234567890123456789'],
+            ['12345678901234567890123456789', 1, '12345678901234567890123456789.0'],
+            ['12345678901234567890123456789', 2, '12345678901234567890123456789.00'],
+        ];
+    }
+
+    /**
      * @dataProvider providerToInteger
      *
      * @param int $number

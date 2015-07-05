@@ -391,6 +391,14 @@ final class BigRational extends BigNumber implements \Serializable
     /**
      * {@inheritdoc}
      */
+    public function toScale($scale, $roundingMode = RoundingMode::UNNECESSARY)
+    {
+        return $this->numerator->toBigDecimal()->dividedBy($this->denominator, $scale, $roundingMode);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function toInteger()
     {
         return $this->toBigInteger()->toInteger();

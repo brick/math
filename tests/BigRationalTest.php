@@ -4,6 +4,7 @@ namespace Brick\Math\Tests;
 
 use Brick\Math\BigInteger;
 use Brick\Math\BigRational;
+use Brick\Math\RoundingMode;
 use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
@@ -831,6 +832,45 @@ class BigRationalTest extends AbstractTestCase
             yield [$number, $expected];
             yield ['-' . $number, $expected === null ? null : '-' . $expected];
         }
+    }
+
+    /**
+     * @dataProvider providerToScale
+     *
+     * @param string $number
+     * @param int    $scale
+     * @param int    $roundingMode
+     * @param string $expected
+     */
+    public function testToScale($number, $scale, $roundingMode, $expected)
+    {
+        $number = BigRational::of($number);
+
+        if ($this->isException($expected)) {
+            $this->setExpectedException($expected);
+        }
+
+        $actual = $number->toScale($scale, $roundingMode);
+
+        if (! $this->isException($expected)) {
+            $this->assertBigDecimalEquals($expected, $actual);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToScale()
+    {
+        return [
+            ['1/8', 3, RoundingMode::UNNECESSARY, '0.125'],
+            ['1/16', 3, RoundingMode::UNNECESSARY, RoundingNecessaryException::class],
+            ['1/16', 3, RoundingMode::HALF_DOWN, '0.062'],
+            ['1/16', 3, RoundingMode::HALF_UP, '0.063'],
+            ['1/9', 30, RoundingMode::DOWN, '0.111111111111111111111111111111'],
+            ['1/9', 30, RoundingMode::UP, '0.111111111111111111111111111112'],
+            ['1/9', 100, RoundingMode::UNNECESSARY, RoundingNecessaryException::class],
+        ];
     }
 
     /**

@@ -474,6 +474,14 @@ final class BigInteger extends BigNumber implements \Serializable
     /**
      * {@inheritdoc}
      */
+    public function toScale($scale, $roundingMode = RoundingMode::UNNECESSARY)
+    {
+        return $this->toBigDecimal()->toScale($scale, $roundingMode);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function toInteger()
     {
         if ($this->isLessThan(~PHP_INT_MAX) || $this->isGreaterThan(PHP_INT_MAX)) {
