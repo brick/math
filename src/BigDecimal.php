@@ -4,7 +4,6 @@ namespace Brick\Math;
 
 use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
-use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -51,7 +50,7 @@ final class BigDecimal extends BigNumber implements \Serializable
      *
      * @return BigDecimal
      *
-     * @throws ArithmeticException If the value cannot be converted to a BigInteger.
+     * @throws ArithmeticException If the value cannot be converted to a BigDecimal.
      */
     public static function of($value)
     {

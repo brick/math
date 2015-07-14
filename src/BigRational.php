@@ -61,7 +61,7 @@ final class BigRational extends BigNumber implements \Serializable
      *
      * @return BigRational
      *
-     * @throws ArithmeticException If the value cannot be converted to a BigInteger.
+     * @throws ArithmeticException If the value cannot be converted to a BigRational.
      */
     public static function of($value)
     {
