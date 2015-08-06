@@ -211,15 +211,15 @@ final class BigDecimal extends BigNumber implements \Serializable
      * Returns the result of the division of this number by the given one, at the given scale.
      *
      * @param BigNumber|number|string $that         The divisor.
-     * @param int                     $scale        The desired scale.
+     * @param int|null                $scale        The desired scale, or null to use the scale of this number.
      * @param int                     $roundingMode An optional rounding mode.
      *
      * @return BigDecimal
      *
-     * @throws \InvalidArgumentException If the rounding mode is invalid.
+     * @throws \InvalidArgumentException If the scale or rounding mode is invalid.
      * @throws ArithmeticException       If the number is invalid, is zero, or rounding was necessary.
      */
-    public function dividedBy($that, $scale, $roundingMode = RoundingMode::UNNECESSARY)
+    public function dividedBy($that, $scale = null, $roundingMode = RoundingMode::UNNECESSARY)
     {
         $that = BigDecimal::of($that);
 
