@@ -132,13 +132,13 @@ return a new object, leaving the original object unaffected:
 $ten = BigInteger::of(10);
 
 echo $ten->plus(5); // 15
-echo $ten->multipliedBy(3); // 30
+echo $ten->multipliedBy(3); // 45
 ```
 
 The methods can be chained for better readability:
 
 ```php
-echo BigInteger::of(10)->plus(5)->multipliedBy(3); // 30
+echo BigInteger::of(10)->plus(5)->multipliedBy(3); // 45
 ```
 
 #### Parameter types
