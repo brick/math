@@ -138,7 +138,7 @@ echo $ten->multipliedBy(3); // 30
 The methods can be chained for better readability:
 
 ```php
-echo BigInteger::of(10)->plus(5)->multipliedBy(3); // 30
+echo BigInteger::of(10)->plus(5)->multipliedBy(3); // 45
 ```
 
 #### Parameter types
