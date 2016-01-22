@@ -19,6 +19,10 @@
         "phpunit/phpunit": "*",
         "satooshi/php-coveralls": "dev-master"
     },
+    "suggest": {
+        "ext-gmp": "Install GMP extension to speed up calculations",
+        "ext-bcmath": "Install BCMath extension to speed up calculations"
+    },
     "autoload": {
         "psr-4": {
             "Brick\\Math\\": "src/",
