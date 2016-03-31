@@ -283,7 +283,7 @@ class BigDecimal implements \Serializable
             }
         }
 
-        if ($that->value === '1' && $scale === $this->scale) {
+        if ($that->value === '1' && $that->scale === 0 && $scale === $this->scale) {
             return $this;
         }
 
