@@ -7,5 +7,4 @@ namespace Brick\Math\Exception;
  */
 class NumberFormatException extends ArithmeticException
 {
-
 }

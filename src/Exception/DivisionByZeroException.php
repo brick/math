@@ -8,7 +8,7 @@ namespace Brick\Math\Exception;
 class DivisionByZeroException extends ArithmeticException
 {
     /**
-     * @return ArithmeticException
+     * @return DivisionByZeroException
      */
     public static function divisionByZero()
     {
@@ -20,6 +20,6 @@ class DivisionByZeroException extends ArithmeticException
      */
     public static function denominatorMustNotBeZero()
     {
-        return new DivisionByZeroException('The denominator of a rational number cannot be zero.');
+        return new self('The denominator of a rational number cannot be zero.');
     }
 }

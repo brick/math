@@ -8,7 +8,7 @@ namespace Brick\Math\Exception;
 class RoundingNecessaryException extends ArithmeticException
 {
     /**
-     * @return ArithmeticException
+     * @return RoundingNecessaryException
      */
     public static function roundingNecessary()
     {
