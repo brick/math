@@ -12,7 +12,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
  *
  * This class is immutable.
  */
-final class BigRational extends BigNumber implements \Serializable
+final class BigRational extends BigNumber
 {
     /**
      * The numerator.

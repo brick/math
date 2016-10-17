@@ -10,7 +10,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
 /**
  * Common interface for arbitrary-precision rational numbers.
  */
-abstract class BigNumber
+abstract class BigNumber implements \Serializable
 {
     /**
      * The regular expression used to parse integer, decimal and rational numbers.
