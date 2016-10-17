@@ -10,7 +10,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
 /**
  * Common interface for arbitrary-precision rational numbers.
  */
-abstract class BigNumber implements \Serializable
+abstract class BigNumber implements \Serializable, \JsonSerializable
 {
     /**
      * The regular expression used to parse integer, decimal and rational numbers.
@@ -395,4 +395,12 @@ abstract class BigNumber implements \Serializable
      * @return string
      */
     abstract public function __toString();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return $this->__toString();
+    }
 }
