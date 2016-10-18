@@ -4,7 +4,6 @@ namespace Brick\Math;
 
 use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
-use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 
 /**
