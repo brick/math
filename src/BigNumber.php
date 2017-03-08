@@ -15,9 +15,11 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * The regular expression used to parse integer, decimal and rational numbers.
      *
+     * @internal This will be a private const as soon as PHP 5 support is dropped. Do not use it.
+     *
      * @var string
      */
-    private static $regexp =
+    const PARSE_REGEXP =
         '/^' .
         '(?<integral>[\-\+]?[0-9]+)' .
         '(?:' .
@@ -61,7 +63,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
         $value = (string) $value;
 
-        if (preg_match(self::$regexp, $value, $matches) !== 1) {
+        if (preg_match(self::PARSE_REGEXP, $value, $matches) !== 1) {
             throw new NumberFormatException('The given value does not represent a valid number.');
         }
 
