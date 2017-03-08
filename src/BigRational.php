@@ -22,7 +22,7 @@ final class BigRational extends BigNumber
     private $numerator;
 
     /**
-     * The denominator. Must not be zero.
+     * The denominator. Always strictly positive.
      *
      * @var BigInteger
      */

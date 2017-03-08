@@ -212,7 +212,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     public function isEqualTo($that)
     {
-        return $this->compareTo($that) == 0;
+        return $this->compareTo($that) === 0;
     }
 
     /**
@@ -270,7 +270,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     public function isZero()
     {
-        return $this->sign() == 0;
+        return $this->sign() === 0;
     }
 
     /**

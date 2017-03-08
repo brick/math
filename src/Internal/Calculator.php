@@ -28,7 +28,7 @@ abstract class Calculator
      *
      * @var Calculator|null
      */
-    private static $instance = null;
+    private static $instance;
 
     /**
      * Sets the Calculator instance to use.
