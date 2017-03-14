@@ -363,6 +363,9 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @param int $roundingMode A `RoundingMode` constant.
      *
      * @return BigDecimal
+     *
+     * @throws RoundingNecessaryException If this number cannot be converted to the given scale without rounding.
+     *                                    This only applies when RoundingMode::UNNECESSARY is used.
      */
     abstract public function toScale($scale, $roundingMode = RoundingMode::UNNECESSARY);
 
