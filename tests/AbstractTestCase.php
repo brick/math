@@ -49,7 +49,7 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
     final protected function assertBigDecimalInternalValues($unscaledValue, $scale, $actual)
     {
         $this->assertInstanceOf(BigDecimal::class, $actual);
-        $this->assertSame($unscaledValue, $actual->unscaledValue());
+        $this->assertSame($unscaledValue, (string) $actual->unscaledValue());
         $this->assertSame($scale, $actual->scale());
     }
 

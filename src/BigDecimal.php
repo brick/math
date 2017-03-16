@@ -565,11 +565,11 @@ final class BigDecimal extends BigNumber
     }
 
     /**
-     * @return string
+     * @return BigInteger
      */
     public function unscaledValue()
     {
-        return $this->value;
+        return BigInteger::create($this->value);
     }
 
     /**
