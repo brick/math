@@ -457,15 +457,18 @@ class NativeCalculator extends Calculator
      */
     private function pad(& $a, & $b, $x, $y)
     {
-        $length = $x > $y ? $x : $y;
-
-        if ($x < $length) {
-            $a = str_repeat('0', $length - $x) . $a;
-        }
-        if ($y < $length) {
-            $b = str_repeat('0', $length - $y) . $b;
+        if ($x === $y) {
+            return $x;
         }
 
-        return $length;
+        if ($x < $y) {
+            $a = str_repeat('0', $y - $x) . $a;
+
+            return $y;
+        }
+
+        $b = str_repeat('0', $x - $y) . $b;
+
+        return $x;
     }
 }
