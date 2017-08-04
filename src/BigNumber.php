@@ -64,7 +64,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         $value = (string) $value;
 
         if (preg_match(self::PARSE_REGEXP, $value, $matches) !== 1) {
-            throw new NumberFormatException('The given value does not represent a valid number.');
+            throw new NumberFormatException(sprintf('The given value "%s" does not represent a valid number.', $value));
         }
 
         if (isset($matches['denominator'])) {
