@@ -26,8 +26,8 @@ Just define the following requirement in your `composer.json` file:
 
 ### Requirements
 
-This library requires PHP 7.1 or [HHVM](http://hhvm.com/).
-For PHP 5.6 compatibility, use version `0.5`.
+This library requires PHP 7.1 or later.
+For PHP 5.6 or HHVM compatibility, use version `0.5`.
 
 Although the library can work seamlessly on any PHP installation, it is highly recommended that you install the
 [GMP](http://php.net/manual/en/book.gmp.php) or [BCMath](http://php.net/manual/en/book.bc.php) extension
@@ -43,7 +43,7 @@ existing code, etc.), `y` is incremented.
 
 **When a breaking change is introduced, a new `0.x` version cycle is always started.**
 
-It is therefore safe to lock your project to a given release cycle, such as `0.5.*`.
+It is therefore safe to lock your project to a given release cycle, such as `0.6.*`.
 
 If you need to upgrade to a newer release cycle, check the [release history](https://github.com/brick/math/releases)
 for a list of changes introduced by each further `0.x.0` version.
