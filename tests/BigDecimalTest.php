@@ -655,7 +655,7 @@ class BigDecimalTest extends AbstractTestCase
         $number = BigDecimal::of($number);
 
         if ($this->isException($expected)) {
-            $this->setExpectedException($expected);
+            $this->expectException($expected);
         }
 
         $actual = $number->exactlyDividedBy($divisor);
@@ -780,7 +780,7 @@ class BigDecimalTest extends AbstractTestCase
     {
         foreach ([$zero, $one, $two] as $scale => $expected) {
             if ($expected === null) {
-                $this->setExpectedException(RoundingNecessaryException::class);
+                $this->expectException(RoundingNecessaryException::class);
             }
 
             $actual = $number->dividedBy($divisor, $scale, $roundingMode);

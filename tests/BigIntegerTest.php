@@ -555,7 +555,7 @@ class BigIntegerTest extends AbstractTestCase
         $number = BigInteger::of($number);
 
         if ($this->isException($expected)) {
-            $this->setExpectedException($expected);
+            $this->expectException($expected);
         }
 
         $actual = $number->dividedBy($divisor);
@@ -625,7 +625,7 @@ class BigIntegerTest extends AbstractTestCase
             $divisor .= '0';
 
             if ($expected === null) {
-                $this->setExpectedException(RoundingNecessaryException::class);
+                $this->expectException(RoundingNecessaryException::class);
             }
 
             $actual = $number->dividedBy($divisor, $roundingMode);

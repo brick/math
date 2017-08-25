@@ -15,11 +15,9 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * The regular expression used to parse integer, decimal and rational numbers.
      *
-     * @internal This will be a private const as soon as PHP 5 support is dropped. Do not use it.
-     *
      * @var string
      */
-    const PARSE_REGEXP =
+    private const PARSE_REGEXP =
         '/^' .
         '(?<integral>[\-\+]?[0-9]+)' .
         '(?:' .
@@ -51,7 +49,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @throws NumberFormatException   If the format of the number is not valid.
      * @throws DivisionByZeroException If the value represents a rational number with a denominator of zero.
      */
-    public static function of($value)
+    public static function of($value) : BigNumber
     {
         if ($value instanceof BigNumber) {
             return $value;
@@ -110,7 +108,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return static
      */
-    protected static function create(... $args)
+    protected static function create(... $args) : BigNumber
     {
         return new static(... $args);
     }
@@ -126,7 +124,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @throws \InvalidArgumentException If no values are given.
      * @throws ArithmeticException       If an argument is not valid.
      */
-    public static function min(...$values)
+    public static function min(...$values) : BigNumber
     {
         $min = null;
 
@@ -156,7 +154,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @throws \InvalidArgumentException If no values are given.
      * @throws ArithmeticException       If an argument is not valid.
      */
-    public static function max(...$values)
+    public static function max(...$values) : BigNumber
     {
         $max = null;
 
@@ -182,7 +180,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return string
      */
-    private static function cleanUp($number)
+    private static function cleanUp(string $number) : string
     {
         $firstChar = $number[0];
 
@@ -210,7 +208,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isEqualTo($that)
+    public function isEqualTo($that) : bool
     {
         return $this->compareTo($that) === 0;
     }
@@ -222,7 +220,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isLessThan($that)
+    public function isLessThan($that) : bool
     {
         return $this->compareTo($that) < 0;
     }
@@ -234,7 +232,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isLessThanOrEqualTo($that)
+    public function isLessThanOrEqualTo($that) : bool
     {
         return $this->compareTo($that) <= 0;
     }
@@ -246,7 +244,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isGreaterThan($that)
+    public function isGreaterThan($that) : bool
     {
         return $this->compareTo($that) > 0;
     }
@@ -258,7 +256,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isGreaterThanOrEqualTo($that)
+    public function isGreaterThanOrEqualTo($that) : bool
     {
         return $this->compareTo($that) >= 0;
     }
@@ -268,7 +266,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isZero()
+    public function isZero() : bool
     {
         return $this->sign() === 0;
     }
@@ -278,7 +276,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isNegative()
+    public function isNegative() : bool
     {
         return $this->sign() < 0;
     }
@@ -288,7 +286,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isNegativeOrZero()
+    public function isNegativeOrZero() : bool
     {
         return $this->sign() <= 0;
     }
@@ -298,7 +296,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isPositive()
+    public function isPositive() : bool
     {
         return $this->sign() > 0;
     }
@@ -308,7 +306,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isPositiveOrZero()
+    public function isPositiveOrZero() : bool
     {
         return $this->sign() >= 0;
     }
@@ -318,7 +316,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return int -1 if the number is negative, 0 if zero, 1 if positive.
      */
-    abstract public function sign();
+    abstract public function sign() : int;
 
     /**
      * Compares this number to the given one.
@@ -329,7 +327,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @throws ArithmeticException If the number is not valid.
      */
-    abstract public function compareTo($that);
+    abstract public function compareTo($that) : int;
 
     /**
      * Converts this number to a BigInteger.
@@ -338,7 +336,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @throws RoundingNecessaryException If this number cannot be converted to a BigInteger without rounding.
      */
-    abstract public function toBigInteger();
+    abstract public function toBigInteger() : BigInteger;
 
     /**
      * Converts this number to a BigDecimal.
@@ -347,14 +345,14 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @throws RoundingNecessaryException If this number cannot be converted to a BigDecimal without rounding.
      */
-    abstract public function toBigDecimal();
+    abstract public function toBigDecimal() : BigDecimal;
 
     /**
      * Converts this number to a BigRational.
      *
      * @return BigRational The converted number.
      */
-    abstract public function toBigRational();
+    abstract public function toBigRational() : BigRational;
 
     /**
      * Converts this number to a BigDecimal with the given scale, using rounding if necessary.
@@ -367,7 +365,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @throws RoundingNecessaryException If this number cannot be converted to the given scale without rounding.
      *                                    This only applies when RoundingMode::UNNECESSARY is used.
      */
-    abstract public function toScale($scale, $roundingMode = RoundingMode::UNNECESSARY);
+    abstract public function toScale(int $scale, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal;
 
     /**
      * Returns the exact value of this number as a native integer.
@@ -379,7 +377,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @throws ArithmeticException If this number cannot be exactly converted to a native integer.
      */
-    abstract public function toInteger();
+    abstract public function toInteger() : int;
 
     /**
      * Returns an approximation of this number as a floating-point value.
@@ -389,7 +387,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return float The converted value.
      */
-    abstract public function toFloat();
+    abstract public function toFloat() : float;
 
     /**
      * Returns a string representation of this number.
@@ -399,12 +397,12 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return string
      */
-    abstract public function __toString();
+    abstract public function __toString() : string;
 
     /**
      * {@inheritdoc}
      */
-    public function jsonSerialize()
+    public function jsonSerialize() : string
     {
         return $this->__toString();
     }

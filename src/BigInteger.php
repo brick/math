@@ -29,7 +29,7 @@ final class BigInteger extends BigNumber
      *
      * @param string $value A string of digits, with optional leading minus sign.
      */
-    protected function __construct($value)
+    protected function __construct(string $value)
     {
         $this->value = $value;
     }
@@ -43,7 +43,7 @@ final class BigInteger extends BigNumber
      *
      * @throws ArithmeticException If the value cannot be converted to a BigInteger.
      */
-    public static function of($value)
+    public static function of($value) : BigNumber
     {
         return parent::of($value)->toBigInteger();
     }
@@ -60,11 +60,8 @@ final class BigInteger extends BigNumber
      *
      * @throws \InvalidArgumentException If the number is invalid or the base is out of range.
      */
-    public static function parse($number, $base = 10)
+    public static function parse(string $number, int $base = 10) : BigInteger
     {
-        $number = (string) $number;
-        $base = (int) $base;
-
         $dictionary = '0123456789abcdefghijklmnopqrstuvwxyz';
 
         if ($number === '') {
@@ -85,7 +82,7 @@ final class BigInteger extends BigNumber
             $sign = '';
         }
 
-        if ($number === false /* PHP 5 */ || $number === '' /* PHP 7 */) {
+        if ($number === '') {
             throw new \InvalidArgumentException('The value cannot be empty.');
         }
 
@@ -136,7 +133,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      */
-    public static function zero()
+    public static function zero() : BigInteger
     {
         static $zero;
 
@@ -152,7 +149,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      */
-    public static function one()
+    public static function one() : BigInteger
     {
         static $one;
 
@@ -168,7 +165,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      */
-    public static function ten()
+    public static function ten() : BigInteger
     {
         static $ten;
 
@@ -188,7 +185,7 @@ final class BigInteger extends BigNumber
      *
      * @throws ArithmeticException If the number is not valid, or is not convertible to a BigInteger.
      */
-    public function plus($that)
+    public function plus($that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -210,7 +207,7 @@ final class BigInteger extends BigNumber
      *
      * @throws ArithmeticException If the number is not valid, or is not convertible to a BigInteger.
      */
-    public function minus($that)
+    public function minus($that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -232,7 +229,7 @@ final class BigInteger extends BigNumber
      *
      * @throws ArithmeticException If the multiplier is not a valid number, or is not convertible to a BigInteger.
      */
-    public function multipliedBy($that)
+    public function multipliedBy($that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -256,7 +253,7 @@ final class BigInteger extends BigNumber
      * @throws ArithmeticException If the divisor is not a valid number, is not convertible to a BigInteger, is zero,
      *                             or RoundingMode::UNNECESSARY is used and the remainder is not zero.
      */
-    public function dividedBy($that, $roundingMode = RoundingMode::UNNECESSARY)
+    public function dividedBy($that, int $roundingMode = RoundingMode::UNNECESSARY) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -282,10 +279,8 @@ final class BigInteger extends BigNumber
      *
      * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      */
-    public function power($exponent)
+    public function power(int $exponent) : BigInteger
     {
-        $exponent = (int) $exponent;
-
         if ($exponent === 0) {
             return BigInteger::one();
         }
@@ -314,7 +309,7 @@ final class BigInteger extends BigNumber
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function quotient($that)
+    public function quotient($that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -340,7 +335,7 @@ final class BigInteger extends BigNumber
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function remainder($that)
+    public function remainder($that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -362,7 +357,7 @@ final class BigInteger extends BigNumber
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function quotientAndRemainder($that)
+    public function quotientAndRemainder($that) : array
     {
         $that = BigInteger::of($that);
 
@@ -387,7 +382,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      */
-    public function gcd($that)
+    public function gcd($that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -409,7 +404,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      */
-    public function abs()
+    public function abs() : BigInteger
     {
         return $this->isNegative() ? $this->negated() : $this;
     }
@@ -419,7 +414,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      */
-    public function negated()
+    public function negated() : BigInteger
     {
         return new BigInteger(Calculator::get()->neg($this->value));
     }
@@ -427,7 +422,7 @@ final class BigInteger extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function compareTo($that)
+    public function compareTo($that) : int
     {
         $that = BigNumber::of($that);
 
@@ -441,7 +436,7 @@ final class BigInteger extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function sign()
+    public function sign() : int
     {
         return ($this->value === '0') ? 0 : (($this->value[0] === '-') ? -1 : 1);
     }
@@ -449,7 +444,7 @@ final class BigInteger extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function toBigInteger()
+    public function toBigInteger() : BigInteger
     {
         return $this;
     }
@@ -457,7 +452,7 @@ final class BigInteger extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function toBigDecimal()
+    public function toBigDecimal() : BigDecimal
     {
         return BigDecimal::create($this->value);
     }
@@ -465,7 +460,7 @@ final class BigInteger extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function toBigRational()
+    public function toBigRational() : BigRational
     {
         return BigRational::create($this, BigInteger::one(), false);
     }
@@ -473,7 +468,7 @@ final class BigInteger extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function toScale($scale, $roundingMode = RoundingMode::UNNECESSARY)
+    public function toScale(int $scale, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         return $this->toBigDecimal()->toScale($scale, $roundingMode);
     }
@@ -481,7 +476,7 @@ final class BigInteger extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function toInteger()
+    public function toInteger() : int
     {
         if ($this->isLessThan(~PHP_INT_MAX) || $this->isGreaterThan(PHP_INT_MAX)) {
             throw ArithmeticException::integerOverflow($this);
@@ -493,7 +488,7 @@ final class BigInteger extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function toFloat()
+    public function toFloat() : float
     {
         return (float) $this->value;
     }
@@ -507,10 +502,8 @@ final class BigInteger extends BigNumber
      *
      * @throws \InvalidArgumentException If the base is out of range.
      */
-    public function toBase($base)
+    public function toBase(int $base) : string
     {
-        $base = (int) $base;
-
         if ($base === 10) {
             return $this->value;
         }
@@ -550,7 +543,7 @@ final class BigInteger extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString() : string
     {
         return $this->value;
     }
@@ -562,13 +555,13 @@ final class BigInteger extends BigNumber
      *
      * @return string
      */
-    public function serialize()
+    public function serialize() : string
     {
         return $this->value;
     }
 
     /**
-     * This method is required by interface Serializable and MUST NOT be accessed directly.
+     * This method is only here to implement interface Serializable and cannot be accessed directly.
      *
      * @internal
      *
@@ -578,7 +571,7 @@ final class BigInteger extends BigNumber
      *
      * @throws \LogicException
      */
-    public function unserialize($value)
+    public function unserialize($value) : void
     {
         if ($this->value !== null) {
             throw new \LogicException('unserialize() is an internal function, it must not be called directly.');

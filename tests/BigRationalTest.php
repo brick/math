@@ -731,7 +731,7 @@ class BigRationalTest extends AbstractTestCase
     public function testToBigDecimal($number, $expected)
     {
         if ($expected === null) {
-            $this->setExpectedException(RoundingNecessaryException::class);
+            $this->expectException(RoundingNecessaryException::class);
         }
 
         $actual = BigRational::of($number)->toBigDecimal();
@@ -847,7 +847,7 @@ class BigRationalTest extends AbstractTestCase
         $number = BigRational::of($number);
 
         if ($this->isException($expected)) {
-            $this->setExpectedException($expected);
+            $this->expectException($expected);
         }
 
         $actual = $number->toScale($scale, $roundingMode);

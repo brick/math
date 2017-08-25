@@ -19,14 +19,15 @@ Just define the following requirement in your `composer.json` file:
 ```json
 {
     "require": {
-        "brick/math": "0.5.*"
+        "brick/math": "0.6.*"
     }
 }
 ```
 
 ### Requirements
 
-This library requires PHP 5.6, PHP 7 or [HHVM](http://hhvm.com/).
+This library requires PHP 7.1 or [HHVM](http://hhvm.com/).
+For PHP 5.6 compatibility, use version `0.5`.
 
 Although the library can work seamlessly on any PHP installation, it is highly recommended that you install the
 [GMP](http://php.net/manual/en/book.gmp.php) or [BCMath](http://php.net/manual/en/book.bc.php) extension

@@ -14,7 +14,7 @@ class ArithmeticException extends \RuntimeException
      *
      * @return ArithmeticException
      */
-    public static function integerOverflow(BigInteger $value)
+    public static function integerOverflow(BigInteger $value) : ArithmeticException
     {
         $message = '%s is out of range %d to %d and cannot be represented as an integer.';
 

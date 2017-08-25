@@ -6,38 +6,43 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigRational;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Base class for math tests.
  */
-abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractTestCase extends TestCase
 {
     /**
      * @param string     $expected The expected value, as a string.
      * @param BigInteger $actual   The BigInteger instance to test.
+     *
+     * @return void
      */
-    final protected function assertBigIntegerEquals($expected, $actual)
+    final protected function assertBigIntegerEquals(string $expected, BigInteger $actual) : void
     {
-        $this->assertInstanceOf(BigInteger::class, $actual);
         $this->assertSame($expected, (string) $actual);
     }
 
     /**
      * @param string     $expected The expected string representation.
      * @param BigDecimal $actual   The BigDecimal instance to test.
+     *
+     * @return void
      */
-    final protected function assertBigDecimalEquals($expected, $actual)
+    final protected function assertBigDecimalEquals(string $expected, BigDecimal $actual) : void
     {
-        $this->assertInstanceOf(BigDecimal::class, $actual);
         $this->assertSame($expected, (string) $actual);
     }
 
     /**
      * @param string      $expected The expected string representation.
      * @param BigRational $actual   The BigRational instance to test.
+     *
+     * @return void
      */
-    final protected function assertBigRationalEquals($expected, $actual)
+    final protected function assertBigRationalEquals(string $expected, BigRational $actual) : void
     {
-        $this->assertInstanceOf(BigRational::class, $actual);
         $this->assertSame($expected, (string) $actual);
     }
 
@@ -45,10 +50,11 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
      * @param string     $unscaledValue The expected unscaled value, as a string.
      * @param int        $scale         The expected scale.
      * @param BigDecimal $actual        The BigDecimal instance to test.
+     *
+     * @return void
      */
-    final protected function assertBigDecimalInternalValues($unscaledValue, $scale, $actual)
+    final protected function assertBigDecimalInternalValues(string $unscaledValue, int $scale, BigDecimal $actual) : void
     {
-        $this->assertInstanceOf(BigDecimal::class, $actual);
         $this->assertSame($unscaledValue, (string) $actual->unscaledValue());
         $this->assertSame($scale, $actual->scale());
     }
@@ -57,10 +63,11 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
      * @param string      $numerator   The expected numerator, as a string.
      * @param string      $denominator The expected denominator, as a string.
      * @param BigRational $actual      The BigRational instance to test.
+     *
+     * @return void
      */
-    final protected function assertBigRationalInternalValues($numerator, $denominator, $actual)
+    final protected function assertBigRationalInternalValues(string $numerator, string $denominator, BigRational $actual) : void
     {
-        $this->assertInstanceOf(BigRational::class, $actual);
         $this->assertSame($numerator, (string) $actual->numerator());
         $this->assertSame($denominator, (string) $actual->denominator());
     }
@@ -70,7 +77,7 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
      *
      * @return bool
      */
-    final protected function isException($name)
+    final protected function isException(string $name) : bool
     {
         return substr($name, -9) === 'Exception';
     }

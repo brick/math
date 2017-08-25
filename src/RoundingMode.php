@@ -26,7 +26,7 @@ final class RoundingMode
      * If this rounding mode is specified on an operation that yields a result that
      * cannot be represented at the requested scale, an ArithmeticException is thrown.
      */
-    const UNNECESSARY = 0;
+    public const UNNECESSARY = 0;
 
     /**
      * Rounds away from zero.
@@ -34,7 +34,7 @@ final class RoundingMode
      * Always increments the digit prior to a nonzero discarded fraction.
      * Note that this rounding mode never decreases the magnitude of the calculated value.
      */
-    const UP = 1;
+    public const UP = 1;
 
     /**
      * Rounds towards zero.
@@ -42,7 +42,7 @@ final class RoundingMode
      * Never increments the digit prior to a discarded fraction (i.e., truncates).
      * Note that this rounding mode never increases the magnitude of the calculated value.
      */
-    const DOWN = 2;
+    public const DOWN = 2;
 
     /**
      * Rounds towards positive infinity.
@@ -50,7 +50,7 @@ final class RoundingMode
      * If the result is positive, behaves as for UP; if negative, behaves as for DOWN.
      * Note that this rounding mode never decreases the calculated value.
      */
-    const CEILING = 3;
+    public const CEILING = 3;
 
     /**
      * Rounds towards negative infinity.
@@ -58,7 +58,7 @@ final class RoundingMode
      * If the result is positive, behave as for DOWN; if negative, behave as for UP.
      * Note that this rounding mode never increases the calculated value.
      */
-    const FLOOR = 4;
+    public const FLOOR = 4;
 
     /**
      * Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round up.
@@ -66,28 +66,28 @@ final class RoundingMode
      * Behaves as for UP if the discarded fraction is >= 0.5; otherwise, behaves as for DOWN.
      * Note that this is the rounding mode commonly taught at school.
      */
-    const HALF_UP = 5;
+    public const HALF_UP = 5;
 
     /**
      * Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round down.
      *
      * Behaves as for UP if the discarded fraction is > 0.5; otherwise, behaves as for DOWN.
      */
-    const HALF_DOWN = 6;
+    public const HALF_DOWN = 6;
 
     /**
      * Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards positive infinity.
      *
      * If the result is positive, behaves as for HALF_UP; if negative, behaves as for HALF_DOWN.
      */
-    const HALF_CEILING = 7;
+    public const HALF_CEILING = 7;
 
     /**
      * Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards negative infinity.
      *
      * If the result is positive, behaves as for HALF_DOWN; if negative, behaves as for HALF_UP.
      */
-    const HALF_FLOOR = 8;
+    public const HALF_FLOOR = 8;
 
     /**
      * Rounds towards the "nearest neighbor" unless both neighbors are equidistant, in which case rounds towards the even neighbor.
@@ -99,5 +99,5 @@ final class RoundingMode
      * cumulative error when applied repeatedly over a sequence of calculations.
      * It is sometimes known as "Banker's rounding", and is chiefly used in the USA.
      */
-    const HALF_EVEN = 9;
+    public const HALF_EVEN = 9;
 }

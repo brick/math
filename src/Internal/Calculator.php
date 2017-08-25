@@ -21,7 +21,7 @@ abstract class Calculator
     /**
      * The maximum exponent value allowed for the pow() method.
      */
-    const MAX_POWER = 1000000;
+    public const MAX_POWER = 1000000;
 
     /**
      * The Calculator instance in use.
@@ -39,7 +39,7 @@ abstract class Calculator
      *
      * @return void
      */
-    public static function set(Calculator $calculator = null)
+    public static function set(Calculator $calculator = null) : void
     {
         self::$instance = $calculator;
     }
@@ -51,7 +51,7 @@ abstract class Calculator
      *
      * @return Calculator
      */
-    public static function get()
+    public static function get() : Calculator
     {
         if (self::$instance === null) {
             self::$instance = self::detect();
@@ -67,7 +67,7 @@ abstract class Calculator
      *
      * @return Calculator
      */
-    private static function detect()
+    private static function detect() : Calculator
     {
         if (extension_loaded('gmp')) {
             return new Calculator\GmpCalculator();
@@ -94,7 +94,7 @@ abstract class Calculator
      *
      * @return void
      */
-    final protected function init($a, $b, & $aDig, & $bDig, & $aNeg, & $bNeg, & $aLen, & $bLen)
+    final protected function init(string $a, string $b, & $aDig, & $bDig, & $aNeg, & $bNeg, & $aLen, & $bLen) : void
     {
         $aNeg = ($a[0] === '-');
         $bNeg = ($b[0] === '-');
@@ -113,7 +113,7 @@ abstract class Calculator
      *
      * @return string The absolute value.
      */
-    public function abs($n)
+    public function abs(string $n) : string
     {
         return ($n[0] === '-') ? substr($n, 1) : $n;
     }
@@ -125,7 +125,7 @@ abstract class Calculator
      *
      * @return string The negated value.
      */
-    public function neg($n)
+    public function neg(string $n) : string
     {
         if ($n === '0') {
             return '0';
@@ -146,7 +146,7 @@ abstract class Calculator
      *
      * @return int [-1, 0, 1] If the first number is less than, equal to, or greater than the second number.
      */
-    public function cmp($a, $b)
+    public function cmp(string $a, string $b) : int
     {
         $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg, $aLen, $bLen);
 
@@ -183,7 +183,7 @@ abstract class Calculator
      *
      * @return string The sum.
      */
-    abstract public function add($a, $b);
+    abstract public function add(string $a, string $b) : string;
 
     /**
      * Subtracts two numbers.
@@ -193,7 +193,7 @@ abstract class Calculator
      *
      * @return string The difference.
      */
-    abstract public function sub($a, $b);
+    abstract public function sub(string $a, string $b) : string;
 
     /**
      * Multiplies two numbers.
@@ -203,7 +203,7 @@ abstract class Calculator
      *
      * @return string The product.
      */
-    abstract public function mul($a, $b);
+    abstract public function mul(string $a, string $b) : string;
 
     /**
      * Returns the quotient of the division of two numbers.
@@ -213,7 +213,7 @@ abstract class Calculator
      *
      * @return string The quotient.
      */
-    abstract public function divQ($a, $b);
+    abstract public function divQ(string $a, string $b) : string;
 
     /**
      * Returns the remainder of the division of two numbers.
@@ -223,7 +223,7 @@ abstract class Calculator
      *
      * @return string The remainder.
      */
-    abstract public function divR($a, $b);
+    abstract public function divR(string $a, string $b) : string;
 
     /**
      * Returns the quotient and remainder of the division of two numbers.
@@ -233,7 +233,7 @@ abstract class Calculator
      *
      * @return string[] An array containing the quotient and remainder.
      */
-    abstract public function divQR($a, $b);
+    abstract public function divQR(string $a, string $b) : array;
 
     /**
      * Exponentiates a number.
@@ -243,7 +243,7 @@ abstract class Calculator
      *
      * @return string The power.
      */
-    abstract public function pow($a, $e);
+    abstract public function pow(string $a, int $e) : string;
 
     /**
      * Returns the greatest common divisor of the two numbers.
@@ -256,7 +256,7 @@ abstract class Calculator
      *
      * @return string The GCD, always positive, or zero if both arguments are zero.
      */
-    public function gcd($a, $b)
+    public function gcd(string $a, string $b) : string
     {
         if ($a === '0') {
             return $this->abs($b);
@@ -283,7 +283,7 @@ abstract class Calculator
      * @throws \InvalidArgumentException  If the rounding mode is invalid.
      * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided but rounding is necessary.
      */
-    public function divRound($a, $b, $roundingMode)
+    public function divRound(string $a, string $b, int $roundingMode) : string
     {
         list ($quotient, $remainder) = $this->divQR($a, $b);
 

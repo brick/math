@@ -14,7 +14,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function add($a, $b)
+    public function add(string $a, string $b) : string
     {
         return bcadd($a, $b, 0);
     }
@@ -22,7 +22,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function sub($a, $b)
+    public function sub(string $a, string $b) : string
     {
         return bcsub($a, $b, 0);
     }
@@ -30,7 +30,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function mul($a, $b)
+    public function mul(string $a, string $b) : string
     {
         return bcmul($a, $b, 0);
     }
@@ -38,7 +38,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divQ($a, $b)
+    public function divQ(string $a, string $b) : string
     {
         return bcdiv($a, $b, 0);
     }
@@ -46,7 +46,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divR($a, $b)
+    public function divR(string $a, string $b) : string
     {
         return bcmod($a, $b);
     }
@@ -54,7 +54,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divQR($a, $b)
+    public function divQR(string $a, string $b) : array
     {
         $q = bcdiv($a, $b, 0);
         $r = bcmod($a, $b);
@@ -65,7 +65,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function pow($a, $e)
+    public function pow(string $a, int $e) : string
     {
         return bcpow($a, $e, 0);
     }

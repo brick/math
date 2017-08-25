@@ -14,7 +14,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function add($a, $b)
+    public function add(string $a, string $b) : string
     {
         return gmp_strval(gmp_add($a, $b));
     }
@@ -22,7 +22,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function sub($a, $b)
+    public function sub(string $a, string $b) : string
     {
         return gmp_strval(gmp_sub($a, $b));
     }
@@ -30,7 +30,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function mul($a, $b)
+    public function mul(string $a, string $b) : string
     {
         return gmp_strval(gmp_mul($a, $b));
     }
@@ -38,7 +38,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divQ($a, $b)
+    public function divQ(string $a, string $b) : string
     {
         return gmp_strval(gmp_div_q($a, $b));
     }
@@ -46,7 +46,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divR($a, $b)
+    public function divR(string $a, string $b) : string
     {
         return gmp_strval(gmp_div_r($a, $b));
     }
@@ -54,7 +54,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divQR($a, $b)
+    public function divQR(string $a, string $b) : array
     {
         list ($q, $r) = gmp_div_qr($a, $b);
 
@@ -67,7 +67,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function pow($a, $e)
+    public function pow(string $a, int $e) : string
     {
         return gmp_strval(gmp_pow($a, $e));
     }
@@ -75,7 +75,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function gcd($a, $b)
+    public function gcd(string $a, string $b) : string
     {
         return gmp_strval(gmp_gcd($a, $b));
     }

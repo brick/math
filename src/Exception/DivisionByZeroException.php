@@ -10,7 +10,7 @@ class DivisionByZeroException extends ArithmeticException
     /**
      * @return DivisionByZeroException
      */
-    public static function divisionByZero()
+    public static function divisionByZero() : DivisionByZeroException
     {
         return new self('Division by zero.');
     }
@@ -18,7 +18,7 @@ class DivisionByZeroException extends ArithmeticException
     /**
      * @return DivisionByZeroException
      */
-    public static function denominatorMustNotBeZero()
+    public static function denominatorMustNotBeZero() : DivisionByZeroException
     {
         return new self('The denominator of a rational number cannot be zero.');
     }

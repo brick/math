@@ -48,7 +48,7 @@ class NativeCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function add($a, $b)
+    public function add(string $a, string $b) : string
     {
         if ($a === '0') {
             return $b;
@@ -80,7 +80,7 @@ class NativeCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function sub($a, $b)
+    public function sub(string $a, string $b) : string
     {
         return $this->add($a, $this->neg($b));
     }
@@ -88,7 +88,7 @@ class NativeCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function mul($a, $b)
+    public function mul(string $a, string $b) : string
     {
         if ($a === '0' || $b === '0') {
             return '0';
@@ -128,7 +128,7 @@ class NativeCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divQ($a, $b)
+    public function divQ(string $a, string $b) : string
     {
         return $this->divQR($a, $b)[0];
     }
@@ -136,7 +136,7 @@ class NativeCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divR($a, $b)
+    public function divR(string $a, string $b): string
     {
         return $this->divQR($a, $b)[1];
     }
@@ -144,7 +144,7 @@ class NativeCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divQR($a, $b)
+    public function divQR(string $a, string $b) : array
     {
         if ($a === '0') {
             return ['0', '0'];
@@ -193,7 +193,7 @@ class NativeCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function pow($a, $e)
+    public function pow(string $a, int $e) : string
     {
         if ($e === 0) {
             return '1';
@@ -226,7 +226,7 @@ class NativeCalculator extends Calculator
      *
      * @return string
      */
-    private function doAdd($a, $b, $x, $y)
+    private function doAdd(string $a, string $b, int $x, int $y) : string
     {
         $length = $this->pad($a, $b, $x, $y);
 
@@ -263,7 +263,7 @@ class NativeCalculator extends Calculator
      *
      * @return string
      */
-    private function doSub($a, $b, $x, $y)
+    private function doSub(string $a, string $b, int $x, int $y) : string
     {
         if ($a === $b) {
             return '0';
@@ -321,7 +321,7 @@ class NativeCalculator extends Calculator
      *
      * @return string
      */
-    private function doMul($a, $b, $x, $y)
+    private function doMul(string $a, string $b, int $x, int $y) : string
     {
         $result = '0';
 
@@ -359,7 +359,7 @@ class NativeCalculator extends Calculator
      *
      * @return string[] The quotient and remainder.
      */
-    private function doDiv($a, $b, $x, $y)
+    private function doDiv(string $a, string $b, int $x, int $y) : array
     {
         $cmp = $this->doCmp($a, $b, $x, $y);
 
@@ -419,7 +419,7 @@ class NativeCalculator extends Calculator
      *
      * @return int [-1, 0, 1]
      */
-    private function doCmp($a, $b, $x, $y)
+    private function doCmp(string $a, string $b, int $x, int $y) : int
     {
         if ($x > $y) {
             return 1;
@@ -455,7 +455,7 @@ class NativeCalculator extends Calculator
      *
      * @return int The length of both strings.
      */
-    private function pad(& $a, & $b, $x, $y)
+    private function pad(string & $a, string & $b, int $x, int $y) : int
     {
         if ($x === $y) {
             return $x;
