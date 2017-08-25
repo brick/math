@@ -1466,24 +1466,24 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider withScaleProvider
+     * @dataProvider toScaleProvider
      *
      * @param string $number        The number to scale.
-     * @param int    $withScale     The scale to apply.
+     * @param int    $toScale       The scale to apply.
      * @param int    $roundingMode  The rounding mode to apply.
      * @param string $unscaledValue The expected unscaled value of the result.
      * @param int    $scale         The expected scale of the result.
      */
-    public function testWithScale($number, $withScale, $roundingMode, $unscaledValue, $scale)
+    public function testToScale($number, $toScale, $roundingMode, $unscaledValue, $scale)
     {
-        $decimal = BigDecimal::of($number)->withScale($withScale, $roundingMode);
+        $decimal = BigDecimal::of($number)->toScale($toScale, $roundingMode);
         $this->assertBigDecimalInternalValues($unscaledValue, $scale, $decimal);
     }
 
     /**
      * @return array
      */
-    public function withScaleProvider()
+    public function toScaleProvider()
     {
         return [
             ['123.45', 0, RoundingMode::DOWN, '123', 0],
