@@ -1703,19 +1703,19 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerToInteger
+     * @dataProvider providerToInt
      *
      * @param int $number
      */
-    public function testToInteger($number)
+    public function testToInt($number)
     {
-        $this->assertSame($number, BigInteger::of((string) $number)->toInteger());
+        $this->assertSame($number, BigInteger::of((string) $number)->toInt());
     }
 
     /**
      * @return array
      */
-    public function providerToInteger()
+    public function providerToInt()
     {
         return [
             [~PHP_INT_MAX],
@@ -1731,17 +1731,17 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @expectedException \Brick\Math\Exception\ArithmeticException
      */
-    public function testToIntegerNegativeOverflowThrowsException()
+    public function testToIntNegativeOverflowThrowsException()
     {
-        BigInteger::of(~PHP_INT_MAX)->minus(1)->toInteger();
+        BigInteger::of(~PHP_INT_MAX)->minus(1)->toInt();
     }
 
     /**
      * @expectedException \Brick\Math\Exception\ArithmeticException
      */
-    public function testToIntegerPositiveOverflowThrowsException()
+    public function testToIntPositiveOverflowThrowsException()
     {
-        BigInteger::of(PHP_INT_MAX)->plus(1)->toInteger();
+        BigInteger::of(PHP_INT_MAX)->plus(1)->toInt();
     }
 
     /**

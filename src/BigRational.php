@@ -399,9 +399,9 @@ final class BigRational extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function toInteger() : int
+    public function toInt() : int
     {
-        return $this->toBigInteger()->toInteger();
+        return $this->toBigInteger()->toInt();
     }
 
     /**

@@ -2144,20 +2144,20 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerToInteger
+     * @dataProvider providerToInt
      *
      * @param int $number The decimal number to test.
      */
-    public function testToInteger($number)
+    public function testToInt($number)
     {
-        $this->assertSame($number, BigDecimal::of($number)->toInteger());
-        $this->assertSame($number, BigDecimal::of($number . '.0')->toInteger());
+        $this->assertSame($number, BigDecimal::of($number)->toInt());
+        $this->assertSame($number, BigDecimal::of($number . '.0')->toInt());
     }
 
     /**
      * @return array
      */
-    public function providerToInteger()
+    public function providerToInt()
     {
         return [
             [~PHP_INT_MAX],
@@ -2171,20 +2171,20 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerToIntegerThrowsException
+     * @dataProvider providerToIntThrowsException
      * @expectedException \Brick\Math\Exception\ArithmeticException
      *
      * @param string $number A valid decimal number that cannot safely be converted to a native integer.
      */
-    public function testToIntegerThrowsException($number)
+    public function testToIntThrowsException($number)
     {
-        BigDecimal::of($number)->toInteger();
+        BigDecimal::of($number)->toInt();
     }
 
     /**
      * @return array
      */
-    public function providerToIntegerThrowsException()
+    public function providerToIntThrowsException()
     {
         return [
             ['-999999999999999999999999999999'],

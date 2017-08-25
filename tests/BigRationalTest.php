@@ -874,20 +874,20 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerToInteger
+     * @dataProvider providerToInt
      *
      * @param string $rational The rational number to test.
      * @param int    $integer  The expected integer value.
      */
-    public function testToInteger($rational, $integer)
+    public function testToInt($rational, $integer)
     {
-        $this->assertSame($integer, BigRational::of($rational)->toInteger());
+        $this->assertSame($integer, BigRational::of($rational)->toInt());
     }
 
     /**
      * @return array
      */
-    public function providerToInteger()
+    public function providerToInt()
     {
         return [
             [PHP_INT_MAX, PHP_INT_MAX],
@@ -904,20 +904,20 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerToIntegerThrowsException
+     * @dataProvider providerToIntThrowsException
      * @expectedException \Brick\Math\Exception\ArithmeticException
      *
      * @param string $number A valid rational number that cannot safely be converted to a native integer.
      */
-    public function testToIntegerThrowsException($number)
+    public function testToIntThrowsException($number)
     {
-        BigRational::of($number)->toInteger();
+        BigRational::of($number)->toInt();
     }
 
     /**
      * @return array
      */
-    public function providerToIntegerThrowsException()
+    public function providerToIntThrowsException()
     {
         return [
             ['-999999999999999999999999999999'],

@@ -379,7 +379,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @throws ArithmeticException If this number cannot be exactly converted to a native integer.
      */
-    abstract public function toInteger() : int;
+    abstract public function toInt() : int;
 
     /**
      * Returns an approximation of this number as a floating-point value.
