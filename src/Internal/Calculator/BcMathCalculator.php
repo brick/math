@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brick\Math\Internal\Calculator;
 
 use Brick\Math\Internal\Calculator;
@@ -67,6 +69,6 @@ class BcMathCalculator extends Calculator
      */
     public function pow(string $a, int $e) : string
     {
-        return bcpow($a, $e, 0);
+        return bcpow($a, (string) $e, 0);
     }
 }
