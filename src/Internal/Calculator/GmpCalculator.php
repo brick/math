@@ -58,7 +58,7 @@ class GmpCalculator extends Calculator
      */
     public function divQR(string $a, string $b) : array
     {
-        list ($q, $r) = gmp_div_qr($a, $b);
+        [$q, $r] = gmp_div_qr($a, $b);
 
         return [
             gmp_strval($q),

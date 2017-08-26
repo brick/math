@@ -1274,7 +1274,7 @@ class BigDecimalTest extends AbstractTestCase
         $this->assertBigDecimalEquals($quotient, $dividend->quotient($divisor));
         $this->assertBigDecimalEquals($remainder, $dividend->remainder($divisor));
 
-        list ($q, $r) = $dividend->quotientAndRemainder($divisor);
+        [$q, $r] = $dividend->quotientAndRemainder($divisor);
 
         $this->assertBigDecimalEquals($quotient, $q);
         $this->assertBigDecimalEquals($remainder, $r);

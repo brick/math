@@ -1155,7 +1155,7 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testQuotientAndRemainder($dividend, $divisor, $quotient, $remainder)
     {
-        list ($q, $r) = BigInteger::of($dividend)->quotientAndRemainder($divisor);
+        [$q, $r] = BigInteger::of($dividend)->quotientAndRemainder($divisor);
 
         $this->assertBigIntegerEquals($quotient, $q);
         $this->assertBigIntegerEquals($remainder, $r);
@@ -1414,7 +1414,7 @@ class BigIntegerTest extends AbstractTestCase
             ['88888777776666655555444443333322222111110000099999', '100000000068736887', '2423071539'],
         ];
 
-        foreach ($tests as list ($a, $b, $gcd)) {
+        foreach ($tests as [$a, $b, $gcd]) {
             yield [$a, $b, $gcd];
             yield [$b, $a, $gcd];
 

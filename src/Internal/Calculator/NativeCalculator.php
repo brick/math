@@ -179,7 +179,7 @@ class NativeCalculator extends Calculator
             return [$q, $r];
         }
 
-        list ($q, $r) = $this->doDiv($aDig, $bDig, $aLen, $bLen);
+        [$q, $r] = $this->doDiv($aDig, $bDig, $aLen, $bLen);
 
         if ($aNeg !== $bNeg) {
             $q = $this->neg($q);

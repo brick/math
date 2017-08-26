@@ -367,7 +367,7 @@ final class BigInteger extends BigNumber
             throw DivisionByZeroException::divisionByZero();
         }
 
-        list ($quotient, $remainder) = Calculator::get()->divQR($this->value, $that->value);
+        [$quotient, $remainder] = Calculator::get()->divQR($this->value, $that->value);
 
         return [
             new BigInteger($quotient),
@@ -529,7 +529,7 @@ final class BigInteger extends BigNumber
         $result = '';
 
         while ($value !== '0') {
-            list ($value, $remainder) = $calc->divQR($value, $base);
+            [$value, $remainder] = $calc->divQR($value, $base);
             $remainder = (int) $remainder;
 
             $result .= $dictionary[$remainder];

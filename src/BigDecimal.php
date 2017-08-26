@@ -398,7 +398,7 @@ final class BigDecimal extends BigNumber
         $p = $this->valueWithMinScale($that->scale);
         $q = $that->valueWithMinScale($this->scale);
 
-        list ($quotient, $remainder) = Calculator::get()->divQR($p, $q);
+        [$quotient, $remainder] = Calculator::get()->divQR($p, $q);
 
         $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
 
@@ -697,7 +697,7 @@ final class BigDecimal extends BigNumber
             throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
         }
 
-        list ($value, $scale) = explode(':', $value);
+        [$value, $scale] = explode(':', $value);
 
         $this->value = $value;
         $this->scale = (int) $scale;

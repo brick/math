@@ -828,7 +828,7 @@ class BigRationalTest extends AbstractTestCase
             ['1274512848871262052664/181119169279677131024612890541902743279933929443359375', null],
         ];
 
-        foreach ($tests as list ($number, $expected)) {
+        foreach ($tests as [$number, $expected]) {
             yield [$number, $expected];
             yield ['-' . $number, $expected === null ? null : '-' . $expected];
         }

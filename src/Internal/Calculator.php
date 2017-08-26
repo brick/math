@@ -287,7 +287,7 @@ abstract class Calculator
      */
     public function divRound(string $a, string $b, int $roundingMode) : string
     {
-        list ($quotient, $remainder) = $this->divQR($a, $b);
+        [$quotient, $remainder] = $this->divQR($a, $b);
 
         $hasDiscardedFraction = ($remainder !== '0');
         $isPositiveOrZero = ($a[0] === '-') === ($b[0] === '-');
