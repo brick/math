@@ -165,13 +165,7 @@ abstract class Calculator
         } elseif ($aLen > $bLen) {
             $result = 1;
         } else {
-            $result = strcmp($aDig, $bDig);
-
-            if ($result < 0) {
-                $result = -1;
-            } elseif ($result > 0) {
-                $result = 1;
-            }
+            $result = $aDig <=> $bDig;
         }
 
         return $aNeg ? -$result : $result;
