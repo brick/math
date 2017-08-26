@@ -27,7 +27,7 @@ Just define the following requirement in your `composer.json` file:
 ### Requirements
 
 This library requires PHP 7.1 or later.
-For PHP 5.6 or HHVM compatibility, use version `0.5`.
+For PHP 5.6, PHP 7.0 or HHVM compatibility, use version `0.5`. **This version will still be supported**: it will not receive any new features, but will be patched if any bugs are found.
 
 Although the library can work seamlessly on any PHP installation, it is highly recommended that you install the
 [GMP](http://php.net/manual/en/book.gmp.php) or [BCMath](http://php.net/manual/en/book.bc.php) extension
