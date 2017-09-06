@@ -7,7 +7,7 @@ A library to work with arbitrary precision numbers.
 [![Build Status](https://secure.travis-ci.org/brick/math.svg?branch=master)](http://travis-ci.org/brick/math)
 [![Coverage Status](https://coveralls.io/repos/brick/math/badge.svg?branch=master)](https://coveralls.io/r/brick/math?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/brick/math/v/stable)](https://packagist.org/packages/brick/math)
-[![License](https://poser.pugx.org/brick/math/license)](https://packagist.org/packages/brick/math)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 For a complete list of classes and methods, check the [API documentation](http://brick.io/math/).
 
