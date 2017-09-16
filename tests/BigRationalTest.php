@@ -891,9 +891,9 @@ class BigRationalTest extends AbstractTestCase
     {
         return [
             [PHP_INT_MAX, PHP_INT_MAX],
-            [~PHP_INT_MAX, ~PHP_INT_MAX],
+            [PHP_INT_MIN, PHP_INT_MIN],
             [PHP_INT_MAX . '0/10', PHP_INT_MAX],
-            [~PHP_INT_MAX . '0/10', ~PHP_INT_MAX],
+            [PHP_INT_MIN . '0/10', PHP_INT_MIN],
             ['246913578/2', 123456789],
             ['-246913578/2', -123456789],
             ['625/25', 25],

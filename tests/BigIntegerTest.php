@@ -35,7 +35,7 @@ class BigIntegerTest extends AbstractTestCase
             [123456789, '123456789'],
             [-123456789, '-123456789'],
             [PHP_INT_MAX, (string) PHP_INT_MAX],
-            [~PHP_INT_MAX, (string) ~PHP_INT_MAX],
+            [PHP_INT_MIN, (string) PHP_INT_MIN],
 
             [0.0, '0'],
             [1.0, '1'],
@@ -1671,7 +1671,7 @@ class BigIntegerTest extends AbstractTestCase
             [-1, -1],
 
             [PHP_INT_MAX, 1],
-            [~PHP_INT_MAX, -1],
+            [PHP_INT_MIN, -1],
 
             [ '1000000000000000000000000000000000000000000000000000000000000000000000000000000000', 1],
             ['-1000000000000000000000000000000000000000000000000000000000000000000000000000000000', -1]
@@ -1718,7 +1718,7 @@ class BigIntegerTest extends AbstractTestCase
     public function providerToInt()
     {
         return [
-            [~PHP_INT_MAX],
+            [PHP_INT_MIN],
             [-123456789],
             [-1],
             [0],
@@ -1733,7 +1733,7 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testToIntNegativeOverflowThrowsException()
     {
-        BigInteger::of(~PHP_INT_MAX)->minus(1)->toInt();
+        BigInteger::of(PHP_INT_MIN)->minus(1)->toInt();
     }
 
     /**

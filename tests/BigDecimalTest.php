@@ -36,7 +36,7 @@ class BigDecimalTest extends AbstractTestCase
             [123456789, '123456789', 0],
             [-123456789, '-123456789', 0],
             [PHP_INT_MAX, (string) PHP_INT_MAX, 0],
-            [~PHP_INT_MAX, (string) ~PHP_INT_MAX, 0],
+            [PHP_INT_MIN, (string) PHP_INT_MIN, 0],
 
             [0.0, '0', 0],
             [0.1, '1', 1],
@@ -1965,7 +1965,7 @@ class BigDecimalTest extends AbstractTestCase
             [-1, -1],
 
             [PHP_INT_MAX, 1],
-            [~PHP_INT_MAX, -1],
+            [PHP_INT_MIN, -1],
 
             [ 1.0,  1],
             [-1.0, -1],
@@ -2160,7 +2160,7 @@ class BigDecimalTest extends AbstractTestCase
     public function providerToInt()
     {
         return [
-            [~PHP_INT_MAX],
+            [PHP_INT_MIN],
             [-123456789],
             [-1],
             [0],

@@ -481,7 +481,7 @@ final class BigInteger extends BigNumber
      */
     public function toInt() : int
     {
-        if ($this->isLessThan(~PHP_INT_MAX) || $this->isGreaterThan(PHP_INT_MAX)) {
+        if ($this->isLessThan(PHP_INT_MIN) || $this->isGreaterThan(PHP_INT_MAX)) {
             throw IntegerOverflowException::toIntOverflow($this);
         }
 
