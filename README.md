@@ -62,6 +62,7 @@ And the following exceptions in the [Brick\Math\Exception](http://brick.io/math/
 
 - [ArithmeticException](http://brick.io/math/class-Brick.Math.Exception.ArithmeticException.html): base class for all exceptions
 - [DivisionByZeroException](http://brick.io/math/class-Brick.Math.Exception.DivisionByZeroException.html): thrown when a division by zero occurs
+- [IntegerOverflowException](http://brick.io/math/class-Brick.Math.Exception.IntegerOverflowException.html): thrown when attempting to convert a too large `BigInteger` to `int`
 - [NumberFormatException](http://brick.io/math/class-Brick.Math.Exception.NumberFormatException.html): thrown when parsing a number string in an invalid format
 - [RoundingNecessaryException](http://brick.io/math/class-Brick.Math.Exception.RoundingNecessaryException.html): thrown when the result of the operation cannot be represented without explicit rounding
 
