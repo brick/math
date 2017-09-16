@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Brick\Math\Exception;
 
 /**
- * Exception thrown when arithmetic operations fail.
+ * Base class for all math exceptions.
+ *
+ * This class is abstract to ensure that only fine-grained exceptions are thrown throughout the code.
  */
-class ArithmeticException extends \RuntimeException
+abstract class ArithmeticException extends \RuntimeException
 {
 }
