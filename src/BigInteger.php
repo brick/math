@@ -6,6 +6,7 @@ namespace Brick\Math;
 
 use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -481,7 +482,7 @@ final class BigInteger extends BigNumber
     public function toInt() : int
     {
         if ($this->isLessThan(~PHP_INT_MAX) || $this->isGreaterThan(PHP_INT_MAX)) {
-            throw ArithmeticException::integerOverflow($this);
+            throw IntegerOverflowException::toIntOverflow($this);
         }
 
         return (int) $this->value;

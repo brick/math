@@ -1729,7 +1729,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\Exception\ArithmeticException
+     * @expectedException \Brick\Math\Exception\IntegerOverflowException
      */
     public function testToIntNegativeOverflowThrowsException()
     {
@@ -1737,7 +1737,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\Exception\ArithmeticException
+     * @expectedException \Brick\Math\Exception\IntegerOverflowException
      */
     public function testToIntPositiveOverflowThrowsException()
     {

@@ -6,6 +6,7 @@ namespace Brick\Math;
 
 use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 
@@ -377,7 +378,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return int The converted value.
      *
-     * @throws ArithmeticException If this number cannot be exactly converted to a native integer.
+     * @throws IntegerOverflowException If this number cannot be exactly converted to a native integer.
      */
     abstract public function toInt() : int;
 
