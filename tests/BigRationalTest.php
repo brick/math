@@ -554,7 +554,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsEqualTo($a, $b, $cmp)
     {
-        $this->assertSame($cmp == 0, BigRational::of($a)->isEqualTo($b));
+        $this->assertSame($cmp === 0, BigRational::of($a)->isEqualTo($b));
     }
 
     /**
@@ -658,7 +658,7 @@ class BigRationalTest extends AbstractTestCase
      */
     public function testIsZero($number, $sign)
     {
-        $this->assertSame($sign == 0, BigRational::of($number)->isZero());
+        $this->assertSame($sign === 0, BigRational::of($number)->isZero());
     }
 
     /**

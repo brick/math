@@ -1784,7 +1784,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testIsEqualTo($a, $b, $c)
     {
-        $this->assertSame($c == 0, BigDecimal::of($a)->isEqualTo($b));
+        $this->assertSame($c === 0, BigDecimal::of($a)->isEqualTo($b));
     }
 
     /**

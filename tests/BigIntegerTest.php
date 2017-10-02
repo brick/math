@@ -1496,7 +1496,7 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testIsEqualTo($a, $b, $c)
     {
-        $this->assertSame($c == 0, BigInteger::of($a)->isEqualTo($b));
+        $this->assertSame($c === 0, BigInteger::of($a)->isEqualTo($b));
     }
 
     /**
@@ -1612,7 +1612,7 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testIsZero($number, $sign)
     {
-        $this->assertSame($sign == 0, BigInteger::of($number)->isZero());
+        $this->assertSame($sign === 0, BigInteger::of($number)->isZero());
     }
 
     /**
