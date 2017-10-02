@@ -439,7 +439,7 @@ final class BigInteger extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function sign() : int
+    public function getSign() : int
     {
         return ($this->value === '0') ? 0 : (($this->value[0] === '-') ? -1 : 1);
     }

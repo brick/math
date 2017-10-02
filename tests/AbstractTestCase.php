@@ -55,8 +55,8 @@ abstract class AbstractTestCase extends TestCase
      */
     final protected function assertBigDecimalInternalValues(string $unscaledValue, int $scale, BigDecimal $actual) : void
     {
-        $this->assertSame($unscaledValue, (string) $actual->unscaledValue());
-        $this->assertSame($scale, $actual->scale());
+        $this->assertSame($unscaledValue, (string) $actual->getUnscaledValue());
+        $this->assertSame($scale, $actual->getScale());
     }
 
     /**
@@ -68,8 +68,8 @@ abstract class AbstractTestCase extends TestCase
      */
     final protected function assertBigRationalInternalValues(string $numerator, string $denominator, BigRational $actual) : void
     {
-        $this->assertSame($numerator, (string) $actual->numerator());
-        $this->assertSame($denominator, (string) $actual->denominator());
+        $this->assertSame($numerator, (string) $actual->getNumerator());
+        $this->assertSame($denominator, (string) $actual->getDenominator());
     }
 
     /**

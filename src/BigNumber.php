@@ -271,7 +271,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     public function isZero() : bool
     {
-        return $this->sign() === 0;
+        return $this->getSign() === 0;
     }
 
     /**
@@ -281,7 +281,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     public function isNegative() : bool
     {
-        return $this->sign() < 0;
+        return $this->getSign() < 0;
     }
 
     /**
@@ -291,7 +291,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     public function isNegativeOrZero() : bool
     {
-        return $this->sign() <= 0;
+        return $this->getSign() <= 0;
     }
 
     /**
@@ -301,7 +301,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     public function isPositive() : bool
     {
-        return $this->sign() > 0;
+        return $this->getSign() > 0;
     }
 
     /**
@@ -311,7 +311,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     public function isPositiveOrZero() : bool
     {
-        return $this->sign() >= 0;
+        return $this->getSign() >= 0;
     }
 
     /**
@@ -319,7 +319,17 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return int -1 if the number is negative, 0 if zero, 1 if positive.
      */
-    abstract public function sign() : int;
+    abstract public function getSign() : int;
+
+    /**
+     * @deprecated use getSign().
+     *
+     * @return int
+     */
+    public function sign() : int
+    {
+        return $this->getSign();
+    }
 
     /**
      * Compares this number to the given one.

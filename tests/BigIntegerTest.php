@@ -1599,9 +1599,9 @@ class BigIntegerTest extends AbstractTestCase
      * @param int|string $number The number to test.
      * @param int        $sign   The sign of the number.
      */
-    public function testSign($number, $sign)
+    public function testGetSign($number, $sign)
     {
-        $this->assertSame($sign, BigInteger::of($number)->sign());
+        $this->assertSame($sign, BigInteger::of($number)->getSign());
     }
 
     /**

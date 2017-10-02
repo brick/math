@@ -1893,9 +1893,9 @@ class BigDecimalTest extends AbstractTestCase
      * @param number|string $number The number to test.
      * @param int           $sign   The sign of the number.
      */
-    public function testSign($number, $sign)
+    public function testGetSign($number, $sign)
     {
-        $this->assertSame($sign, BigDecimal::of($number)->sign());
+        $this->assertSame($sign, BigDecimal::of($number)->getSign());
     }
 
     /**
@@ -1990,20 +1990,20 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerIntegral
+     * @dataProvider providerGetIntegral
      *
      * @param string $number   The number to test.
      * @param string $expected The expected integral value.
      */
-    public function testIntegral($number, $expected)
+    public function testGetIntegral($number, $expected)
     {
-        $this->assertSame($expected, BigDecimal::of($number)->integral());
+        $this->assertSame($expected, BigDecimal::of($number)->getIntegral());
     }
 
     /**
      * @return array
      */
-    public function providerIntegral()
+    public function providerGetIntegral()
     {
         return [
             ['1.23', '1'],
@@ -2017,20 +2017,20 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerFraction
+     * @dataProvider providerGetFraction
      *
      * @param string $number   The number to test.
      * @param string $expected The expected fractional value.
      */
-    public function testFraction($number, $expected)
+    public function testGetFraction($number, $expected)
     {
-        $this->assertSame($expected, BigDecimal::of($number)->fraction());
+        $this->assertSame($expected, BigDecimal::of($number)->getFraction());
     }
 
     /**
      * @return array
      */
-    public function providerFraction()
+    public function providerGetFraction()
     {
         return [
             ['1.23', '23'],

@@ -144,17 +144,37 @@ final class BigRational extends BigNumber
     /**
      * @return BigInteger
      */
-    public function numerator() : BigInteger
+    public function getNumerator() : BigInteger
     {
         return $this->numerator;
     }
 
     /**
+     * @deprecated use getNumerator().
+     *
+     * @return BigInteger
+     */
+    public function numerator() : BigInteger
+    {
+        return $this->getNumerator();
+    }
+
+    /**
+     * @return BigInteger
+     */
+    public function getDenominator() : BigInteger
+    {
+        return $this->denominator;
+    }
+
+    /**
+     * @deprecated use getDenominator().
+     *
      * @return BigInteger
      */
     public function denominator() : BigInteger
     {
-        return $this->denominator;
+        return $this->getDenominator();
     }
 
     /**
@@ -347,15 +367,15 @@ final class BigRational extends BigNumber
      */
     public function compareTo($that) : int
     {
-        return $this->minus($that)->sign();
+        return $this->minus($that)->getSign();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function sign() : int
+    public function getSign() : int
     {
-        return $this->numerator->sign();
+        return $this->numerator->getSign();
     }
 
     /**

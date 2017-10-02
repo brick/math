@@ -37,7 +37,7 @@ final class BigDecimal extends BigNumber
      * Protected constructor. Use a factory method to obtain an instance.
      *
      * @param string $value The unscaled value, validated.
-     * @param int    $scale The scale, validated as a positive or zero integer.
+     * @param int    $scale The scale, validated.
      */
     protected function __construct(string $value, int $scale = 0)
     {
@@ -534,7 +534,7 @@ final class BigDecimal extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function sign() : int
+    public function getSign() : int
     {
         return ($this->value === '0') ? 0 : (($this->value[0] === '-') ? -1 : 1);
     }
@@ -542,17 +542,37 @@ final class BigDecimal extends BigNumber
     /**
      * @return BigInteger
      */
-    public function unscaledValue() : BigInteger
+    public function getUnscaledValue() : BigInteger
     {
         return BigInteger::create($this->value);
     }
 
     /**
+     * @deprecated use getUnscaledValue().
+     *
+     * @return BigInteger
+     */
+    public function unscaledValue() : BigInteger
+    {
+        return $this->getUnscaledValue();
+    }
+
+    /**
+     * @return int
+     */
+    public function getScale() : int
+    {
+        return $this->scale;
+    }
+
+    /**
+     * @deprecated use getScale().
+     *
      * @return int
      */
     public function scale() : int
     {
-        return $this->scale;
+        return $this->getScale();
     }
 
     /**
@@ -562,7 +582,7 @@ final class BigDecimal extends BigNumber
      *
      * @return string
      */
-    public function integral() : string
+    public function getIntegral() : string
     {
         if ($this->scale === 0) {
             return $this->value;
@@ -574,6 +594,16 @@ final class BigDecimal extends BigNumber
     }
 
     /**
+     * @deprecated use getIntegral().
+     *
+     * @return string
+     */
+    public function integral() : string
+    {
+        return $this->getIntegral();
+    }
+
+    /**
      * Returns a string representing the fractional part of this decimal number.
      *
      * If the scale is zero, an empty string is returned.
@@ -582,7 +612,7 @@ final class BigDecimal extends BigNumber
      *
      * @return string
      */
-    public function fraction() : string
+    public function getFraction() : string
     {
         if ($this->scale === 0) {
             return '';
@@ -591,6 +621,16 @@ final class BigDecimal extends BigNumber
         $value = $this->getUnscaledValueWithLeadingZeros();
 
         return substr($value, -$this->scale);
+    }
+
+    /**
+     * @deprecated use getFraction().
+     *
+     * @return string
+     */
+    public function fraction() : string
+    {
+        return $this->getFraction();
     }
 
     /**
