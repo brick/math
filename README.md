@@ -19,7 +19,7 @@ Just define the following requirement in your `composer.json` file:
 ```json
 {
     "require": {
-        "brick/math": "0.6.*"
+        "brick/math": "0.7.*"
     }
 }
 ```
@@ -27,7 +27,7 @@ Just define the following requirement in your `composer.json` file:
 ### Requirements
 
 This library requires PHP 7.1 or later.
-For PHP 5.6, PHP 7.0 or HHVM compatibility, use version `0.5`. **This version will still be supported**: it will not receive any new features, but will be patched if any bugs are found.
+For PHP 5.6 and PHP 7.0 compatibility, use version `0.5`: **this version will still be supported until 31 December 2018**, when support for PHP 5.6 and 7.0 will be definitely dropped. It will not receive any new features, but will be patched if any bugs are found.
 
 Although the library can work seamlessly on any PHP installation, it is highly recommended that you install the
 [GMP](http://php.net/manual/en/book.gmp.php) or [BCMath](http://php.net/manual/en/book.bc.php) extension
@@ -43,7 +43,7 @@ existing code, etc.), `y` is incremented.
 
 **When a breaking change is introduced, a new `0.x` version cycle is always started.**
 
-It is therefore safe to lock your project to a given release cycle, such as `0.6.*`.
+It is therefore safe to lock your project to a given release cycle, such as `0.7.*`.
 
 If you need to upgrade to a newer release cycle, check the [release history](https://github.com/brick/math/releases)
 for a list of changes introduced by each further `0.x.0` version.
@@ -60,11 +60,11 @@ This library provides the following public classes in the [Brick\Math](http://br
 
 And the following exceptions in the [Brick\Math\Exception](http://brick.io/math/namespace-Brick.Math.Exception.html) namespace:
 
-- [ArithmeticException](http://brick.io/math/class-Brick.Math.Exception.ArithmeticException.html): base class for all exceptions
-- [DivisionByZeroException](http://brick.io/math/class-Brick.Math.Exception.DivisionByZeroException.html): thrown when a division by zero occurs
-- [IntegerOverflowException](http://brick.io/math/class-Brick.Math.Exception.IntegerOverflowException.html): thrown when attempting to convert a too large `BigInteger` to `int`
-- [NumberFormatException](http://brick.io/math/class-Brick.Math.Exception.NumberFormatException.html): thrown when parsing a number string in an invalid format
-- [RoundingNecessaryException](http://brick.io/math/class-Brick.Math.Exception.RoundingNecessaryException.html): thrown when the result of the operation cannot be represented without explicit rounding
+- [MathException](https://github.com/brick/math/blob/master/src/Exception/MathException.php): base class for all exceptions
+- [DivisionByZeroException](https://github.com/brick/math/blob/master/src/Exception/DivisionByZeroException.php): thrown when a division by zero occurs
+- [IntegerOverflowException](https://github.com/brick/math/blob/master/src/Exception/IntegerOverflowException.php): thrown when attempting to convert a too large `BigInteger` to `int`
+- [NumberFormatException](https://github.com/brick/math/blob/master/src/Exception/NumberFormatException.php): thrown when parsing a number string in an invalid format
+- [RoundingNecessaryException](https://github.com/brick/math/blob/master/src/Exception/RoundingNecessaryException.php): thrown when the result of the operation cannot be represented without explicit rounding
 
 ### Overview
 
@@ -97,10 +97,10 @@ the current type*:
 
 ```php
 BigInteger::of('1.00'); // 1
-BigInteger::of('1.01'); // ArithmeticException
+BigInteger::of('1.01'); // MathException
 
 BigDecimal::of('1/8'); // 0.125
-BigDecimal::of('1/3'); // ArithmeticException
+BigDecimal::of('1/3'); // MathException
 ```
 
 Note about native integers: instantiating from an `int` is safe *as long as you don't exceed the maximum
@@ -162,7 +162,7 @@ Just like `of()`, other types of `BigNumber` are acceptable, as long as they can
 
 ```php
 echo BigInteger::of(2)->multipliedBy(BigDecimal::of('2.0')); // 4
-echo BigInteger::of(2)->multipliedBy(BigDecimal::of('2.5')); // ArithmeticException
+echo BigInteger::of(2)->multipliedBy(BigDecimal::of('2.5')); // MathException
 echo BigDecimal::of(2.5)->multipliedBy(BigInteger::of(2)); // 5.0
 ```
 
