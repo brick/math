@@ -2172,7 +2172,7 @@ class BigDecimalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerToIntThrowsException
-     * @expectedException \Brick\Math\Exception\ArithmeticException
+     * @expectedException \Brick\Math\Exception\MathException
      *
      * @param string $number A valid decimal number that cannot safely be converted to a native integer.
      */

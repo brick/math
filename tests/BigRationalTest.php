@@ -905,7 +905,7 @@ class BigRationalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerToIntThrowsException
-     * @expectedException \Brick\Math\Exception\ArithmeticException
+     * @expectedException \Brick\Math\Exception\MathException
      *
      * @param string $number A valid rational number that cannot safely be converted to a native integer.
      */

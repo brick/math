@@ -7,7 +7,7 @@ namespace Brick\Math\Exception;
 /**
  * Exception thrown when a number cannot be represented at the requested scale without rounding.
  */
-class RoundingNecessaryException extends ArithmeticException
+class RoundingNecessaryException extends MathException
 {
     /**
      * @return RoundingNecessaryException

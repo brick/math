@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Brick\Math;
 
-use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 
@@ -63,7 +63,7 @@ final class BigRational extends BigNumber
      *
      * @return BigRational
      *
-     * @throws ArithmeticException If the value cannot be converted to a BigRational.
+     * @throws MathException If the value cannot be converted to a BigRational.
      */
     public static function of($value) : BigNumber
     {
@@ -214,7 +214,7 @@ final class BigRational extends BigNumber
      *
      * @return BigRational The result.
      *
-     * @throws ArithmeticException If the number is not valid.
+     * @throws MathException If the number is not valid.
      */
     public function plus($that) : BigRational
     {
@@ -234,7 +234,7 @@ final class BigRational extends BigNumber
      *
      * @return BigRational The result.
      *
-     * @throws ArithmeticException If the number is not valid.
+     * @throws MathException If the number is not valid.
      */
     public function minus($that) : BigRational
     {
@@ -254,7 +254,7 @@ final class BigRational extends BigNumber
      *
      * @return BigRational The result.
      *
-     * @throws ArithmeticException If the multiplier is not a valid number.
+     * @throws MathException If the multiplier is not a valid number.
      */
     public function multipliedBy($that) : BigRational
     {
@@ -273,7 +273,7 @@ final class BigRational extends BigNumber
      *
      * @return BigRational The result.
      *
-     * @throws ArithmeticException If the divisor is not a valid number, or is zero.
+     * @throws MathException If the divisor is not a valid number, or is zero.
      */
     public function dividedBy($that) : BigRational
     {

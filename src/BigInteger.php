@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Brick\Math;
 
-use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
+use Brick\Math\Exception\MathException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -44,7 +44,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      *
-     * @throws ArithmeticException If the value cannot be converted to a BigInteger.
+     * @throws MathException If the value cannot be converted to a BigInteger.
      */
     public static function of($value) : BigNumber
     {
@@ -186,7 +186,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger The result.
      *
-     * @throws ArithmeticException If the number is not valid, or is not convertible to a BigInteger.
+     * @throws MathException If the number is not valid, or is not convertible to a BigInteger.
      */
     public function plus($that) : BigInteger
     {
@@ -208,7 +208,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger The result.
      *
-     * @throws ArithmeticException If the number is not valid, or is not convertible to a BigInteger.
+     * @throws MathException If the number is not valid, or is not convertible to a BigInteger.
      */
     public function minus($that) : BigInteger
     {
@@ -230,7 +230,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger The result.
      *
-     * @throws ArithmeticException If the multiplier is not a valid number, or is not convertible to a BigInteger.
+     * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigInteger.
      */
     public function multipliedBy($that) : BigInteger
     {
@@ -253,8 +253,8 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger The result.
      *
-     * @throws ArithmeticException If the divisor is not a valid number, is not convertible to a BigInteger, is zero,
-     *                             or RoundingMode::UNNECESSARY is used and the remainder is not zero.
+     * @throws MathException If the divisor is not a valid number, is not convertible to a BigInteger, is zero,
+     *                       or RoundingMode::UNNECESSARY is used and the remainder is not zero.
      */
     public function dividedBy($that, int $roundingMode = RoundingMode::UNNECESSARY) : BigInteger
     {

@@ -7,7 +7,7 @@ namespace Brick\Math\Exception;
 /**
  * Exception thrown when a division by zero occurs.
  */
-class DivisionByZeroException extends ArithmeticException
+class DivisionByZeroException extends MathException
 {
     /**
      * @return DivisionByZeroException

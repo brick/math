@@ -9,7 +9,7 @@ use Brick\Math\BigInteger;
 /**
  * Exception thrown when an integer overflow occurs.
  */
-class IntegerOverflowException extends ArithmeticException
+class IntegerOverflowException extends MathException
 {
     /**
      * @param BigInteger $value

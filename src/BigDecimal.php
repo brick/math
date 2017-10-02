@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Brick\Math;
 
-use Brick\Math\Exception\ArithmeticException;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\MathException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -52,7 +52,7 @@ final class BigDecimal extends BigNumber
      *
      * @return BigDecimal
      *
-     * @throws ArithmeticException If the value cannot be converted to a BigDecimal.
+     * @throws MathException If the value cannot be converted to a BigDecimal.
      */
     public static function of($value) : BigNumber
     {
@@ -137,7 +137,7 @@ final class BigDecimal extends BigNumber
      *
      * @return BigDecimal The result.
      *
-     * @throws ArithmeticException If the number is not valid, or is not convertible to a BigDecimal.
+     * @throws MathException If the number is not valid, or is not convertible to a BigDecimal.
      */
     public function plus($that) : BigDecimal
     {
@@ -164,7 +164,7 @@ final class BigDecimal extends BigNumber
      *
      * @return BigDecimal The result.
      *
-     * @throws ArithmeticException If the number is not valid, or is not convertible to a BigDecimal.
+     * @throws MathException If the number is not valid, or is not convertible to a BigDecimal.
      */
     public function minus($that) : BigDecimal
     {
@@ -191,7 +191,7 @@ final class BigDecimal extends BigNumber
      *
      * @return BigDecimal The result.
      *
-     * @throws ArithmeticException If the multiplier is not a valid number, or is not convertible to a BigDecimal.
+     * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigDecimal.
      */
     public function multipliedBy($that) : BigDecimal
     {
@@ -217,7 +217,7 @@ final class BigDecimal extends BigNumber
      * @return BigDecimal
      *
      * @throws \InvalidArgumentException If the scale or rounding mode is invalid.
-     * @throws ArithmeticException       If the number is invalid, is zero, or rounding was necessary.
+     * @throws MathException             If the number is invalid, is zero, or rounding was necessary.
      */
     public function dividedBy($that, int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
@@ -254,8 +254,8 @@ final class BigDecimal extends BigNumber
      *
      * @return BigDecimal The result.
      *
-     * @throws ArithmeticException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero,
-     *                             or the result yields an infinite number of digits.
+     * @throws MathException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero,
+     *                       or the result yields an infinite number of digits.
      */
     public function exactlyDividedBy($that) : BigDecimal
     {
@@ -329,7 +329,7 @@ final class BigDecimal extends BigNumber
      *
      * @return BigDecimal The quotient.
      *
-     * @throws ArithmeticException If the divisor is not a valid decimal number, or is zero.
+     * @throws MathException If the divisor is not a valid decimal number, or is zero.
      */
     public function quotient($that) : BigDecimal
     {
@@ -356,7 +356,7 @@ final class BigDecimal extends BigNumber
      *
      * @return BigDecimal The remainder.
      *
-     * @throws ArithmeticException If the divisor is not a valid decimal number, or is zero.
+     * @throws MathException If the divisor is not a valid decimal number, or is zero.
      */
     public function remainder($that) : BigDecimal
     {
@@ -385,7 +385,7 @@ final class BigDecimal extends BigNumber
      *
      * @return BigDecimal[] An array containing the quotient and the remainder.
      *
-     * @throws ArithmeticException If the divisor is not a valid decimal number, or is zero.
+     * @throws MathException If the divisor is not a valid decimal number, or is zero.
      */
     public function quotientAndRemainder($that) : array
     {
