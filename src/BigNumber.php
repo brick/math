@@ -321,16 +321,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     abstract public function getSign() : int;
 
     /**
-     * @deprecated use getSign().
-     *
-     * @return int
-     */
-    public function sign() : int
-    {
-        return $this->getSign();
-    }
-
-    /**
      * Compares this number to the given one.
      *
      * @param BigNumber|number|string $that

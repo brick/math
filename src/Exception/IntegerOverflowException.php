@@ -14,9 +14,9 @@ class IntegerOverflowException extends MathException
     /**
      * @param BigInteger $value
      *
-     * @return ArithmeticException
+     * @return IntegerOverflowException
      */
-    public static function toIntOverflow(BigInteger $value) : ArithmeticException
+    public static function toIntOverflow(BigInteger $value) : IntegerOverflowException
     {
         $message = '%s is out of range %d to %d and cannot be represented as an integer.';
 

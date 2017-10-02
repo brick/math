@@ -150,31 +150,11 @@ final class BigRational extends BigNumber
     }
 
     /**
-     * @deprecated use getNumerator().
-     *
-     * @return BigInteger
-     */
-    public function numerator() : BigInteger
-    {
-        return $this->getNumerator();
-    }
-
-    /**
      * @return BigInteger
      */
     public function getDenominator() : BigInteger
     {
         return $this->denominator;
-    }
-
-    /**
-     * @deprecated use getDenominator().
-     *
-     * @return BigInteger
-     */
-    public function denominator() : BigInteger
-    {
-        return $this->getDenominator();
     }
 
     /**

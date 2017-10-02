@@ -548,31 +548,11 @@ final class BigDecimal extends BigNumber
     }
 
     /**
-     * @deprecated use getUnscaledValue().
-     *
-     * @return BigInteger
-     */
-    public function unscaledValue() : BigInteger
-    {
-        return $this->getUnscaledValue();
-    }
-
-    /**
      * @return int
      */
     public function getScale() : int
     {
         return $this->scale;
-    }
-
-    /**
-     * @deprecated use getScale().
-     *
-     * @return int
-     */
-    public function scale() : int
-    {
-        return $this->getScale();
     }
 
     /**
@@ -594,16 +574,6 @@ final class BigDecimal extends BigNumber
     }
 
     /**
-     * @deprecated use getIntegral().
-     *
-     * @return string
-     */
-    public function integral() : string
-    {
-        return $this->getIntegral();
-    }
-
-    /**
      * Returns a string representing the fractional part of this decimal number.
      *
      * If the scale is zero, an empty string is returned.
@@ -621,16 +591,6 @@ final class BigDecimal extends BigNumber
         $value = $this->getUnscaledValueWithLeadingZeros();
 
         return substr($value, -$this->scale);
-    }
-
-    /**
-     * @deprecated use getFraction().
-     *
-     * @return string
-     */
-    public function fraction() : string
-    {
-        return $this->getFraction();
     }
 
     /**
