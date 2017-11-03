@@ -2,7 +2,7 @@
 
 use Brick\Math\Internal\Calculator;
 
-require 'vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 /**
  * @return Calculator
