@@ -195,7 +195,7 @@ echo BigInteger::of(1000)->remainder(3); // 1
 You can even get both at the same time:
 
 ```php
-list ($quotient, $remainder) = BigInteger::of(1000)->quotientAndRemainder(3);
+[$quotient, $remainder] = BigInteger::of(1000)->quotientAndRemainder(3);
 ```
 
 ##### BigDecimal
