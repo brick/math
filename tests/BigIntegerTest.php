@@ -1898,6 +1898,15 @@ class BigIntegerTest extends AbstractTestCase
         $this->assertBigIntegerEquals($value, unserialize(serialize($number)));
     }
 
+    public function testJsonSerialize()
+    {
+        $value = '-1234567890987654321012345678909876543210123456789';
+
+        $number = BigInteger::of($value);
+
+        $this->assertSame($value, $number->jsonSerialize());
+    }
+
     /**
      * @expectedException \LogicException
      */
