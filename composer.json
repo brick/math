@@ -19,6 +19,10 @@
         "phpunit/phpunit": "7.*",
         "satooshi/php-coveralls": "2.*"
     },
+    "suggest": {
+        "ext-gmp": "The fastest available calculator implementation will be automatically selected at runtime.",
+        "ext-bcmath": "The fastest available calculator implementation will be automatically selected at runtime."
+    },
     "autoload": {
         "psr-4": {
             "Brick\\Math\\": "src/"
