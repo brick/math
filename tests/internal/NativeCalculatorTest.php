@@ -2,7 +2,8 @@
 
 namespace Brick\Math\Tests\Internal\Calculator;
 
-use  Brick\Math\Internal\Calculator\NativeCalculator;
+use Brick\Math\Internal\Calculator\NativeCalculator;
+use Brick\Math\Tests\AbstractTestCase;
 
 /**
  * Unit tests for class NativeCalculator.
