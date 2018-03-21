@@ -44,7 +44,7 @@ class NativeCalculatorTest extends AbstractTestCase
      *
      * @param string $a
      * @param string $b
-     * @param string $expectedValue   
+     * @param string $expectedValue
      */
     public function testMul($a, $b, $expectedValue)
     {
