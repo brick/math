@@ -1905,4 +1905,13 @@ class BigIntegerTest extends AbstractTestCase
     {
         BigInteger::zero()->unserialize('123');
     }
+
+    public function testJsonSerialize()
+    {
+        $value = '-1234567890987654321012345678909876543210123456789';
+
+        $number = BigInteger::of($value);
+
+        $this->assertSame($value, $number->jsonSerialize());
+    }
 }
