@@ -13,9 +13,9 @@ class NativeCalculatorTest extends AbstractTestCase
     /**
      * @dataProvider providerAdd
      *
-     * @param string $a               The input numerator.
-     * @param string $b               The input denominator.
-     * @param string $expectedValue   The expected denominator.
+     * @param string $a
+     * @param string $b
+     * @param string $expectedValue
      */
     public function testAdd($a, $b, $expectedValue)
     {
@@ -42,9 +42,9 @@ class NativeCalculatorTest extends AbstractTestCase
     /**
      * @dataProvider providerMul
      *
-     * @param string $a               The input numerator.
-     * @param string $b               The input denominator.
-     * @param string $expectedValue   The expected denominator.
+     * @param string $a
+     * @param string $b
+     * @param string $expectedValue   
      */
     public function testMul($a, $b, $expectedValue)
     {
@@ -73,9 +73,9 @@ class NativeCalculatorTest extends AbstractTestCase
     /**
      * @dataProvider providerPow
      *
-     * @param string $a               The input numerator.
-     * @param string $b               The input denominator.
-     * @param string $expectedValue   The expected denominator.
+     * @param string $a
+     * @param string $b
+     * @param string $expectedValue
      */
     public function testPow($a, $b, $expectedValue)
     {
