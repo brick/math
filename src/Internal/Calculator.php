@@ -276,8 +276,7 @@ abstract class Calculator
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for base conversion.
      *
-     * @param string $number The number, non-empty, case-insensitively validated for the given base.
-     *                       The number may contain an optional leading + or - sign, and optional leading zeros.
+     * @param string $number The number, positive or zero, non-empty, case-insensitively validated for the given base.
      * @param int    $base   The base of the number, validated from 2 to 36.
      *
      * @return string The converted number, following the Calculator conventions.

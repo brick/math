@@ -110,9 +110,9 @@ final class BigInteger extends BigNumber
             return new BigInteger($sign . $number);
         }
 
-        $result = Calculator::get()->fromBase($sign . $number, $base);
+        $result = Calculator::get()->fromBase($number, $base);
 
-        return new BigInteger($result);
+        return new BigInteger($sign . $result);
     }
 
     /**
