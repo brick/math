@@ -114,7 +114,7 @@ final class BigRational extends BigNumber
      *
      * @return BigRational
      */
-    public static function one() :BigRational
+    public static function one() : BigRational
     {
         static $one;
 
