@@ -46,7 +46,7 @@ abstract class Calculator
      *
      * @return void
      */
-    public static function set(Calculator $calculator = null) : void
+    public static function set(?Calculator $calculator) : void
     {
         self::$instance = $calculator;
     }
