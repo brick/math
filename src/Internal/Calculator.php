@@ -14,7 +14,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
  * without leading zero, and with an optional leading minus sign if the number is not zero.
  *
  * Any other parameter format will lead to undefined behaviour.
- * All methods must return strings respecting this format.
+ * All methods must return strings respecting this format, unless specified otherwise.
  *
  * @internal
  */
@@ -24,6 +24,11 @@ abstract class Calculator
      * The maximum exponent value allowed for the pow() method.
      */
     public const MAX_POWER = 1000000;
+
+    /**
+     * The dictionary for reading and writing in base 2 to 36.
+     */
+    public const DICTIONARY = '0123456789abcdefghijklmnopqrstuvwxyz';
 
     /**
      * The Calculator instance in use.
@@ -263,6 +268,80 @@ abstract class Calculator
         }
 
         return $this->gcd($b, $this->divR($a, $b));
+    }
+
+    /**
+     * Converts a number from an arbitrary base.
+     *
+     * This method can be overridden by the concrete implementation if the underlying library
+     * has built-in support for base conversion.
+     *
+     * @param string $number The number, non-empty, case-insensitively validated for the given base.
+     *                       The number may contain an optional leading + or - sign, and optional leading zeros.
+     * @param int    $base   The base of the number, validated from 2 to 36.
+     *
+     * @return string The converted number, following the Calculator conventions.
+     */
+    public function fromBase(string $number, int $base) : string
+    {
+        $number = strtolower($number);
+
+        $result = '0';
+        $power = '1';
+
+        for ($i = strlen($number) - 1; $i >= 0; $i--) {
+            $index = strpos(self::DICTIONARY, $number[$i]);
+
+            if ($index !== 0) {
+                $result = $this->add($result, ($index === 1)
+                    ? $power
+                    : $this->mul($power, (string) $index)
+                );
+            }
+
+            if ($i !== 0) {
+                $power = $this->mul($power, (string) $base);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Converts a number to an arbitrary base.
+     *
+     * This method can be overridden by the concrete implementation if the underlying library
+     * has built-in support for base conversion.
+     *
+     * @param string $number The number to convert, following the Calculator conventions.
+     * @param int    $base   The base to convert to, validated from 2 to 36.
+     *
+     * @return string The converted number, lowercase.
+     */
+    public function toBase(string $number, int $base) : string
+    {
+        $value = $number;
+        $negative = ($value[0] === '-');
+
+        if ($negative) {
+            $value = substr($value, 1);
+        }
+
+        $base = (string) $base;
+        $result = '';
+
+        while ($value !== '0') {
+            [$value, $remainder] = $this->divQR($value, $base);
+            $remainder = (int) $remainder;
+
+            $result .= self::DICTIONARY[$remainder];
+        }
+
+        if ($negative) {
+            $result .= '-';
+        }
+
+        return strrev($result);
     }
 
     /**

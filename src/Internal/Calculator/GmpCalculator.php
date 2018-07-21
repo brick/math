@@ -81,4 +81,20 @@ class GmpCalculator extends Calculator
     {
         return gmp_strval(gmp_gcd($a, $b));
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fromBase(string $number, int $base) : string
+    {
+        return gmp_strval(gmp_init($number, $base));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toBase(string $number, int $base) : string
+    {
+        return gmp_strval($number, $base);
+    }
 }

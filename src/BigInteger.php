@@ -65,8 +65,6 @@ final class BigInteger extends BigNumber
      */
     public static function parse(string $number, int $base = 10) : BigInteger
     {
-        $dictionary = '0123456789abcdefghijklmnopqrstuvwxyz';
-
         if ($number === '') {
             throw new \InvalidArgumentException('The value cannot be empty.');
         }
@@ -101,34 +99,20 @@ final class BigInteger extends BigNumber
             return new BigInteger($sign . '1');
         }
 
-        if ($base === 10 && ctype_digit($number)) {
+        $pattern = '/[^' . substr(Calculator::DICTIONARY, 0, $base) . ']/';
+
+        if (preg_match($pattern, strtolower($number), $matches) === 1) {
+            throw new \InvalidArgumentException(sprintf('"%s" is not a valid character in base %d.', $matches[0], $base));
+        }
+
+        if ($base === 10) {
             // The number is usable as is, avoid further calculation.
             return new BigInteger($sign . $number);
         }
 
-        $calc = Calculator::get();
-        $number = strtolower($number);
+        $result = Calculator::get()->fromBase($sign . $number, $base);
 
-        $result = '0';
-        $power = '1';
-
-        for ($i = strlen($number) - 1; $i >= 0; $i--) {
-            $char = $number[$i];
-            $index = strpos($dictionary, $char);
-
-            if ($index === false || $index >= $base) {
-                throw new \InvalidArgumentException(sprintf('"%s" is not a valid character in base %d.', $char, $base));
-            }
-
-            if ($index !== 0) {
-                $add = ($index === 1) ? $power : $calc->mul($power, (string) $index);
-                $result = $calc->add($result, $add);
-            }
-
-            $power = $calc->mul($power, (string) $base);
-        }
-
-        return new BigInteger($sign . $result);
+        return new BigInteger($result);
     }
 
     /**
@@ -515,32 +499,7 @@ final class BigInteger extends BigNumber
             throw new \InvalidArgumentException(sprintf('Base %d is out of range [2, 36]', $base));
         }
 
-        $dictionary = '0123456789abcdefghijklmnopqrstuvwxyz';
-
-        $calc = Calculator::get();
-
-        $value = $this->value;
-        $negative = ($value[0] === '-');
-
-        if ($negative) {
-            $value = substr($value, 1);
-        }
-
-        $base = (string) $base;
-        $result = '';
-
-        while ($value !== '0') {
-            [$value, $remainder] = $calc->divQR($value, $base);
-            $remainder = (int) $remainder;
-
-            $result .= $dictionary[$remainder];
-        }
-
-        if ($negative) {
-            $result .= '-';
-        }
-
-        return strrev($result);
+        return Calculator::get()->toBase($this->value, $base);
     }
 
     /**
