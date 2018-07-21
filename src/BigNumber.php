@@ -41,7 +41,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * - integer numbers are returned as BigInteger
      * - floating point numbers are returned as BigDecimal
      * - strings containing a `/` character are returned as BigRational
-     * - strings containing a `.` character or using an exponentional notation are returned as BigDecimal
+     * - strings containing a `.` character or using an exponential notation are returned as BigDecimal
      * - strings containing only digits with an optional leading `+` or `-` sign are returned as BigInteger
      *
      * @param BigNumber|number|string $value
