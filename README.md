@@ -15,7 +15,14 @@ For a complete list of classes and methods, check the [API documentation](http:/
 ### Installation
 
 This library is installable via [Composer](https://getcomposer.org/).
-Just define the following requirement in your `composer.json` file:
+
+Just run:
+
+```bash
+composer require brick/math
+```
+
+or manually define the following requirement in your `composer.json` file:
 
 ```json
 {
