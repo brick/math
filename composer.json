@@ -19,6 +19,10 @@
         "phpunit/phpunit": "7.*",
         "php-coveralls/php-coveralls": "2.*"
     },
+    "suggest": {
+        "ext-gmp": "Install the GMP (GNU Multiple Precision) extension in order to speed up arbitrary precision integer arithmetic operations.",
+        "ext-bcmath": "Install the BCMath (Basic Calculator) extension in order to speed up arbitrary precision integer arithmetic operations. GMP is faster"
+    },
     "autoload": {
         "psr-4": {
             "Brick\\Math\\": "src/"
