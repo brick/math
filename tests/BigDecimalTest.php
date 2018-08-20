@@ -1990,20 +1990,21 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerGetIntegral
+     * @dataProvider providerGetIntegralPart
      *
      * @param string $number   The number to test.
      * @param string $expected The expected integral value.
      */
-    public function testGetIntegral($number, $expected)
+    public function testGetIntegralPart($number, $expected)
     {
-        $this->assertSame($expected, BigDecimal::of($number)->getIntegral());
+        $this->assertSame($expected, BigDecimal::of($number)->getIntegral()); // deprecated method
+        $this->assertSame($expected, BigDecimal::of($number)->getIntegralPart());
     }
 
     /**
      * @return array
      */
-    public function providerGetIntegral()
+    public function providerGetIntegralPart()
     {
         return [
             ['1.23', '1'],
@@ -2017,20 +2018,21 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerGetFraction
+     * @dataProvider providerGetFractionalPart
      *
      * @param string $number   The number to test.
      * @param string $expected The expected fractional value.
      */
-    public function testGetFraction($number, $expected)
+    public function testGetFractionalPart($number, $expected)
     {
-        $this->assertSame($expected, BigDecimal::of($number)->getFraction());
+        $this->assertSame($expected, BigDecimal::of($number)->getFraction()); // deprecated method
+        $this->assertSame($expected, BigDecimal::of($number)->getFractionalPart());
     }
 
     /**
      * @return array
      */
-    public function providerGetFraction()
+    public function providerGetFractionalPart()
     {
         return [
             ['1.23', '23'],
