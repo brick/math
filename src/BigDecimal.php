@@ -624,6 +624,16 @@ final class BigDecimal extends BigNumber
     }
 
     /**
+     * Returns whether this decimal number has a non-zero fractional part.
+     *
+     * @return bool
+     */
+    public function hasNonZeroFractionalPart() : bool
+    {
+        return $this->getFractionalPart() !== str_repeat('0', $this->scale);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function toBigInteger() : BigInteger
