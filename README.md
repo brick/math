@@ -10,8 +10,6 @@ A library to work with arbitrary precision numbers.
 [![Total Downloads](https://poser.pugx.org/brick/math/downloads)](https://packagist.org/packages/brick/math)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
-For a complete list of classes and methods, check the [API documentation](http://brick.io/math/).
-
 ### Installation
 
 This library is installable via [Composer](https://getcomposer.org/).
