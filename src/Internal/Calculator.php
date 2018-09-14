@@ -364,7 +364,7 @@ abstract class Calculator
         $hasDiscardedFraction = ($remainder !== '0');
         $isPositiveOrZero = ($a[0] === '-') === ($b[0] === '-');
 
-        $discardedFractionSign = function() use ($remainder, $b) {
+        $discardedFractionSign = function() use ($remainder, $b) : int {
             $r = $this->abs($this->mul($remainder, '2'));
             $b = $this->abs($b);
 
