@@ -7,6 +7,8 @@ namespace Brick\Math;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\ShiftException;
+use Brick\Math\Internal\Bitwise;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -404,6 +406,86 @@ final class BigInteger extends BigNumber
     public function negated() : BigInteger
     {
         return new BigInteger(Calculator::get()->neg($this->value));
+    }
+
+    /**
+     * Returns the integer bitwise-and combined with another integer.
+     *
+     * @param BigNumber|number|string $that The operand. Must be convertible to an integer number.
+     *
+     * @return BigInteger
+     */
+    public function and($that) : BigInteger
+    {
+        $that = BigInteger::of($that);
+
+        return Bitwise::bitwise($this, $that, 'and');
+    }
+
+    /**
+     * Returns the integer bitwise-or combined with another integer.
+     *
+     * @param BigNumber|number|string $that The operand. Must be convertible to an integer number.
+     *
+     * @return BigInteger
+     */
+    public function or($that) : BigInteger
+    {
+        $that = BigInteger::of($that);
+
+        return Bitwise::bitwise($this, $that, 'or');
+    }
+
+    /**
+     * Returns the integer bitwise-xor combined with another integer.
+     *
+     * @param BigNumber|number|string $that The operand. Must be convertible to an integer number.
+     *
+     * @return BigInteger
+     */
+    public function xor($that) : BigInteger
+    {
+        $that = BigInteger::of($that);
+
+        return Bitwise::bitwise($this, $that, 'xor');
+    }
+
+    /**
+     * Returns the integer left shifted by a given number of bits.
+     *
+     * @param int $distance The distance to shift.
+     *
+     * @return BigInteger
+     */
+    public function shiftLeft(int $distance) : BigInteger
+    {
+        if ($distance < 0) {
+            throw new ShiftException('Distance must not be negative.');
+        }
+
+        return $this->multipliedBy(BigInteger::of(2)->power($distance));
+    }
+
+    /**
+     * Returns the integer right shifted by a given number of bits.
+     *
+     * @param int $distance The distance to shift.
+     *
+     * @return BigInteger
+     */
+    public function shiftRight(int $distance) : BigInteger
+    {
+        if ($distance < 0) {
+            throw new ShiftException('Distance must not be negative.');
+        }
+
+        $operand = BigInteger::of(2)->power($distance);
+
+        if ($this->isPositiveOrZero()) {
+            return $this->quotient($operand);
+        }
+
+        return $this->dividedBy($operand, RoundingMode::UP);
     }
 
     /**

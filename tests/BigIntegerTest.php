@@ -3,6 +3,7 @@
 namespace Brick\Math\Tests;
 
 use Brick\Math\BigInteger;
+use Brick\Math\Exception\ShiftException;
 use Brick\Math\RoundingMode;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\RoundingNecessaryException;
@@ -1479,6 +1480,159 @@ class BigIntegerTest extends AbstractTestCase
             ['0', '0'],
             ['123456789012345678901234567890', '-123456789012345678901234567890'],
             ['-123456789012345678901234567890', '123456789012345678901234567890'],
+        ];
+    }
+
+    /**
+     * @dataProvider providerOr
+     *
+     * @param string $a The base number as a string.
+     * @param string $b The second operand as a string.
+     * @param string $c The expected result.
+     */
+    public function testOr($a, $b, $c)
+    {
+        $this->assertBigIntegerEquals($c, BigInteger::of($a)->or($b));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerOr()
+    {
+        return [
+            ['-1', '-2', '-1'],
+            ['1', '-2', '-1'],
+            ['-1', '2', '-1'],
+            ['0', '1', '1'],
+            ['123456789', '2', '123456791'],
+            ['123456789012345678901234567890', '5', '123456789012345678901234567895'],
+        ];
+    }
+
+    /**
+     * @dataProvider providerAnd
+     *
+     * @param string $a The base number as a string.
+     * @param string $b The second operand as a string.
+     * @param string $c The expected result.
+     */
+    public function testAnd($a, $b, $c)
+    {
+        $this->assertBigIntegerEquals($c, BigInteger::of($a)->and($b));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerAnd()
+    {
+        return [
+            ['-1', '-2', '-2'],
+            ['1', '-2', '0'],
+            ['-1', '2', '2'],
+            ['0', '1', '0'],
+            ['123456789', '123456787', '123456785'],
+            ['-255', '255', '1'],
+            ['-65535', '65535', '1'],
+            ['123456789012345678901234567890', '123456789012345678901234567880', '123456789012345678901234567872'],
+            ['-123456789012345678', '123456789012345678', '2'],
+            ['-123456789012345678901234567890', '123456789012345678901234567880', '8'],
+            ['-123456789012345678901234567890', '123456789012345678901234567890', '2'],
+        ];
+    }
+
+    /**
+     * @dataProvider providerXor
+     *
+     * @param string $a The base number as a string.
+     * @param string $b The second operand as a string.
+     * @param string $c The expected result.
+     */
+    public function testXor($a, $b, $c)
+    {
+        $this->assertBigIntegerEquals($c, BigInteger::of($a)->xor($b));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerXor()
+    {
+        return [
+            ['-1', '-2', '1'],
+            ['1', '-2', '-1'],
+            ['-1', '2', '-3'],
+            ['0', '1', '1'],
+            ['123456789', '123456787', '6'],
+            ['123456789012345678901234567890', '123456789012345678901234567880', '26'],
+        ];
+    }
+
+    /**
+     * @expectedException \Brick\Math\Exception\ShiftException
+     */
+    public function testShiftLeftWithNegativeDistance()
+    {
+        BigInteger::zero()->shiftLeft(-1);
+    }
+
+    /**
+     * @dataProvider providerShiftLeft
+     *
+     * @param string $a The base number as a string.
+     * @param int    $b The distance to shift.
+     * @param string $c The expected shifted result.
+     */
+    public function testShiftLeft($a, $b, $c)
+    {
+        $this->assertBigIntegerEquals($c, BigInteger::of($a)->shiftLeft($b));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerShiftLeft()
+    {
+        return [
+            ['-1', 1, '-2'],
+            ['0', 1, '0'],
+            ['123456789', 1, '246913578'],
+            ['123456789012345678901234567890', 5, '3950617248395061724839506172480'],
+        ];
+    }
+
+    /**
+     * @expectedException \Brick\Math\Exception\ShiftException
+     */
+    public function testShiftRightWithNegativeDistance()
+    {
+        BigInteger::zero()->shiftRight(-1);
+    }
+
+    /**
+     * @dataProvider providerShiftRight
+     *
+     * @param string $a The base number as a string.
+     * @param int    $b The distance to shift.
+     * @param string $c The expected shifted result.
+     */
+    public function testShiftRight($a, $b, $c)
+    {
+        $this->assertBigIntegerEquals($c, BigInteger::of($a)->shiftRight($b));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerShiftRight()
+    {
+        return [
+            ['-3', 1, '-2'],
+            ['-5', 1, '-3'],
+            ['0', 1, '0'],
+            ['123456789', 1, '61728394'],
+            ['123456789012345678901234567890', 5, '3858024656635802465663580246'],
         ];
     }
 
