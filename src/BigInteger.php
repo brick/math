@@ -7,7 +7,6 @@ namespace Brick\Math;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\MathException;
-use Brick\Math\Internal\Bitwise;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -420,7 +419,7 @@ final class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        return Bitwise::bitwise($this, $that, 'and');
+        return new BigInteger(Calculator::get()->and($this->value, $that->value));
     }
 
     /**
@@ -436,7 +435,7 @@ final class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        return Bitwise::bitwise($this, $that, 'or');
+        return new BigInteger(Calculator::get()->or($this->value, $that->value));
     }
 
     /**
@@ -452,7 +451,7 @@ final class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        return Bitwise::bitwise($this, $that, 'xor');
+        return new BigInteger(Calculator::get()->xor($this->value, $that->value));
     }
 
     /**
