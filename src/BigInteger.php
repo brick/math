@@ -7,7 +7,6 @@ namespace Brick\Math;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\MathException;
-use Brick\Math\Exception\ShiftException;
 use Brick\Math\Internal\Bitwise;
 use Brick\Math\Internal\Calculator;
 
@@ -459,8 +458,12 @@ final class BigInteger extends BigNumber
      */
     public function shiftedLeft(int $distance) : BigInteger
     {
+        if ($distance === 0) {
+            return $this;
+        }
+
         if ($distance < 0) {
-            throw new ShiftException('Distance must not be negative.');
+            return $this->shiftedRight(- $distance);
         }
 
         return $this->multipliedBy(BigInteger::of(2)->power($distance));
@@ -475,8 +478,12 @@ final class BigInteger extends BigNumber
      */
     public function shiftedRight(int $distance) : BigInteger
     {
+        if ($distance === 0) {
+            return $this;
+        }
+
         if ($distance < 0) {
-            throw new ShiftException('Distance must not be negative.');
+            return $this->shiftedLeft(- $distance);
         }
 
         $operand = BigInteger::of(2)->power($distance);
