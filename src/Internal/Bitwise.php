@@ -118,7 +118,7 @@ abstract class Bitwise
     }
 
     /**
-     * Returns the BigInteger representation of a binary number.
+     * Returns the positive BigInteger representation of a binary number.
      *
      * @param string $bytes The bytes representing the number.
      *
