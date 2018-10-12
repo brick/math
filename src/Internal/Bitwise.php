@@ -7,7 +7,7 @@ namespace Brick\Math\Internal;
 use Brick\Math\BigInteger;
 
 /**
- * A helper class to support bitwise operations on BigInteger
+ * A helper class to support bitwise operations on BigInteger.
  *
  * @internal
  */
@@ -24,32 +24,78 @@ abstract class Bitwise
      */
     public static function bitwise(BigInteger $x, BigInteger $y, string $operator) : BigInteger
     {
-        $binaryX = self::toBinary($x);
-        $binaryY = self::toBinary($y);
+        $x2 = $x->abs()->toBase(2);
+        $y2 = $y->abs()->toBase(2);
 
-        $maxLength = max(strlen($binaryX), strlen($binaryY));
-        $binaryX = $binaryX[0] . str_pad(substr($binaryX, 1), $maxLength - 1, "\x0", STR_PAD_LEFT);
-        $binaryY = $binaryY[0] . str_pad(substr($binaryY, 1), $maxLength - 1, "\x0", STR_PAD_LEFT);
+        // prefix a 0 to ensure than when applying the two's complement, length in bits will remain the same
+        $x2 = '0' . $x2;
+        $y2 = '0' . $y2;
+
+        $lx = strlen($x2);
+        $ly = strlen($y2);
+
+        $length = max($lx, $ly);
+
+        if ($lx < $length) {
+            $x2 = str_repeat('0', $length - strlen($x2)) . $x2;
+        }
+
+        if ($ly < $length) {
+            $y2 = str_repeat('0', $length - strlen($y2)) . $y2;
+        }
+
+        if ($x->isNegative()) {
+            $x2 = self::twosComplement($x2);
+        }
+
+        if ($y->isNegative()) {
+            $y2 = self::twosComplement($y2);
+        }
 
         $value = '';
 
-        for ($i = 0; $i < $maxLength; ++$i) {
+        for ($i = 0; $i < $length; $i++) {
+            $bx = (int) $x2[$i];
+            $by = (int) $y2[$i];
+
             switch ($operator) {
                 case 'and':
-                    $value .= $binaryX[$i] & $binaryY[$i];
+                    $value .= (string) ($bx & $by);
                     break;
 
                 case 'or':
-                    $value .= $binaryX[$i] | $binaryY[$i];
+                    $value .= (string) ($bx | $by);
                     break;
 
                 case 'xor':
-                    $value .= $binaryX[$i] ^ $binaryY[$i];
+                    $value .= (string) ($bx ^ $by);
                     break;
             }
         }
 
-        return self::toBigInteger($value);
+        if ($value[0] === '1') {
+            return BigInteger::parse(self::twosComplement($value), 2)->negated();
+        }
+
+        return BigInteger::parse($value, 2);
+    }
+
+    /**
+     * @param string $number
+     *
+     * @return string
+     */
+    private static function twosComplement(string $number) : string
+    {
+        $length = strlen($number);
+
+        for ($i = 0; $i < $length; $i++) {
+            $number[$i] = ($number[$i] === '0' ? '1' : '0');
+        }
+
+        $result = BigInteger::parse($number, 2)->plus(1)->toBase(2);
+
+        return $result;
     }
 
     /**
