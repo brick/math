@@ -24,8 +24,8 @@ abstract class Bitwise
      */
     public static function bitwise(BigInteger $x, BigInteger $y, string $operator) : BigInteger
     {
-        $bx = self::toBinary($x);
-        $by = self::toBinary($y);
+        $bx = self::toBinary((string) $x->abs());
+        $by = self::toBinary((string) $y->abs());
 
         $lx = strlen($bx);
         $ly = strlen($by);
@@ -95,34 +95,26 @@ abstract class Bitwise
     }
 
     /**
-     * Returns the binary format of a number.
+     * Converts a decimal number to a binary string.
      *
-     * @param BigInteger $x The number to convert to binary format.
+     * @param string $number The number to convert, positive or zero, only digits.
      *
      * @return string
      */
-    private static function toBinary(BigInteger $x) : string
+    private static function toBinary(string $number) : string
     {
         $calculator = Calculator::get();
 
-        $value = (string) $x->abs();
-
         $result = '';
 
-        while ($value !== '0') {
-            [$value, $remainder] = $calculator->divQR($value, '256');
+        while ($number !== '0') {
+            [$number, $remainder] = $calculator->divQR($number, '256');
             $remainder = (int) $remainder;
 
             $result .= chr($remainder);
         }
 
         return strrev($result);
-
-        if ($x->isNegative()) {
-            $result = self::twosComplement($result);
-        }
-
-        return $result;
     }
 
     /**
