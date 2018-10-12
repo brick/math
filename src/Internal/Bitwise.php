@@ -24,101 +24,69 @@ abstract class Bitwise
      */
     public static function bitwise(BigInteger $x, BigInteger $y, string $operator) : BigInteger
     {
-        $bx = self::toBinary((string) $x->abs());
-        $by = self::toBinary((string) $y->abs());
+        $binaryX = self::toBinary($x);
+        $binaryY = self::toBinary($y);
 
-        $lx = strlen($bx);
-        $ly = strlen($by);
+        $maxLength = max(strlen($binaryX), strlen($binaryY));
 
-        if ($lx > $ly) {
-            $by = str_repeat("\x00", $lx - $ly) . $by;
-        } elseif ($ly > $lx) {
-            $bx = str_repeat("\x00", $ly - $lx) . $bx;
-        }
-
-        if ($x->isNegative()) {
-            $bx = self::twosComplement($bx);
-        }
-        if ($y->isNegative()) {
-            $by = self::twosComplement($by);
-        }
+        $binaryX = $binaryX[0] . str_pad(substr($binaryX, 1), $maxLength - 1, $binaryX[0], STR_PAD_LEFT);
+        $binaryY = $binaryY[0] . str_pad(substr($binaryY, 1), $maxLength - 1, $binaryY[0], STR_PAD_LEFT);
+        $value = '';
 
         switch ($operator) {
             case 'and':
-                $value = $bx & $by;
-                $negative = ($x->isNegative() and $y->isNegative());
+                $value = $binaryX & $binaryY;
                 break;
 
             case 'or':
-                $value = $bx | $by;
-                $negative = ($x->isNegative() or $y->isNegative());
+                $value = $binaryX | $binaryY;
                 break;
 
             case 'xor':
-                $value = $bx ^ $by;
-                $negative = ($x->isNegative() xor $y->isNegative());
+                $value = $binaryX ^ $binaryY;
                 break;
         }
 
-        if ($negative) {
-            $value = self::twosComplement($value);
-        }
-
-        $result = self::toBigInteger($value);
-
-        return $negative ? $result->negated() : $result;
+        return self::toBigInteger($value);
     }
 
     /**
-     * @param string $number A positive, binary number.
+     * Returns the binary format of a number.
+     *
+     * @param BigInteger $x The number to convert to binary format.
      *
      * @return string
      */
-    private static function twosComplement(string $number) : string
-    {
-        $xor = str_repeat("\xff", strlen($number));
-
-        $number = $number ^ $xor;
-
-        for ($i = strlen($number) - 1; $i >= 0; $i--) {
-            $byte = ord($number[$i]);
-
-            if (++$byte !== 256) {
-                $number[$i] = chr($byte);
-                break;
-            }
-
-            $number[$i] = chr(0);
-        }
-
-        return $number;
-    }
-
-    /**
-     * Converts a decimal number to a binary string.
-     *
-     * @param string $number The number to convert, positive or zero, only digits.
-     *
-     * @return string
-     */
-    private static function toBinary(string $number) : string
+    private static function toBinary(BigInteger $x) : string
     {
         $calculator = Calculator::get();
+        $isNegative = $x->isNegative();
+        $abs = (string) $x->abs();
+        $bytes = '';
+        $lastByte = true;
 
-        $result = '';
-
-        while ($number !== '0') {
-            [$number, $remainder] = $calculator->divQR($number, '256');
-            $remainder = (int) $remainder;
-
-            $result .= chr($remainder);
+        while ($calculator->cmp($abs, '256') >= 0) {
+            list($abs, $rest) = $calculator->divQR($abs, '256');
+            $bytes = chr(
+                $isNegative ?
+                    ($lastByte ? 256 : 255) - (int) $rest
+                    : (int) $rest
+            ) . $bytes;
+            $lastByte = false;
         }
 
-        return strrev($result);
+        $bytes = chr(
+            $isNegative ?
+                ($lastByte ? 256 : 255) - ((int) $abs)
+                : (int) $abs
+        ) . $bytes;
+        $bytes = ($isNegative ? "\xff" : "\x0") . $bytes;
+
+        return $bytes;
     }
 
     /**
-     * Returns the positive BigInteger representation of a binary number.
+     * Returns the BigInteger representation of a binary number.
      *
      * @param string $bytes The bytes representing the number.
      *
@@ -127,25 +95,26 @@ abstract class Bitwise
     private static function toBigInteger(string $bytes) : BigInteger
     {
         $calculator = Calculator::get();
+        $isNegative = $bytes[0] === "\xff";
+        $length = strlen($bytes);
+        $value = '0';
 
-        $result = '0';
-        $power = '1';
-
-        for ($i = strlen($bytes) - 1; $i >= 0; $i--) {
-            $index = ord($bytes[$i]);
-
-            if ($index !== 0) {
-                $result = $calculator->add($result, ($index === 1)
-                    ? $power
-                    : $calculator->mul($power, (string) $index)
-                );
-            }
-
-            if ($i !== 0) {
-                $power = $calculator->mul($power, '256');
-            }
+        for ($i = 1; $i < $length; ++$i) {
+            $lastByte = ($i === $length - 1);
+            $multiplier = $calculator->pow('256', $length - $i - 1);
+            $value = $calculator->add(
+                $value,
+                $calculator->mul(
+                    (string) (
+                        $isNegative
+                        ? ($lastByte ? 256 : 255) - ord($bytes[$i])
+                        : ord($bytes[$i])
+                    ),
+                    $multiplier
+                )
+            );
         }
 
-        return BigInteger::of($result);
+        return BigInteger::of($isNegative ? $calculator->neg($value) : $value);
     }
 }
