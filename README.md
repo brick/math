@@ -71,6 +71,7 @@ And the following exceptions in the [Brick\Math\Exception](http://brick.io/math/
 - [IntegerOverflowException](https://github.com/brick/math/blob/master/src/Exception/IntegerOverflowException.php): thrown when attempting to convert a too large `BigInteger` to `int`
 - [NumberFormatException](https://github.com/brick/math/blob/master/src/Exception/NumberFormatException.php): thrown when parsing a number string in an invalid format
 - [RoundingNecessaryException](https://github.com/brick/math/blob/master/src/Exception/RoundingNecessaryException.php): thrown when the result of the operation cannot be represented without explicit rounding
+- [ShiftException](https://github.com/brick/math/blob/master/src/Exception/ShiftException.php): thrown when a shift with a negative distance is performed
 
 ### Overview
 
