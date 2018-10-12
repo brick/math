@@ -1716,27 +1716,27 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @expectedException \Brick\Math\Exception\ShiftException
      */
-    public function testShiftLeftWithNegativeDistance()
+    public function testShiftedLeftWithNegativeDistance()
     {
-        BigInteger::zero()->shiftLeft(-1);
+        BigInteger::zero()->shiftedLeft(-1);
     }
 
     /**
-     * @dataProvider providerShiftLeft
+     * @dataProvider providerShiftedLeft
      *
      * @param string $a The base number as a string.
      * @param int    $b The distance to shift.
      * @param string $c The expected shifted result.
      */
-    public function testShiftLeft($a, $b, $c)
+    public function testShiftedLeft($a, $b, $c)
     {
-        $this->assertBigIntegerEquals($c, BigInteger::of($a)->shiftLeft($b));
+        $this->assertBigIntegerEquals($c, BigInteger::of($a)->shiftedLeft($b));
     }
 
     /**
      * @return array
      */
-    public function providerShiftLeft()
+    public function providerShiftedLeft()
     {
         return [
             ['-1', 1, '-2'],
@@ -1749,27 +1749,27 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @expectedException \Brick\Math\Exception\ShiftException
      */
-    public function testShiftRightWithNegativeDistance()
+    public function testShiftedRightWithNegativeDistance()
     {
-        BigInteger::zero()->shiftRight(-1);
+        BigInteger::zero()->shiftedRight(-1);
     }
 
     /**
-     * @dataProvider providerShiftRight
+     * @dataProvider providerShiftedRight
      *
      * @param string $a The base number as a string.
      * @param int    $b The distance to shift.
      * @param string $c The expected shifted result.
      */
-    public function testShiftRight($a, $b, $c)
+    public function testShiftedRight($a, $b, $c)
     {
-        $this->assertBigIntegerEquals($c, BigInteger::of($a)->shiftRight($b));
+        $this->assertBigIntegerEquals($c, BigInteger::of($a)->shiftedRight($b));
     }
 
     /**
      * @return array
      */
-    public function providerShiftRight()
+    public function providerShiftedRight()
     {
         return [
             ['-3', 1, '-2'],

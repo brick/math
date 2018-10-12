@@ -457,7 +457,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      */
-    public function shiftLeft(int $distance) : BigInteger
+    public function shiftedLeft(int $distance) : BigInteger
     {
         if ($distance < 0) {
             throw new ShiftException('Distance must not be negative.');
@@ -473,7 +473,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      */
-    public function shiftRight(int $distance) : BigInteger
+    public function shiftedRight(int $distance) : BigInteger
     {
         if ($distance < 0) {
             throw new ShiftException('Distance must not be negative.');
