@@ -234,6 +234,19 @@ echo BigRational::of('123/456')->dividedBy('7'); // 123/3192
 echo BigRational::of('123/456')->dividedBy('9/8'); // 984/4104
 ```
 
+#### Bitwise operations
+
+`BigInteger` supports bitwise operations:
+
+- `and()`
+- `or()`
+- `xor()`
+
+and bit shifting:
+
+- `shiftedLeft()`
+- `shiftedRight()`
+
 #### Serialization
 
 `BigInteger`, `BigDecimal` and `BigRational` can be safely serialized on a machine and unserialized on another,
