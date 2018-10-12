@@ -410,6 +410,8 @@ final class BigInteger extends BigNumber
     /**
      * Returns the integer bitwise-and combined with another integer.
      *
+     * This method returns a negative BigInteger if and only if both operands are negative.
+     *
      * @param BigNumber|number|string $that The operand. Must be convertible to an integer number.
      *
      * @return BigInteger
@@ -424,6 +426,8 @@ final class BigInteger extends BigNumber
     /**
      * Returns the integer bitwise-or combined with another integer.
      *
+     * This method returns a negative BigInteger if and only if either of the operands is negative.
+     *
      * @param BigNumber|number|string $that The operand. Must be convertible to an integer number.
      *
      * @return BigInteger
@@ -437,6 +441,8 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the integer bitwise-xor combined with another integer.
+     *
+     * This method returns a negative BigInteger if and only if exactly one of the operands is negative.
      *
      * @param BigNumber|number|string $that The operand. Must be convertible to an integer number.
      *
