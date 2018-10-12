@@ -560,20 +560,6 @@ final class BigDecimal extends BigNumber
      *
      * Example: `-123.456` => `-123`.
      *
-     * @deprecated Use getIntegralPart().
-     *
-     * @return string
-     */
-    public function getIntegral() : string
-    {
-        return $this->getIntegralPart();
-    }
-
-    /**
-     * Returns a string representing the integral part of this decimal number.
-     *
-     * Example: `-123.456` => `-123`.
-     *
      * @return string
      */
     public function getIntegralPart() : string
@@ -585,22 +571,6 @@ final class BigDecimal extends BigNumber
         $value = $this->getUnscaledValueWithLeadingZeros();
 
         return substr($value, 0, -$this->scale);
-    }
-
-    /**
-     * Returns a string representing the fractional part of this decimal number.
-     *
-     * If the scale is zero, an empty string is returned.
-     *
-     * Examples: `-123.456` => '456', `123` => ''.
-     *
-     * @deprecated Use getFractionalPart().
-     *
-     * @return string
-     */
-    public function getFraction() : string
-    {
-        return $this->getFractionalPart();
     }
 
     /**

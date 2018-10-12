@@ -1997,7 +1997,6 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testGetIntegralPart($number, $expected)
     {
-        $this->assertSame($expected, BigDecimal::of($number)->getIntegral()); // deprecated method
         $this->assertSame($expected, BigDecimal::of($number)->getIntegralPart());
     }
 
@@ -2025,7 +2024,6 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testGetFractionalPart($number, $expected)
     {
-        $this->assertSame($expected, BigDecimal::of($number)->getFraction()); // deprecated method
         $this->assertSame($expected, BigDecimal::of($number)->getFractionalPart());
     }
 
