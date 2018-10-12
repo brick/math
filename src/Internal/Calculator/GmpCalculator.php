@@ -97,4 +97,28 @@ class GmpCalculator extends Calculator
     {
         return gmp_strval($number, $base);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function and(string $a, string $b) : string
+    {
+        return gmp_strval(gmp_and($a, $b));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function or(string $a, string $b) : string
+    {
+        return gmp_strval(gmp_or($a, $b));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function xor(string $a, string $b) : string
+    {
+        return gmp_strval(gmp_xor($a, $b));
+    }
 }
