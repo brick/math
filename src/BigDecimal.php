@@ -274,7 +274,7 @@ final class BigDecimal extends BigNumber
 
         foreach ([5, 2] as $prime) {
             for (;;) {
-                $lastDigit = (int) substr($d, -1);
+                $lastDigit = (int) $d[-1];
 
                 if ($lastDigit % $prime !== 0) {
                     break;

@@ -412,7 +412,7 @@ abstract class Calculator
                 break;
 
             case RoundingMode::HALF_EVEN:
-                $lastDigit = (int) substr($quotient, -1);
+                $lastDigit = (int) $quotient[-1];
                 $lastDigitIsEven = ($lastDigit % 2 === 0);
                 $increment = $lastDigitIsEven ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
                 break;
