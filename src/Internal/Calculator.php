@@ -577,9 +577,7 @@ abstract class Calculator
 
         while ($number !== '0') {
             [$number, $remainder] = $calculator->divQR($number, '256');
-            $remainder = (int) $remainder;
-
-            $result .= chr($remainder);
+            $result .= chr((int) $remainder);
         }
 
         return strrev($result);
