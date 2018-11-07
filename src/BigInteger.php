@@ -559,8 +559,43 @@ final class BigInteger extends BigNumber
      */
     public function toInt() : int
     {
-        if ($this->isLessThan(PHP_INT_MIN) || $this->isGreaterThan(PHP_INT_MAX)) {
+        switch (PHP_INT_SIZE) {
+            case 4:
+                $maxLength = 10;
+                break;
+
+            case 8:
+                $maxLength = 19;
+                break;
+
+            default:
+                goto compare;
+        }
+
+        $length = strlen($this->value);
+
+        if ($this->value[0] === '-') {
+            $length--;
+        }
+
+        if ($length < $maxLength) {
+            return (int) $this->value;
+        }
+
+        if ($length > $maxLength) {
             throw IntegerOverflowException::toIntOverflow($this);
+        }
+
+        compare:
+
+        if ($this->value[0] === '-') {
+            if ($this->isLessThan(PHP_INT_MIN)) {
+                throw IntegerOverflowException::toIntOverflow($this);
+            }
+        } else {
+            if ($this->isGreaterThan(PHP_INT_MAX)) {
+                throw IntegerOverflowException::toIntOverflow($this);
+            }
         }
 
         return (int) $this->value;
