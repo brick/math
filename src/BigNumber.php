@@ -387,6 +387,9 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * Note that this method can discard information as the precision of a floating-point value
      * is inherently limited.
      *
+     * If the number is greater than the largest representable floating point number, positive infinity is returned.
+     * If the number is less than the smallest representable floating point number, negative infinity is returned.
+     *
      * @return float The converted value.
      */
     abstract public function toFloat() : float;
