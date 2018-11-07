@@ -14,18 +14,12 @@ use Brick\Math\Internal\Calculator;
 class NativeCalculator extends Calculator
 {
     /**
-     * The max number of digits the platform can natively add, subtract or divide without overflow.
+     * The max number of digits the platform can natively add, subtract, multiply or divide without overflow.
+     * For multiplication, this represents the max sum of the lengths of both operands.
      *
      * @var int
      */
-    private $maxDigitsAddDiv = 0;
-
-    /**
-     * The max number of digits the platform can natively multiply without overflow.
-     *
-     * @var int
-     */
-    private $maxDigitsMul = 0;
+    private $maxDigits = 0;
 
     /**
      * Class constructor.
@@ -36,13 +30,11 @@ class NativeCalculator extends Calculator
     {
         switch (PHP_INT_SIZE) {
             case 4:
-                $this->maxDigitsAddDiv = 9;
-                $this->maxDigitsMul = 4;
+                $this->maxDigits = 9;
                 break;
 
             case 8:
-                $this->maxDigitsAddDiv = 18;
-                $this->maxDigitsMul = 9;
+                $this->maxDigits = 18;
                 break;
         }
     }
@@ -62,7 +54,7 @@ class NativeCalculator extends Calculator
 
         $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg, $aLen, $bLen);
 
-        if ($aLen <= $this->maxDigitsAddDiv && $bLen <= $this->maxDigitsAddDiv) {
+        if ($aLen <= $this->maxDigits && $bLen <= $this->maxDigits) {
             return (string) ((int) $a + (int) $b);
         }
 
@@ -114,7 +106,7 @@ class NativeCalculator extends Calculator
 
         $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg, $aLen, $bLen);
 
-        if ($aLen <= $this->maxDigitsMul && $bLen <= $this->maxDigitsMul) {
+        if ($aLen + $bLen <= $this->maxDigits) {
             return (string) ((int) $a * (int) $b);
         }
 
@@ -166,7 +158,7 @@ class NativeCalculator extends Calculator
 
         $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg, $aLen, $bLen);
 
-        if ($aLen <= $this->maxDigitsAddDiv && $bLen <= $this->maxDigitsAddDiv) {
+        if ($aLen <= $this->maxDigits && $bLen <= $this->maxDigits) {
             $a = (int) $a;
             $b = (int) $b;
 
