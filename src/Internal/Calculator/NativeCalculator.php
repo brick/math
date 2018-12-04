@@ -216,10 +216,6 @@ class NativeCalculator extends Calculator
     public function sqrt(string $a) : string
     {
         $x = $a;
-        if ($a[0] === '-') {
-            return NAN;
-        }
-
         $pre = '0';
         while (true) {
             $checkedSqrtNumber = $this->abs($this->doSub($a, $pre, strlen($a), strlen($pre)));
