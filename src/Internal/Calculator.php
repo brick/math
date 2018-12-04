@@ -271,6 +271,15 @@ abstract class Calculator
     }
 
     /**
+     * Returns the square root number.
+     *
+     * @param string $a The number.
+     *
+     * @return string The square root number result.
+     */
+    abstract public function sqrt(string $a) : string;
+
+    /**
      * Converts a number from an arbitrary base.
      *
      * This method can be overridden by the concrete implementation if the underlying library
