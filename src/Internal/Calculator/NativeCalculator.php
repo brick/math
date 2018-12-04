@@ -211,6 +211,34 @@ class NativeCalculator extends Calculator
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function sqrt(string $a) : string
+    {
+        $x = $a;
+        if ($a[0] === '-') {
+            return NAN;
+        }
+
+        $pre = '0';
+        while (true) {
+            $checkedSqrtNumber = $this->abs($this->doSub($a, $pre, strlen($a), strlen($pre)));
+            $cmpResult = $this->doCmp($checkedSqrtNumber, '0', strlen($checkedSqrtNumber), 1);
+
+            if ($cmpResult === 0 || $cmpResult === -1) {
+                break;
+            }
+
+            $pre = $a;
+            $divResultQ = $this->doDiv($x, $a, strlen($x), strlen($a))[0];
+            $addResult = $this->doAdd($a, $divResultQ, strlen($a), strlen($divResultQ));
+            $a = $this->doDiv($addResult, '2', strlen($addResult), 1)[0];
+        }
+
+        return $a;
+    }
+
+    /**
      * Performs the addition of two non-signed large integers.
      *
      * @param string $a The first operand.

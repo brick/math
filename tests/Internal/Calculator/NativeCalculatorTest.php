@@ -100,4 +100,27 @@ class NativeCalculatorTest extends AbstractTestCase
             ['1234567891234567889999999', 3, '1881676377434183981909558127466713752376807174114547646517403703669999999'],
         ];
     }
+
+    /**
+     * @dataProvider providerSqrt
+     *
+     * @param string $a
+     * @param string $expectedValue
+     */
+    public function testSqrt($a, $expectedValue)
+    {
+        $nativeCalculator = new NativeCalculator();
+        $this->assertSame($expectedValue, $nativeCalculator->sqrt($a));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerSqrt()
+    {
+        return [
+            ['125348', '354'],
+            ['1000000000000000000000000', '1000000000000'],
+        ];
+    }
 }

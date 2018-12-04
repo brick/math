@@ -71,4 +71,12 @@ class BcMathCalculator extends Calculator
     {
         return bcpow($a, (string) $e, 0);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function sqrt(string $a) : string
+    {
+        return bcsqrt($a, 0);
+    }
 }
