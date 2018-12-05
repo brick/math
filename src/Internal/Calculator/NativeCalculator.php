@@ -218,17 +218,17 @@ class NativeCalculator extends Calculator
         $x = $a;
         $pre = '0';
         while (true) {
-            $checkedSqrtNumber = $this->abs($this->doSub($a, $pre, strlen($a), strlen($pre)));
-            $cmpResult = $this->doCmp($checkedSqrtNumber, '0', strlen($checkedSqrtNumber), 1);
+            $checkedSqrtNumber = $this->abs($this->sub($a, $pre));
+            $cmpResult = $this->cmp($checkedSqrtNumber, '0');
 
             if ($cmpResult === 0 || $cmpResult === -1) {
                 break;
             }
 
             $pre = $a;
-            $divResultQ = $this->doDiv($x, $a, strlen($x), strlen($a))[0];
-            $addResult = $this->doAdd($a, $divResultQ, strlen($a), strlen($divResultQ));
-            $a = $this->doDiv($addResult, '2', strlen($addResult), 1)[0];
+            $divResultQ = $this->divQ($x, $a);
+            $addResult = $this->add($a, $divResultQ);
+            $a = $this->divQ($addResult, '2');
         }
 
         return $a;
