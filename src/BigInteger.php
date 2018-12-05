@@ -387,6 +387,28 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Returns the square root number of this number and the given one.
+     *
+     * @param BigNumber|number|string $that The number to add. Must be convertible to a BigInteger.
+     *
+     * @return BigInteger The result.
+     *
+     * @throws MathException If the number is not valid, or is not convertible to a BigInteger.
+     */
+    public function sqrt($that) : BigInteger
+    {
+        $that = BigInteger::of($that);
+
+        if ($that->value[0] === '-') {
+            throw new MathException('The given number should be positive number.');
+        }
+
+        $value = Calculator::get()->sqrt($that->value);
+
+        return new BigInteger($value);
+    }
+
+    /**
      * Returns the absolute value of this number.
      *
      * @return BigInteger
