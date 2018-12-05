@@ -399,7 +399,7 @@ final class BigInteger extends BigNumber
             throw new class ('Cannot return the square root of a negative number.') extends MathException {};
         }
 
-        $value = Calculator::get()->sqrt($this->value);
+        $value = BigInteger::of($this->value)->sqrt();
 
         return new BigInteger($value);
     }
