@@ -387,23 +387,19 @@ final class BigInteger extends BigNumber
     }
 
     /**
-     * Returns the square root number of this number and the given one.
-     *
-     * @param BigNumber|number|string $that The number to add. Must be convertible to a BigInteger.
+     * Returns the integer square root number of this number, rounded down.
      *
      * @return BigInteger The result.
      *
-     * @throws MathException If the number is not valid, or is not convertible to a BigInteger.
+     * @throws MathException If this number is negative.
      */
-    public function sqrt($that) : BigInteger
+    public function sqrt() : BigInteger
     {
-        $that = BigInteger::of($that);
-
-        if ($that->value[0] === '-') {
-            throw new MathException('The given number should be positive number.');
+        if ($this->value[0] === '-') {
+            throw new class ('Cannot return the square root of a negative number.') extends MathException {};
         }
 
-        $value = Calculator::get()->sqrt($that->value);
+        $value = Calculator::get()->sqrt($this->value);
 
         return new BigInteger($value);
     }
