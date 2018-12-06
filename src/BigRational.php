@@ -35,13 +35,13 @@ final class BigRational extends BigNumber
      *
      * @param BigInteger $numerator        The numerator.
      * @param BigInteger $denominator      The denominator.
-     * @param bool       $checkDemominator Whether to check the denominator for negative and zero.
+     * @param bool       $checkDenominator Whether to check the denominator for negative and zero.
      *
      * @throws DivisionByZeroException If the denominator is zero.
      */
-    protected function __construct(BigInteger $numerator, BigInteger $denominator, bool $checkDemominator)
+    protected function __construct(BigInteger $numerator, BigInteger $denominator, bool $checkDenominator)
     {
-        if ($checkDemominator) {
+        if ($checkDenominator) {
             if ($denominator->isZero()) {
                 throw DivisionByZeroException::denominatorMustNotBeZero();
             }
