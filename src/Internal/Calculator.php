@@ -276,11 +276,11 @@ abstract class Calculator
      * The result is the largest x such that x² ≤ n.
      * The input MUST NOT be negative.
      *
-     * @param string $a The number.
+     * @param string $n The number.
      *
      * @return string The square root.
      */
-    abstract public function sqrt(string $a) : string;
+    abstract public function sqrt(string $n) : string;
 
     /**
      * Converts a number from an arbitrary base.

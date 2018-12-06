@@ -125,8 +125,8 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritDoc}
      */
-    public function sqrt(string $a) : string
+    public function sqrt(string $n) : string
     {
-        return gmp_strval(gmp_sqrt($a));
+        return gmp_strval(gmp_sqrt($n));
     }
 }
