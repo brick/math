@@ -7,6 +7,7 @@ namespace Brick\Math;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -393,12 +394,12 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      *
-     * @throws MathException If this number is negative.
+     * @throws NegativeNumberException If this number is negative.
      */
     public function sqrt() : BigInteger
     {
         if ($this->value[0] === '-') {
-            throw new class ('Cannot return the square root of a negative number.') extends MathException {};
+            throw new NegativeNumberException('Cannot calculate the square root of a negative number.');
         }
 
         $value = Calculator::get()->sqrt($this->value);

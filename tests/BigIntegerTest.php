@@ -3,7 +3,7 @@
 namespace Brick\Math\Tests;
 
 use Brick\Math\BigInteger;
-use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\RoundingMode;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\RoundingNecessaryException;
@@ -1798,7 +1798,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testSqrtOfNegativeNumber()
     {
         $number = BigInteger::of(-1);
-        $this->expectException(MathException::class);
+        $this->expectException(NegativeNumberException::class);
         $number->sqrt();
     }
 
