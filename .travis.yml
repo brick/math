@@ -6,11 +6,16 @@ php:
   - 7.1
   - 7.2
   - 7.3
+  - nightly
 
 env:
   - CALCULATOR=GMP
   - CALCULATOR=BCMath
   - CALCULATOR=Native
+
+matrix:
+  allow_failures:
+    - php: nightly
 
 before_script:
   - composer install
