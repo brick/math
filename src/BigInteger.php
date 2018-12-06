@@ -389,7 +389,9 @@ final class BigInteger extends BigNumber
     /**
      * Returns the integer square root number of this number, rounded down.
      *
-     * @return BigInteger The result.
+     * The result is the largest x such that x² ≤ n.
+     *
+     * @return BigInteger
      *
      * @throws MathException If this number is negative.
      */

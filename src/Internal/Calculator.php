@@ -271,11 +271,14 @@ abstract class Calculator
     }
 
     /**
-     * Returns the square root number.
+     * Returns the square root of the given number, rounded down.
+     *
+     * The result is the largest x such that x² ≤ n.
+     * The input MUST NOT be negative.
      *
      * @param string $a The number.
      *
-     * @return string The square root number result.
+     * @return string The square root.
      */
     abstract public function sqrt(string $a) : string;
 
