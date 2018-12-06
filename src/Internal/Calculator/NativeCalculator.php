@@ -217,7 +217,9 @@ class NativeCalculator extends Calculator
      */
     public function sqrt(string $n) : string
     {
-        $x = '1';
+        // initial approximation
+        $x = str_repeat('9', intdiv(strlen($n), 2) ?: 1);
+
         $decreased = false;
 
         for (;;) {
