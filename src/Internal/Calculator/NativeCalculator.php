@@ -211,27 +211,27 @@ class NativeCalculator extends Calculator
     }
 
     /**
+     * Adapted from https://cp-algorithms.com/num_methods/roots_newton.html
+     *
      * {@inheritDoc}
      */
-    public function sqrt(string $a) : string
+    public function sqrt(string $n) : string
     {
-        $x = $a;
-        $pre = '0';
-        while (true) {
-            $checkedSqrtNumber = $this->abs($this->sub($a, $pre));
-            $cmpResult = $this->cmp($checkedSqrtNumber, '0');
+        $x = '1';
+        $decreased = false;
 
-            if ($cmpResult === 0 || $cmpResult === -1) {
+        for (;;) {
+            $nx = $this->divQ($this->add($x, $this->divQ($n, $x)), '2');
+
+            if ($x === $nx || $this->cmp($nx, $x) > 0 && $decreased) {
                 break;
             }
 
-            $pre = $a;
-            $divResultQ = $this->divQ($x, $a);
-            $addResult = $this->add($a, $divResultQ);
-            $a = $this->divQ($addResult, '2');
+            $decreased = $this->cmp($nx, $x) < 0;
+            $x = $nx;
         }
 
-        return $a;
+        return $x;
     }
 
     /**
