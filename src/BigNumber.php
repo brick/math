@@ -39,7 +39,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * - BigNumber instances are returned as is
      * - integer numbers are returned as BigInteger
-     * - floating point numbers are returned as BigDecimal
+     * - floating point numbers are converted to a string then parsed as such
      * - strings containing a `/` character are returned as BigRational
      * - strings containing a `.` character or using an exponential notation are returned as BigDecimal
      * - strings containing only digits with an optional leading `+` or `-` sign are returned as BigInteger
