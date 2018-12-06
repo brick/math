@@ -211,6 +211,30 @@ class NativeCalculator extends Calculator
     }
 
     /**
+     * Adapted from https://cp-algorithms.com/num_methods/roots_newton.html
+     *
+     * {@inheritDoc}
+     */
+    public function sqrt(string $n) : string
+    {
+        $x = '1';
+        $decreased = false;
+
+        for (;;) {
+            $nx = $this->divQ($this->add($x, $this->divQ($n, $x)), '2');
+
+            if ($x === $nx || $this->cmp($nx, $x) > 0 && $decreased) {
+                break;
+            }
+
+            $decreased = $this->cmp($nx, $x) < 0;
+            $x = $nx;
+        }
+
+        return $x;
+    }
+
+    /**
      * Performs the addition of two non-signed large integers.
      *
      * @param string $a The first operand.

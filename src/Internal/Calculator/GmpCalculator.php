@@ -121,4 +121,12 @@ class GmpCalculator extends Calculator
     {
         return gmp_strval(gmp_xor($a, $b));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function sqrt(string $a) : string
+    {
+        return gmp_strval(gmp_sqrt($a));
+    }
 }

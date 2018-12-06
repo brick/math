@@ -387,6 +387,24 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Returns the integer square root number of this number, rounded down.
+     *
+     * @return BigInteger The result.
+     *
+     * @throws MathException If this number is negative.
+     */
+    public function sqrt() : BigInteger
+    {
+        if ($this->value[0] === '-') {
+            throw new class ('Cannot return the square root of a negative number.') extends MathException {};
+        }
+
+        $value = Calculator::get()->sqrt($this->value);
+
+        return new BigInteger($value);
+    }
+
+    /**
      * Returns the absolute value of this number.
      *
      * @return BigInteger
