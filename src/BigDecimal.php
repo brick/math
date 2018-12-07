@@ -6,6 +6,7 @@ namespace Brick\Math;
 
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -406,6 +407,51 @@ final class BigDecimal extends BigNumber
         $remainder = new BigDecimal($remainder, $scale);
 
         return [$quotient, $remainder];
+    }
+
+    /**
+     * Returns an approximation to the square root of this number, rounded down to the given number of decimals.
+     *
+     * @param int $scale
+     *
+     * @return BigDecimal
+     *
+     * @throws \InvalidArgumentException If the scale is negative.
+     * @throws NegativeNumberException If this number is negative.
+     */
+    public function sqrt(int $scale) : BigDecimal
+    {
+        if ($scale < 0) {
+            throw new \InvalidArgumentException('Scale cannot be negative.');
+        }
+
+        if ($this->value === '0') {
+            return new BigDecimal('0', $scale);
+        }
+
+        if ($this->value[0] === '-') {
+            throw new NegativeNumberException('Cannot calculate the square root of a negative number.');
+        }
+
+        $value = $this->value;
+        $addDigits = 2 * $scale - $this->scale;
+
+        if ($addDigits > 0) {
+            // add zeros
+            $value .= str_repeat('0', $addDigits);
+        } elseif ($addDigits < 0) {
+            // trim digits
+            if (-$addDigits >= strlen($this->value)) {
+                // requesting a scale too low, will always yield a zero result
+                return new BigDecimal('0', $scale);
+            }
+
+            $value = substr($value, 0, $addDigits);
+        }
+
+        $value = Calculator::get()->sqrt($value);
+
+        return new BigDecimal($value, $scale);
     }
 
     /**
