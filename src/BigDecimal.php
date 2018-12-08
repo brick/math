@@ -410,7 +410,7 @@ final class BigDecimal extends BigNumber
     }
 
     /**
-     * Returns an approximation to the square root of this number, rounded down to the given number of decimals.
+     * Returns the square root of this number, rounded down to the given number of decimals.
      *
      * @param int $scale
      *
