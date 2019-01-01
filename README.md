@@ -21,7 +21,8 @@ composer require brick/math
 ### Requirements
 
 This library requires PHP 7.1 or later.
-For PHP 5.6 and PHP 7.0 compatibility, use version `0.5`: **this version will still be supported until 31 December 2018**, when support for PHP 5.6 and 7.0 will be definitely dropped. It will not receive any new features, but will be patched if any bugs are found.
+
+For PHP 5.6 and PHP 7.0 compatibility, you can use version `0.5`. Note that [these PHP versions are EOL](http://php.net/supported-versions.php) and not supported anymore. If you're still using one of these PHP versions, you should consider upgrading as soon as possible.
 
 Although the library can work seamlessly on any PHP installation, it is highly recommended that you install the
 [GMP](http://php.net/manual/en/book.gmp.php) or [BCMath](http://php.net/manual/en/book.bc.php) extension
