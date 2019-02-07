@@ -218,7 +218,7 @@ class NativeCalculator extends Calculator
     public function sqrt(string $n) : string
     {
         // initial approximation
-        $x = str_repeat('9', intdiv(strlen($n), 2) ?: 1);
+        $x = \str_repeat('9', \intdiv(\strlen($n), 2) ?: 1);
 
         $decreased = false;
 
@@ -270,7 +270,7 @@ class NativeCalculator extends Calculator
             $result .= $carry;
         }
 
-        return strrev($result);
+        return \strrev($result);
     }
 
     /**
@@ -321,8 +321,8 @@ class NativeCalculator extends Calculator
             $result .= $sum;
         }
 
-        $result = strrev($result);
-        $result = ltrim($result, '0');
+        $result = \strrev($result);
+        $result = \ltrim($result, '0');
 
         if ($invert) {
             $result = $this->neg($result);
@@ -346,7 +346,7 @@ class NativeCalculator extends Calculator
         $result = '0';
 
         for ($i = $x - 1; $i >= 0; $i--) {
-            $line = str_repeat('0', $x - 1 - $i);
+            $line = \str_repeat('0', $x - 1 - $i);
             $carry = 0;
             for ($j = $y - 1; $j >= 0; $j--) {
                 $mul = (int) $a[$i] * (int) $b[$j] + $carry;
@@ -359,10 +359,10 @@ class NativeCalculator extends Calculator
                 $line .= $carry;
             }
 
-            $line = rtrim($line, '0');
+            $line = \rtrim($line, '0');
 
             if ($line !== '') {
-                $result = $this->add($result, strrev($line));
+                $result = $this->add($result, \strrev($line));
             }
         }
 
@@ -394,7 +394,7 @@ class NativeCalculator extends Calculator
         $z = $y; // focus length, always $y or $y+1
 
         for (;;) {
-            $focus = substr($a, 0, $z);
+            $focus = \substr($a, 0, $z);
 
             $cmp = $this->doCmp($focus, $b, $z, $y);
 
@@ -406,7 +406,7 @@ class NativeCalculator extends Calculator
                 $z++;
             }
 
-            $zeros = str_repeat('0', $x - $z);
+            $zeros = \str_repeat('0', $x - $z);
 
             $q = $this->add($q, '1' . $zeros);
             $a = $this->sub($a, $b . $zeros);
@@ -417,7 +417,7 @@ class NativeCalculator extends Calculator
                 break;
             }
 
-            $x = strlen($a);
+            $x = \strlen($a);
 
             if ($x < $y) { // remainder < dividend
                 break;
@@ -482,12 +482,12 @@ class NativeCalculator extends Calculator
         }
 
         if ($x < $y) {
-            $a = str_repeat('0', $y - $x) . $a;
+            $a = \str_repeat('0', $y - $x) . $a;
 
             return $y;
         }
 
-        $b = str_repeat('0', $x - $y) . $b;
+        $b = \str_repeat('0', $x - $y) . $b;
 
         return $x;
     }

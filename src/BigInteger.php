@@ -71,15 +71,15 @@ final class BigInteger extends BigNumber
         }
 
         if ($base < 2 || $base > 36) {
-            throw new \InvalidArgumentException(sprintf('Base %d is not in range 2 to 36.', $base));
+            throw new \InvalidArgumentException(\sprintf('Base %d is not in range 2 to 36.', $base));
         }
 
         if ($number[0] === '-') {
             $sign = '-';
-            $number = substr($number, 1);
+            $number = \substr($number, 1);
         } elseif ($number[0] === '+') {
             $sign = '';
-            $number = substr($number, 1);
+            $number = \substr($number, 1);
         } else {
             $sign = '';
         }
@@ -88,7 +88,7 @@ final class BigInteger extends BigNumber
             throw new \InvalidArgumentException('The value cannot be empty.');
         }
 
-        $number = ltrim($number, '0');
+        $number = \ltrim($number, '0');
 
         if ($number === '') {
             // The result will be the same in any base, avoid further calculation.
@@ -100,10 +100,10 @@ final class BigInteger extends BigNumber
             return new BigInteger($sign . '1');
         }
 
-        $pattern = '/[^' . substr(Calculator::DICTIONARY, 0, $base) . ']/';
+        $pattern = '/[^' . \substr(Calculator::DICTIONARY, 0, $base) . ']/';
 
-        if (preg_match($pattern, strtolower($number), $matches) === 1) {
-            throw new \InvalidArgumentException(sprintf('"%s" is not a valid character in base %d.', $matches[0], $base));
+        if (\preg_match($pattern, \strtolower($number), $matches) === 1) {
+            throw new \InvalidArgumentException(\sprintf('"%s" is not a valid character in base %d.', $matches[0], $base));
         }
 
         if ($base === 10) {
@@ -278,7 +278,7 @@ final class BigInteger extends BigNumber
         }
 
         if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'The exponent %d is not in the range 0 to %d.',
                 $exponent,
                 Calculator::MAX_POWER
@@ -613,7 +613,7 @@ final class BigInteger extends BigNumber
         }
 
         if ($base < 2 || $base > 36) {
-            throw new \InvalidArgumentException(sprintf('Base %d is out of range [2, 36]', $base));
+            throw new \InvalidArgumentException(\sprintf('Base %d is out of range [2, 36]', $base));
         }
 
         return Calculator::get()->toBase($this->value, $base);

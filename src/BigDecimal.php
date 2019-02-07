@@ -268,8 +268,8 @@ final class BigDecimal extends BigNumber
 
         $this->scaleValues($this, $that, $a, $b);
 
-        $d = rtrim($b, '0');
-        $scale = strlen($b) - strlen($d);
+        $d = \rtrim($b, '0');
+        $scale = \strlen($b) - \strlen($d);
 
         $calculator = Calculator::get();
 
@@ -311,7 +311,7 @@ final class BigDecimal extends BigNumber
         }
 
         if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'The exponent %d is not in the range 0 to %d.',
                 $exponent,
                 Calculator::MAX_POWER
@@ -438,15 +438,15 @@ final class BigDecimal extends BigNumber
 
         if ($addDigits > 0) {
             // add zeros
-            $value .= str_repeat('0', $addDigits);
+            $value .= \str_repeat('0', $addDigits);
         } elseif ($addDigits < 0) {
             // trim digits
-            if (-$addDigits >= strlen($this->value)) {
+            if (-$addDigits >= \strlen($this->value)) {
                 // requesting a scale too low, will always yield a zero result
                 return new BigDecimal('0', $scale);
             }
 
-            $value = substr($value, 0, $addDigits);
+            $value = \substr($value, 0, $addDigits);
         }
 
         $value = Calculator::get()->sqrt($value);
@@ -496,7 +496,7 @@ final class BigDecimal extends BigNumber
 
         if ($scale < 0) {
             if ($value !== '0') {
-                $value .= str_repeat('0', -$scale);
+                $value .= \str_repeat('0', -$scale);
             }
             $scale = 0;
         }
@@ -515,13 +515,13 @@ final class BigDecimal extends BigNumber
             return $this;
         }
 
-        $trimmedValue = rtrim($this->value, '0');
+        $trimmedValue = \rtrim($this->value, '0');
 
         if ($trimmedValue === '') {
             return BigDecimal::zero();
         }
 
-        $trimmableZeros = strlen($this->value) - strlen($trimmedValue);
+        $trimmableZeros = \strlen($this->value) - \strlen($trimmedValue);
 
         if ($trimmableZeros === 0) {
             return $this;
@@ -531,7 +531,7 @@ final class BigDecimal extends BigNumber
             $trimmableZeros = $this->scale;
         }
 
-        $value = substr($this->value, 0, -$trimmableZeros);
+        $value = \substr($this->value, 0, -$trimmableZeros);
         $scale = $this->scale - $trimmableZeros;
 
         return new BigDecimal($value, $scale);
@@ -616,7 +616,7 @@ final class BigDecimal extends BigNumber
 
         $value = $this->getUnscaledValueWithLeadingZeros();
 
-        return substr($value, 0, -$this->scale);
+        return \substr($value, 0, -$this->scale);
     }
 
     /**
@@ -636,7 +636,7 @@ final class BigDecimal extends BigNumber
 
         $value = $this->getUnscaledValueWithLeadingZeros();
 
-        return substr($value, -$this->scale);
+        return \substr($value, -$this->scale);
     }
 
     /**
@@ -646,7 +646,7 @@ final class BigDecimal extends BigNumber
      */
     public function hasNonZeroFractionalPart() : bool
     {
-        return $this->getFractionalPart() !== str_repeat('0', $this->scale);
+        return $this->getFractionalPart() !== \str_repeat('0', $this->scale);
     }
 
     /**
@@ -677,7 +677,7 @@ final class BigDecimal extends BigNumber
     public function toBigRational() : BigRational
     {
         $numerator = BigInteger::create($this->value);
-        $denominator = BigInteger::create('1' . str_repeat('0', $this->scale));
+        $denominator = BigInteger::create('1' . \str_repeat('0', $this->scale));
 
         return BigRational::create($numerator, $denominator, false);
     }
@@ -721,7 +721,7 @@ final class BigDecimal extends BigNumber
 
         $value = $this->getUnscaledValueWithLeadingZeros();
 
-        return substr($value, 0, -$this->scale) . '.' . substr($value, -$this->scale);
+        return \substr($value, 0, -$this->scale) . '.' . \substr($value, -$this->scale);
     }
 
     /**
@@ -753,7 +753,7 @@ final class BigDecimal extends BigNumber
             throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
         }
 
-        [$value, $scale] = explode(':', $value);
+        [$value, $scale] = \explode(':', $value);
 
         $this->value = $value;
         $this->scale = (int) $scale;
@@ -775,9 +775,9 @@ final class BigDecimal extends BigNumber
         $b = $y->value;
 
         if ($b !== '0' && $x->scale > $y->scale) {
-            $b .= str_repeat('0', $x->scale - $y->scale);
+            $b .= \str_repeat('0', $x->scale - $y->scale);
         } elseif ($a !== '0' && $x->scale < $y->scale) {
-            $a .= str_repeat('0', $y->scale - $x->scale);
+            $a .= \str_repeat('0', $y->scale - $x->scale);
         }
     }
 
@@ -791,7 +791,7 @@ final class BigDecimal extends BigNumber
         $value = $this->value;
 
         if ($this->value !== '0' && $scale > $this->scale) {
-            $value .= str_repeat('0', $scale - $this->scale);
+            $value .= \str_repeat('0', $scale - $this->scale);
         }
 
         return $value;
@@ -807,7 +807,7 @@ final class BigDecimal extends BigNumber
         $value = $this->value;
         $targetLength = $this->scale + 1;
         $negative = ($value[0] === '-');
-        $length = strlen($value);
+        $length = \strlen($value);
 
         if ($negative) {
             $length--;
@@ -818,10 +818,10 @@ final class BigDecimal extends BigNumber
         }
 
         if ($negative) {
-            $value = substr($value, 1);
+            $value = \substr($value, 1);
         }
 
-        $value = str_pad($value, $targetLength, '0', STR_PAD_LEFT);
+        $value = \str_pad($value, $targetLength, '0', STR_PAD_LEFT);
 
         if ($negative) {
             $value = '-' . $value;

@@ -456,7 +456,7 @@ final class BigRational extends BigNumber
             throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
         }
 
-        [$numerator, $denominator] = explode('/', $value);
+        [$numerator, $denominator] = \explode('/', $value);
 
         $this->numerator   = BigInteger::of($numerator);
         $this->denominator = BigInteger::of($denominator);

@@ -79,6 +79,6 @@ abstract class AbstractTestCase extends TestCase
      */
     final protected function isException(string $name) : bool
     {
-        return substr($name, -9) === 'Exception';
+        return \substr($name, -9) === 'Exception';
     }
 }

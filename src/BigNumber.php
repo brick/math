@@ -57,19 +57,19 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             return $value;
         }
 
-        if (is_int($value)) {
+        if (\is_int($value)) {
             return new BigInteger((string) $value);
         }
 
         $value = (string) $value;
 
-        if (preg_match(self::PARSE_REGEXP, $value, $matches) !== 1) {
-            throw new NumberFormatException(sprintf('The given value "%s" does not represent a valid number.', $value));
+        if (\preg_match(self::PARSE_REGEXP, $value, $matches) !== 1) {
+            throw new NumberFormatException(\sprintf('The given value "%s" does not represent a valid number.', $value));
         }
 
         if (isset($matches['denominator'])) {
             $numerator   = self::cleanUp($matches['integral']);
-            $denominator = ltrim($matches['denominator'], '0');
+            $denominator = \ltrim($matches['denominator'], '0');
 
             if ($denominator === '') {
                 throw DivisionByZeroException::denominatorMustNotBeZero();
@@ -84,11 +84,11 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
             $unscaledValue = self::cleanUp($matches['integral'] . $fractional);
 
-            $scale = strlen($fractional) - $exponent;
+            $scale = \strlen($fractional) - $exponent;
 
             if ($scale < 0) {
                 if ($unscaledValue !== '0') {
-                    $unscaledValue .= str_repeat('0', - $scale);
+                    $unscaledValue .= \str_repeat('0', - $scale);
                 }
                 $scale = 0;
             }
@@ -187,10 +187,10 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         $firstChar = $number[0];
 
         if ($firstChar === '+' || $firstChar === '-') {
-            $number = substr($number, 1);
+            $number = \substr($number, 1);
         }
 
-        $number = ltrim($number, '0');
+        $number = \ltrim($number, '0');
 
         if ($number === '') {
             return '0';

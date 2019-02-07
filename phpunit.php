@@ -9,7 +9,7 @@ require __DIR__ . '/vendor/autoload.php';
  */
 function getCalculatorImplementation()
 {
-    switch ($calculator = getenv('CALCULATOR')) {
+    switch ($calculator = \getenv('CALCULATOR')) {
         case 'GMP':
             $calculator = new Calculator\GmpCalculator();
             break;
@@ -34,7 +34,7 @@ function getCalculatorImplementation()
             exit(1);
     }
 
-    echo 'Using ', get_class($calculator), PHP_EOL;
+    echo 'Using ', \get_class($calculator), PHP_EOL;
 
     return $calculator;
 }

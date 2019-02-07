@@ -76,11 +76,11 @@ abstract class Calculator
      */
     private static function detect() : Calculator
     {
-        if (extension_loaded('gmp')) {
+        if (\extension_loaded('gmp')) {
             return new Calculator\GmpCalculator();
         }
 
-        if (extension_loaded('bcmath')) {
+        if (\extension_loaded('bcmath')) {
             return new Calculator\BcMathCalculator();
         }
 
@@ -106,11 +106,11 @@ abstract class Calculator
         $aNeg = ($a[0] === '-');
         $bNeg = ($b[0] === '-');
 
-        $aDig = $aNeg ? substr($a, 1) : $a;
-        $bDig = $bNeg ? substr($b, 1) : $b;
+        $aDig = $aNeg ? \substr($a, 1) : $a;
+        $bDig = $bNeg ? \substr($b, 1) : $b;
 
-        $aLen = strlen($aDig);
-        $bLen = strlen($bDig);
+        $aLen = \strlen($aDig);
+        $bLen = \strlen($bDig);
     }
 
     /**
@@ -122,7 +122,7 @@ abstract class Calculator
      */
     public function abs(string $n) : string
     {
-        return ($n[0] === '-') ? substr($n, 1) : $n;
+        return ($n[0] === '-') ? \substr($n, 1) : $n;
     }
 
     /**
@@ -139,7 +139,7 @@ abstract class Calculator
         }
 
         if ($n[0] === '-') {
-            return substr($n, 1);
+            return \substr($n, 1);
         }
 
         return '-' . $n;
@@ -295,13 +295,13 @@ abstract class Calculator
      */
     public function fromBase(string $number, int $base) : string
     {
-        $number = strtolower($number);
+        $number = \strtolower($number);
 
         $result = '0';
         $power = '1';
 
-        for ($i = strlen($number) - 1; $i >= 0; $i--) {
-            $index = strpos(self::DICTIONARY, $number[$i]);
+        for ($i = \strlen($number) - 1; $i >= 0; $i--) {
+            $index = \strpos(self::DICTIONARY, $number[$i]);
 
             if ($index !== 0) {
                 $result = $this->add($result, ($index === 1)
@@ -335,7 +335,7 @@ abstract class Calculator
         $negative = ($value[0] === '-');
 
         if ($negative) {
-            $value = substr($value, 1);
+            $value = \substr($value, 1);
         }
 
         $base = (string) $base;
@@ -352,7 +352,7 @@ abstract class Calculator
             $result .= '-';
         }
 
-        return strrev($result);
+        return \strrev($result);
     }
 
     /**
@@ -504,13 +504,13 @@ abstract class Calculator
         $aBin = $this->toBinary($aDig);
         $bBin = $this->toBinary($bDig);
 
-        $aLen = strlen($aBin);
-        $bLen = strlen($bBin);
+        $aLen = \strlen($aBin);
+        $bLen = \strlen($bBin);
 
         if ($aLen > $bLen) {
-            $bBin = str_repeat("\x00", $aLen - $bLen) . $bBin;
+            $bBin = \str_repeat("\x00", $aLen - $bLen) . $bBin;
         } elseif ($bLen > $aLen) {
-            $aBin = str_repeat("\x00", $bLen - $aLen) . $aBin;
+            $aBin = \str_repeat("\x00", $bLen - $aLen) . $aBin;
         }
 
         if ($aNeg) {
@@ -556,19 +556,19 @@ abstract class Calculator
      */
     private function twosComplement(string $number) : string
     {
-        $xor = str_repeat("\xff", strlen($number));
+        $xor = \str_repeat("\xff", \strlen($number));
 
         $number = $number ^ $xor;
 
-        for ($i = strlen($number) - 1; $i >= 0; $i--) {
-            $byte = ord($number[$i]);
+        for ($i = \strlen($number) - 1; $i >= 0; $i--) {
+            $byte = \ord($number[$i]);
 
             if (++$byte !== 256) {
-                $number[$i] = chr($byte);
+                $number[$i] = \chr($byte);
                 break;
             }
 
-            $number[$i] = chr(0);
+            $number[$i] = \chr(0);
         }
 
         return $number;
@@ -589,10 +589,10 @@ abstract class Calculator
 
         while ($number !== '0') {
             [$number, $remainder] = $calculator->divQR($number, '256');
-            $result .= chr((int) $remainder);
+            $result .= \chr((int) $remainder);
         }
 
-        return strrev($result);
+        return \strrev($result);
     }
 
     /**
@@ -609,8 +609,8 @@ abstract class Calculator
         $result = '0';
         $power = '1';
 
-        for ($i = strlen($bytes) - 1; $i >= 0; $i--) {
-            $index = ord($bytes[$i]);
+        for ($i = \strlen($bytes) - 1; $i >= 0; $i--) {
+            $index = \ord($bytes[$i]);
 
             if ($index !== 0) {
                 $result = $calculator->add($result, ($index === 1)

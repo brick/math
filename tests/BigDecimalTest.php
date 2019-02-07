@@ -2537,7 +2537,7 @@ class BigDecimalTest extends AbstractTestCase
 
         $number = BigDecimal::ofUnscaledValue($value, $scale);
 
-        $this->assertBigDecimalInternalValues($value, $scale, unserialize(serialize($number)));
+        $this->assertBigDecimalInternalValues($value, $scale, \unserialize(\serialize($number)));
     }
 
     /**

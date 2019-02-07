@@ -991,7 +991,7 @@ class BigRationalTest extends AbstractTestCase
 
         $rational = BigRational::nd($numerator, $denominator);
 
-        $this->assertBigRationalInternalValues($numerator, $denominator, unserialize(serialize($rational)));
+        $this->assertBigRationalInternalValues($numerator, $denominator, \unserialize(\serialize($rational)));
     }
 
     /**

@@ -18,7 +18,7 @@ class BcMathCalculator extends Calculator
      */
     public function add(string $a, string $b) : string
     {
-        return bcadd($a, $b, 0);
+        return \bcadd($a, $b, 0);
     }
 
     /**
@@ -26,7 +26,7 @@ class BcMathCalculator extends Calculator
      */
     public function sub(string $a, string $b) : string
     {
-        return bcsub($a, $b, 0);
+        return \bcsub($a, $b, 0);
     }
 
     /**
@@ -34,7 +34,7 @@ class BcMathCalculator extends Calculator
      */
     public function mul(string $a, string $b) : string
     {
-        return bcmul($a, $b, 0);
+        return \bcmul($a, $b, 0);
     }
 
     /**
@@ -42,7 +42,7 @@ class BcMathCalculator extends Calculator
      */
     public function divQ(string $a, string $b) : string
     {
-        return bcdiv($a, $b, 0);
+        return \bcdiv($a, $b, 0);
     }
 
     /**
@@ -50,7 +50,7 @@ class BcMathCalculator extends Calculator
      */
     public function divR(string $a, string $b) : string
     {
-        return bcmod($a, $b);
+        return \bcmod($a, $b);
     }
 
     /**
@@ -58,8 +58,8 @@ class BcMathCalculator extends Calculator
      */
     public function divQR(string $a, string $b) : array
     {
-        $q = bcdiv($a, $b, 0);
-        $r = bcmod($a, $b);
+        $q = \bcdiv($a, $b, 0);
+        $r = \bcmod($a, $b);
 
         return [$q, $r];
     }
@@ -69,7 +69,7 @@ class BcMathCalculator extends Calculator
      */
     public function pow(string $a, int $e) : string
     {
-        return bcpow($a, (string) $e, 0);
+        return \bcpow($a, (string) $e, 0);
     }
 
     /**
@@ -77,6 +77,6 @@ class BcMathCalculator extends Calculator
      */
     public function sqrt(string $n) : string
     {
-        return bcsqrt($n, 0);
+        return \bcsqrt($n, 0);
     }
 }

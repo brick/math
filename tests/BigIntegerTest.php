@@ -2670,7 +2670,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $number = BigInteger::of($value);
 
-        $this->assertBigIntegerEquals($value, unserialize(serialize($number)));
+        $this->assertBigIntegerEquals($value, \unserialize(\serialize($number)));
     }
 
     /**
