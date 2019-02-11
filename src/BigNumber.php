@@ -24,7 +24,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         '(?<integral>[\-\+]?[0-9]+)' .
         '(?:' .
             '(?:' .
-                '(?:\.(?<fractional>[0-9]+))?' .
+                '(?:\%s(?<fractional>[0-9]+))?' .
                 '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
             ')' . '|' . '(?:' .
                 '(?:\/(?<denominator>[0-9]+))?' .
@@ -63,7 +63,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
         $value = (string) $value;
 
-        if (\preg_match(self::PARSE_REGEXP, $value, $matches) !== 1) {
+        if (\preg_match(self::getParseRegexp(), $value, $matches) !== 1) {
             throw new NumberFormatException(\sprintf('The given value "%s" does not represent a valid number.', $value));
         }
 
@@ -99,6 +99,16 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         $integral = self::cleanUp($matches['integral']);
 
         return new BigInteger($integral);
+    }
+
+    /**
+     * @return string
+     */
+    private static function getParseRegexp() : string
+    {
+        $localeData = localeconv();
+
+        return sprintf(self::PARSE_REGEXP, $localeData['decimal_point']);
     }
 
     /**
