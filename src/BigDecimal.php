@@ -749,7 +749,7 @@ final class BigDecimal extends BigNumber
      */
     public function unserialize($value) : void
     {
-        if ($this->value !== null || $this->scale !== null) {
+        if (isset($this->value)) {
             throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
         }
 
