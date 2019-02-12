@@ -173,6 +173,8 @@ class BigDecimalTest extends AbstractTestCase
         setlocale(LC_ALL, $locale);
 
         $this->assertEquals(2.5, BigDecimal::of(5/2)->toFloat());
+
+        setlocale(LC_ALL, '');
     }
 
     /**
