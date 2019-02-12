@@ -170,11 +170,12 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testOfValueInDifferentLocales(string $locale): void
     {
-        setlocale(LC_ALL, $locale);
+        $originalLocale = setlocale(LC_NUMERIC, '0');
+        setlocale(LC_NUMERIC, $locale);
 
         $this->assertEquals(2.5, BigDecimal::of(5/2)->toFloat());
 
-        setlocale(LC_ALL, '');
+        setlocale(LC_NUMERIC, $originalLocale);
     }
 
     /**

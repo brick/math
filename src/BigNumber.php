@@ -61,7 +61,13 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             return new BigInteger((string) $value);
         }
 
-        $value = self::convertToString($value);
+        if (is_float($value)) {
+            $locData = localeconv();
+
+            $value = str_replace([$locData['thousands_sep'], $locData['decimal_point']], ['', '.'], (string) $value);
+        } else {
+            $value = (string) $value;
+        }
 
         if (\preg_match(self::PARSE_REGEXP, $value, $matches) !== 1) {
             throw new NumberFormatException(\sprintf('The given value "%s" does not represent a valid number.', $value));
@@ -99,17 +105,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         $integral = self::cleanUp($matches['integral']);
 
         return new BigInteger($integral);
-    }
-
-    /**
-     * @param mixed $value
-     * @return string
-     */
-    private static function convertToString($value): string
-    {
-        $localeData = localeconv();
-
-        return str_replace([$localeData['thousands_sep'], $localeData['decimal_point']], ['', '.'], (string) $value);
     }
 
     /**
