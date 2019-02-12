@@ -164,6 +164,32 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerOfLocales
+     *
+     * @param string $locale
+     */
+    public function testOfValueInDifferentLocales(string $locale): void
+    {
+        $originalLocale = setlocale(LC_NUMERIC, '0');
+        setlocale(LC_NUMERIC, $locale);
+
+        $this->assertEquals(2.5, BigDecimal::of(5/2)->toFloat());
+
+        setlocale(LC_NUMERIC, $originalLocale);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerOfLocales(): array
+    {
+        return [
+            ['en_US.UTF-8'],
+            ['de_DE.UTF-8'],
+        ];
+    }
+
+    /**
      * @dataProvider providerOfInvalidValueThrowsException
      * @expectedException \Brick\Math\Exception\NumberFormatException
      *

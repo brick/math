@@ -61,7 +61,13 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             return new BigInteger((string) $value);
         }
 
-        $value = (string) $value;
+        if (is_float($value)) {
+            $locData = localeconv();
+
+            $value = str_replace([$locData['thousands_sep'], $locData['decimal_point']], ['', '.'], (string) $value);
+        } else {
+            $value = (string) $value;
+        }
 
         if (\preg_match(self::PARSE_REGEXP, $value, $matches) !== 1) {
             throw new NumberFormatException(\sprintf('The given value "%s" does not represent a valid number.', $value));
