@@ -298,7 +298,7 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerMin
      *
-     * @param array  $values The values to test.
+     * @param array  $values The values to compare.
      * @param string $min    The expected minimum value.
      */
     public function testMin(array $values, $min)
@@ -346,7 +346,7 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerMax
      *
-     * @param array  $values The values to test.
+     * @param array  $values The values to compare.
      * @param string $max    The expected maximum value.
      */
     public function testMax(array $values, $max)
@@ -391,6 +391,58 @@ class BigDecimalTest extends AbstractTestCase
      * @expectedException \Brick\Math\Exception\RoundingNecessaryException
      */
     public function testMaxOfNonDecimalValuesThrowsException()
+    {
+        BigDecimal::min(1, '3/7');
+    }
+
+    /**
+     * @dataProvider providerSum
+     *
+     * @param array  $values The values to add.
+     * @param string $sum    The expected sum.
+     */
+    public function testSum(array $values, $sum)
+    {
+        $this->assertBigDecimalEquals($sum, BigDecimal::sum(... $values));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerSum()
+    {
+        return [
+            [[0, 0.9, -1.00], '-0.1'],
+            [[0, 0.01, -1, -1.2], '-2.19'],
+            [[0, 0.01, -1, -1.2, '2e-1'], '-1.99'],
+            [['1e-30', '123456789123456789123456789', 2e25], '143456789123456789123456789.000000000000000000000000000001'],
+            [['1e-30', '123456789123456789123456789', 2e26], '323456789123456789123456789.000000000000000000000000000001'],
+            [[0, '10', '5989', '-1'], '5998'],
+            [[0, '10', '5989', '5989.000000000000000000000000000000001', '-1'], '11987.000000000000000000000000000000001'],
+            [[0, '10', '5989', '5989.000000000000000000000000000000001', '-1', '5990'], '17977.000000000000000000000000000000001'],
+            [['-0.0000000000000000000000000000001', 0], '-0.0000000000000000000000000000001'],
+            [['0.00000000000000000000000000000001', '0'], '0.00000000000000000000000000000001'],
+            [['-1', '1', '2', '3', '-99.1'], '-94.1'],
+            [['-1', '1', '2', '3', '-99.1', '31/10'], '-91.0'],
+            [['999999999999999999999999999.99999999999', '1000000000000000000000000000'], '1999999999999999999999999999.99999999999'],
+            [['-999999999999999999999999999.99999999999', 47, '-1000000000000000000000000000'], '-1999999999999999999999999952.99999999999'],
+            [['9.9e50', '1e50', '-3/2'], '1089999999999999999999999999999999999999999999999998.5'],
+            [['9.9e50', '-1e-51'], '989999999999999999999999999999999999999999999999999.999999999999999999999999999999999999999999999999999'],
+        ];
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSumOfZeroValuesThrowsException()
+    {
+        BigDecimal::sum();
+    }
+
+    /**
+     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
+     */
+    public function testSumOfNonDecimalValuesThrowsException()
     {
         BigDecimal::min(1, '3/7');
     }

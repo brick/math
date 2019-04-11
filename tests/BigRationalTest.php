@@ -142,7 +142,7 @@ class BigRationalTest extends AbstractTestCase
     /**
      * @dataProvider providerMin
      *
-     * @param array  $values The values to test.
+     * @param array  $values The values to compare.
      * @param string $min    The expected minimum value, in rational form.
      */
     public function testMin(array $values, $min)
@@ -174,7 +174,7 @@ class BigRationalTest extends AbstractTestCase
     /**
      * @dataProvider providerMax
      *
-     * @param array  $values The values to test.
+     * @param array  $values The values to compare.
      * @param string $max    The expected maximum value, in rational form.
      */
     public function testMax(array $values, $max)
@@ -204,6 +204,41 @@ class BigRationalTest extends AbstractTestCase
     public function testMaxOfZeroValuesThrowsException()
     {
         BigRational::max();
+    }
+
+    /**
+     * @dataProvider providerSum
+     *
+     * @param array  $values The values to add.
+     * @param string $sum    The expected sum, in rational form.
+     */
+    public function testSum(array $values, $sum)
+    {
+        $this->assertBigRationalEquals($sum, BigRational::sum(... $values));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerSum()
+    {
+        return [
+            [['-5532146515641651651321321064580/32453', '-1/2', '-1/99'], '-1095365010097047026961621574064593/6425694'],
+            [['1e-30', '123456789123456789123456789/2', 2e25], '163456789123456789123456789000000000000000000000000000002/2000000000000000000000000000000'],
+            [['999/1000', '1'], '1999/1000'],
+            [[0, 0.9, -1.00], '-1/10'],
+            [[0, 0.01, -1, -1.2], '-2190/1000'],
+            [['1e-30', '15185185062185185062185185047/123', 2e25], '17645185062185185062185185047000000000000000000000000000123/123000000000000000000000000000000'],
+            [['1e-30', '15185185062185185062185185047/123', 2e26], '39785185062185185062185185047000000000000000000000000000123/123000000000000000000000000000000'],
+        ];
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSumOfZeroValuesThrowsException()
+    {
+        BigRational::sum();
     }
 
     /**

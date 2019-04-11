@@ -374,7 +374,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerMin
      *
-     * @param array  $values The values to test.
+     * @param array  $values The values to compare.
      * @param string $min    The expected minimum value.
      */
     public function testMin(array $values, $min)
@@ -417,7 +417,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerMax
      *
-     * @param array  $values The values to test.
+     * @param array  $values The values to compare.
      * @param string $max    The expected maximum value.
      */
     public function testMax(array $values, $max)
@@ -456,6 +456,51 @@ class BigIntegerTest extends AbstractTestCase
     public function testMaxOfNonIntegerValuesThrowsException()
     {
         BigInteger::max(1, '3/2');
+    }
+
+    /**
+     * @dataProvider providerSum
+     *
+     * @param array  $values The values to add.
+     * @param string $sum    The expected sum.
+     */
+    public function testSum(array $values, $sum)
+    {
+        $this->assertBigIntegerEquals($sum, BigInteger::sum(... $values));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerSum()
+    {
+        return [
+            [[-1], '-1'],
+            [[0, 1, -1], '0'],
+            [[0, '10', '5989.0'], '5999'],
+            [[0, '10', '5989', '-1'], '5998'],
+            [[0, '10', '5989', '-1', 6000.0], '11998'],
+            [['-1', '0'], '-1'],
+            [['-1', '1', '2', '27/9', '-100'], '-95'],
+            [['1234567', '-1233.00', 137, '406847567975012457258945126', ], '406847567975012457260178597'],
+            [['-165504564654654879742303821254754', '-4455454', 455879563], '-165504564654654879742303369830645']
+        ];
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSumOfZeroValuesThrowsException()
+    {
+        BigInteger::sum();
+    }
+
+    /**
+     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
+     */
+    public function testSumOfNonIntegerValuesThrowsException()
+    {
+        BigInteger::sum(1, '3/2');
     }
 
     /**

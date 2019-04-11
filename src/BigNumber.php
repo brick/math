@@ -182,6 +182,47 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     }
 
     /**
+     * Returns the sum of the given values.
+     *
+     * @param BigNumber|number|string ...$values The numbers to add. All the numbers need to be convertible
+     *                                           to an instance of the class this method is called on.
+     *
+     * @return static The sum.
+     *
+     * @throws \InvalidArgumentException If no values are given.
+     * @throws MathException             If an argument is not valid.
+     */
+    public static function sum(...$values) : BigNumber
+    {
+        /**
+         * Note: we'd benefit from a common interface BigNumber::plus(), but right now we can't because PHP does not
+         * support covariant return types, so that abstract BigNumber::plus() returns BigNumber, while
+         * BigInteger::plus() returns BigInteger. This will likely be possible in PHP 7.4:
+         *
+         * https://wiki.php.net/rfc/covariant-returns-and-contravariant-parameters
+         *
+         * @var BigInteger|BigDecimal|BigRational|null $sum
+         */
+        $sum = null;
+
+        foreach ($values as $value) {
+            $value = static::of($value);
+
+            if ($sum === null) {
+                $sum = $value;
+            } else {
+                $sum = $sum->plus($value);
+            }
+        }
+
+        if ($sum === null) {
+            throw new \InvalidArgumentException(__METHOD__ . '() expects at least one value.');
+        }
+
+        return $sum;
+    }
+
+    /**
      * Removes optional leading zeros and + sign from the given number.
      *
      * @param string $number The number, validated as a non-empty string of digits with optional sign.
