@@ -194,15 +194,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     public static function sum(...$values) : BigNumber
     {
-        /**
-         * Note: we'd benefit from a common interface BigNumber::plus(), but right now we can't because PHP does not
-         * support covariant return types, so that abstract BigNumber::plus() returns BigNumber, while
-         * BigInteger::plus() returns BigInteger. This will likely be possible in PHP 7.4:
-         *
-         * https://wiki.php.net/rfc/covariant-returns-and-contravariant-parameters
-         *
-         * @var BigInteger|BigDecimal|BigRational|null $sum
-         */
+        /** @var BigNumber|null $sum */
         $sum = null;
 
         foreach ($values as $value) {
@@ -211,7 +203,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             if ($sum === null) {
                 $sum = $value;
             } else {
-                $sum = $sum->plus($value);
+                $sum = self::add($sum, $value);
             }
         }
 
@@ -220,6 +212,42 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         }
 
         return $sum;
+    }
+
+    /**
+     * Adds two BigNumber instances in the correct order to avoid a RoundingNecessaryException.
+     *
+     * @todo This could be better resolved by creating an abstract protected method in BigNumber, and leaving to
+     *       concrete classes the responsibility to perform the addition themselves or delegate it to the given number,
+     *       depending on their ability to perform the operation. This will also require a version bump because we're
+     *       potentially breaking custom BigNumber implementations (if any...)
+     *
+     * @param BigNumber $a
+     * @param BigNumber $b
+     *
+     * @return BigNumber
+     */
+    private static function add(BigNumber $a, BigNumber $b) : BigNumber
+    {
+        if ($a instanceof BigRational) {
+            return $a->plus($b);
+        }
+
+        if ($b instanceof BigRational) {
+            return $b->plus($a);
+        }
+
+        if ($a instanceof BigDecimal) {
+            return $a->plus($b);
+        }
+
+        if ($b instanceof BigDecimal) {
+            return $b->plus($a);
+        }
+
+        /** @var BigInteger $a */
+
+        return $a->plus($b);
     }
 
     /**
