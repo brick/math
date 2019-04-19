@@ -394,26 +394,61 @@ class NativeCalculator extends Calculator
      */
     private function doMul(string $a, string $b, int $x, int $y) : string
     {
+        $maxDigits = \intdiv($this->maxDigits, 2);
+        $complement = 10 ** $maxDigits;
+
         $result = '0';
 
-        for ($i = $x - 1; $i >= 0; $i--) {
-            $line = \str_repeat('0', $x - 1 - $i);
+        for ($i = $x - $maxDigits;; $i -= $maxDigits) {
+            $blockALength = $maxDigits;
+
+            if ($i < 0) {
+                $blockALength += $i;
+                $i = 0;
+            }
+
+            $blockA = (int) \substr($a, $i, $blockALength);
+
+            $line = '';
             $carry = 0;
-            for ($j = $y - 1; $j >= 0; $j--) {
-                $mul = (int) $a[$i] * (int) $b[$j] + $carry;
-                $digit = $mul % 10;
-                $carry = ($mul - $digit) / 10;
-                $line .= $digit;
+
+            for ($j = $y - $maxDigits;; $j -= $maxDigits) {
+                $blockBLength = $maxDigits;
+
+                if ($j < 0) {
+                    $blockBLength += $j;
+                    $j = 0;
+                }
+
+                $blockB = (int) \substr($b, $j, $blockBLength);
+
+                $mul = $blockA * $blockB + $carry;
+                $value = $mul % $complement;
+                $carry = ($mul - $value) / $complement;
+
+                $value = (string) $value;
+                $value = \str_pad($value, $maxDigits, '0', STR_PAD_LEFT);
+
+                $line = $value . $line;
+
+                if ($j === 0) {
+                    break;
+                }
             }
 
             if ($carry !== 0) {
-                $line .= $carry;
+                $line = $carry . $line;
             }
 
-            $line = \rtrim($line, '0');
+            $line = \ltrim($line, '0');
 
             if ($line !== '') {
-                $result = $this->add($result, \strrev($line));
+                $line .= \str_repeat('0', $x - $blockALength - $i);
+                $result = $this->add($result, $line);
+            }
+
+            if ($i === 0) {
+                break;
             }
         }
 
