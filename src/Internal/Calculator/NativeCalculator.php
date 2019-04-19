@@ -17,9 +17,13 @@ class NativeCalculator extends Calculator
      * The max number of digits the platform can natively add, subtract, multiply or divide without overflow.
      * For multiplication, this represents the max sum of the lengths of both operands.
      *
+     * For addition, it is assumed that an extra digit can hold a carry (1) without overflowing.
+     * Example: 32-bit: max number 1,999,999,999 (9 digits + carry)
+     *          64-bit: max number 1,999,999,999,999,999,999 (18 digits + carry)
+     *
      * @var int
      */
-    private $maxDigits = 0;
+    private $maxDigits;
 
     /**
      * Class constructor.
@@ -36,6 +40,9 @@ class NativeCalculator extends Calculator
             case 8:
                 $this->maxDigits = 18;
                 break;
+
+            default:
+                throw new \RuntimeException('The platform is not 32-bit or 64-bit as expected.');
         }
     }
 
@@ -253,24 +260,42 @@ class NativeCalculator extends Calculator
         $carry = 0;
         $result = '';
 
-        for ($i = $length - 1; $i >= 0; $i--) {
-            $sum = (int) $a[$i] + (int) $b[$i] + $carry;
+        for ($i = $length - $this->maxDigits;; $i -= $this->maxDigits) {
+            $blockLength = $this->maxDigits;
 
-            if ($sum >= 10) {
+            if ($i < 0) {
+                $blockLength += $i;
+                $i = 0;
+            }
+
+            $blockA = \substr($a, $i, $blockLength);
+            $blockB = \substr($b, $i, $blockLength);
+
+            $sum = (string) ((int) $blockA + (int) $blockB + $carry);
+            $sumLength = \strlen($sum);
+
+            if ($sumLength > $blockLength) {
+                $sum = \substr($sum, 1);
                 $carry = 1;
-                $sum -= 10;
             } else {
+                if ($sumLength < $blockLength) {
+                    $sum = \str_repeat('0', $blockLength - $sumLength) . $sum;
+                }
                 $carry = 0;
             }
 
-            $result .= $sum;
+            $result = $sum . $result;
+
+            if ($i === 0) {
+                break;
+            }
         }
 
-        if ($carry !== 0) {
-            $result .= $carry;
+        if ($carry === 1) {
+            $result = '1' . $result;
         }
 
-        return \strrev($result);
+        return $result;
     }
 
     /**
