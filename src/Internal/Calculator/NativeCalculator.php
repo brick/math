@@ -314,6 +314,7 @@ class NativeCalculator extends Calculator
             return '0';
         }
 
+        // Ensure that we always subtract to a positive result: biggest minus smallest.
         $cmp = $this->doCmp($a, $b, $x, $y);
 
         $invert = ($cmp === -1);
@@ -333,20 +334,45 @@ class NativeCalculator extends Calculator
         $carry = 0;
         $result = '';
 
-        for ($i = $length - 1; $i >= 0; $i--) {
-            $sum = (int) $a[$i] - (int) $b[$i] - $carry;
+        $complement = 10 ** $this->maxDigits;
+
+        for ($i = $length - $this->maxDigits;; $i -= $this->maxDigits) {
+            $blockLength = $this->maxDigits;
+
+            if ($i < 0) {
+                $blockLength += $i;
+                $i = 0;
+            }
+
+            $blockA = \substr($a, $i, $blockLength);
+            $blockB = \substr($b, $i, $blockLength);
+
+            $sum = (int) $blockA - (int) $blockB - $carry;
 
             if ($sum < 0) {
+                $sum += $complement;
                 $carry = 1;
-                $sum += 10;
             } else {
                 $carry = 0;
             }
 
-            $result .= $sum;
+            $sum = (string) $sum;
+            $sumLength = \strlen($sum);
+
+            if ($sumLength < $blockLength) {
+                $sum = \str_repeat('0', $blockLength - $sumLength) . $sum;
+            }
+
+            $result = $sum . $result;
+
+            if ($i === 0) {
+                break;
+            }
         }
 
-        $result = \strrev($result);
+        // Carry cannot be 1 when the loop ends, as a > b
+        assert($carry === 0);
+
         $result = \ltrim($result, '0');
 
         if ($invert) {
