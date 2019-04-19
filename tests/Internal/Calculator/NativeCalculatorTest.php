@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brick\Math\Tests\Internal\Calculator;
 
 use Brick\Math\Internal\Calculator\NativeCalculator;
