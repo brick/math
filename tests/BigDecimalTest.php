@@ -173,7 +173,12 @@ class BigDecimalTest extends AbstractTestCase
     public function testOfFloatInDifferentLocales(string $locale) : void
     {
         $originalLocale = setlocale(LC_NUMERIC, '0');
-        setlocale(LC_NUMERIC, $locale);
+        $setLocale = setlocale(LC_NUMERIC, $locale);
+
+        if ($setLocale !== $locale) {
+            setlocale(LC_NUMERIC, $originalLocale);
+            $this->markTestSkipped('Locale ' . $locale . ' is not supported on this system.');
+        }
 
         // Test a large enough number (thousands separator) with decimal digits (decimal separator)
         $this->assertSame('2500.5', (string) BigDecimal::of(5001/2));
