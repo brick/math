@@ -116,12 +116,12 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     private static function floatToString(float $float) : string
     {
-        $currentLocale = setlocale(LC_NUMERIC, '0');
-        setlocale(LC_NUMERIC, 'C');
+        $currentLocale = \setlocale(LC_NUMERIC, '0');
+        \setlocale(LC_NUMERIC, 'C');
 
         $result = (string) $float;
 
-        setlocale(LC_NUMERIC, $currentLocale);
+        \setlocale(LC_NUMERIC, $currentLocale);
 
         return $result;
     }
