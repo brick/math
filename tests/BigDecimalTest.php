@@ -164,16 +164,20 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerOfLocales
+     * @dataProvider providerOfFloatInDifferentLocales
      *
      * @param string $locale
      */
-    public function testOfValueInDifferentLocales(string $locale): void
+    public function testOfFloatInDifferentLocales(string $locale) : void
     {
         $originalLocale = setlocale(LC_NUMERIC, '0');
         setlocale(LC_NUMERIC, $locale);
 
-        $this->assertEquals(2.5, BigDecimal::of(5/2)->toFloat());
+        // Test a large enough number (thousands separator) with decimal digits (decimal separator)
+        $this->assertSame('2500.5', (string) BigDecimal::of(5001/2));
+
+        // Ensure that the locale has been reset to its original value by BigNumber::of()
+        $this->assertSame($locale, setlocale(LC_NUMERIC, '0'));
 
         setlocale(LC_NUMERIC, $originalLocale);
     }
@@ -181,11 +185,19 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function providerOfLocales(): array
+    public function providerOfFloatInDifferentLocales() : array
     {
         return [
+            ['C'],
             ['en_US.UTF-8'],
             ['de_DE.UTF-8'],
+            ['es_ES'],
+            ['fr_FR'],
+            ['fr_FR.iso88591'],
+            ['fr_FR.iso885915@euro'],
+            ['fr_FR@euro'],
+            ['fr_FR.utf8'],
+            ['ps_AF'],
         ];
     }
 
