@@ -59,16 +59,19 @@ class NativeCalculator extends Calculator
             return $a;
         }
 
-        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg, $aLen, $bLen);
+        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
+
+        $aLen = \strlen($aDig);
+        $bLen = \strlen($bDig);
 
         if ($aLen <= $this->maxDigits && $bLen <= $this->maxDigits) {
             return (string) ((int) $a + (int) $b);
         }
 
         if ($aNeg === $bNeg) {
-            $result = $this->doAdd($aDig, $bDig, $aLen, $bLen);
+            $result = $this->doAdd($aDig, $bDig);
         } else {
-            $result = $this->doSub($aDig, $bDig, $aLen, $bLen);
+            $result = $this->doSub($aDig, $bDig);
         }
 
         if ($aNeg) {
@@ -111,13 +114,16 @@ class NativeCalculator extends Calculator
             return $this->neg($a);
         }
 
-        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg, $aLen, $bLen);
+        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
+
+        $aLen = \strlen($aDig);
+        $bLen = \strlen($bDig);
 
         if ($aLen + $bLen <= $this->maxDigits) {
             return (string) ((int) $a * (int) $b);
         }
 
-        $result = $this->doMul($aDig, $bDig, $aLen, $bLen);
+        $result = $this->doMul($aDig, $bDig);
 
         if ($aNeg !== $bNeg) {
             $result = $this->neg($result);
@@ -163,7 +169,10 @@ class NativeCalculator extends Calculator
             return [$this->neg($a), '0'];
         }
 
-        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg, $aLen, $bLen);
+        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
+
+        $aLen = \strlen($aDig);
+        $bLen = \strlen($bDig);
 
         if ($aLen <= $this->maxDigits && $bLen <= $this->maxDigits) {
             $a = (int) $a;
@@ -178,7 +187,7 @@ class NativeCalculator extends Calculator
             return [$q, $r];
         }
 
-        [$q, $r] = $this->doDiv($aDig, $bDig, $aLen, $bLen);
+        [$q, $r] = $this->doDiv($aDig, $bDig);
 
         if ($aNeg !== $bNeg) {
             $q = $this->neg($q);
@@ -248,14 +257,12 @@ class NativeCalculator extends Calculator
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
-     * @param int    $x The length of the first operand.
-     * @param int    $y The length of the second operand.
      *
      * @return string
      */
-    private function doAdd(string $a, string $b, int $x, int $y) : string
+    private function doAdd(string $a, string $b) : string
     {
-        $length = $this->pad($a, $b, $x, $y);
+        $length = $this->pad($a, $b);
 
         $carry = 0;
         $result = '';
@@ -303,19 +310,17 @@ class NativeCalculator extends Calculator
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
-     * @param int    $x The length of the first operand.
-     * @param int    $y The length of the second operand.
      *
      * @return string
      */
-    private function doSub(string $a, string $b, int $x, int $y) : string
+    private function doSub(string $a, string $b) : string
     {
         if ($a === $b) {
             return '0';
         }
 
         // Ensure that we always subtract to a positive result: biggest minus smallest.
-        $cmp = $this->doCmp($a, $b, $x, $y);
+        $cmp = $this->doCmp($a, $b);
 
         $invert = ($cmp === -1);
 
@@ -323,13 +328,9 @@ class NativeCalculator extends Calculator
             $c = $a;
             $a = $b;
             $b = $c;
-
-            $z = $x;
-            $x = $y;
-            $y = $z;
         }
 
-        $length = $this->pad($a, $b, $x, $y);
+        $length = $this->pad($a, $b);
 
         $carry = 0;
         $result = '';
@@ -387,13 +388,14 @@ class NativeCalculator extends Calculator
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
-     * @param int    $x The length of the first operand.
-     * @param int    $y The length of the second operand.
      *
      * @return string
      */
-    private function doMul(string $a, string $b, int $x, int $y) : string
+    private function doMul(string $a, string $b) : string
     {
+        $x = \strlen($a);
+        $y = \strlen($b);
+
         $maxDigits = \intdiv($this->maxDigits, 2);
         $complement = 10 ** $maxDigits;
 
@@ -460,18 +462,19 @@ class NativeCalculator extends Calculator
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
-     * @param int    $x The length of the first operand.
-     * @param int    $y The length of the second operand.
      *
      * @return string[] The quotient and remainder.
      */
-    private function doDiv(string $a, string $b, int $x, int $y) : array
+    private function doDiv(string $a, string $b) : array
     {
-        $cmp = $this->doCmp($a, $b, $x, $y);
+        $cmp = $this->doCmp($a, $b);
 
         if ($cmp === -1) {
             return ['0', $a];
         }
+
+        $x = \strlen($a);
+        $y = \strlen($b);
 
         // we now know that a > b && x >= y
 
@@ -482,7 +485,7 @@ class NativeCalculator extends Calculator
         for (;;) {
             $focus = \substr($a, 0, $z);
 
-            $cmp = $this->doCmp($focus, $b, $z, $y);
+            $cmp = $this->doCmp($focus, $b);
 
             if ($cmp === -1) {
                 if ($z === $x) { // remainder < dividend
@@ -520,16 +523,18 @@ class NativeCalculator extends Calculator
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
-     * @param int    $x The length of the first operand.
-     * @param int    $y The length of the second operand.
      *
      * @return int [-1, 0, 1]
      */
-    private function doCmp(string $a, string $b, int $x, int $y) : int
+    private function doCmp(string $a, string $b) : int
     {
+        $x = \strlen($a);
+        $y = \strlen($b);
+
         if ($x > $y) {
             return 1;
         }
+
         if ($x < $y) {
             return -1;
         }
@@ -541,6 +546,7 @@ class NativeCalculator extends Calculator
             if ($ai > $bi) {
                 return 1;
             }
+
             if ($ai < $bi) {
                 return -1;
             }
@@ -556,13 +562,14 @@ class NativeCalculator extends Calculator
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
-     * @param int    $x The length of the first operand.
-     * @param int    $y The length of the second operand.
      *
      * @return int The length of both strings.
      */
-    private function pad(string & $a, string & $b, int $x, int $y) : int
+    private function pad(string & $a, string & $b) : int
     {
+        $x = \strlen($a);
+        $y = \strlen($b);
+
         if ($x === $y) {
             return $x;
         }

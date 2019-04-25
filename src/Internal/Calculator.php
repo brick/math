@@ -96,21 +96,16 @@ abstract class Calculator
      * @param string $bDig A variable to store the digits of the second operand.
      * @param bool   $aNeg A variable to store whether the first operand is negative.
      * @param bool   $bNeg A variable to store whether the second operand is negative.
-     * @param bool   $aLen A variable to store the number of digits in the first operand.
-     * @param bool   $bLen A variable to store the number of digits in the second operand.
      *
      * @return void
      */
-    final protected function init(string $a, string $b, & $aDig, & $bDig, & $aNeg, & $bNeg, & $aLen, & $bLen) : void
+    final protected function init(string $a, string $b, & $aDig, & $bDig, & $aNeg, & $bNeg) : void
     {
         $aNeg = ($a[0] === '-');
         $bNeg = ($b[0] === '-');
 
         $aDig = $aNeg ? \substr($a, 1) : $a;
         $bDig = $bNeg ? \substr($b, 1) : $b;
-
-        $aLen = \strlen($aDig);
-        $bLen = \strlen($bDig);
     }
 
     /**
@@ -155,7 +150,7 @@ abstract class Calculator
      */
     final public function cmp(string $a, string $b) : int
     {
-        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg, $aLen, $bLen);
+        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
 
         if ($aNeg && ! $bNeg) {
             return -1;
@@ -164,6 +159,9 @@ abstract class Calculator
         if ($bNeg && ! $aNeg) {
             return 1;
         }
+
+        $aLen = \strlen($aDig);
+        $bLen = \strlen($bDig);
 
         if ($aLen < $bLen) {
             $result = -1;
@@ -547,7 +545,7 @@ abstract class Calculator
      */
     private function bitwise(string $operator, string $a, string $b) : string
     {
-        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg, $aLen, $bLen);
+        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
 
         $aBin = $this->toBinary($aDig);
         $bBin = $this->toBinary($bDig);
