@@ -65,7 +65,7 @@ class NativeCalculator extends Calculator
         $bLen = \strlen($bDig);
 
         if ($aLen <= $this->maxDigits && $bLen <= $this->maxDigits) {
-            return (string) ((int) $a + (int) $b);
+            return (string) ($a + $b);
         }
 
         if ($aNeg === $bNeg) {
@@ -120,7 +120,7 @@ class NativeCalculator extends Calculator
         $bLen = \strlen($bDig);
 
         if ($aLen + $bLen <= $this->maxDigits) {
-            return (string) ((int) $a * (int) $b);
+            return (string) ($a * $b);
         }
 
         $result = $this->doMul($aDig, $bDig);
