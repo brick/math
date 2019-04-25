@@ -2760,6 +2760,9 @@ class BigIntegerTest extends AbstractTestCase
         $base85 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-:+=^!/*?&<>()[]{}@%$#';
         $base95 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~_!$()+,;@.:=^*?&<>[]{}%#|`/\ "\'-';
 
+        $base62LowerUpper = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $base62UpperLower = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
         return [
             ['0', 'XY', 'X'],
             ['1', 'XY', 'Y'],
@@ -2781,6 +2784,9 @@ class BigIntegerTest extends AbstractTestCase
             ['994495526373444232246567036253784322009', $base15, '180B5C6CC477E8D58EAC276D06C5127124'],
             ['994495526373444232246567036253784322009', $base16, '2EC2CDF12C56F4A08DFC9511350AD2FD9'],
             ['994495526373444232246567036253784322009', $base17, '7266E944CF4A3786D0G7661356FG769G'],
+
+            ['994495526373444232246567036253784322009', $base62LowerUpper, 'mLMLxPbmO0SM6PXtWChlWx'],
+            ['994495526373444232246567036253784322009', $base62UpperLower, 'MlmlXpBMo0sm6pxTwcHLwX'],
 
             ['8149613250471589625', $base64, '74PFXAZBFRv'],
             ['454064679874654562007441356949657', $base64, '1PZ6Xm9ayTgCZU5xGYP'],
