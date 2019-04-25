@@ -46,7 +46,7 @@ abstract class Calculator
      *
      * @return void
      */
-    public static function set(?Calculator $calculator) : void
+    final public static function set(?Calculator $calculator) : void
     {
         self::$instance = $calculator;
     }
@@ -58,7 +58,7 @@ abstract class Calculator
      *
      * @return Calculator
      */
-    public static function get() : Calculator
+    final public static function get() : Calculator
     {
         if (self::$instance === null) {
             self::$instance = self::detect();
@@ -120,7 +120,7 @@ abstract class Calculator
      *
      * @return string The absolute value.
      */
-    public function abs(string $n) : string
+    final public function abs(string $n) : string
     {
         return ($n[0] === '-') ? \substr($n, 1) : $n;
     }
@@ -132,7 +132,7 @@ abstract class Calculator
      *
      * @return string The negated value.
      */
-    public function neg(string $n) : string
+    final public function neg(string $n) : string
     {
         if ($n === '0') {
             return '0';
@@ -153,7 +153,7 @@ abstract class Calculator
      *
      * @return int [-1, 0, 1] If the first number is less than, equal to, or greater than the second number.
      */
-    public function cmp(string $a, string $b) : int
+    final public function cmp(string $a, string $b) : int
     {
         $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg, $aLen, $bLen);
 
@@ -373,7 +373,7 @@ abstract class Calculator
      * @throws \InvalidArgumentException  If the rounding mode is invalid.
      * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided but rounding is necessary.
      */
-    public function divRound(string $a, string $b, int $roundingMode) : string
+    final public function divRound(string $a, string $b, int $roundingMode) : string
     {
         [$quotient, $remainder] = $this->divQR($a, $b);
 
