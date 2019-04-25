@@ -2933,7 +2933,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerArbitraryBase
+     * @dataProvider providerFromArbitraryBase
      *
      * @param string $base10
      * @param string $alphabet
@@ -2944,6 +2944,20 @@ class BigIntegerTest extends AbstractTestCase
         $number = BigInteger::fromArbitraryBase($baseN, $alphabet);
 
         $this->assertBigIntegerEquals($base10, $number);
+    }
+
+    /**
+     * @return iterable
+     */
+    public function providerFromArbitraryBase() : iterable
+    {
+        foreach ($this->providerArbitraryBase() as [$base10, $alphabet, $baseN]) {
+            yield [$base10, $alphabet, $baseN];
+
+            // test with a number of leading "zeros"
+            yield [$base10, $alphabet, $alphabet[0] . $baseN];
+            yield [$base10, $alphabet, $alphabet[0] . $alphabet[0] . $baseN];
+        }
     }
 
     /**
