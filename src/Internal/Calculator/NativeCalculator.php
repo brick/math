@@ -540,15 +540,10 @@ class NativeCalculator extends Calculator
         }
 
         for ($i = 0; $i < $x; $i++) {
-            $ai = (int) $a[$i];
-            $bi = (int) $b[$i];
+            $cmp = $a[$i] <=> $b[$i];
 
-            if ($ai > $bi) {
-                return 1;
-            }
-
-            if ($ai < $bi) {
-                return -1;
+            if ($cmp !== 0) {
+                return $cmp;
             }
         }
 
