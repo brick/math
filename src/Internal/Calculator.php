@@ -10,7 +10,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
 /**
  * Performs basic operations on arbitrary size integers.
  *
- * All parameters must be validated as non-empty strings of digits,
+ * Unless otherwise specified, all parameters must be validated as non-empty strings of digits,
  * without leading zero, and with an optional leading minus sign if the number is not zero.
  *
  * Any other parameter format will lead to undefined behaviour.
@@ -26,9 +26,9 @@ abstract class Calculator
     public const MAX_POWER = 1000000;
 
     /**
-     * The dictionary for reading and writing in base 2 to 36.
+     * The alphabet for converting from and to base 2 to 36, lowercase.
      */
-    public const DICTIONARY = '0123456789abcdefghijklmnopqrstuvwxyz';
+    public const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
 
     /**
      * The Calculator instance in use.
@@ -295,27 +295,7 @@ abstract class Calculator
      */
     public function fromBase(string $number, int $base) : string
     {
-        $number = \strtolower($number);
-
-        $result = '0';
-        $power = '1';
-
-        for ($i = \strlen($number) - 1; $i >= 0; $i--) {
-            $index = \strpos(self::DICTIONARY, $number[$i]);
-
-            if ($index !== 0) {
-                $result = $this->add($result, ($index === 1)
-                    ? $power
-                    : $this->mul($power, (string) $index)
-                );
-            }
-
-            if ($i !== 0) {
-                $power = $this->mul($power, (string) $base);
-            }
-        }
-
-        return $result;
+        return $this->fromArbitraryBase(\strtolower($number), self::ALPHABET, $base);
     }
 
     /**
@@ -331,29 +311,81 @@ abstract class Calculator
      */
     public function toBase(string $number, int $base) : string
     {
-        $value = $number;
-        $negative = ($value[0] === '-');
+        $negative = ($number[0] === '-');
 
         if ($negative) {
-            $value = \substr($value, 1);
+            $number = \substr($number, 1);
+        }
+
+        $number = $this->toArbitraryBase($number, self::ALPHABET, $base);
+
+        if ($negative) {
+            return '-' . $number;
+        }
+
+        return $number;
+    }
+
+    /**
+     * Converts a non-negative number in an arbitrary base using a custom alphabet, to base 10.
+     *
+     * @param string $number   The number to convert, validated as a non-empty string,
+     *                         containing only chars in the given alphabet/base.
+     * @param string $alphabet The alphabet that contains every digit, validated as 2 chars minimum.
+     * @param int    $base     The base of the number, validated from 2 to alphabet length.
+     *
+     * @return string The number in base 10, following the Calculator conventions.
+     */
+    final public function fromArbitraryBase(string $number, string $alphabet, int $base) : string
+    {
+        $result = '0';
+        $power = '1';
+
+        $base = (string) $base;
+
+        $calculator = Calculator::get();
+
+        for ($i = \strlen($number) - 1; $i >= 0; $i--) {
+            $index = \strpos($alphabet, $number[$i]);
+
+            if ($index !== 0) {
+                $result = $calculator->add($result, ($index === 1)
+                    ? $power
+                    : $calculator->mul($power, (string) $index)
+                );
+            }
+
+            if ($i !== 0) {
+                $power = $calculator->mul($power, $base);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Converts a non-negative number to an arbitrary base using a custom alphabet.
+     *
+     * @param string $number   The number to convert, positive or zero, following the Calculator conventions.
+     * @param string $alphabet The alphabet that contains every digit, validated as 2 chars minimum.
+     * @param int    $base     The base to convert to, validated from 2 to alphabet length.
+     *
+     * @return string The converted number in the given alphabet.
+     */
+    final public function toArbitraryBase(string $number, string $alphabet, int $base) : string
+    {
+        if ($number === '0') {
+            return $alphabet[0];
         }
 
         $base = (string) $base;
         $result = '';
 
-        while ($value !== '0') {
-            [$value, $remainder] = $this->divQR($value, $base);
+        while ($number !== '0') {
+            [$number, $remainder] = $this->divQR($number, $base);
             $remainder = (int) $remainder;
 
-            $result .= self::DICTIONARY[$remainder];
-        }
-
-        if ($result === '') {
-            return '0';
-        }
-
-        if ($negative) {
-            $result .= '-';
+            $result .= $alphabet[$remainder];
         }
 
         return \strrev($result);

@@ -88,7 +88,7 @@ final class BigInteger extends BigNumber
      *
      * For bases greater than 36, and/or custom alphabets, use the fromArbitraryBase() method.
      *
-     * @param string $number The number to parse.
+     * @param string $number The number to convert, in the given base.
      * @param int    $base   The base of the number, between 2 and 36.
      *
      * @return BigInteger
@@ -132,7 +132,7 @@ final class BigInteger extends BigNumber
             return new BigInteger($sign . '1');
         }
 
-        $pattern = '/[^' . \substr(Calculator::DICTIONARY, 0, $base) . ']/';
+        $pattern = '/[^' . \substr(Calculator::ALPHABET, 0, $base) . ']/';
 
         if (\preg_match($pattern, \strtolower($number), $matches) === 1) {
             throw new NumberFormatException(\sprintf('"%s" is not a valid character in base %d.', $matches[0], $base));
@@ -173,31 +173,15 @@ final class BigInteger extends BigNumber
             throw new \InvalidArgumentException('The alphabet must contain at least 2 chars.');
         }
 
-        $result = '0';
-        $power = '1';
+        $pattern = '/[^' . \preg_quote($alphabet, '/') . ']/';
 
-        $calculator = Calculator::get();
-
-        for ($i = \strlen($number) - 1; $i >= 0; $i--) {
-            $index = \strpos($alphabet, $number[$i]);
-
-            if ($index === false) {
-                throw NumberFormatException::charNotInAlphabet($number[$i]);
-            }
-
-            if ($index !== 0) {
-                $result = $calculator->add($result, ($index === 1)
-                    ? $power
-                    : $calculator->mul($power, (string) $index)
-                );
-            }
-
-            if ($i !== 0) {
-                $power = $calculator->mul($power, (string) $base);
-            }
+        if (\preg_match($pattern, $number, $matches) === 1) {
+            throw NumberFormatException::charNotInAlphabet($matches[0]);
         }
 
-        return new BigInteger($result);
+        $number = Calculator::get()->fromArbitraryBase($number, $alphabet, $base);
+
+        return new BigInteger($number);
     }
 
     /**
@@ -730,25 +714,7 @@ final class BigInteger extends BigNumber
             throw new NegativeNumberException(__FUNCTION__ . '() does not support negative numbers.');
         }
 
-        $value = $this->value;
-
-        if ($value === '0') {
-            return $alphabet[0];
-        }
-
-        $base = (string) $base;
-        $result = '';
-
-        $calculator = Calculator::get();
-
-        while ($value !== '0') {
-            [$value, $remainder] = $calculator->divQR($value, $base);
-            $remainder = (int) $remainder;
-
-            $result .= $alphabet[$remainder];
-        }
-
-        return \strrev($result);
+        return Calculator::get()->toArbitraryBase($this->value, $alphabet, $base);
     }
 
     /**
