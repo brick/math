@@ -56,6 +56,7 @@ final class BigInteger extends BigNumber
      * Parses a string containing an integer in an arbitrary base.
      *
      * The string can optionally be prefixed with the `+` or `-` sign.
+     * For bases greater than 10, both uppercase and lowercase letters are allowed.
      *
      * @param string $number The number to parse.
      * @param int    $base   The base of the number, between 2 and 36.
@@ -599,6 +600,8 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns a string representation of this number in the given base.
+     *
+     * The output will always be lowercase for bases greater than 10.
      *
      * @param int $base
      *
