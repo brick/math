@@ -584,8 +584,10 @@ abstract class Calculator
                 $negative = ($aNeg xor $bNeg);
                 break;
 
+            // @codeCoverageIgnoreStart
             default:
                 throw new \InvalidArgumentException('Invalid bitwise operator.');
+            // @codeCoverageIgnoreEnd
         }
 
         if ($negative) {
