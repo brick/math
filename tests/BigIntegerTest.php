@@ -1218,14 +1218,6 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException \Brick\Math\Exception\DivisionByZeroException
-     */
-    public function testQuotientAndRemainerOfZeroThrowsException()
-    {
-        BigInteger::of(1)->quotientAndRemainder(0);
-    }
-
-    /**
      * @return array
      */
     public function providerQuotientAndRemainder()
