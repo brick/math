@@ -88,7 +88,7 @@ abstract class Calculator
     }
 
     /**
-     * Extracts the digits, sign, and length of the operands.
+     * Extracts the digits and sign of the operands.
      *
      * @param string $a    The first operand.
      * @param string $b    The second operand.
