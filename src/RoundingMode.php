@@ -17,6 +17,8 @@ final class RoundingMode
 {
     /**
      * Private constructor. This class is not instantiable.
+     *
+     * @codeCoverageIgnore
      */
     private function __construct()
     {
