@@ -6,9 +6,10 @@ namespace Brick\Math\Tests;
 
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\NegativeNumberException;
-use Brick\Math\RoundingMode;
+use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\RoundingMode;
 
 /**
  * Unit tests for class BigInteger.
@@ -2725,24 +2726,38 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerToArbitraryBase
+     * @dataProvider providerArbitraryBase
      *
-     * @param string $number
+     * @param string $base10
      * @param string $alphabet
-     * @param string $expected
+     * @param string $baseN
      */
-    public function testToArbitraryBase(string $number, string $alphabet, string $expected) : void
+    public function testFromArbitraryBase(string $base10, string $alphabet, string $baseN) : void
     {
-        $number = BigInteger::of($number);
-        $actual = $number->toArbitraryBase($alphabet);
+        $number = BigInteger::fromArbitraryBase($baseN, $alphabet);
 
-        $this->assertSame($expected, $actual);
+        $this->assertBigIntegerEquals($base10, $number);
+    }
+
+    /**
+     * @dataProvider providerArbitraryBase
+     *
+     * @param string $base10
+     * @param string $alphabet
+     * @param string $baseN
+     */
+    public function testToArbitraryBase(string $base10, string $alphabet, string $baseN) : void
+    {
+        $base10 = BigInteger::of($base10);
+        $actual = $base10->toArbitraryBase($alphabet);
+
+        $this->assertSame($baseN, $actual);
     }
 
     /**
      * @return array
      */
-    public function providerToArbitraryBase() : array
+    public function providerArbitraryBase() : array
     {
         $base7  = '0123456';
         $base8  = '01234567';
@@ -2769,6 +2784,9 @@ class BigIntegerTest extends AbstractTestCase
             ['2', 'XY', 'YX'],
             ['3', 'XY', 'YY'],
             ['4', 'XY', 'YXX'],
+
+            ['1234567890', '9876543210', '8765432109'],
+            ['9876543210', '1234567890', '0987654321'],
 
             ['98719827932647929837981791821991234', '01234567', '460150331736165026742535432255203706502'],
             ['98719827932647929837981791821991234', 'ABCDEFGH', 'EGABFADDBHDGBGFACGHECFDFEDCCFFCADHAGFAC'],
@@ -2815,7 +2833,54 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerToArbitraryBaseWithInvalidAlphabet
+     * @dataProvider providerArbitraryBaseWithInvalidAlphabet
+     *
+     * @param string $alphabet
+     */
+    public function testFromArbitraryBaseWithInvalidAlphabet(string $alphabet) : void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The alphabet must contain at least 2 chars.');
+
+        BigInteger::fromArbitraryBase('0', $alphabet);
+    }
+
+    /**
+     * @dataProvider providerFromArbitraryBaseWithInvalidNumber
+     *
+     * @param string $number
+     * @param string $alphabet
+     * @param string $expectedMessage
+     */
+    public function testFromArbitraryBaseWithInvalidNumber(string $number, string $alphabet, string $expectedMessage) : void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage($expectedMessage);
+
+        BigInteger::fromArbitraryBase($number, $alphabet);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerFromArbitraryBaseWithInvalidNumber() : array
+    {
+        return [
+            ['', '01', 'The number cannot be empty.'],
+            ['X', '01', 'Char "X" is not a valid character in the given alphabet.'],
+            ['1', 'XY', 'Char "1" is not a valid character in the given alphabet.'],
+            [' ', 'XY', 'Char " " is not a valid character in the given alphabet.'],
+
+            ["\x00", '01', 'Char 00 is not a valid character in the given alphabet.'],
+            ["\x1F", '01', 'Char 1F is not a valid character in the given alphabet.'],
+            ["\x7F", '01', 'Char 7F is not a valid character in the given alphabet.'],
+            ["\x80", '01', 'Char 80 is not a valid character in the given alphabet.'],
+            ["\xFF", '01', 'Char FF is not a valid character in the given alphabet.'],
+        ];
+    }
+
+    /**
+     * @dataProvider providerArbitraryBaseWithInvalidAlphabet
      *
      * @param string $alphabet
      */
@@ -2832,7 +2897,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function providerToArbitraryBaseWithInvalidAlphabet() : array
+    public function providerArbitraryBaseWithInvalidAlphabet() : array
     {
         return [
             [''],

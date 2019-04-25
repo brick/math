@@ -8,6 +8,7 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
+use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -115,6 +116,58 @@ final class BigInteger extends BigNumber
         $result = Calculator::get()->fromBase($number, $base);
 
         return new BigInteger($sign . $result);
+    }
+
+    /**
+     * Parses a string containing an integer in an arbitrary base, using a custom alphabet.
+     *
+     * Because this method accepts an alphabet with any character, including dash, it does not handle negative numbers.
+     *
+     * @param string $number   The number to parse.
+     * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
+     *
+     * @return BigInteger
+     *
+     * @throws NumberFormatException     If the given number is empty or contains invalid chars for the given alphabet.
+     * @throws \InvalidArgumentException If the alphabet does not contain at least 2 chars.
+     */
+    public static function fromArbitraryBase(string $number, string $alphabet) : BigInteger
+    {
+        if ($number === '') {
+            throw new NumberFormatException('The number cannot be empty.');
+        }
+
+        $base = \strlen($alphabet);
+
+        if ($base < 2) {
+            throw new \InvalidArgumentException('The alphabet must contain at least 2 chars.');
+        }
+
+        $result = '0';
+        $power = '1';
+
+        $calculator = Calculator::get();
+
+        for ($i = \strlen($number) - 1; $i >= 0; $i--) {
+            $index = \strpos($alphabet, $number[$i]);
+
+            if ($index === false) {
+                throw NumberFormatException::charNotInAlphabet($number[$i]);
+            }
+
+            if ($index !== 0) {
+                $result = $calculator->add($result, ($index === 1)
+                    ? $power
+                    : $calculator->mul($power, (string) $index)
+                );
+            }
+
+            if ($i !== 0) {
+                $power = $calculator->mul($power, (string) $base);
+            }
+        }
+
+        return new BigInteger($result);
     }
 
     /**
@@ -632,8 +685,8 @@ final class BigInteger extends BigNumber
      *
      * @return string
      *
-     * @throws NegativeNumberException
-     * @throws \InvalidArgumentException If the alphabet does not contain at least 2 chars.
+     * @throws NegativeNumberException   If this number is negative.
+     * @throws \InvalidArgumentException If the given alphabet does not contain at least 2 chars.
      */
     public function toArbitraryBase(string $alphabet) : string
     {
