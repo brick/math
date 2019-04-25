@@ -2724,6 +2724,126 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @dataProvider providerToArbitraryBase
+     *
+     * @param string $number
+     * @param string $alphabet
+     * @param string $expected
+     */
+    public function testToArbitraryBase(string $number, string $alphabet, string $expected) : void
+    {
+        $number = BigInteger::of($number);
+        $actual = $number->toArbitraryBase($alphabet);
+
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToArbitraryBase() : array
+    {
+        $base7  = '0123456';
+        $base8  = '01234567';
+        $base9  = '012345678';
+        $base10 = '0123456789';
+        $base11 = '0123456789A';
+        $base12 = '0123456789AB';
+        $base13 = '0123456789ABC';
+        $base14 = '0123456789ABCD';
+        $base15 = '0123456789ABCDE';
+        $base16 = '0123456789ABCDEF';
+        $base17 = '0123456789ABCDEFG';
+        $base64 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/';
+        $base72 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~_!$()+,;@';
+        $base85 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-:+=^!/*?&<>()[]{}@%$#';
+        $base95 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~_!$()+,;@.:=^*?&<>[]{}%#|`/\ "\'-';
+
+        return [
+            ['0', 'XY', 'X'],
+            ['1', 'XY', 'Y'],
+            ['2', 'XY', 'YX'],
+            ['3', 'XY', 'YY'],
+            ['4', 'XY', 'YXX'],
+
+            ['98719827932647929837981791821991234', '01234567', '460150331736165026742535432255203706502'],
+            ['98719827932647929837981791821991234', 'ABCDEFGH', 'EGABFADDBHDGBGFACGHECFDFEDCCFFCADHAGFAC'],
+
+            ['994495526373444232246567036253784322009', $base7, '12202520340634022241654466246440466210615152466'],
+            ['994495526373444232246567036253784322009', $base8, '13541315742261267512021577112421152053227731'],
+            ['994495526373444232246567036253784322009', $base9, '66488066070032874134652704428716607733277'],
+            ['994495526373444232246567036253784322009', $base10, '994495526373444232246567036253784322009'],
+            ['994495526373444232246567036253784322009', $base11, '2A1978399765A213135A156506809522356825'],
+            ['994495526373444232246567036253784322009', $base12, '14A05B751367AA17A09769472516764A47821'],
+            ['994495526373444232246567036253784322009', $base13, '103A050CB893910A25357BB9C395A51C0814'],
+            ['994495526373444232246567036253784322009', $base14, '10D925D22C52737225B8D5644D989CD666D'],
+            ['994495526373444232246567036253784322009', $base15, '180B5C6CC477E8D58EAC276D06C5127124'],
+            ['994495526373444232246567036253784322009', $base16, '2EC2CDF12C56F4A08DFC9511350AD2FD9'],
+            ['994495526373444232246567036253784322009', $base17, '7266E944CF4A3786D0G7661356FG769G'],
+
+            ['8149613250471589625', $base64, '74PFXAZBFRv'],
+            ['454064679874654562007441356949657', $base64, '1PZ6Xm9ayTgCZU5xGYP'],
+            ['45422310646719874654562007441356949657', $base64, 'YB0JHWGUe4+J+zbWTxGYP'],
+            ['1121921454223110646719874654562007441356949657', $base64, 'oJmRKAU1GNNBHSz/S2Q0TxGYP'],
+            ['10121192145422311064671918746545620075441356949657', $base64, '1kpPyynJk/pgMxgIopD9BB+eAaYP'],
+
+            ['91906824217328753670', $base72, 'OdYuzDmu@os'],
+            ['535903357336880946855837144765', $base72, '11;QwdMB!D)84;w@,'],
+            ['3628645428648421468982810963905568210330', $base72, '3g_D_hpFwvT+jM2UiUF$eQ'],
+            ['67461606287909524242401421486420908853942741199316', $base72, 'YdSH9KcqwE)dahLuF(uO,s2Y8Di'],
+            ['673058295257771060991298040835276179059500055157907555831688', $base72, '2Y9hTIpkORoK;$uQNC!8u$1~9RBE1QRVG'],
+
+            ['79248970614563033069', $base85, '42dhgJI>!D{'],
+            ['70259972284912331680149126100', $base85, '!vcNSNE+R.X.t$k'],
+            ['1345211446421580809283013645361855592276', $base85, '3E0H]t@k=%[$4EHpk/WV6'],
+            ['92817563463558871408829910215554937029176299613741', $base85, 'R%GwIo]>peBh?fLxaPWsYp%I16'],
+            ['105332456216236666737534759570691835270616864952881377663761', $base85, 'd!qFsWcY1Q6IuAU{50jN6?nK=lFms11'],
+
+            ['82164606170768213165', $base95, '1ZY-^xBX,-A'],
+            ['524820792661006993039498194693', $base95, '1Cwv({YtIbrPpE]r'],
+            ['2500692630577003661291596854860146627030', $base95, '(Pszub<V3^Y]cs\YnU}o'],
+            ['76088698829341245347114640636745832062447993955533', $base95, '2;t?i8zv}hWZ> )loCj(d7*yO3'],
+            ['949872477171550708823123033931693463913459064733934993892215', $base95, '4ed~yPcS~L3d)w}!A!%R5_4Dx9u;B?0'],
+        ];
+    }
+
+    /**
+     * @dataProvider providerToArbitraryBaseWithInvalidAlphabet
+     *
+     * @param string $alphabet
+     */
+    public function testToArbitraryBaseWithInvalidAlphabet(string $alphabet) : void
+    {
+        $number = BigInteger::of(123);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The alphabet must contain at least 2 chars.');
+
+        $number->toArbitraryBase($alphabet);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerToArbitraryBaseWithInvalidAlphabet() : array
+    {
+        return [
+            [''],
+            ['0']
+        ];
+    }
+
+    public function testToArbitraryBaseOnNegativeNumber() : void
+    {
+        $number = BigInteger::of(-123);
+
+        $this->expectException(NegativeNumberException::class);
+        $this->expectExceptionMessage('toArbitraryBase() does not support negative numbers.');
+
+        $number->toArbitraryBase('01');
+    }
+
     public function testSerialize()
     {
         $value = '-1234567890987654321012345678909876543210123456789';

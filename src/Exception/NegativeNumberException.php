@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Brick\Math\Exception;
 
 /**
- * Exception thrown when attempting to calculate the square root of a negative number.
+ * Exception thrown when attempting to perform an unsupported operation, such as a square root, on a negative number.
  */
 class NegativeNumberException extends MathException
 {

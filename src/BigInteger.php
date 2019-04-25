@@ -623,6 +623,52 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Returns a string representation of this number in an arbitrary base with a custom alphabet.
+     *
+     * Because this method accepts an alphabet with any character, including dash, it does not handle negative numbers;
+     * a NegativeNumberException will be thrown when attempting to call this method on a negative number.
+     *
+     * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
+     *
+     * @return string
+     *
+     * @throws NegativeNumberException
+     * @throws \InvalidArgumentException If the alphabet does not contain at least 2 chars.
+     */
+    public function toArbitraryBase(string $alphabet) : string
+    {
+        $base = \strlen($alphabet);
+
+        if ($base < 2) {
+            throw new \InvalidArgumentException('The alphabet must contain at least 2 chars.');
+        }
+
+        if ($this->value[0] === '-') {
+            throw new NegativeNumberException(__FUNCTION__ . '() does not support negative numbers.');
+        }
+
+        $value = $this->value;
+
+        if ($value === '0') {
+            return $alphabet[0];
+        }
+
+        $base = (string) $base;
+        $result = '';
+
+        $calculator = Calculator::get();
+
+        while ($value !== '0') {
+            [$value, $remainder] = $calculator->divQR($value, $base);
+            $remainder = (int) $remainder;
+
+            $result .= $alphabet[$remainder];
+        }
+
+        return \strrev($result);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function __toString() : string
