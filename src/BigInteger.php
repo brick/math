@@ -56,6 +56,8 @@ final class BigInteger extends BigNumber
     /**
      * Parses a string containing an integer in an arbitrary base.
      *
+     * @deprecated will be removed in version 0.9 - use fromBase() instead
+     *
      * The string can optionally be prefixed with the `+` or `-` sign.
      * For bases greater than 10, both uppercase and lowercase letters are allowed.
      *
@@ -106,6 +108,77 @@ final class BigInteger extends BigNumber
 
         if (\preg_match($pattern, \strtolower($number), $matches) === 1) {
             throw new \InvalidArgumentException(\sprintf('"%s" is not a valid character in base %d.', $matches[0], $base));
+        }
+
+        if ($base === 10) {
+            // The number is usable as is, avoid further calculation.
+            return new BigInteger($sign . $number);
+        }
+
+        $result = Calculator::get()->fromBase($number, $base);
+
+        return new BigInteger($sign . $result);
+    }
+
+    /**
+     * Creates a number from a string in a given base.
+     *
+     * The string can optionally be prefixed with the `+` or `-` sign.
+     *
+     * Bases greater than 36 are not supported by this method, as there is no clear consensus on which of the lowercase
+     * or uppercase characters should come first. Instead, this method accepts any base up to 36, and does not
+     * differentiate lowercase and uppercase characters, which are considered equal.
+     *
+     * For bases greater than 36, and/or custom alphabets, use the fromArbitraryBase() method.
+     *
+     * @param string $number The number to parse.
+     * @param int    $base   The base of the number, between 2 and 36.
+     *
+     * @return BigInteger
+     *
+     * @throws NumberFormatException     If the number is empty, or contains invalid chars for the given base.
+     * @throws \InvalidArgumentException If the base is out of range.
+     */
+    public static function fromBase(string $number, int $base) : BigInteger
+    {
+        if ($number === '') {
+            throw new NumberFormatException('The number cannot be empty.');
+        }
+
+        if ($base < 2 || $base > 36) {
+            throw new \InvalidArgumentException(\sprintf('Base %d is not in range 2 to 36.', $base));
+        }
+
+        if ($number[0] === '-') {
+            $sign = '-';
+            $number = \substr($number, 1);
+        } elseif ($number[0] === '+') {
+            $sign = '';
+            $number = \substr($number, 1);
+        } else {
+            $sign = '';
+        }
+
+        if ($number === '') {
+            throw new NumberFormatException('The number cannot be empty.');
+        }
+
+        $number = \ltrim($number, '0');
+
+        if ($number === '') {
+            // The result will be the same in any base, avoid further calculation.
+            return BigInteger::zero();
+        }
+
+        if ($number === '1') {
+            // The result will be the same in any base, avoid further calculation.
+            return new BigInteger($sign . '1');
+        }
+
+        $pattern = '/[^' . \substr(Calculator::DICTIONARY, 0, $base) . ']/';
+
+        if (\preg_match($pattern, \strtolower($number), $matches) === 1) {
+            throw new NumberFormatException(\sprintf('"%s" is not a valid character in base %d.', $matches[0], $base));
         }
 
         if ($base === 10) {
