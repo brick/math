@@ -2596,22 +2596,21 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerToBase
      *
-     * @param string $number   The number to convert.
+     * @param string $number   The number to convert, in base 10.
      * @param int    $base     The base to convert the number to.
      * @param string $expected The expected result.
      */
     public function testToBase($number, $base, $expected)
     {
         $this->assertSame($expected, BigInteger::parse($number)->toBase($base));
-        $this->assertSame('-' . $expected, BigInteger::parse('-' . $number)->toBase($base));
     }
 
     /**
-     * @return array
+     * @return iterable
      */
-    public function providerToBase()
+    public function providerToBase() : iterable
     {
-        return [
+        $tests = [
             ['640998479760579495168036691627608949', 36, '110011001100110011001111'],
             ['335582856048758779730579523833856636', 35, '110011001100110011001111'],
             ['172426711023004493064981145981549295', 34, '110011001100110011001111'],
@@ -2683,7 +2682,21 @@ class BigIntegerTest extends AbstractTestCase
             ['228',                                                        4,                                 '3210'],
             ['21',                                                         3,                                  '210'],
             ['2',                                                          2,                                   '10'],
+
+            ['1', 2, '1'],
+            ['0', 2, '0'],
+
+            ['1', 8, '1'],
+            ['0', 8, '0'],
         ];
+
+        foreach ($tests as [$number, $base, $expected]) {
+            yield [$number, $base, $expected];
+
+            if ($number[0] !== '0') {
+                yield ['-' . $number, $base, '-' . $expected];
+            }
+        }
     }
 
     /**

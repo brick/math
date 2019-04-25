@@ -348,6 +348,10 @@ abstract class Calculator
             $result .= self::DICTIONARY[$remainder];
         }
 
+        if ($result === '') {
+            return '0';
+        }
+
         if ($negative) {
             $result .= '-';
         }
