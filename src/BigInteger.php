@@ -70,54 +70,11 @@ final class BigInteger extends BigNumber
      */
     public static function parse(string $number, int $base = 10) : BigInteger
     {
-        if ($number === '') {
-            throw new \InvalidArgumentException('The value cannot be empty.');
+        try {
+            return self::fromBase($number, $base);
+        } catch (NumberFormatException $e) {
+            throw new \InvalidArgumentException($e->getMessage(), 0, $e);
         }
-
-        if ($base < 2 || $base > 36) {
-            throw new \InvalidArgumentException(\sprintf('Base %d is not in range 2 to 36.', $base));
-        }
-
-        if ($number[0] === '-') {
-            $sign = '-';
-            $number = \substr($number, 1);
-        } elseif ($number[0] === '+') {
-            $sign = '';
-            $number = \substr($number, 1);
-        } else {
-            $sign = '';
-        }
-
-        if ($number === '') {
-            throw new \InvalidArgumentException('The value cannot be empty.');
-        }
-
-        $number = \ltrim($number, '0');
-
-        if ($number === '') {
-            // The result will be the same in any base, avoid further calculation.
-            return BigInteger::zero();
-        }
-
-        if ($number === '1') {
-            // The result will be the same in any base, avoid further calculation.
-            return new BigInteger($sign . '1');
-        }
-
-        $pattern = '/[^' . \substr(Calculator::DICTIONARY, 0, $base) . ']/';
-
-        if (\preg_match($pattern, \strtolower($number), $matches) === 1) {
-            throw new \InvalidArgumentException(\sprintf('"%s" is not a valid character in base %d.', $matches[0], $base));
-        }
-
-        if ($base === 10) {
-            // The number is usable as is, avoid further calculation.
-            return new BigInteger($sign . $number);
-        }
-
-        $result = Calculator::get()->fromBase($number, $base);
-
-        return new BigInteger($sign . $result);
     }
 
     /**
