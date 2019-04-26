@@ -531,23 +531,13 @@ class NativeCalculator extends Calculator
         $x = \strlen($a);
         $y = \strlen($b);
 
-        if ($x > $y) {
-            return 1;
+        $cmp = $x <=> $y;
+
+        if ($cmp !== 0) {
+            return $cmp;
         }
 
-        if ($x < $y) {
-            return -1;
-        }
-
-        for ($i = 0; $i < $x; $i++) {
-            $cmp = $a[$i] <=> $b[$i];
-
-            if ($cmp !== 0) {
-                return $cmp;
-            }
-        }
-
-        return 0;
+        return \strcmp($a, $b) <=> 0; // enforce [-1, 0, 1]
     }
 
     /**
