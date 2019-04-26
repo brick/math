@@ -167,6 +167,26 @@ class NativeCalculator extends Calculator
             return [$this->neg($a), '0'];
         }
 
+        $na = $a * 1; // cast to number
+
+        if (is_int($na)) {
+            $nb = $b * 1;
+
+            if (is_int($nb)) {
+                // the only division that may overflow is PHP_INT_MIN / -1,
+                // which cannot happen here as we've already handled a divisor of -1 above.
+                $mod = $na % $nb;
+                $div = ($na - $mod) / $nb;
+
+                assert(is_int($div));
+
+                return [
+                    (string) $div,
+                    (string) $mod
+                ];
+            }
+        }
+
         $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
 
         $aLen = \strlen($aDig);

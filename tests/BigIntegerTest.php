@@ -639,6 +639,10 @@ class BigIntegerTest extends AbstractTestCase
             ['123456789098765432101234567890987654322', '14/7', '61728394549382716050617283945493827161'],
             ['61728394549382716050617283945493827161', '0.5', RoundingNecessaryException::class],
             ['61728394549382716050617283945493827161', '1/2', RoundingNecessaryException::class],
+
+            // overflowing native integer division
+            ['-2147483648', '-1', '2147483648'], // 32-bit
+            ['-9223372036854775808', '-1', '9223372036854775808'], // 64-bit
         ];
     }
 
