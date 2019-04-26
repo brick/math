@@ -9,7 +9,8 @@
         "Arithmetic",
         "BigInteger",
         "BigDecimal",
-        "BigRational"
+        "BigRational",
+        "Bignum"
     ],
     "license": "MIT",
     "require": {
