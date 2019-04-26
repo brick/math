@@ -59,14 +59,13 @@ class NativeCalculator extends Calculator
             return $a;
         }
 
-        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
+        $result = $a + $b;
 
-        $aLen = \strlen($aDig);
-        $bLen = \strlen($bDig);
-
-        if ($aLen <= $this->maxDigits && $bLen <= $this->maxDigits) {
-            return (string) ($a + $b);
+        if (is_int($result)) {
+            return (string) $result;
         }
+
+        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
 
         if ($aNeg === $bNeg) {
             $result = $this->doAdd($aDig, $bDig);
@@ -114,14 +113,13 @@ class NativeCalculator extends Calculator
             return $this->neg($a);
         }
 
-        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
+        $result = $a * $b;
 
-        $aLen = \strlen($aDig);
-        $bLen = \strlen($bDig);
-
-        if ($aLen + $bLen <= $this->maxDigits) {
-            return (string) ($a * $b);
+        if (is_int($result)) {
+            return (string) $result;
         }
+
+        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
 
         $result = $this->doMul($aDig, $bDig);
 
