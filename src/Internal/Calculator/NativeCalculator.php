@@ -175,35 +175,19 @@ class NativeCalculator extends Calculator
             if (is_int($nb)) {
                 // the only division that may overflow is PHP_INT_MIN / -1,
                 // which cannot happen here as we've already handled a divisor of -1 above.
-                $mod = $na % $nb;
-                $div = ($na - $mod) / $nb;
+                $r = $na % $nb;
+                $q = ($na - $r) / $nb;
 
-                assert(is_int($div));
+                assert(is_int($q));
 
                 return [
-                    (string) $div,
-                    (string) $mod
+                    (string) $q,
+                    (string) $r
                 ];
             }
         }
 
         $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
-
-        $aLen = \strlen($aDig);
-        $bLen = \strlen($bDig);
-
-        if ($aLen <= $this->maxDigits && $bLen <= $this->maxDigits) {
-            $a = (int) $a;
-            $b = (int) $b;
-
-            $r = $a % $b;
-            $q = ($a - $r) / $b;
-
-            $q = (string) $q;
-            $r = (string) $r;
-
-            return [$q, $r];
-        }
 
         [$q, $r] = $this->doDiv($aDig, $bDig);
 
