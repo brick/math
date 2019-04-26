@@ -276,7 +276,7 @@ class NativeCalculator extends Calculator
             $blockA = \substr($a, $i, $blockLength);
             $blockB = \substr($b, $i, $blockLength);
 
-            $sum = (string) ((int) $blockA + (int) $blockB + $carry);
+            $sum = (string) ($blockA + $blockB + $carry);
             $sumLength = \strlen($sum);
 
             if ($sumLength > $blockLength) {
@@ -346,7 +346,7 @@ class NativeCalculator extends Calculator
             $blockA = \substr($a, $i, $blockLength);
             $blockB = \substr($b, $i, $blockLength);
 
-            $sum = (int) $blockA - (int) $blockB - $carry;
+            $sum = $blockA - $blockB - $carry;
 
             if ($sum < 0) {
                 $sum += $complement;
