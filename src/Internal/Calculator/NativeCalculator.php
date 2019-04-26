@@ -251,6 +251,10 @@ class NativeCalculator extends Calculator
      */
     public function sqrt(string $n) : string
     {
+        if ($n === '0') {
+            return '0';
+        }
+
         // initial approximation
         $x = \str_repeat('9', \intdiv(\strlen($n), 2) ?: 1);
 
