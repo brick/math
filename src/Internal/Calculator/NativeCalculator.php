@@ -476,7 +476,7 @@ class NativeCalculator extends Calculator
         $x = \strlen($a);
         $y = \strlen($b);
 
-        // we now know that a > b && x >= y
+        // we now know that a >= b && x >= y
 
         $q = '0'; // quotient
         $r = $a; // remainder
