@@ -353,20 +353,18 @@ abstract class Calculator
 
         $base = (string) $base;
 
-        $calculator = Calculator::get();
-
         for ($i = \strlen($number) - 1; $i >= 0; $i--) {
             $index = \strpos($alphabet, $number[$i]);
 
             if ($index !== 0) {
-                $result = $calculator->add($result, ($index === 1)
+                $result = $this->add($result, ($index === 1)
                     ? $power
-                    : $calculator->mul($power, (string) $index)
+                    : $this->mul($power, (string) $index)
                 );
             }
 
             if ($i !== 0) {
-                $power = $calculator->mul($power, $base);
+                $power = $this->mul($power, $base);
             }
         }
 
@@ -631,12 +629,10 @@ abstract class Calculator
      */
     private function toBinary(string $number) : string
     {
-        $calculator = Calculator::get();
-
         $result = '';
 
         while ($number !== '0') {
-            [$number, $remainder] = $calculator->divQR($number, '256');
+            [$number, $remainder] = $this->divQR($number, '256');
             $result .= \chr((int) $remainder);
         }
 
@@ -652,8 +648,6 @@ abstract class Calculator
      */
     private function toDecimal(string $bytes) : string
     {
-        $calculator = Calculator::get();
-
         $result = '0';
         $power = '1';
 
@@ -661,14 +655,14 @@ abstract class Calculator
             $index = \ord($bytes[$i]);
 
             if ($index !== 0) {
-                $result = $calculator->add($result, ($index === 1)
+                $result = $this->add($result, ($index === 1)
                     ? $power
-                    : $calculator->mul($power, (string) $index)
+                    : $this->mul($power, (string) $index)
                 );
             }
 
             if ($i !== 0) {
-                $power = $calculator->mul($power, '256');
+                $power = $this->mul($power, '256');
             }
         }
 
