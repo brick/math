@@ -555,7 +555,9 @@ class NativeCalculator extends Calculator
         $x = \strlen($a);
         $y = \strlen($b);
 
-        if ($x === $y) {
+        if ($x > $y) {
+            $b = \str_repeat('0', $x - $y) . $b;
+
             return $x;
         }
 
@@ -564,8 +566,6 @@ class NativeCalculator extends Calculator
 
             return $y;
         }
-
-        $b = \str_repeat('0', $x - $y) . $b;
 
         return $x;
     }
