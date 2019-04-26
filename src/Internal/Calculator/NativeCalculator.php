@@ -51,18 +51,18 @@ class NativeCalculator extends Calculator
      */
     public function add(string $a, string $b) : string
     {
+        $result = $a + $b;
+
+        if (is_int($result)) {
+            return (string) $result;
+        }
+
         if ($a === '0') {
             return $b;
         }
 
         if ($b === '0') {
             return $a;
-        }
-
-        $result = $a + $b;
-
-        if (is_int($result)) {
-            return (string) $result;
         }
 
         $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
@@ -93,6 +93,12 @@ class NativeCalculator extends Calculator
      */
     public function mul(string $a, string $b) : string
     {
+        $result = $a * $b;
+
+        if (is_int($result)) {
+            return (string) $result;
+        }
+
         if ($a === '0' || $b === '0') {
             return '0';
         }
@@ -111,12 +117,6 @@ class NativeCalculator extends Calculator
 
         if ($b === '-1') {
             return $this->neg($a);
-        }
-
-        $result = $a * $b;
-
-        if (is_int($result)) {
-            return (string) $result;
         }
 
         $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
