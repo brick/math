@@ -214,6 +214,10 @@ final class BigDecimal extends BigNumber
             return $that;
         }
 
+        if ($that->value === '0' || $this->value === '0') {
+            return new BigDecimal('0', $this->scale + $that->scale);
+        }
+
         $value = Calculator::get()->mul($this->value, $that->value);
         $scale = $this->scale + $that->scale;
 
