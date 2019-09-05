@@ -175,6 +175,10 @@ final class BigDecimal extends BigNumber
             return $this;
         }
 
+        if ($this->value === '0' && $this->scale <= $that->scale) {
+            return $that->negated();
+        }
+
         $this->scaleValues($this, $that, $a, $b);
 
         $value = Calculator::get()->sub($a, $b);
