@@ -281,6 +281,10 @@ final class BigInteger extends BigNumber
             return $that;
         }
 
+        if ($that->value === '0' || $this->value === '0') {
+            return BigInteger::zero();
+        }
+
         $value = Calculator::get()->mul($this->value, $that->value);
 
         return new BigInteger($value);
