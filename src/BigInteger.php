@@ -247,6 +247,10 @@ final class BigInteger extends BigNumber
             return $this;
         }
 
+        if ($this->value === '0') {
+            return $that->negated();
+        }
+
         $value = Calculator::get()->sub($this->value, $that->value);
 
         return new BigInteger($value);
