@@ -309,6 +309,10 @@ final class BigInteger extends BigNumber
             throw DivisionByZeroException::divisionByZero();
         }
 
+        if ($this->value === '0') {
+            return BigInteger::zero();
+        }
+
         $result = Calculator::get()->divRound($this->value, $that->value, $roundingMode);
 
         return new BigInteger($result);
