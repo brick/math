@@ -225,6 +225,10 @@ final class BigInteger extends BigNumber
             return $this;
         }
 
+        if ($this->value === '0') {
+            return $that;
+        }
+
         $value = Calculator::get()->add($this->value, $that->value);
 
         return new BigInteger($value);
