@@ -288,6 +288,12 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
+    public function testOfUnscaledValueWithDefaultScale()
+    {
+        $number = BigDecimal::ofUnscaledValue('123456789');
+        $this->assertBigDecimalInternalValues('123456789', 0, $number);
+    }
+
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -632,6 +638,11 @@ class BigDecimalTest extends AbstractTestCase
             ['123.00', '999',    '12287700',   2],
             ['123.00', '999.0',  '122877000',  3],
             ['123.00', '999.00', '1228770000', 4],
+
+            ['123.0', '0.1', '1230', 2],
+            ['123.0', '0.01', '1230', 3],
+            ['123.1', '0.01', '1231', 3],
+            ['123.1', '0.001', '1231', 4],
 
             ['123',    '-999',    '-122877',     0],
             ['123',    '-999.0',  '-1228770',    1],
