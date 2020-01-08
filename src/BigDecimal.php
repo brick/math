@@ -148,6 +148,10 @@ final class BigDecimal extends BigNumber
             return $this;
         }
 
+        if ($this->value === '0' && $this->scale <= $that->scale) {
+            return $that;
+        }
+
         $this->scaleValues($this, $that, $a, $b);
 
         $value = Calculator::get()->add($a, $b);
@@ -200,6 +204,10 @@ final class BigDecimal extends BigNumber
 
         if ($that->value === '1' && $that->scale === 0) {
             return $this;
+        }
+
+        if ($this->value === '1' && $this->scale === 0) {
+            return $that;
         }
 
         $value = Calculator::get()->mul($this->value, $that->value);
