@@ -251,10 +251,6 @@ final class BigInteger extends BigNumber
             return $this;
         }
 
-        if ($this->value === '0') {
-            return $that->negated();
-        }
-
         $value = Calculator::get()->sub($this->value, $that->value);
 
         return new BigInteger($value);
@@ -279,10 +275,6 @@ final class BigInteger extends BigNumber
 
         if ($this->value === '1') {
             return $that;
-        }
-
-        if ($that->value === '0' || $this->value === '0') {
-            return BigInteger::zero();
         }
 
         $value = Calculator::get()->mul($this->value, $that->value);
@@ -311,10 +303,6 @@ final class BigInteger extends BigNumber
 
         if ($that->value === '0') {
             throw DivisionByZeroException::divisionByZero();
-        }
-
-        if ($this->value === '0') {
-            return BigInteger::zero();
         }
 
         $result = Calculator::get()->divRound($this->value, $that->value, $roundingMode);
