@@ -228,7 +228,7 @@ final class BigDecimal extends BigNumber
      * @throws \InvalidArgumentException If the scale or rounding mode is invalid.
      * @throws MathException             If the number is invalid, is zero, or rounding was necessary.
      */
-    public function dividedBy($that, int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
+    public function dividedBy($that, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
