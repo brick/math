@@ -770,10 +770,12 @@ final class BigDecimal extends BigNumber
     /**
      * Puts the internal values of the given decimal numbers on the same scale.
      *
-     * @param BigDecimal $x The first decimal number.
-     * @param BigDecimal $y The second decimal number.
-     * @param string     $a A variable to store the scaled integer value of $x.
-     * @param string     $b A variable to store the scaled integer value of $y.
+     * @param BigDecimal  $x The first decimal number.
+     * @param BigDecimal  $y The second decimal number.
+     * @param string|null $a A variable to store the scaled integer value of $x.
+     * @param-out string
+     * @param string|null $b A variable to store the scaled integer value of $y.
+     * @param-out string
      *
      * @return void
      */

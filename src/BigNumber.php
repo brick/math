@@ -137,6 +137,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     protected static function create(... $args) : BigNumber
     {
+        /** @psalm-suppress TooManyArguments */
         return new static(... $args);
     }
 
