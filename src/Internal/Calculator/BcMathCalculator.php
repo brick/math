@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Brick\Math\Internal\Calculator;
 
-use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -43,12 +42,7 @@ class BcMathCalculator extends Calculator
      */
     public function divQ(string $a, string $b) : string
     {
-        $result = \bcdiv($a, $b, 0);
-        if ($result === null) {
-            throw DivisionByZeroException::divisionByZero();
-        }
-
-        return $result;
+        return \bcdiv($a, $b, 0);
     }
 
     /**
@@ -56,12 +50,7 @@ class BcMathCalculator extends Calculator
      */
     public function divR(string $a, string $b) : string
     {
-        $result = \bcmod($a, $b);
-        if ($result === null) {
-            throw DivisionByZeroException::divisionByZero();
-        }
-
-        return $result;
+        return \bcmod($a, $b);
     }
 
     /**

@@ -17,6 +17,7 @@ before_script:
 script:
   - mkdir -p build/logs
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - vendor/bin/psalm --show-info=false --no-progress
 
 after_script:
   - vendor/bin/php-coveralls -v
