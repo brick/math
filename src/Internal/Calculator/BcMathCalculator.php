@@ -56,7 +56,12 @@ class BcMathCalculator extends Calculator
      */
     public function divR(string $a, string $b) : string
     {
-        return \bcmod($a, $b);
+        $result = \bcmod($a, $b);
+        if ($result === null) {
+            throw DivisionByZeroException::divisionByZero();
+        }
+
+        return $result;
     }
 
     /**

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="dev-master@7a65eb1da9caeb4d2657c2c08f4ed998dd0b2764">
+  <file src="src/Internal/Calculator/BcMathCalculator.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>[$q, $r]</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>array</code>
+    </InvalidReturnType>
+  </file>
+  <file src="src/Internal/Calculator/NativeCalculator.php">
+    <InvalidOperand occurrences="6">
+      <code>$a</code>
+      <code>$a</code>
+      <code>$a</code>
+      <code>$b</code>
+      <code>$blockA</code>
+      <code>$blockA</code>
+    </InvalidOperand>
+    <LoopInvalidation occurrences="4">
+      <code>$i</code>
+      <code>$i</code>
+      <code>$i</code>
+      <code>$j</code>
+    </LoopInvalidation>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$e / 2</code>
+    </PossiblyInvalidArgument>
+  </file>
+</files>
