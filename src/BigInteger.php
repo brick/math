@@ -42,7 +42,7 @@ final class BigInteger extends BigNumber
     /**
      * Creates a BigInteger of the given value.
      *
-     * @param BigNumber|number|string $value
+     * @param BigNumber|int|float|string $value
      *
      * @return BigInteger
      *
@@ -211,7 +211,7 @@ final class BigInteger extends BigNumber
     /**
      * Returns the sum of this number and the given one.
      *
-     * @param BigNumber|number|string $that The number to add. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $that The number to add. Must be convertible to a BigInteger.
      *
      * @return BigInteger The result.
      *
@@ -237,7 +237,7 @@ final class BigInteger extends BigNumber
     /**
      * Returns the difference of this number and the given one.
      *
-     * @param BigNumber|number|string $that The number to subtract. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $that The number to subtract. Must be convertible to a BigInteger.
      *
      * @return BigInteger The result.
      *
@@ -259,7 +259,7 @@ final class BigInteger extends BigNumber
     /**
      * Returns the product of this number and the given one.
      *
-     * @param BigNumber|number|string $that The multiplier. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $that The multiplier. Must be convertible to a BigInteger.
      *
      * @return BigInteger The result.
      *
@@ -285,7 +285,7 @@ final class BigInteger extends BigNumber
     /**
      * Returns the result of the division of this number by the given one.
      *
-     * @param BigNumber|number|string $that         The divisor. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $that         The divisor. Must be convertible to a BigInteger.
      * @param int                     $roundingMode An optional rounding mode.
      *
      * @return BigInteger The result.
@@ -343,7 +343,7 @@ final class BigInteger extends BigNumber
     /**
      * Returns the quotient of the division of this number by the given one.
      *
-     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @return BigInteger
      *
@@ -371,7 +371,7 @@ final class BigInteger extends BigNumber
      *
      * The remainder, when non-zero, has the same sign as the dividend.
      *
-     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @return BigInteger
      *
@@ -393,7 +393,7 @@ final class BigInteger extends BigNumber
     /**
      * Returns the quotient and remainder of the division of this number by the given one.
      *
-     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @return BigInteger[] An array containing the quotient and the remainder.
      *
@@ -478,7 +478,7 @@ final class BigInteger extends BigNumber
      *
      * The GCD is always positive, unless both operands are zero, in which case it is zero.
      *
-     * @param BigNumber|number|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
      *
      * @return BigInteger
      */
@@ -544,7 +544,7 @@ final class BigInteger extends BigNumber
      *
      * This method returns a negative BigInteger if and only if both operands are negative.
      *
-     * @param BigNumber|number|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
      *
      * @return BigInteger
      */
@@ -560,7 +560,7 @@ final class BigInteger extends BigNumber
      *
      * This method returns a negative BigInteger if and only if either of the operands is negative.
      *
-     * @param BigNumber|number|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
      *
      * @return BigInteger
      */
@@ -576,7 +576,7 @@ final class BigInteger extends BigNumber
      *
      * This method returns a negative BigInteger if and only if exactly one of the operands is negative.
      *
-     * @param BigNumber|number|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
      *
      * @return BigInteger
      */
