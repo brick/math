@@ -90,16 +90,16 @@ abstract class Calculator
     /**
      * Extracts the digits and sign of the operands.
      *
-     * @param string      $a    The first operand.
-     * @param string      $b    The second operand.
-     * @param string|null $aDig A variable to store the digits of the first operand.
-     * @param-out string  $aDig
-     * @param string|null $bDig A variable to store the digits of the second operand.
-     * @param-out string  $bDig
-     * @param bool|null   $aNeg A variable to store whether the first operand is negative.
-     * @param-out bool    $aNeg
-     * @param bool|null   $bNeg A variable to store whether the second operand is negative.
-     * @param-out bool    $bNeg
+     * @param string     $a    The first operand.
+     * @param string     $b    The second operand.
+     * @param null       $aDig A variable to store the digits of the first operand.
+     * @param-out string $aDig
+     * @param null       $bDig A variable to store the digits of the second operand.
+     * @param-out string $bDig
+     * @param null       $aNeg A variable to store whether the first operand is negative.
+     * @param-out bool   $aNeg
+     * @param null       $bNeg A variable to store whether the second operand is negative.
+     * @param-out bool   $bNeg
      *
      * @return void
      */
