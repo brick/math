@@ -4,7 +4,7 @@ php:
   - 7.1
   - 7.2
   - 7.3
-  - 7.4
+  # 7.4 is included in the matrix below
 
 env:
   - CALCULATOR=GMP
@@ -32,8 +32,14 @@ jobs:
   include:
     - stage: Smoke Testing
       php: 7.4
-      env: COVERAGE=yes
-    - stage: Smoke Testing
-      php: 7.4
       env: Psalm
       script: vendor/bin/psalm --show-info=false --no-progress
+    - stage: Smoke Testing
+      php: 7.4
+      env: CALCULATOR=GMP COVERAGE=yes
+    - stage: Smoke Testing
+      php: 7.4
+      env: CALCULATOR=BCMath COVERAGE=yes
+    - stage: Smoke Testing
+      php: 7.4
+      env: CALCULATOR=Native COVERAGE=yes
