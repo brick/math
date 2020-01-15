@@ -15,9 +15,25 @@ before_script:
   - composer install
 
 script:
-  - mkdir -p build/logs
-  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-  - vendor/bin/psalm --show-info=false --no-progress
+  - |
+    if [ "x$COVERAGE" == "xyes" ]; then
+      mkdir -p build/logs && vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+    else
+      vendor/bin/phpunit
+    fi
 
 after_script:
-  - vendor/bin/php-coveralls -v
+  - |
+    if [ "x$COVERAGE" == "xyes" ]; then
+      vendor/bin/php-coveralls -v
+    fi
+
+jobs:
+  include:
+    - stage: Smoke Testing
+      php: 7.4
+      env: COVERAGE=yes
+    - stage: Smoke Testing
+      php: 7.4
+      env: Psalm
+      script: vendor/bin/psalm --show-info=false --no-progress
