@@ -12,6 +12,10 @@ env:
   - CALCULATOR=Native
 
 before_script:
+  - |
+    if [ "x$COVERAGE" != "xyes" ]; then
+      phpenv config-rm xdebug.ini
+    fi
   - composer install
 
 script:
