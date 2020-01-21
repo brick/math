@@ -1196,7 +1196,7 @@ class BigIntegerTest extends AbstractTestCase
      *
      * @param string $dividend  The dividend.
      * @param string $divisor   The divisor.
-     * @param string $quotient  The expected quotient (ignore for this test).
+     * @param string $quotient  The expected quotient (ignored for this test).
      * @param string $remainder The expected remainder.
      */
     public function testRemainder($dividend, $divisor, $quotient, $remainder)
@@ -1207,7 +1207,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @expectedException \Brick\Math\Exception\DivisionByZeroException
      */
-    public function testRemainerOfZeroThrowsException()
+    public function testRemainderOfZeroThrowsException()
     {
         BigInteger::of(1)->remainder(0);
     }
