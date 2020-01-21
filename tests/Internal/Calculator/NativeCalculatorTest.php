@@ -14,21 +14,14 @@ class NativeCalculatorTest extends AbstractTestCase
 {
     /**
      * @dataProvider providerAdd
-     *
-     * @param string $a
-     * @param string $b
-     * @param string $expectedValue
      */
-    public function testAdd($a, $b, $expectedValue)
+    public function testAdd(string $a, string $b, string $expectedValue) : void
     {
         $nativeCalculator = new NativeCalculator();
         $this->assertSame($expectedValue, $nativeCalculator->add($a, $b));
     }
 
-    /**
-     * @return array
-     */
-    public function providerAdd()
+    public function providerAdd() : array
     {
         return [
             ['0', '1234567891234567889999999', '1234567891234567889999999'],
@@ -43,21 +36,14 @@ class NativeCalculatorTest extends AbstractTestCase
 
     /**
      * @dataProvider providerMul
-     *
-     * @param string $a
-     * @param string $b
-     * @param string $expectedValue
      */
-    public function testMul($a, $b, $expectedValue)
+    public function testMul(string $a, string $b, string $expectedValue) : void
     {
         $nativeCalculator = new NativeCalculator();
         $this->assertSame($expectedValue, $nativeCalculator->mul($a, $b));
     }
 
-    /**
-     * @return array
-     */
-    public function providerMul()
+    public function providerMul() : array
     {
         return [
             ['0', '0', '0'],
@@ -77,21 +63,14 @@ class NativeCalculatorTest extends AbstractTestCase
 
     /**
      * @dataProvider providerPow
-     *
-     * @param string $a
-     * @param string $b
-     * @param string $expectedValue
      */
-    public function testPow($a, $b, $expectedValue)
+    public function testPow(string $a, int $b, string $expectedValue) : void
     {
         $nativeCalculator = new NativeCalculator();
         $this->assertSame($expectedValue, $nativeCalculator->pow($a, $b));
     }
 
-    /**
-     * @return array
-     */
-    public function providerPow()
+    public function providerPow() : array
     {
         return [
             ['123456789012345678901234567890', 0, '1'],

@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 class CalculatorDetectTest extends TestCase
 {
-    public function testGetWithNoCalculatorSetDetectsCalculator()
+    public function testGetWithNoCalculatorSetDetectsCalculator() : void
     {
         $currentCalculator = Calculator::get();
 
