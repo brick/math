@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Brick\Math\Tests;
 
 use Brick\Math\BigInteger;
+use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\DivisionByZeroException;
@@ -92,12 +93,12 @@ class BigIntegerTest extends AbstractTestCase
 
     /**
      * @dataProvider providerOfInvalidFormatThrowsException
-     * @expectedException \Brick\Math\Exception\NumberFormatException
      *
      * @param string|number $value
      */
     public function testOfInvalidFormatThrowsException($value) : void
     {
+        $this->expectException(NumberFormatException::class);
         BigInteger::of($value);
     }
 
@@ -122,12 +123,12 @@ class BigIntegerTest extends AbstractTestCase
 
     /**
      * @dataProvider providerOfNonConvertibleValueThrowsException
-     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
      *
      * @param float|string $value
      */
     public function testOfNonConvertibleValueThrowsException($value) : void
     {
+        $this->expectException(RoundingNecessaryException::class);
         BigInteger::of($value);
     }
 
@@ -318,10 +319,10 @@ class BigIntegerTest extends AbstractTestCase
 
     /**
      * @dataProvider providerFromBaseWithInvalidBase
-     * @expectedException \InvalidArgumentException
      */
     public function testFromBaseWithInvalidBase(int $base) : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigInteger::fromBase('0', $base);
     }
 
@@ -378,19 +379,15 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testMinOfZeroValuesThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigInteger::min();
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
-     */
     public function testMinOfNonIntegerValuesThrowsException() : void
     {
+        $this->expectException(RoundingNecessaryException::class);
         BigInteger::min(1, 1.2);
     }
 
@@ -419,19 +416,15 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testMaxOfZeroValuesThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigInteger::max();
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
-     */
     public function testMaxOfNonIntegerValuesThrowsException() : void
     {
+        $this->expectException(RoundingNecessaryException::class);
         BigInteger::max(1, '3/2');
     }
 
@@ -461,19 +454,15 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSumOfZeroValuesThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigInteger::sum();
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
-     */
     public function testSumOfNonIntegerValuesThrowsException() : void
     {
+        $this->expectException(RoundingNecessaryException::class);
         BigInteger::sum(1, '3/2');
     }
 
@@ -612,11 +601,9 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testDividedByWithInvalidRoundingModeThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigInteger::of(1)->dividedBy(2, -1);
     }
 
@@ -1139,11 +1126,9 @@ class BigIntegerTest extends AbstractTestCase
         self::assertBigIntegerEquals($quotient, BigInteger::of($dividend)->quotient($divisor));
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\DivisionByZeroException
-     */
     public function testQuotientOfZeroThrowsException() : void
     {
+        $this->expectException(DivisionByZeroException::class);
         BigInteger::of(1)->quotient(0);
     }
 
@@ -1160,11 +1145,9 @@ class BigIntegerTest extends AbstractTestCase
         self::assertBigIntegerEquals($remainder, BigInteger::of($dividend)->remainder($divisor));
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\DivisionByZeroException
-     */
     public function testRemainderOfZeroThrowsException() : void
     {
+        $this->expectException(DivisionByZeroException::class);
         BigInteger::of(1)->remainder(0);
     }
 
@@ -1246,11 +1229,9 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\DivisionByZeroException
-     */
     public function testQuotientAndRemainderByZeroThrowsException() : void
     {
+        $this->expectException(DivisionByZeroException::class);
         BigInteger::of(1)->quotientAndRemainder(0);
     }
 
@@ -1414,10 +1395,10 @@ class BigIntegerTest extends AbstractTestCase
 
     /**
      * @dataProvider providerPowerWithInvalidExponentThrowsException
-     * @expectedException \InvalidArgumentException
      */
     public function testPowerWithInvalidExponentThrowsException(int $power) : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigInteger::of(1)->power($power);
     }
 
@@ -2557,19 +2538,15 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\IntegerOverflowException
-     */
     public function testToIntNegativeOverflowThrowsException() : void
     {
+        $this->expectException(IntegerOverflowException::class);
         BigInteger::of(PHP_INT_MIN)->minus(1)->toInt();
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\IntegerOverflowException
-     */
     public function testToIntPositiveOverflowThrowsException() : void
     {
+        $this->expectException(IntegerOverflowException::class);
         BigInteger::of(PHP_INT_MAX)->plus(1)->toInt();
     }
 
@@ -2702,10 +2679,10 @@ class BigIntegerTest extends AbstractTestCase
 
     /**
      * @dataProvider providerToInvalidBaseThrowsException
-     * @expectedException \InvalidArgumentException
      */
     public function testToInvalidBaseThrowsException(int $base) : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigInteger::of(0)->toBase($base);
     }
 
@@ -2905,11 +2882,9 @@ class BigIntegerTest extends AbstractTestCase
         self::assertBigIntegerEquals($value, \unserialize(\serialize($number)));
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testDirectCallToUnserialize() : void
     {
+        $this->expectException(\LogicException::class);
         BigInteger::zero()->unserialize('123');
     }
 

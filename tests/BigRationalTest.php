@@ -6,8 +6,11 @@ namespace Brick\Math\Tests;
 
 use Brick\Math\BigInteger;
 use Brick\Math\BigRational;
-use Brick\Math\RoundingMode;
+use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\RoundingMode;
 
 /**
  * Unit tests for class BigRational.
@@ -39,11 +42,9 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\DivisionByZeroException
-     */
     public function testNdWithZeroDenominator() : void
     {
+        $this->expectException(DivisionByZeroException::class);
         BigRational::nd(1, 0);
     }
 
@@ -74,22 +75,20 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\DivisionByZeroException
-     */
     public function testOfWithZeroDenominator() : void
     {
+        $this->expectException(DivisionByZeroException::class);
         BigRational::of('2/0');
     }
 
     /**
      * @dataProvider providerOfInvalidString
-     * @expectedException \Brick\Math\Exception\NumberFormatException
      *
      * @param string $string An invalid string representation.
      */
     public function testOfInvalidString(string $string) : void
     {
+        $this->expectException(NumberFormatException::class);
         BigRational::of($string);
     }
 
@@ -153,11 +152,9 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testMinOfZeroValuesThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigRational::min();
     }
 
@@ -185,11 +182,9 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testMaxOfZeroValuesThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigRational::max();
     }
 
@@ -217,11 +212,9 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSumOfZeroValuesThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigRational::sum();
     }
 
@@ -437,11 +430,9 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\DivisionByZeroException
-     */
     public function testReciprocalOfZeroThrowsException() : void
     {
+        $this->expectException(DivisionByZeroException::class);
         BigRational::nd(0, 2)->reciprocal();
     }
 
@@ -879,12 +870,12 @@ class BigRationalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerToIntThrowsException
-     * @expectedException \Brick\Math\Exception\MathException
      *
      * @param string $number A valid rational number that cannot safely be converted to a native integer.
      */
     public function testToIntThrowsException(string $number) : void
     {
+        $this->expectException(MathException::class);
         BigRational::of($number)->toInt();
     }
 
@@ -959,11 +950,9 @@ class BigRationalTest extends AbstractTestCase
         self::assertBigRationalInternalValues($numerator, $denominator, \unserialize(\serialize($rational)));
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testDirectCallToUnserialize() : void
     {
+        $this->expectException(\LogicException::class);
         BigRational::nd(1, 2)->unserialize('123/456');
     }
 }

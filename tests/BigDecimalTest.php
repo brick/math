@@ -6,7 +6,9 @@ namespace Brick\Math\Tests;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
+use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
 
@@ -202,10 +204,10 @@ class BigDecimalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerOfInvalidValueThrowsException
-     * @expectedException \Brick\Math\Exception\NumberFormatException
      */
     public function testOfInvalidValueThrowsException(string $value) : void
     {
+        $this->expectException(NumberFormatException::class);
         BigDecimal::of($value);
     }
 
@@ -278,11 +280,9 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues('123456789', 0, $number);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testOfUnscaledValueWithNegativeScaleThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigDecimal::ofUnscaledValue('0', -1);
     }
 
@@ -333,19 +333,15 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testMinOfZeroValuesThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigDecimal::min();
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
-     */
     public function testMinOfNonDecimalValuesThrowsException() : void
     {
+        $this->expectException(RoundingNecessaryException::class);
         BigDecimal::min(1, '1/3');
     }
 
@@ -382,19 +378,15 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testMaxOfZeroValuesThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigDecimal::max();
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
-     */
     public function testMaxOfNonDecimalValuesThrowsException() : void
     {
+        $this->expectException(RoundingNecessaryException::class);
         BigDecimal::min(1, '3/7');
     }
 
@@ -431,19 +423,15 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSumOfZeroValuesThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigDecimal::sum();
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
-     */
     public function testSumOfNonDecimalValuesThrowsException() : void
     {
+        $this->expectException(RoundingNecessaryException::class);
         BigDecimal::min(1, '3/7');
     }
 
@@ -745,12 +733,12 @@ class BigDecimalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerDividedByByZeroThrowsException
-     * @expectedException \Brick\Math\Exception\DivisionByZeroException
      *
      * @param string|number $zero
      */
     public function testDividedByByZeroThrowsException($zero) : void
     {
+        $this->expectException(DivisionByZeroException::class);
         BigDecimal::of(1)->dividedBy($zero, 0);
     }
 
@@ -821,17 +809,14 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\DivisionByZeroException
-     */
     public function testExactlyDividedByZero() : void
     {
+        $this->expectException(DivisionByZeroException::class);
         BigDecimal::of(1)->exactlyDividedBy(0);
     }
 
     /**
      * @dataProvider providerDividedByWithRoundingNecessaryThrowsException
-     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
      *
      * @param string $a     The base number.
      * @param string $b     The number to divide by.
@@ -839,6 +824,7 @@ class BigDecimalTest extends AbstractTestCase
      */
     public function testDividedByWithRoundingNecessaryThrowsException(string $a, string $b, int $scale) : void
     {
+        $this->expectException(RoundingNecessaryException::class);
         BigDecimal::of($a)->dividedBy($b, $scale);
     }
 
@@ -851,19 +837,15 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testDividedByWithNegativeScaleThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigDecimal::of(1)->dividedBy(2, -1);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testDividedByWithInvalidRoundingModeThrowsException() : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigDecimal::of(1)->dividedBy(2, 0, -1);
     }
 
@@ -1462,27 +1444,21 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\DivisionByZeroException
-     */
     public function testQuotientOfZeroThrowsException() : void
     {
+        $this->expectException(DivisionByZeroException::class);
         BigDecimal::of(1.2)->quotient(0);
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\DivisionByZeroException
-     */
     public function testRemainderOfZeroThrowsException() : void
     {
+        $this->expectException(DivisionByZeroException::class);
         BigDecimal::of(1.2)->remainder(0);
     }
 
-    /**
-     * @expectedException \Brick\Math\Exception\DivisionByZeroException
-     */
     public function testQuotientAndRemainderOfZeroThrowsException() : void
     {
+        $this->expectException(DivisionByZeroException::class);
         BigDecimal::of(1.2)->quotientAndRemainder(0);
     }
 
@@ -1773,10 +1749,10 @@ class BigDecimalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerPowerWithInvalidExponentThrowsException
-     * @expectedException \InvalidArgumentException
      */
     public function testPowerWithInvalidExponentThrowsException(int $power) : void
     {
+        $this->expectException(\InvalidArgumentException::class);
         BigDecimal::of(1)->power($power);
     }
 
@@ -2382,12 +2358,12 @@ class BigDecimalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerToBigIntegerThrowsExceptionWhenRoundingNecessary
-     * @expectedException \Brick\Math\Exception\RoundingNecessaryException
      *
      * @param string $decimal A decimal number with a non-zero fractional part.
      */
     public function testToBigIntegerThrowsExceptionWhenRoundingNecessary(string $decimal) : void
     {
+        $this->expectException(RoundingNecessaryException::class);
         BigDecimal::of($decimal)->toBigInteger();
     }
 
@@ -2476,12 +2452,12 @@ class BigDecimalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerToIntThrowsException
-     * @expectedException \Brick\Math\Exception\MathException
      *
      * @param string $number A valid decimal number that cannot safely be converted to a native integer.
      */
     public function testToIntThrowsException(string $number) : void
     {
+        $this->expectException(MathException::class);
         BigDecimal::of($number)->toInt();
     }
 
@@ -2580,11 +2556,9 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues($value, $scale, \unserialize(\serialize($number)));
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testDirectCallToUnserialize() : void
     {
+        $this->expectException(\LogicException::class);
         BigDecimal::zero()->unserialize('123:0');
     }
 }
