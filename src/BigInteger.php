@@ -441,6 +441,62 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Returns this number raised into power with modulo.
+     *
+     * This operation only works on positive numbers.
+     *
+     * Algorithm from: https://www.geeksforgeeks.org/modular-exponentiation-power-in-modular-arithmetic/
+     *
+     * @param BigNumber|number|string $exp The positive exponent.
+     * @param BigNumber|number|string $mod The modulo. Must not be zero.
+     *
+     * @return BigInteger
+     *
+     * @throws NegativeNumberException If any of the operands is negative.
+     * @throws DivisionByZeroException If the modulo is zero.
+     */
+    public function powerMod($exp, $mod) : BigInteger
+    {
+        $exp = BigInteger::of($exp);
+        $mod = BigInteger::of($mod);
+
+        if ($this->isNegative() || $exp->isNegative() || $mod->isNegative()) {
+            throw new NegativeNumberException('The operands cannot be negative.');
+        }
+
+        if ($mod->isZero()) {
+            throw DivisionByZeroException::divisionByZero();
+        }
+
+        // Special case: the algorithm below fails with 0 power 0 mod 1 (returns 1 instead of 0)
+        if ($this->value === '0' && $exp->value === '0' && $mod->value === '1') {
+            return BigInteger::zero();
+        }
+
+        // Special case: the algorithm below fails with power 0 mod 1 (returns 1 instead of 0)
+        if ($exp->value === '0' && $mod->value === '1') {
+            return BigInteger::zero();
+        }
+
+        $x = $this;
+
+        $res = BigInteger::one();
+
+        $x = $x->mod($mod);
+
+        while ($exp->isPositive()) {
+            if ($exp->remainder(2)->isEqualTo(1)) {
+                $res = $res->multipliedBy($x)->mod($mod);
+            }
+
+            $exp = $exp->quotient(2);
+            $x = $x->multipliedBy($x)->mod($mod);
+        }
+
+        return $res;
+    }
+
+    /**
      * Returns the greatest common divisor of this number and the given one.
      *
      * The GCD is always positive, unless both operands are zero, in which case it is zero.

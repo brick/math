@@ -1333,6 +1333,99 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerPowerMod
+     */
+    public function testPowerMod(string $base, string $exp, string $mod, string $expected) : void
+    {
+        self::assertBigIntegerEquals($expected, BigInteger::of($base)->powerMod($exp, $mod));
+    }
+
+    public function providerPowerMod() : array
+    {
+        return [
+            ['0', '0', '1', '0'],
+            ['0', '1', '1', '0'],
+            ['1', '0', '1', '0'],
+            ['1', '1', '1', '0'],
+            ['0', '1', '10', '0'],
+            ['5', '1', '10', '5'],
+            ['77', '3', '1000', '533'],
+            ['11', '3', '1000', '331'],
+            ['11', '7', '1000', '171'],
+            ['11', '7', '900', '371'],
+        ];
+    }
+
+    /**
+     * Crypto test from phpseclib test suite.
+     */
+    public function testPowerModCrypto() : void
+    {
+        $prime = BigInteger::fromBase(
+            'FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD1' .
+            '29024E088A67CC74020BBEA63B139B22514A08798E3404DD' .
+            'EF9519B3CD3A431B302B0A6DF25F14374FE1356D6D51C245' .
+            'E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7ED' .
+            'EE386BFB5A899FA5AE9F24117C4B1FE649286651ECE45B3D' .
+            'C2007CB8A163BF0598DA48361C55D39A69163FA8FD24CF5F' .
+            '83655D23DCA3AD961C62F356208552BB9ED529077096966D' .
+            '670C354E4ABC9804F1746C08CA18217C32905E462E36CE3B' .
+            'E39E772C180E86039B2783A2EC07A28FB5C55DF06F4C52C9' .
+            'DE2BCBF6955817183995497CEA956AE515D2261898FA0510' .
+            '15728E5A8AACAA68FFFFFFFFFFFFFFFF',
+            16
+        );
+
+        $generator = BigInteger::of(2);
+
+        $alicePrivate = BigInteger::fromBase(
+            '22606EDA7960458BC9D65F46DD96F114F9A004F0493C1F26' .
+            '2139D2C8063B733162E876182CA3BF063AB1A167ABDB7F03' .
+            'E0A225A6205660439F6CE46D252069FF',
+            16
+        );
+
+        $bobPrivate = BigInteger::fromBase(
+            '6E3EFA13A96025D63E4B0D88A09B3A46DDFE9DD3BC9D1655' .
+            '4898C02B4AC181F0CEB4E818664B12F02C71A07215C400F9' .
+            '88352A4779F3E88836F7C3D3B3C739DE',
+            16
+        );
+
+        $alicePublic = $generator->powerMod($alicePrivate, $prime);
+        $bobPublic   = $generator->powerMod($bobPrivate, $prime);
+
+        $aliceShared = $bobPublic->powerMod($alicePrivate, $prime);
+        $bobShared   = $alicePublic->powerMod($bobPrivate, $prime);
+
+        self::assertTrue($aliceShared->isEqualTo($bobShared));
+    }
+
+    /**
+     * @dataProvider providerPowerModNegativeThrowsException
+     */
+    public function testPowerModNegativeThrowsException(string $base, string $exp, string $mod) : void
+    {
+        $this->expectException(NegativeNumberException::class);
+        BigInteger::of($base)->powerMod($exp, $mod);
+    }
+
+    public function providerPowerModNegativeThrowsException() : array
+    {
+        return [
+            [ 1,  1, -1],
+            [ 1, -1,  1],
+            [-1,  1,  1],
+        ];
+    }
+
+    public function testPowerModZeroThrowsException() : void
+    {
+        $this->expectException(DivisionByZeroException::class);
+        BigInteger::of(1)->powerMod(1, 0);
+    }
+
+    /**
      * @dataProvider providerPower
      *
      * @param string $number   The base number.
