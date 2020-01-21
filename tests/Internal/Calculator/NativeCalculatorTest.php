@@ -18,7 +18,7 @@ class NativeCalculatorTest extends AbstractTestCase
     public function testAdd(string $a, string $b, string $expectedValue) : void
     {
         $nativeCalculator = new NativeCalculator();
-        $this->assertSame($expectedValue, $nativeCalculator->add($a, $b));
+        self::assertSame($expectedValue, $nativeCalculator->add($a, $b));
     }
 
     public function providerAdd() : array
@@ -40,7 +40,7 @@ class NativeCalculatorTest extends AbstractTestCase
     public function testMul(string $a, string $b, string $expectedValue) : void
     {
         $nativeCalculator = new NativeCalculator();
-        $this->assertSame($expectedValue, $nativeCalculator->mul($a, $b));
+        self::assertSame($expectedValue, $nativeCalculator->mul($a, $b));
     }
 
     public function providerMul() : array
@@ -67,7 +67,7 @@ class NativeCalculatorTest extends AbstractTestCase
     public function testPow(string $a, int $b, string $expectedValue) : void
     {
         $nativeCalculator = new NativeCalculator();
-        $this->assertSame($expectedValue, $nativeCalculator->pow($a, $b));
+        self::assertSame($expectedValue, $nativeCalculator->pow($a, $b));
     }
 
     public function providerPow() : array

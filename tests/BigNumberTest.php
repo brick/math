@@ -28,8 +28,8 @@ class BigNumberTest extends AbstractTestCase
     {
         $sum = BigNumber::sum(...$values);
 
-        $this->assertSame($expectedClass, get_class($sum));
-        $this->assertSame($expectedSum, (string) $sum);
+        self::assertSame($expectedClass, get_class($sum));
+        self::assertSame($expectedSum, (string) $sum);
     }
 
     public function providerSum() : array

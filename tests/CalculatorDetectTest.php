@@ -18,7 +18,7 @@ class CalculatorDetectTest extends TestCase
         $currentCalculator = Calculator::get();
 
         Calculator::set(null);
-        $this->assertInstanceOf(Calculator::class, Calculator::get());
+        self::assertInstanceOf(Calculator::class, Calculator::get());
 
         Calculator::set($currentCalculator);
     }

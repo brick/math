@@ -21,9 +21,9 @@ abstract class AbstractTestCase extends TestCase
      *
      * @return void
      */
-    final protected function assertBigIntegerEquals(string $expected, BigInteger $actual) : void
+    final protected static function assertBigIntegerEquals(string $expected, BigInteger $actual) : void
     {
-        $this->assertSame($expected, (string) $actual);
+        self::assertSame($expected, (string) $actual);
     }
 
     /**
@@ -32,9 +32,9 @@ abstract class AbstractTestCase extends TestCase
      *
      * @return void
      */
-    final protected function assertBigDecimalEquals(string $expected, BigDecimal $actual) : void
+    final protected static function assertBigDecimalEquals(string $expected, BigDecimal $actual) : void
     {
-        $this->assertSame($expected, (string) $actual);
+        self::assertSame($expected, (string) $actual);
     }
 
     /**
@@ -43,9 +43,9 @@ abstract class AbstractTestCase extends TestCase
      *
      * @return void
      */
-    final protected function assertBigRationalEquals(string $expected, BigRational $actual) : void
+    final protected static function assertBigRationalEquals(string $expected, BigRational $actual) : void
     {
-        $this->assertSame($expected, (string) $actual);
+        self::assertSame($expected, (string) $actual);
     }
 
     /**
@@ -55,10 +55,10 @@ abstract class AbstractTestCase extends TestCase
      *
      * @return void
      */
-    final protected function assertBigDecimalInternalValues(string $unscaledValue, int $scale, BigDecimal $actual) : void
+    final protected static function assertBigDecimalInternalValues(string $unscaledValue, int $scale, BigDecimal $actual) : void
     {
-        $this->assertSame($unscaledValue, (string) $actual->getUnscaledValue());
-        $this->assertSame($scale, $actual->getScale());
+        self::assertSame($unscaledValue, (string) $actual->getUnscaledValue());
+        self::assertSame($scale, $actual->getScale());
     }
 
     /**
@@ -68,10 +68,10 @@ abstract class AbstractTestCase extends TestCase
      *
      * @return void
      */
-    final protected function assertBigRationalInternalValues(string $numerator, string $denominator, BigRational $actual) : void
+    final protected static function assertBigRationalInternalValues(string $numerator, string $denominator, BigRational $actual) : void
     {
-        $this->assertSame($numerator, (string) $actual->getNumerator());
-        $this->assertSame($denominator, (string) $actual->getDenominator());
+        self::assertSame($numerator, (string) $actual->getNumerator());
+        self::assertSame($denominator, (string) $actual->getDenominator());
     }
 
     /**
@@ -79,7 +79,7 @@ abstract class AbstractTestCase extends TestCase
      *
      * @return bool
      */
-    final protected function isException(string $name) : bool
+    final protected static function isException(string $name) : bool
     {
         return \substr($name, -9) === 'Exception';
     }
