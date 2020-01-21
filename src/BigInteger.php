@@ -369,6 +369,8 @@ final class BigInteger extends BigNumber
     /**
      * Returns the remainder of the division of this number by the given one.
      *
+     * The remainder, when non-zero, has the same sign as the dividend.
+     *
      * @param BigNumber|number|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @return BigInteger
@@ -411,6 +413,31 @@ final class BigInteger extends BigNumber
             new BigInteger($quotient),
             new BigInteger($remainder)
         ];
+    }
+
+    /**
+     * Returns the modulo of this number and the given one.
+     *
+     * The modulo operation yields the same result as the remainder operation when both operands are of the same sign,
+     * and may differ when signs are different.
+     *
+     * The result of the modulo operation, when non-zero, has the same sign as the divisor.
+     *
+     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigInteger.
+     *
+     * @return BigInteger
+     *
+     * @throws DivisionByZeroException If the divisor is zero.
+     */
+    public function mod($that) : BigInteger
+    {
+        $that = BigInteger::of($that);
+
+        if ($that->value === '0') {
+            throw DivisionByZeroException::divisionByZero();
+        }
+
+        return $this->remainder($that)->plus($that)->remainder($that);
     }
 
     /**
