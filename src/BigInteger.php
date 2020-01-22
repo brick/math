@@ -482,15 +482,16 @@ final class BigInteger extends BigNumber
 
         $res = BigInteger::one();
 
-        $x = $x->mod($mod);
+        // numbers are positive, so we can use remainder() instead of mod(), this is less expensive right now
+        $x = $x->remainder($mod);
 
         while ($exp->isPositive()) {
             if ($exp->remainder(2)->isEqualTo(1)) {
-                $res = $res->multipliedBy($x)->mod($mod);
+                $res = $res->multipliedBy($x)->remainder($mod);
             }
 
             $exp = $exp->quotient(2);
-            $x = $x->multipliedBy($x)->mod($mod);
+            $x = $x->multipliedBy($x)->remainder($mod);
         }
 
         return $res;
