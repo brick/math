@@ -10,6 +10,7 @@ use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\Internal\Calculator;
 use Brick\Math\RoundingMode;
 
 /**
@@ -1361,6 +1362,12 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testPowerModCrypto() : void
     {
+        if (Calculator::get() instanceof Calculator\NativeCalculator) {
+            if (getenv('CI') === 'true') {
+                $this->markTestSkipped('This test is currently too slow and makes Travis CI timeout.');
+            }
+        }
+
         $prime = BigInteger::fromBase(
             'FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD1' .
             '29024E088A67CC74020BBEA63B139B22514A08798E3404DD' .
