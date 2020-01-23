@@ -1,5 +1,9 @@
 language: php
 
+stages:
+  - Smoke Testing
+  - Test
+
 php:
   - 7.1
   - 7.2
@@ -36,7 +40,7 @@ jobs:
   include:
     - stage: Smoke Testing
       php: 7.4
-      env: Psalm
+      name: Psalm
       script: vendor/bin/psalm --show-info=false --no-progress
     - stage: Smoke Testing
       php: 7.4
