@@ -423,7 +423,7 @@ final class BigInteger extends BigNumber
      *
      * The result of the modulo operation, when non-zero, has the same sign as the divisor.
      *
-     * @param BigNumber|number|string $that The divisor. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @return BigInteger
      *
@@ -447,8 +447,8 @@ final class BigInteger extends BigNumber
      *
      * Algorithm from: https://www.geeksforgeeks.org/modular-exponentiation-power-in-modular-arithmetic/
      *
-     * @param BigNumber|number|string $exp The positive exponent.
-     * @param BigNumber|number|string $mod The modulo. Must not be zero.
+     * @param BigNumber|int|float|string $exp The positive exponent.
+     * @param BigNumber|int|float|string $mod The modulo. Must not be zero.
      *
      * @return BigInteger
      *

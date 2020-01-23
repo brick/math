@@ -5,10 +5,10 @@ stages:
   - Test
 
 php:
-  - 7.1
+  # 7.1 is included in the matrix below, with coverage
   - 7.2
   - 7.3
-  # 7.4 is included in the matrix below
+  # 7.4 is included in the matrix below, as base version for smoke testing
 
 env:
   - CALCULATOR=GMP
@@ -44,10 +44,19 @@ jobs:
       script: vendor/bin/psalm --show-info=false --no-progress
     - stage: Smoke Testing
       php: 7.4
+      env: CALCULATOR=GMP
+    - stage: Smoke Testing
+      php: 7.4
+      env: CALCULATOR=BCMath
+    - stage: Smoke Testing
+      php: 7.4
+      env: CALCULATOR=Native
+    - stage: Tests
+      php: 7.1
       env: CALCULATOR=GMP COVERAGE=yes
-    - stage: Smoke Testing
-      php: 7.4
+    - stage: Tests
+      php: 7.1
       env: CALCULATOR=BCMath COVERAGE=yes
-    - stage: Smoke Testing
-      php: 7.4
+    - stage: Tests
+      php: 7.1
       env: CALCULATOR=Native COVERAGE=yes

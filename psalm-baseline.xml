@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="3.8.2@90d6b73fd8062432030ef39b7b6694b3902daa31">
   <file src="src/Internal/Calculator/BcMathCalculator.php">
-    <InvalidNullableReturnType occurrences="2">
+    <InvalidNullableReturnType occurrences="3">
+      <code>string</code>
       <code>string</code>
       <code>string</code>
     </InvalidNullableReturnType>
@@ -11,9 +12,10 @@
     <InvalidReturnType occurrences="1">
       <code>array</code>
     </InvalidReturnType>
-    <NullableReturnStatement occurrences="2">
+    <NullableReturnStatement occurrences="3">
       <code>\bcdiv($a, $b, 0)</code>
       <code>\bcmod($a, $b)</code>
+      <code>\bcpowmod($base, $exp, $mod, 0)</code>
     </NullableReturnStatement>
   </file>
   <file src="src/Internal/Calculator/NativeCalculator.php">
