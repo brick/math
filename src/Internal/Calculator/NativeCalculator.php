@@ -229,6 +229,40 @@ class NativeCalculator extends Calculator
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function powmod(string $base, string $exp, string $mod) : string
+    {
+        // special case: the algorithm below fails with 0 power 0 mod 1 (returns 1 instead of 0)
+        if ($base === '0' && $exp === '0' && $mod === '1') {
+            return '0';
+        }
+
+        // special case: the algorithm below fails with power 0 mod 1 (returns 1 instead of 0)
+        if ($exp === '0' && $mod === '1') {
+            return '0';
+        }
+
+        $x = $base;
+
+        $res = '1';
+
+        // numbers are positive, so we can use remainder instead of modulo
+        $x = $this->divR($x, $mod);
+
+        while ($exp !== '0') {
+            if (in_array($exp[-1], ['1', '3', '5', '7', '9'])) { // odd
+                $res = $this->divR($this->mul($res, $x), $mod);
+            }
+
+            $exp = $this->divQ($exp, '2');
+            $x = $this->divR($this->mul($x, $x), $mod);
+        }
+
+        return $res;
+    }
+
+    /**
      * Adapted from https://cp-algorithms.com/num_methods/roots_newton.html
      *
      * {@inheritDoc}

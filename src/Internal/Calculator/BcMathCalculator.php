@@ -73,6 +73,14 @@ class BcMathCalculator extends Calculator
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function powmod(string $base, string $exp, string $mod) : string
+    {
+        return \bcpowmod($base, $exp, $mod, 0);
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function sqrt(string $n) : string

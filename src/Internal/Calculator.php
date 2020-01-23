@@ -237,12 +237,23 @@ abstract class Calculator
     /**
      * Exponentiates a number.
      *
-     * @param string $a The base.
+     * @param string $a The base number.
      * @param int    $e The exponent, validated as an integer between 0 and MAX_POWER.
      *
      * @return string The power.
      */
     abstract public function pow(string $a, int $e) : string;
+
+    /**
+     * Raises a number into power with modulo.
+     *
+     * @param string $base The base number; must be positive or zero.
+     * @param string $exp  The exponent; must be positive or zero.
+     * @param string $mod  The modulo; must be strictly positive.
+     *
+     * @return string The power.
+     */
+    abstract function powmod(string $base, string $exp, string $mod) : string;
 
     /**
      * Returns the greatest common divisor of the two numbers.

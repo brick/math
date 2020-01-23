@@ -468,33 +468,9 @@ final class BigInteger extends BigNumber
             throw DivisionByZeroException::divisionByZero();
         }
 
-        // Special case: the algorithm below fails with 0 power 0 mod 1 (returns 1 instead of 0)
-        if ($this->value === '0' && $exp->value === '0' && $mod->value === '1') {
-            return BigInteger::zero();
-        }
+        $result = Calculator::get()->powmod($this->value, $exp->value, $mod->value);
 
-        // Special case: the algorithm below fails with power 0 mod 1 (returns 1 instead of 0)
-        if ($exp->value === '0' && $mod->value === '1') {
-            return BigInteger::zero();
-        }
-
-        $x = $this;
-
-        $res = BigInteger::one();
-
-        // numbers are positive, so we can use remainder() instead of mod(), this is less expensive right now
-        $x = $x->remainder($mod);
-
-        while ($exp->isPositive()) {
-            if ($exp->remainder(2)->isEqualTo(1)) {
-                $res = $res->multipliedBy($x)->remainder($mod);
-            }
-
-            $exp = $exp->quotient(2);
-            $x = $x->multipliedBy($x)->remainder($mod);
-        }
-
-        return $res;
+        return new BigInteger($result);
     }
 
     /**

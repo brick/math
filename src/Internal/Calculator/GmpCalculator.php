@@ -77,6 +77,14 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
+    public function powmod(string $base, string $exp, string $mod) : string
+    {
+        return \gmp_strval(\gmp_powm($base, $exp, $mod));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function gcd(string $a, string $b) : string
     {
         return \gmp_strval(\gmp_gcd($a, $b));
