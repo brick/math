@@ -51,12 +51,12 @@ jobs:
     - stage: Smoke Testing
       php: 7.4
       env: CALCULATOR=Native
-    - stage: Tests
+    - stage: Test (with coverage)
       php: 7.1
       env: CALCULATOR=GMP COVERAGE=yes
-    - stage: Tests
+    - stage: Test (with coverage)
       php: 7.1
       env: CALCULATOR=BCMath COVERAGE=yes
-    - stage: Tests
+    - stage: Test (with coverage)
       php: 7.1
       env: CALCULATOR=Native COVERAGE=yes
