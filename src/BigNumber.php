@@ -145,7 +145,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * Returns the minimum of the given values.
      *
      * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
-     *                                           to an instance of the class this method is called on.
+     *                                              to an instance of the class this method is called on.
      *
      * @return static The minimum value.
      *
@@ -175,7 +175,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * Returns the maximum of the given values.
      *
      * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
-     *                                           to an instance of the class this method is called on.
+     *                                              to an instance of the class this method is called on.
      *
      * @return static The maximum value.
      *
@@ -205,7 +205,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * Returns the sum of the given values.
      *
      * @param BigNumber|int|float|string ...$values The numbers to add. All the numbers need to be convertible
-     *                                           to an instance of the class this method is called on.
+     *                                              to an instance of the class this method is called on.
      *
      * @return static The sum.
      *

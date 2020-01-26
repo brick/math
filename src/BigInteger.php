@@ -286,7 +286,7 @@ final class BigInteger extends BigNumber
      * Returns the result of the division of this number by the given one.
      *
      * @param BigNumber|int|float|string $that         The divisor. Must be convertible to a BigInteger.
-     * @param int                     $roundingMode An optional rounding mode.
+     * @param int                        $roundingMode An optional rounding mode.
      *
      * @return BigInteger The result.
      *

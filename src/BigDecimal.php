@@ -66,7 +66,7 @@ final class BigDecimal extends BigNumber
      * Example: `(12345, 3)` will result in the BigDecimal `12.345`.
      *
      * @param BigNumber|int|float|string $value The unscaled value. Must be convertible to a BigInteger.
-     * @param int                     $scale The scale of the number, positive or zero.
+     * @param int                        $scale The scale of the number, positive or zero.
      *
      * @return BigDecimal
      *
@@ -220,8 +220,8 @@ final class BigDecimal extends BigNumber
      * Returns the result of the division of this number by the given one, at the given scale.
      *
      * @param BigNumber|int|float|string $that         The divisor.
-     * @param int|null                $scale        The desired scale, or null to use the scale of this number.
-     * @param int                     $roundingMode An optional rounding mode.
+     * @param int|null                   $scale        The desired scale, or null to use the scale of this number.
+     * @param int                        $roundingMode An optional rounding mode.
      *
      * @return BigDecimal
      *
