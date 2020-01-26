@@ -10,6 +10,8 @@ use Brick\Math\Internal\Calculator;
  * Calculator implementation built around the GMP library.
  *
  * @internal
+ *
+ * @psalm-immutable
  */
 class GmpCalculator extends Calculator
 {

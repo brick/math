@@ -10,6 +10,8 @@ use Brick\Math\Internal\Calculator;
  * Calculator implementation using only native PHP code.
  *
  * @internal
+ *
+ * @psalm-immutable
  */
 class NativeCalculator extends Calculator
 {

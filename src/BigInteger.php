@@ -16,6 +16,8 @@ use Brick\Math\Internal\Calculator;
  *
  * All methods accepting a number as a parameter accept either a BigInteger instance,
  * an integer, or a string representing an arbitrary size integer.
+ *
+ * @psalm-immutable
  */
 final class BigInteger extends BigNumber
 {
@@ -47,6 +49,8 @@ final class BigInteger extends BigNumber
      * @return BigInteger
      *
      * @throws MathException If the value cannot be converted to a BigInteger.
+     *
+     * @psalm-pure
      */
     public static function of($value) : BigNumber
     {
@@ -71,6 +75,8 @@ final class BigInteger extends BigNumber
      *
      * @throws NumberFormatException     If the number is empty, or contains invalid chars for the given base.
      * @throws \InvalidArgumentException If the base is out of range.
+     *
+     * @psalm-pure
      */
     public static function fromBase(string $number, int $base) : BigInteger
     {
@@ -136,6 +142,8 @@ final class BigInteger extends BigNumber
      *
      * @throws NumberFormatException     If the given number is empty or contains invalid chars for the given alphabet.
      * @throws \InvalidArgumentException If the alphabet does not contain at least 2 chars.
+     *
+     * @psalm-pure
      */
     public static function fromArbitraryBase(string $number, string $alphabet) : BigInteger
     {
@@ -164,6 +172,8 @@ final class BigInteger extends BigNumber
      * Returns a BigInteger representing zero.
      *
      * @return BigInteger
+     *
+     * @psalm-pure
      */
     public static function zero() : BigInteger
     {
@@ -180,6 +190,8 @@ final class BigInteger extends BigNumber
      * Returns a BigInteger representing one.
      *
      * @return BigInteger
+     *
+     * @psalm-pure
      */
     public static function one() : BigInteger
     {
@@ -196,6 +208,8 @@ final class BigInteger extends BigNumber
      * Returns a BigInteger representing ten.
      *
      * @return BigInteger
+     *
+     * @psalm-pure
      */
     public static function ten() : BigInteger
     {

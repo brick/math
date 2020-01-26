@@ -10,6 +10,8 @@ use Brick\Math\Internal\Calculator;
  * Calculator implementation built around the bcmath library.
  *
  * @internal
+ *
+ * @psalm-immutable
  */
 class BcMathCalculator extends Calculator
 {

@@ -17,6 +17,8 @@ use Brick\Math\RoundingMode;
  * All methods must return strings respecting this format, unless specified otherwise.
  *
  * @internal
+ *
+ * @psalm-immutable
  */
 abstract class Calculator
 {
@@ -57,10 +59,13 @@ abstract class Calculator
      * If none has been explicitly set, the fastest available implementation will be returned.
      *
      * @return Calculator
+     *
+     * @psalm-pure
      */
     final public static function get() : Calculator
     {
         if (self::$instance === null) {
+            /** @psalm-suppress ImpureMethodCall */
             self::$instance = self::detect();
         }
 

@@ -11,6 +11,8 @@ class DivisionByZeroException extends MathException
 {
     /**
      * @return DivisionByZeroException
+     *
+     * @psalm-pure
      */
     public static function divisionByZero() : DivisionByZeroException
     {
@@ -19,6 +21,8 @@ class DivisionByZeroException extends MathException
 
     /**
      * @return DivisionByZeroException
+     *
+     * @psalm-pure
      */
     public static function denominatorMustNotBeZero() : DivisionByZeroException
     {

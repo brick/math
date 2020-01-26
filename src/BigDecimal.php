@@ -11,6 +11,8 @@ use Brick\Math\Internal\Calculator;
 
 /**
  * Immutable, arbitrary-precision signed decimal numbers.
+ *
+ * @psalm-immutable
  */
 final class BigDecimal extends BigNumber
 {
@@ -54,6 +56,8 @@ final class BigDecimal extends BigNumber
      * @return BigDecimal
      *
      * @throws MathException If the value cannot be converted to a BigDecimal.
+     *
+     * @psalm-pure
      */
     public static function of($value) : BigNumber
     {
@@ -71,6 +75,8 @@ final class BigDecimal extends BigNumber
      * @return BigDecimal
      *
      * @throws \InvalidArgumentException If the scale is negative.
+     *
+     * @psalm-pure
      */
     public static function ofUnscaledValue($value, int $scale = 0) : BigDecimal
     {
@@ -85,6 +91,8 @@ final class BigDecimal extends BigNumber
      * Returns a BigDecimal representing zero, with a scale of zero.
      *
      * @return BigDecimal
+     *
+     * @psalm-pure
      */
     public static function zero() : BigDecimal
     {
@@ -101,6 +109,8 @@ final class BigDecimal extends BigNumber
      * Returns a BigDecimal representing one, with a scale of zero.
      *
      * @return BigDecimal
+     *
+     * @psalm-pure
      */
     public static function one() : BigDecimal
     {
@@ -117,6 +127,8 @@ final class BigDecimal extends BigNumber
      * Returns a BigDecimal representing ten, with a scale of zero.
      *
      * @return BigDecimal
+     *
+     * @psalm-pure
      */
     public static function ten() : BigDecimal
     {

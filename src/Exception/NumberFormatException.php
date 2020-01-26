@@ -6,6 +6,8 @@ namespace Brick\Math\Exception;
 
 /**
  * Exception thrown when attempting to create a number from a string with an invalid format.
+ *
+ * @psalm-immutable
  */
 class NumberFormatException extends MathException
 {
@@ -13,6 +15,8 @@ class NumberFormatException extends MathException
      * @param string $char The failing character.
      *
      * @return NumberFormatException
+     *
+     * @psalm-pure
      */
     public static function charNotInAlphabet(string $char) : self
     {
