@@ -44,7 +44,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * - strings containing a `.` character or using an exponential notation are returned as BigDecimal
      * - strings containing only digits with an optional leading `+` or `-` sign are returned as BigInteger
      *
-     * @param BigNumber|number|string $value
+     * @param BigNumber|int|float|string $value
      *
      * @return BigNumber
      *
@@ -137,13 +137,14 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     protected static function create(... $args) : BigNumber
     {
+        /** @psalm-suppress TooManyArguments */
         return new static(... $args);
     }
 
     /**
      * Returns the minimum of the given values.
      *
-     * @param BigNumber|number|string ...$values The numbers to compare. All the numbers need to be convertible
+     * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
      *                                           to an instance of the class this method is called on.
      *
      * @return static The minimum value.
@@ -173,7 +174,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Returns the maximum of the given values.
      *
-     * @param BigNumber|number|string ...$values The numbers to compare. All the numbers need to be convertible
+     * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
      *                                           to an instance of the class this method is called on.
      *
      * @return static The maximum value.
@@ -203,7 +204,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Returns the sum of the given values.
      *
-     * @param BigNumber|number|string ...$values The numbers to add. All the numbers need to be convertible
+     * @param BigNumber|int|float|string ...$values The numbers to add. All the numbers need to be convertible
      *                                           to an instance of the class this method is called on.
      *
      * @return static The sum.
@@ -300,7 +301,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Checks if this number is equal to the given one.
      *
-     * @param BigNumber|number|string $that
+     * @param BigNumber|int|float|string $that
      *
      * @return bool
      */
@@ -312,7 +313,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Checks if this number is strictly lower than the given one.
      *
-     * @param BigNumber|number|string $that
+     * @param BigNumber|int|float|string $that
      *
      * @return bool
      */
@@ -324,7 +325,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Checks if this number is lower than or equal to the given one.
      *
-     * @param BigNumber|number|string $that
+     * @param BigNumber|int|float|string $that
      *
      * @return bool
      */
@@ -336,7 +337,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Checks if this number is strictly greater than the given one.
      *
-     * @param BigNumber|number|string $that
+     * @param BigNumber|int|float|string $that
      *
      * @return bool
      */
@@ -348,7 +349,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Checks if this number is greater than or equal to the given one.
      *
-     * @param BigNumber|number|string $that
+     * @param BigNumber|int|float|string $that
      *
      * @return bool
      */
@@ -417,7 +418,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Compares this number to the given one.
      *
-     * @param BigNumber|number|string $that
+     * @param BigNumber|int|float|string $that
      *
      * @return int [-1,0,1] If `$this` is lower than, equal to, or greater than `$that`.
      *

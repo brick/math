@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="3.8.2@90d6b73fd8062432030ef39b7b6694b3902daa31">
+  <file src="src/Internal/Calculator/BcMathCalculator.php">
+    <InvalidNullableReturnType occurrences="3">
+      <code>string</code>
+      <code>string</code>
+      <code>string</code>
+    </InvalidNullableReturnType>
+    <InvalidReturnStatement occurrences="1">
+      <code>[$q, $r]</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>array</code>
+    </InvalidReturnType>
+    <NullableReturnStatement occurrences="3">
+      <code>\bcdiv($a, $b, 0)</code>
+      <code>\bcmod($a, $b)</code>
+      <code>\bcpowmod($base, $exp, $mod, 0)</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/Internal/Calculator/NativeCalculator.php">
+    <InvalidOperand occurrences="6">
+      <code>$a</code>
+      <code>$a</code>
+      <code>$a</code>
+      <code>$b</code>
+      <code>$blockA</code>
+      <code>$blockA</code>
+    </InvalidOperand>
+    <LoopInvalidation occurrences="4">
+      <code>$i</code>
+      <code>$i</code>
+      <code>$i</code>
+      <code>$j</code>
+    </LoopInvalidation>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$e / 2</code>
+    </PossiblyInvalidArgument>
+  </file>
+</files>

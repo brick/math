@@ -1,10 +1,15 @@
 language: php
 
+stages:
+  - Smoke Testing
+  - Test
+  - Test (with coverage)
+
 php:
-  - 7.1
+  # 7.1 is included in the matrix below, with coverage
   - 7.2
   - 7.3
-  - 7.4
+  # 7.4 is included in the matrix below, as base version for smoke testing
 
 env:
   - CALCULATOR=GMP
@@ -12,11 +17,47 @@ env:
   - CALCULATOR=Native
 
 before_script:
+  - |
+    if [ "x$COVERAGE" != "xyes" ]; then
+      phpenv config-rm xdebug.ini
+    fi
   - composer install
 
 script:
-  - mkdir -p build/logs
-  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - |
+    if [ "x$COVERAGE" == "xyes" ]; then
+      mkdir -p build/logs && vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+    else
+      vendor/bin/phpunit
+    fi
 
 after_script:
-  - vendor/bin/php-coveralls -v
+  - |
+    if [ "x$COVERAGE" == "xyes" ]; then
+      vendor/bin/php-coveralls -v
+    fi
+
+jobs:
+  include:
+    - stage: Smoke Testing
+      php: 7.4
+      name: Psalm
+      script: vendor/bin/psalm --show-info=false --no-progress
+    - stage: Smoke Testing
+      php: 7.4
+      env: CALCULATOR=GMP
+    - stage: Smoke Testing
+      php: 7.4
+      env: CALCULATOR=BCMath
+    - stage: Smoke Testing
+      php: 7.4
+      env: CALCULATOR=Native
+    - stage: Test (with coverage)
+      php: 7.1
+      env: CALCULATOR=GMP COVERAGE=yes
+    - stage: Test (with coverage)
+      php: 7.1
+      env: CALCULATOR=BCMath COVERAGE=yes
+    - stage: Test (with coverage)
+      php: 7.1
+      env: CALCULATOR=Native COVERAGE=yes
