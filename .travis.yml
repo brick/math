@@ -3,6 +3,7 @@ language: php
 stages:
   - Smoke Testing
   - Test
+  - Test (with coverage)
 
 php:
   # 7.1 is included in the matrix below, with coverage
