@@ -108,6 +108,7 @@ final class BigRational extends BigNumber
      */
     public static function zero() : BigRational
     {
+        /** @psalm-suppress ImpureStaticVariable */
         static $zero;
 
         if ($zero === null) {
@@ -126,6 +127,7 @@ final class BigRational extends BigNumber
      */
     public static function one() : BigRational
     {
+        /** @psalm-suppress ImpureStaticVariable */
         static $one;
 
         if ($one === null) {
@@ -144,6 +146,7 @@ final class BigRational extends BigNumber
      */
     public static function ten() : BigRational
     {
+        /** @psalm-suppress ImpureStaticVariable */
         static $ten;
 
         if ($ten === null) {
