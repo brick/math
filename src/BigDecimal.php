@@ -11,6 +11,8 @@ use Brick\Math\Internal\Calculator;
 
 /**
  * Immutable, arbitrary-precision signed decimal numbers.
+ *
+ * @psalm-immutable
  */
 final class BigDecimal extends BigNumber
 {
@@ -54,6 +56,8 @@ final class BigDecimal extends BigNumber
      * @return BigDecimal
      *
      * @throws MathException If the value cannot be converted to a BigDecimal.
+     *
+     * @psalm-pure
      */
     public static function of($value) : BigNumber
     {
@@ -71,6 +75,8 @@ final class BigDecimal extends BigNumber
      * @return BigDecimal
      *
      * @throws \InvalidArgumentException If the scale is negative.
+     *
+     * @psalm-pure
      */
     public static function ofUnscaledValue($value, int $scale = 0) : BigDecimal
     {
@@ -85,10 +91,13 @@ final class BigDecimal extends BigNumber
      * Returns a BigDecimal representing zero, with a scale of zero.
      *
      * @return BigDecimal
+     *
+     * @psalm-pure
      */
     public static function zero() : BigDecimal
     {
-        static $zero = null;
+        /** @psalm-suppress ImpureStaticVariable */
+        static $zero;
 
         if ($zero === null) {
             $zero = new BigDecimal('0');
@@ -101,10 +110,13 @@ final class BigDecimal extends BigNumber
      * Returns a BigDecimal representing one, with a scale of zero.
      *
      * @return BigDecimal
+     *
+     * @psalm-pure
      */
     public static function one() : BigDecimal
     {
-        static $one = null;
+        /** @psalm-suppress ImpureStaticVariable */
+        static $one;
 
         if ($one === null) {
             $one = new BigDecimal('1');
@@ -117,10 +129,13 @@ final class BigDecimal extends BigNumber
      * Returns a BigDecimal representing ten, with a scale of zero.
      *
      * @return BigDecimal
+     *
+     * @psalm-pure
      */
     public static function ten() : BigDecimal
     {
-        static $ten = null;
+        /** @psalm-suppress ImpureStaticVariable */
+        static $ten;
 
         if ($ten === null) {
             $ten = new BigDecimal('10');

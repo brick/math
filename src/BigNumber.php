@@ -11,6 +11,8 @@ use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
  * Common interface for arbitrary-precision rational numbers.
+ *
+ * @psalm-immutable
  */
 abstract class BigNumber implements \Serializable, \JsonSerializable
 {
@@ -50,6 +52,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @throws NumberFormatException   If the format of the number is not valid.
      * @throws DivisionByZeroException If the value represents a rational number with a denominator of zero.
+     *
+     * @psalm-pure
      */
     public static function of($value) : BigNumber
     {
@@ -113,6 +117,9 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @param float $float
      *
      * @return string
+     *
+     * @psalm-pure
+     * @psalm-suppress ImpureFunctionCall
      */
     private static function floatToString(float $float) : string
     {
@@ -134,6 +141,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @param mixed ...$args The arguments to the constructor.
      *
      * @return static
+     *
+     * @psalm-pure
      */
     protected static function create(... $args) : BigNumber
     {
@@ -151,6 +160,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
+     *
+     * @psalm-pure
      */
     public static function min(...$values) : BigNumber
     {
@@ -181,6 +192,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
+     *
+     * @psalm-pure
      */
     public static function max(...$values) : BigNumber
     {
@@ -211,6 +224,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
+     *
+     * @psalm-pure
      */
     public static function sum(...$values) : BigNumber
     {
@@ -246,6 +261,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @param BigNumber $b
      *
      * @return BigNumber
+     *
+     * @psalm-pure
      */
     private static function add(BigNumber $a, BigNumber $b) : BigNumber
     {
@@ -276,6 +293,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @param string $number The number, validated as a non-empty string of digits with optional sign.
      *
      * @return string
+     *
+     * @psalm-pure
      */
     private static function cleanUp(string $number) : string
     {

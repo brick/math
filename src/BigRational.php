@@ -13,6 +13,8 @@ use Brick\Math\Exception\RoundingNecessaryException;
  * An arbitrarily large rational number.
  *
  * This class is immutable.
+ *
+ * @psalm-immutable
  */
 final class BigRational extends BigNumber
 {
@@ -64,6 +66,8 @@ final class BigRational extends BigNumber
      * @return BigRational
      *
      * @throws MathException If the value cannot be converted to a BigRational.
+     *
+     * @psalm-pure
      */
     public static function of($value) : BigNumber
     {
@@ -84,6 +88,8 @@ final class BigRational extends BigNumber
      * @throws NumberFormatException      If an argument does not represent a valid number.
      * @throws RoundingNecessaryException If an argument represents a non-integer number.
      * @throws DivisionByZeroException    If the denominator is zero.
+     *
+     * @psalm-pure
      */
     public static function nd($numerator, $denominator) : BigRational
     {
@@ -97,9 +103,12 @@ final class BigRational extends BigNumber
      * Returns a BigRational representing zero.
      *
      * @return BigRational
+     *
+     * @psalm-pure
      */
     public static function zero() : BigRational
     {
+        /** @psalm-suppress ImpureStaticVariable */
         static $zero;
 
         if ($zero === null) {
@@ -113,9 +122,12 @@ final class BigRational extends BigNumber
      * Returns a BigRational representing one.
      *
      * @return BigRational
+     *
+     * @psalm-pure
      */
     public static function one() : BigRational
     {
+        /** @psalm-suppress ImpureStaticVariable */
         static $one;
 
         if ($one === null) {
@@ -129,9 +141,12 @@ final class BigRational extends BigNumber
      * Returns a BigRational representing ten.
      *
      * @return BigRational
+     *
+     * @psalm-pure
      */
     public static function ten() : BigRational
     {
+        /** @psalm-suppress ImpureStaticVariable */
         static $ten;
 
         if ($ten === null) {
