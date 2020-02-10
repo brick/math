@@ -231,6 +231,8 @@ class NativeCalculator extends Calculator
     }
 
     /**
+     * Algorithm from: https://www.geeksforgeeks.org/modular-exponentiation-power-in-modular-arithmetic/
+     *
      * {@inheritdoc}
      */
     public function powmod(string $base, string $exp, string $mod) : string

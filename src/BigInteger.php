@@ -462,8 +462,6 @@ final class BigInteger extends BigNumber
      *
      * This operation only works on positive numbers.
      *
-     * Algorithm from: https://www.geeksforgeeks.org/modular-exponentiation-power-in-modular-arithmetic/
-     *
      * @param BigNumber|int|float|string $exp The positive exponent.
      * @param BigNumber|int|float|string $mod The modulo. Must not be zero.
      *
