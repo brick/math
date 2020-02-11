@@ -167,7 +167,7 @@ final class BigDecimal extends BigNumber
             return $that;
         }
 
-        $this->scaleValues($this, $that, $a, $b);
+        [$a, $b] = $this->scaleValues($this, $that);
 
         $value = Calculator::get()->add($a, $b);
         $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
@@ -194,7 +194,7 @@ final class BigDecimal extends BigNumber
             return $this;
         }
 
-        $this->scaleValues($this, $that, $a, $b);
+        [$a, $b] = $this->scaleValues($this, $that);
 
         $value = Calculator::get()->sub($a, $b);
         $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
@@ -289,7 +289,7 @@ final class BigDecimal extends BigNumber
             throw DivisionByZeroException::divisionByZero();
         }
 
-        $this->scaleValues($this, $that, $a, $b);
+        [$a, $b] = $this->scaleValues($this, $that);
 
         $d = \rtrim($b, '0');
         $scale = \strlen($b) - \strlen($d);
@@ -592,7 +592,7 @@ final class BigDecimal extends BigNumber
         }
 
         if ($that instanceof BigDecimal) {
-            $this->scaleValues($this, $that, $a, $b);
+            [$a, $b] = $this->scaleValues($this, $that);
 
             return Calculator::get()->cmp($a, $b);
         }
@@ -787,14 +787,10 @@ final class BigDecimal extends BigNumber
      *
      * @param BigDecimal $x The first decimal number.
      * @param BigDecimal $y The second decimal number.
-     * @param null       $a A variable to store the scaled integer value of $x.
-     * @param-out string $a
-     * @param null       $b A variable to store the scaled integer value of $y.
-     * @param-out string $b
      *
-     * @return void
+     * @return array{0: string, 1: string}
      */
-    private function scaleValues(BigDecimal $x, BigDecimal $y, & $a, & $b) : void
+    private function scaleValues(BigDecimal $x, BigDecimal $y) : array
     {
         $a = $x->value;
         $b = $y->value;
@@ -804,6 +800,8 @@ final class BigDecimal extends BigNumber
         } elseif ($a !== '0' && $x->scale < $y->scale) {
             $a .= \str_repeat('0', $y->scale - $x->scale);
         }
+
+        return [$a, $b];
     }
 
     /**

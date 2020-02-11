@@ -61,6 +61,7 @@ abstract class Calculator
      * @return Calculator
      *
      * @psalm-pure
+     * @psalm-suppress ImpureStaticProperty
      */
     final public static function get() : Calculator
     {
@@ -95,26 +96,20 @@ abstract class Calculator
     /**
      * Extracts the digits and sign of the operands.
      *
-     * @param string     $a    The first operand.
-     * @param string     $b    The second operand.
-     * @param null       $aDig A variable to store the digits of the first operand.
-     * @param-out string $aDig
-     * @param null       $bDig A variable to store the digits of the second operand.
-     * @param-out string $bDig
-     * @param null       $aNeg A variable to store whether the first operand is negative.
-     * @param-out bool   $aNeg
-     * @param null       $bNeg A variable to store whether the second operand is negative.
-     * @param-out bool   $bNeg
+     * @param string $a The first operand.
+     * @param string $b The second operand.
      *
-     * @return void
+     * @return array{0: bool, 1: bool, 2: string, 3: string}
      */
-    final protected function init(string $a, string $b, & $aDig, & $bDig, & $aNeg, & $bNeg) : void
+    final protected function init(string $a, string $b) : array
     {
-        $aNeg = ($a[0] === '-');
-        $bNeg = ($b[0] === '-');
+        return [
+            $aNeg = ($a[0] === '-'),
+            $bNeg = ($b[0] === '-'),
 
-        $aDig = $aNeg ? \substr($a, 1) : $a;
-        $bDig = $bNeg ? \substr($b, 1) : $b;
+            $aDig = $aNeg ? \substr($a, 1) : $a,
+            $bDig = $bNeg ? \substr($b, 1) : $b,
+        ];
     }
 
     /**
@@ -159,7 +154,7 @@ abstract class Calculator
      */
     final public function cmp(string $a, string $b) : int
     {
-        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
+        [$aNeg, $bNeg, $aDig, $bDig] = $this->init($a, $b);
 
         if ($aNeg && ! $bNeg) {
             return -1;
@@ -563,7 +558,7 @@ abstract class Calculator
      */
     private function bitwise(string $operator, string $a, string $b) : string
     {
-        $this->init($a, $b, $aDig, $bDig, $aNeg, $bNeg);
+        [$aNeg, $bNeg, $aDig, $bDig] = $this->init($a, $b);
 
         $aBin = $this->toBinary($aDig);
         $bBin = $this->toBinary($bDig);
