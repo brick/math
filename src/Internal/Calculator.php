@@ -94,12 +94,12 @@ abstract class Calculator
     }
 
     /**
-     * Extracts the digits and sign of the operands.
+     * Extracts the sign & digits of the operands.
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
      *
-     * @return array{0: bool, 1: bool, 2: string, 3: string}
+     * @return array{0: bool, 1: bool, 2: string, 3: string} Whether $a and $b are negative, followed by their digits.
      */
     final protected function init(string $a, string $b) : array
     {
@@ -107,8 +107,8 @@ abstract class Calculator
             $aNeg = ($a[0] === '-'),
             $bNeg = ($b[0] === '-'),
 
-            $aDig = $aNeg ? \substr($a, 1) : $a,
-            $bDig = $bNeg ? \substr($b, 1) : $b,
+            $aNeg ? \substr($a, 1) : $a,
+            $bNeg ? \substr($b, 1) : $b,
         ];
     }
 
