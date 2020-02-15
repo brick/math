@@ -649,6 +649,27 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Returns the number of bits in the minimal two's-complement representation of this BigInteger, excluding a sign bit.
+     *
+     * For positive BigIntegers, this is equivalent to the number of bits in the ordinary binary representation.
+     * Computes (ceil(log2(this < 0 ? -this : this+1))).
+     *
+     * @return int
+     */
+    public function getBitLength() : int
+    {
+        if ($this->value === '0') {
+            return 0;
+        }
+
+        if ($this->isNegative()) {
+            return $this->abs()->minus(1)->getBitLength();
+        }
+
+        return strlen($this->toBase(2));
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function compareTo($that) : int
