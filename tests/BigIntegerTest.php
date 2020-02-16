@@ -2477,6 +2477,49 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerIsOdd
+     *
+     * @param string $number The number to test.
+     * @param bool   $isOdd  Whether the number is even.
+     */
+    public function testIsEven(string $number, bool $isOdd) : void
+    {
+        self::assertSame(! $isOdd, BigInteger::of($number)->isEven());
+    }
+
+    /**
+     * @dataProvider providerIsOdd
+     *
+     * @param string $number The number to test.
+     * @param bool   $isOdd  Whether the number is even.
+     */
+    public function testIsOdd(string $number, bool $isOdd) : void
+    {
+        self::assertSame($isOdd, BigInteger::of($number)->isOdd());
+    }
+
+    public function providerIsOdd() : \Generator
+    {
+        $tests = [
+            ['123456789012345678900', false],
+            ['123456789012345678901', true],
+            ['123456789012345678902', false],
+            ['123456789012345678903', true],
+            ['123456789012345678904', false],
+            ['123456789012345678905', true],
+            ['123456789012345678906', false],
+            ['123456789012345678907', true],
+            ['123456789012345678908', false],
+            ['123456789012345678909', true],
+        ];
+
+        foreach ($tests as [$number, $isOdd]) {
+            yield [$number, $isOdd];
+            yield ['-' . $number, $isOdd];
+        }
+    }
+
+    /**
      * @dataProvider providerCompareTo
      *
      * @param string $a The base number as a string.

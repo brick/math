@@ -670,6 +670,26 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Returns whether this number is even.
+     *
+     * @return bool
+     */
+    public function isEven() : bool
+    {
+        return in_array($this->value[-1], ['0', '2', '4', '6', '8'], true);
+    }
+
+    /**
+     * Returns whether this number is odd.
+     *
+     * @return bool
+     */
+    public function isOdd() : bool
+    {
+        return in_array($this->value[-1], ['1', '3', '5', '7', '9'], true);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function compareTo($that) : int
