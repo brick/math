@@ -2477,6 +2477,52 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerGetLowestSetBit
+     *
+     * @param string $number       The number to test.
+     * @param int    $lowestSetBit The expected lowest set bit.
+     */
+    public function testGetLowestSetBit(string $number, int $lowestSetBit) : void
+    {
+        self::assertSame($lowestSetBit, BigInteger::of($number)->getLowestSetBit());
+    }
+
+    public function providerGetLowestSetBit() : array
+    {
+        return [
+            ['-10', 1],
+            ['-9', 0],
+            ['-8', 3],
+            ['-7', 0],
+            ['-6', 1],
+            ['-5', 0],
+            ['-4', 2],
+            ['-3', 0],
+            ['-2', 1],
+            ['-1', 0],
+            ['0', -1],
+            ['1', 0],
+            ['2', 1],
+            ['3', 0],
+            ['4', 2],
+            ['5', 0],
+            ['6', 1],
+            ['7', 0],
+            ['8', 3],
+            ['9', 0],
+            ['10', 1],
+
+            ['-1328165573307087716352', 67],
+            ['-1254378597012249509888', 66],
+            ['-1291272085159668613120', 65],
+
+            ['1291272085159668613120', 65],
+            ['1254378597012249509888', 66],
+            ['1328165573307087716352', 67],
+        ];
+    }
+
+    /**
      * @dataProvider providerIsOdd
      *
      * @param string $number The number to test.

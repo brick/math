@@ -670,6 +670,29 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Returns the index of the rightmost (lowest-order) one bit in this BigInteger.
+     *
+     * Returns -1 if this BigInteger contains no one bits.
+     *
+     * @return int
+     */
+    public function getLowestSetBit() : int
+    {
+        $n = $this;
+        $bitLength = $this->getBitLength();
+
+        for ($i = 0; $i <= $bitLength; $i++) {
+            if ($n->isOdd()) {
+                return $i;
+            }
+
+            $n = $n->shiftedRight(1);
+        }
+
+        return -1;
+    }
+
+    /**
      * Returns whether this number is even.
      *
      * @return bool
