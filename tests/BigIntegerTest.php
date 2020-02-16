@@ -2520,6 +2520,79 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerTestBit
+     *
+     * @param BigInteger $number   The number in base 2.
+     * @param int        $n        The bit to test.
+     * @param bool       $expected The expected result.
+     */
+    public function testTestBit(BigInteger $number, int $n, bool $expected) : void
+    {
+        self::assertSame($expected, $number->testBit($n));
+    }
+
+    public function providerTestBit() : \Generator
+    {
+        $base2BitsSetTests = [
+            ['0', []],
+            ['1', [0]],
+            ['10', [1]],
+            ['11', [0, 1]],
+            ['100', [2]],
+            ['101', [0, 2]],
+            ['110', [1, 2]],
+            ['111', [0, 1, 2]],
+            ['100000010000000001000000000111', [0, 1, 2, 12, 22, 29]],
+            ['101000010000000000001000100001000001000000100000100000000100000000001', [0, 11, 20, 26, 33, 39, 44, 48, 61, 66, 68]],
+        ];
+
+        foreach ($base2BitsSetTests as [$number, $bitsSet]) {
+            $number = BigInteger::fromBase($number, 2);
+
+            // test up to 5 bits after the last bit set
+            $testBitCount = ($bitsSet[count($bitsSet) - 1] ?? 0) + 5;
+
+            for ($n = 0; $n < $testBitCount; $n++) {
+                $isSet = in_array($n, $bitsSet);
+                yield [$number, $n, $isSet];
+            }
+        }
+
+        $base10BitsUnsetTests = [
+            [-1, []],
+            [-2, [0]],
+            [-3, [1]],
+            [-4, [0, 1]],
+            [-5, [2]],
+            [-6, [0, 2]],
+            [-7, [1, 2]],
+            [-8, [0, 1, 2]],
+            [-9, [3]],
+            ['-1181745669222511412225', [10, 20, 30, 40, 50, 60, 70]],
+        ];
+
+        foreach ($base10BitsUnsetTests as [$number, $bitsUnset]) {
+            $number = BigInteger::of($number);
+
+            // test up to 5 bits after the last bit set
+            $testBitCount = ($bitsUnset[count($bitsUnset) - 1] ?? 0) + 5;
+
+            for ($n = 0; $n < $testBitCount; $n++) {
+                $isSet = ! in_array($n, $bitsUnset);
+                yield [$number, $n, $isSet];
+            }
+        }
+    }
+
+    public function testTestNegativeBitThrowsException() : void
+    {
+        $number = BigInteger::one();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $number->testBit(-1);
+    }
+
+    /**
      * @dataProvider providerCompareTo
      *
      * @param string $a The base number as a string.

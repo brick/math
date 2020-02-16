@@ -690,6 +690,24 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Returns true if and only if the designated bit is set.
+     *
+     * Computes ((this & (1<<n)) != 0).
+     *
+     * @param int $n The bit to test, 0-based.
+     *
+     * @return bool
+     */
+    public function testBit(int $n) : bool
+    {
+        if ($n < 0) {
+            throw new \InvalidArgumentException('The bit to test cannot be negative.');
+        }
+
+        return $this->shiftedRight($n)->isOdd();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function compareTo($that) : int
