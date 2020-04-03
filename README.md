@@ -93,10 +93,10 @@ the current type*:
 
 ```php
 BigInteger::of('1.00'); // 1
-BigInteger::of('1.01'); // MathException
+BigInteger::of('1.01'); // RoundingNecessaryException
 
 BigDecimal::of('1/8'); // 0.125
-BigDecimal::of('1/3'); // MathException
+BigDecimal::of('1/3'); // RoundingNecessaryException
 ```
 
 Note about native integers: instantiating from an `int` is safe *as long as you don't exceed the maximum
@@ -158,7 +158,7 @@ Just like `of()`, other types of `BigNumber` are acceptable, as long as they can
 
 ```php
 echo BigInteger::of(2)->multipliedBy(BigDecimal::of('2.0')); // 4
-echo BigInteger::of(2)->multipliedBy(BigDecimal::of('2.5')); // MathException
+echo BigInteger::of(2)->multipliedBy(BigDecimal::of('2.5')); // RoundingNecessaryException
 echo BigDecimal::of(2.5)->multipliedBy(BigInteger::of(2)); // 5.0
 ```
 
