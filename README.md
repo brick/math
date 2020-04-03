@@ -30,7 +30,7 @@ to speed up calculations. The fastest available calculator implementation will b
 
 ### Project status & release process
 
-While this library is still under development, it is well tested and should be stable enough to use in production
+While this library is still under development, it is well tested and considered stable enough to use in production
 environments.
 
 The current releases are numbered `0.x.y`. When a non-breaking change is introduced (adding new methods, optimizing
