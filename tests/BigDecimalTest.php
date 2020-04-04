@@ -205,7 +205,7 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerOfInvalidValueThrowsException
      */
-    public function testOfInvalidValueThrowsException(string $value) : void
+    public function testOfInvalidValueThrowsException($value) : void
     {
         $this->expectException(NumberFormatException::class);
         BigDecimal::of($value);
@@ -2047,11 +2047,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string $a The base number as a string.
-     * @param string $b The number to compare to as a string.
-     * @param int    $c The expected comparison result.
+     * @param string           $a The base number as a string.
+     * @param string|int|float $b The number to compare to.
+     * @param int              $c The comparison result.
      */
-    public function testCompareTo(string $a, string $b, int $c) : void
+    public function testCompareTo(string $a, $b, int $c) : void
     {
         self::assertSame($c, BigDecimal::of($a)->compareTo($b));
     }
@@ -2059,11 +2059,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string $a The base number as a string.
-     * @param string $b The number to compare to as a string.
-     * @param int    $c The comparison result.
+     * @param string           $a The base number as a string.
+     * @param string|int|float $b The number to compare to.
+     * @param int              $c The comparison result.
      */
-    public function testIsEqualTo(string $a, string $b, int $c) : void
+    public function testIsEqualTo(string $a, $b, int $c) : void
     {
         self::assertSame($c === 0, BigDecimal::of($a)->isEqualTo($b));
     }
@@ -2071,11 +2071,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string $a The base number as a string.
-     * @param string $b The number to compare to as a string.
-     * @param int    $c The comparison result.
+     * @param string           $a The base number as a string.
+     * @param string|int|float $b The number to compare to.
+     * @param int              $c The comparison result.
      */
-    public function testIsLessThan(string $a, string $b, int $c) : void
+    public function testIsLessThan(string $a, $b, int $c) : void
     {
         self::assertSame($c < 0, BigDecimal::of($a)->isLessThan($b));
     }
@@ -2083,11 +2083,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string $a The base number as a string.
-     * @param string $b The number to compare to as a string.
-     * @param int    $c The comparison result.
+     * @param string           $a The base number as a string.
+     * @param string|int|float $b The number to compare to.
+     * @param int              $c The comparison result.
      */
-    public function testIsLessThanOrEqualTo(string $a, string $b, int $c) : void
+    public function testIsLessThanOrEqualTo(string $a, $b, int $c) : void
     {
         self::assertSame($c <= 0, BigDecimal::of($a)->isLessThanOrEqualTo($b));
     }
@@ -2095,11 +2095,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string $a The base number as a string.
-     * @param string $b The number to compare to as a string.
-     * @param int    $c The comparison result.
+     * @param string           $a The base number as a string.
+     * @param string|int|float $b The number to compare to.
+     * @param int              $c The comparison result.
      */
-    public function testIsGreaterThan(string $a, string $b, int $c) : void
+    public function testIsGreaterThan(string $a, $b, int $c) : void
     {
         self::assertSame($c > 0, BigDecimal::of($a)->isGreaterThan($b));
     }
@@ -2107,11 +2107,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string $a The base number as a string.
-     * @param string $b The number to compare to as a string.
-     * @param int    $c The comparison result.
+     * @param string           $a The base number as a string.
+     * @param string|int|float $b The number to compare to.
+     * @param int              $c The comparison result.
      */
-    public function testIsGreaterThanOrEqualTo(string $a, string $b, int $c) : void
+    public function testIsGreaterThanOrEqualTo(string $a, $b, int $c) : void
     {
         self::assertSame($c >= 0, BigDecimal::of($a)->isGreaterThanOrEqualTo($b));
     }
