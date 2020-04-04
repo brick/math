@@ -526,11 +526,11 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerMultipliedBy
      *
-     * @param string $a The base number.
-     * @param string $b The number to multiply.
-     * @param string $r The expected result.
+     * @param string     $a The base number.
+     * @param string|int $b The number to multiply.
+     * @param string     $r The expected result.
      */
-    public function testMultipliedBy(string $a, string $b, string $r) : void
+    public function testMultipliedBy(string $a, $b, string $r) : void
     {
         self::assertBigIntegerEquals($r, BigInteger::of($a)->multipliedBy($b));
     }
@@ -560,11 +560,11 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerDividedBy
      *
-     * @param string $number   The base number.
-     * @param string $divisor  The divisor.
-     * @param string $expected The expected result, or a class name if an exception is expected.
+     * @param string           $number   The base number.
+     * @param string|int|float $divisor  The divisor.
+     * @param string           $expected The expected result, or a class name if an exception is expected.
      */
-    public function testDividedBy(string $number, string $divisor, string $expected) : void
+    public function testDividedBy(string $number, $divisor, string $expected) : void
     {
         $number = BigInteger::of($number);
 
