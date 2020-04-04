@@ -1411,7 +1411,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerPowerModNegativeThrowsException
      */
-    public function testPowerModNegativeThrowsException(string $base, string $exp, string $mod) : void
+    public function testPowerModNegativeThrowsException(int $base, int $exp, int $mod) : void
     {
         $this->expectException(NegativeNumberException::class);
         BigInteger::of($base)->powerMod($exp, $mod);
