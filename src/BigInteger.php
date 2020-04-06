@@ -398,6 +398,10 @@ final class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
+        if ($that->value === '1') {
+            return BigInteger::zero();
+        }
+
         if ($that->value === '0') {
             throw DivisionByZeroException::divisionByZero();
         }
