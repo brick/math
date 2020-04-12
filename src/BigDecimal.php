@@ -733,7 +733,7 @@ final class BigDecimal extends BigNumber
         $float = (float) (string) $this;
 
         if ($decimals > 0) {
-            return number_format($float, $decimals);
+            return (float) number_format($float, $decimals);
         }
 
         return $float;
