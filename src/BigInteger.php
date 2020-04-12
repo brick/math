@@ -810,7 +810,7 @@ final class BigInteger extends BigNumber
         $float = (float) $this->value;
 
         if ($decimals > 0) {
-            return number_format($float, $decimals);
+            return (float) number_format($float, $decimals);
         }
 
         return $float;
