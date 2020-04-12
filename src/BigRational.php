@@ -422,9 +422,9 @@ final class BigRational extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function toFloat() : float
+    public function toFloat(int $decimals = 0) : float
     {
-        return $this->numerator->toFloat() / $this->denominator->toFloat();
+        return $this->numerator->toFloat($decimals) / $this->denominator->toFloat($decimals);
     }
 
     /**
