@@ -506,7 +506,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return float The converted value.
      */
-    abstract public function toFloat(int $decimals = 0) : float
+    abstract public function toFloat(int $decimals = 0) : float;
 
     /**
      * Returns a string representation of this number.
