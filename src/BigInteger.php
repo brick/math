@@ -805,9 +805,15 @@ final class BigInteger extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function toFloat() : float
+    public function toFloat(int $decimals = 0) : float
     {
-        return (float) $this->value;
+        $float = (float) $this->value;
+
+        if ($decimals > 0) {
+            return number_format($float, $decimals);
+        }
+
+        return $float;
     }
 
     /**
