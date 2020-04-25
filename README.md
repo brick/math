@@ -47,20 +47,20 @@ for a list of changes introduced by each further `0.x.0` version.
 
 This library provides the following public classes in the `Brick\Math` namespace:
 
-- [BigNumber](https://github.com/brick/math/blob/0.8.3/src/BigNumber.php): base class for `BigInteger`, `BigDecimal` and `BigRational`
-- [BigInteger](https://github.com/brick/math/blob/0.8.3/src/BigInteger.php): represents an arbitrary-precision integer number.
-- [BigDecimal](https://github.com/brick/math/blob/0.8.3/src/BigDecimal.php): represents an arbitrary-precision decimal number.
-- [BigRational](https://github.com/brick/math/blob/0.8.3/src/BigRational.php): represents an arbitrary-precision rational number (fraction).
-- [RoundingMode](https://github.com/brick/math/blob/0.8.3/src/RoundingMode.php): holds constants for the rounding modes.
+- [BigNumber](https://github.com/brick/math/blob/0.8.15/src/BigNumber.php): base class for `BigInteger`, `BigDecimal` and `BigRational`
+- [BigInteger](https://github.com/brick/math/blob/0.8.15/src/BigInteger.php): represents an arbitrary-precision integer number.
+- [BigDecimal](https://github.com/brick/math/blob/0.8.15/src/BigDecimal.php): represents an arbitrary-precision decimal number.
+- [BigRational](https://github.com/brick/math/blob/0.8.15/src/BigRational.php): represents an arbitrary-precision rational number (fraction).
+- [RoundingMode](https://github.com/brick/math/blob/0.8.15/src/RoundingMode.php): holds constants for the rounding modes.
 
 And the following exceptions in the `Brick\Math\Exception` namespace:
 
-- [MathException](https://github.com/brick/math/blob/0.8.3/src/Exception/MathException.php): base class for all exceptions
-- [DivisionByZeroException](https://github.com/brick/math/blob/0.8.3/src/Exception/DivisionByZeroException.php): thrown when a division by zero occurs
-- [IntegerOverflowException](https://github.com/brick/math/blob/0.8.3/src/Exception/IntegerOverflowException.php): thrown when attempting to convert a too large `BigInteger` to `int`
-- [NumberFormatException](https://github.com/brick/math/blob/0.8.3/src/Exception/NumberFormatException.php): thrown when parsing a number string in an invalid format
-- [RoundingNecessaryException](https://github.com/brick/math/blob/0.8.3/src/Exception/RoundingNecessaryException.php): thrown when the result of the operation cannot be represented without explicit rounding
-- [NegativeNumberException](https://github.com/brick/math/blob/0.8.3/src/Exception/NegativeNumberException.php): thrown when attempting to calculate the square root of a negative number
+- [MathException](https://github.com/brick/math/blob/0.8.15/src/Exception/MathException.php): base class for all exceptions
+- [DivisionByZeroException](https://github.com/brick/math/blob/0.8.15/src/Exception/DivisionByZeroException.php): thrown when a division by zero occurs
+- [IntegerOverflowException](https://github.com/brick/math/blob/0.8.15/src/Exception/IntegerOverflowException.php): thrown when attempting to convert a too large `BigInteger` to `int`
+- [NumberFormatException](https://github.com/brick/math/blob/0.8.15/src/Exception/NumberFormatException.php): thrown when parsing a number string in an invalid format
+- [RoundingNecessaryException](https://github.com/brick/math/blob/0.8.15/src/Exception/RoundingNecessaryException.php): thrown when the result of the operation cannot be represented without explicit rounding
+- [NegativeNumberException](https://github.com/brick/math/blob/0.8.15/src/Exception/NegativeNumberException.php): thrown when attempting to calculate the square root of a negative number
 
 ### Overview
 
@@ -174,7 +174,7 @@ echo BigInteger::of(999)->dividedBy(3); // 333
 echo BigInteger::of(1000)->dividedBy(3); // RoundingNecessaryException
 ```
 
-You can pass an optional [rounding mode](https://github.com/brick/math/blob/0.8.3/src/RoundingMode.php) to round the result, if necessary:
+You can pass an optional [rounding mode](https://github.com/brick/math/blob/0.8.15/src/RoundingMode.php) to round the result, if necessary:
 
 ```php
 echo BigInteger::of(1000)->dividedBy(3, RoundingMode::DOWN); // 333
@@ -197,7 +197,7 @@ You can even get both at the same time:
 ##### BigDecimal
 
 Dividing a `BigDecimal` always requires a scale to be specified. If the exact result of the division does not fit in
-the given scale, a [rounding mode](https://github.com/brick/math/blob/0.8.3/src/RoundingMode.php) must be provided.
+the given scale, a [rounding mode](https://github.com/brick/math/blob/0.8.15/src/RoundingMode.php) must be provided.
 
 ```php
 echo BigDecimal::of(1)->dividedBy('8', 3); // 0.125
