@@ -27,14 +27,14 @@ final class BigInteger extends BigNumber
      * No leading zeros must be present.
      * No leading minus sign must be present if the number is zero.
      *
-     * @var string
+     * @var numeric-string
      */
     private $value;
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.
      *
-     * @param string $value A string of digits, with optional leading minus sign.
+     * @param numeric-string $value A string of digits, with optional leading minus sign.
      */
     protected function __construct(string $value)
     {

@@ -23,7 +23,7 @@ final class BigDecimal extends BigNumber
      * No leading zero must be present.
      * No leading minus sign must be present if the value is 0.
      *
-     * @var string
+     * @var numeric-string
      */
     private $value;
 

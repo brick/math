@@ -53,10 +53,14 @@ class NativeCalculator extends Calculator
      */
     public function add(string $a, string $b) : string
     {
+        /** @var numeric $result */
         $result = $a + $b;
 
         if (is_int($result)) {
-            return (string) $result;
+            /** @var numeric-string $result */
+            $result = (string) $result;
+
+            return $result;
         }
 
         if ($a === '0') {
@@ -98,7 +102,10 @@ class NativeCalculator extends Calculator
         $result = $a * $b;
 
         if (is_int($result)) {
-            return (string) $result;
+            /** @var numeric-string $result */
+            $result = (string) $result;
+
+            return $result;
         }
 
         if ($a === '0' || $b === '0') {
@@ -172,7 +179,7 @@ class NativeCalculator extends Calculator
         $na = $a * 1; // cast to number
 
         if (is_int($na)) {
-            $nb = $b * 1;
+            $nb = $b * 1; // cast to number
 
             if (is_int($nb)) {
                 // the only division that may overflow is PHP_INT_MIN / -1,
@@ -182,6 +189,7 @@ class NativeCalculator extends Calculator
 
                 assert(is_int($q));
 
+                /** @psalm-suppress LessSpecificReturnStatement */
                 return [
                     (string) $q,
                     (string) $r
@@ -278,6 +286,7 @@ class NativeCalculator extends Calculator
         }
 
         // initial approximation
+        /** @var numeric-string $x */
         $x = \str_repeat('9', \intdiv(\strlen($n), 2) ?: 1);
 
         $decreased = false;
@@ -299,10 +308,10 @@ class NativeCalculator extends Calculator
     /**
      * Performs the addition of two non-signed large integers.
      *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
+     * @param numeric-string $a The first operand.
+     * @param numeric-string $b The second operand.
      *
-     * @return string
+     * @return numeric-string
      */
     private function doAdd(string $a, string $b) : string
     {
@@ -352,10 +361,10 @@ class NativeCalculator extends Calculator
     /**
      * Performs the subtraction of two non-signed large integers.
      *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
+     * @param numeric-string $a The first operand.
+     * @param numeric-string $b The second operand.
      *
-     * @return string
+     * @return numeric-string
      */
     private function doSub(string $a, string $b) : string
     {
@@ -418,6 +427,7 @@ class NativeCalculator extends Calculator
         // Carry cannot be 1 when the loop ends, as a > b
         assert($carry === 0);
 
+        /** @var numeric-string $result */
         $result = \ltrim($result, '0');
 
         if ($invert) {
@@ -430,10 +440,10 @@ class NativeCalculator extends Calculator
     /**
      * Performs the multiplication of two non-signed large integers.
      *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
+     * @param numeric-string $a The first operand.
+     * @param numeric-string $b The second operand.
      *
-     * @return string
+     * @return numeric-string
      */
     private function doMul(string $a, string $b) : string
     {
@@ -490,6 +500,7 @@ class NativeCalculator extends Calculator
 
             if ($line !== '') {
                 $line .= \str_repeat('0', $x - $blockALength - $i);
+                /** @var numeric-string $line */
                 $result = $this->add($result, $line);
             }
 
@@ -504,10 +515,10 @@ class NativeCalculator extends Calculator
     /**
      * Performs the division of two non-signed large integers.
      *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
+     * @param numeric-string $a The first operand.
+     * @param numeric-string $b The second operand.
      *
-     * @return string[] The quotient and remainder.
+     * @return numeric-string[] The quotient and remainder.
      */
     private function doDiv(string $a, string $b) : array
     {
@@ -527,6 +538,7 @@ class NativeCalculator extends Calculator
         $z = $y; // focus length, always $y or $y+1
 
         for (;;) {
+            /** @var numeric-string $focus */
             $focus = \substr($a, 0, $z);
 
             $cmp = $this->doCmp($focus, $b);
@@ -539,10 +551,15 @@ class NativeCalculator extends Calculator
                 $z++;
             }
 
+            /** @var numeric-string $zeros */
             $zeros = \str_repeat('0', $x - $z);
 
-            $q = $this->add($q, '1' . $zeros);
-            $a = $this->sub($a, $b . $zeros);
+            /** @var numeric-string $qb */
+            $qb = '1' . $zeros;
+            $q = $this->add($q, $qb);
+            /** @var numeric-string $ab */
+            $ab = $b . $zeros;
+            $a = $this->sub($a, $ab);
 
             $r = $a;
 
@@ -565,8 +582,8 @@ class NativeCalculator extends Calculator
     /**
      * Compares two non-signed large numbers.
      *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
+     * @param numeric-string $a The first operand.
+     * @param numeric-string $b The second operand.
      *
      * @return int [-1, 0, 1]
      */
@@ -589,10 +606,10 @@ class NativeCalculator extends Calculator
      *
      * The numbers must only consist of digits, without leading minus sign.
      *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
+     * @param numeric-string $a The first operand.
+     * @param numeric-string $b The second operand.
      *
-     * @return array{0: string, 1: string, 2: int}
+     * @return array{0: numeric-string, 1: numeric-string, 2: int}
      */
     private function pad(string $a, string $b) : array
     {
@@ -600,12 +617,14 @@ class NativeCalculator extends Calculator
         $y = \strlen($b);
 
         if ($x > $y) {
+            /** @var numeric-string $b */
             $b = \str_repeat('0', $x - $y) . $b;
 
             return [$a, $b, $x];
         }
 
         if ($x < $y) {
+            /** @var numeric-string $a */
             $a = \str_repeat('0', $y - $x) . $a;
 
             return [$a, $b, $y];

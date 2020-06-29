@@ -96,10 +96,10 @@ abstract class Calculator
     /**
      * Extracts the sign & digits of the operands.
      *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
+     * @param numeric-string $a The first operand.
+     * @param numeric-string $b The second operand.
      *
-     * @return array{0: bool, 1: bool, 2: string, 3: string} Whether $a and $b are negative, followed by their digits.
+     * @return array{0: bool, 1: bool, 2: numeric-string, 3: numeric-string} Whether $a and $b are negative, followed by their digits.
      */
     final protected function init(string $a, string $b) : array
     {
@@ -115,9 +115,9 @@ abstract class Calculator
     /**
      * Returns the absolute value of a number.
      *
-     * @param string $n The number.
+     * @param numeric-string $n The number.
      *
-     * @return string The absolute value.
+     * @return numeric-string The absolute value.
      */
     final public function abs(string $n) : string
     {
@@ -127,9 +127,9 @@ abstract class Calculator
     /**
      * Negates a number.
      *
-     * @param string $n The number.
+     * @param numeric-string $n The number.
      *
-     * @return string The negated value.
+     * @return numeric-string The negated value.
      */
     final public function neg(string $n) : string
     {
@@ -147,8 +147,8 @@ abstract class Calculator
     /**
      * Compares two numbers.
      *
-     * @param string $a The first number.
-     * @param string $b The second number.
+     * @param numeric-string $a The first number.
+     * @param numeric-string $b The second number.
      *
      * @return int [-1, 0, 1] If the first number is less than, equal to, or greater than the second number.
      */
@@ -181,70 +181,70 @@ abstract class Calculator
     /**
      * Adds two numbers.
      *
-     * @param string $a The augend.
-     * @param string $b The addend.
+     * @param numeric-string $a The augend.
+     * @param numeric-string $b The addend.
      *
-     * @return string The sum.
+     * @return numeric-string The sum.
      */
     abstract public function add(string $a, string $b) : string;
 
     /**
      * Subtracts two numbers.
      *
-     * @param string $a The minuend.
-     * @param string $b The subtrahend.
+     * @param numeric-string $a The minuend.
+     * @param numeric-string $b The subtrahend.
      *
-     * @return string The difference.
+     * @return numeric-string The difference.
      */
     abstract public function sub(string $a, string $b) : string;
 
     /**
      * Multiplies two numbers.
      *
-     * @param string $a The multiplicand.
-     * @param string $b The multiplier.
+     * @param numeric-string $a The multiplicand.
+     * @param numeric-string $b The multiplier.
      *
-     * @return string The product.
+     * @return numeric-string The product.
      */
     abstract public function mul(string $a, string $b) : string;
 
     /**
      * Returns the quotient of the division of two numbers.
      *
-     * @param string $a The dividend.
-     * @param string $b The divisor, must not be zero.
+     * @param numeric-string $a The dividend.
+     * @param numeric-string $b The divisor, must not be zero.
      *
-     * @return string The quotient.
+     * @return numeric-string The quotient.
      */
     abstract public function divQ(string $a, string $b) : string;
 
     /**
      * Returns the remainder of the division of two numbers.
      *
-     * @param string $a The dividend.
-     * @param string $b The divisor, must not be zero.
+     * @param numeric-string $a The dividend.
+     * @param numeric-string $b The divisor, must not be zero.
      *
-     * @return string The remainder.
+     * @return numeric-string The remainder.
      */
     abstract public function divR(string $a, string $b) : string;
 
     /**
      * Returns the quotient and remainder of the division of two numbers.
      *
-     * @param string $a The dividend.
-     * @param string $b The divisor, must not be zero.
+     * @param numeric-string $a The dividend.
+     * @param numeric-string $b The divisor, must not be zero.
      *
-     * @return string[] An array containing the quotient and remainder.
+     * @return numeric-string[] An array containing the quotient and remainder.
      */
     abstract public function divQR(string $a, string $b) : array;
 
     /**
      * Exponentiates a number.
      *
-     * @param string $a The base number.
-     * @param int    $e The exponent, validated as an integer between 0 and MAX_POWER.
+     * @param numeric-string $a The base number.
+     * @param int            $e The exponent, validated as an integer between 0 and MAX_POWER.
      *
-     * @return string The power.
+     * @return numeric-string The power.
      */
     abstract public function pow(string $a, int $e) : string;
 
@@ -297,11 +297,11 @@ abstract class Calculator
     /**
      * Raises a number into power with modulo.
      *
-     * @param string $base The base number; must be positive or zero.
-     * @param string $exp  The exponent; must be positive or zero.
-     * @param string $mod  The modulus; must be strictly positive.
+     * @param numeric-string $base The base number; must be positive or zero.
+     * @param numeric-string $exp  The exponent; must be positive or zero.
+     * @param numeric-string $mod  The modulus; must be strictly positive.
      *
-     * @return string The power.
+     * @return numeric-string The power.
      */
     abstract public function modPow(string $base, string $exp, string $mod) : string;
 
@@ -311,10 +311,10 @@ abstract class Calculator
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for GCD calculations.
      *
-     * @param string $a The first number.
-     * @param string $b The second number.
+     * @param numeric-string $a The first number.
+     * @param numeric-string $b The second number.
      *
-     * @return string The GCD, always positive, or zero if both arguments are zero.
+     * @return numeric-string The GCD, always positive, or zero if both arguments are zero.
      */
     public function gcd(string $a, string $b) : string
     {
@@ -355,9 +355,9 @@ abstract class Calculator
      * The result is the largest x such that x² ≤ n.
      * The input MUST NOT be negative.
      *
-     * @param string $n The number.
+     * @param numeric-string $n The number.
      *
-     * @return string The square root.
+     * @return numeric-string The square root.
      */
     abstract public function sqrt(string $n) : string;
 
@@ -367,10 +367,10 @@ abstract class Calculator
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for base conversion.
      *
-     * @param string $number The number, positive or zero, non-empty, case-insensitively validated for the given base.
-     * @param int    $base   The base of the number, validated from 2 to 36.
+     * @param numeric-string $number The number, positive or zero, non-empty, case-insensitively validated for the given base.
+     * @param int            $base   The base of the number, validated from 2 to 36.
      *
-     * @return string The converted number, following the Calculator conventions.
+     * @return numeric-string The converted number, following the Calculator conventions.
      */
     public function fromBase(string $number, int $base) : string
     {
@@ -383,10 +383,10 @@ abstract class Calculator
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for base conversion.
      *
-     * @param string $number The number to convert, following the Calculator conventions.
-     * @param int    $base   The base to convert to, validated from 2 to 36.
+     * @param numeric-string $number The number to convert, following the Calculator conventions.
+     * @param int            $base   The base to convert to, validated from 2 to 36.
      *
-     * @return string The converted number, lowercase.
+     * @return numeric-string The converted number, lowercase.
      */
     public function toBase(string $number, int $base) : string
     {
@@ -408,12 +408,12 @@ abstract class Calculator
     /**
      * Converts a non-negative number in an arbitrary base using a custom alphabet, to base 10.
      *
-     * @param string $number   The number to convert, validated as a non-empty string,
+     * @param numeric-string $number   The number to convert, validated as a non-empty string,
      *                         containing only chars in the given alphabet/base.
-     * @param string $alphabet The alphabet that contains every digit, validated as 2 chars minimum.
-     * @param int    $base     The base of the number, validated from 2 to alphabet length.
+     * @param string         $alphabet The alphabet that contains every digit, validated as 2 chars minimum.
+     * @param int            $base     The base of the number, validated from 2 to alphabet length.
      *
-     * @return string The number in base 10, following the Calculator conventions.
+     * @return numeric-string The number in base 10, following the Calculator conventions.
      */
     final public function fromArbitraryBase(string $number, string $alphabet, int $base) : string
     {
@@ -455,9 +455,9 @@ abstract class Calculator
     /**
      * Converts a non-negative number to an arbitrary base using a custom alphabet.
      *
-     * @param string $number   The number to convert, positive or zero, following the Calculator conventions.
-     * @param string $alphabet The alphabet that contains every digit, validated as 2 chars minimum.
-     * @param int    $base     The base to convert to, validated from 2 to alphabet length.
+     * @param numeric-string $number   The number to convert, positive or zero, following the Calculator conventions.
+     * @param string         $alphabet The alphabet that contains every digit, validated as 2 chars minimum.
+     * @param int            $base     The base to convert to, validated from 2 to alphabet length.
      *
      * @return string The converted number in the given alphabet.
      */
@@ -485,11 +485,11 @@ abstract class Calculator
      *
      * Rounding is performed when the remainder of the division is not zero.
      *
-     * @param string $a            The dividend.
-     * @param string $b            The divisor, must not be zero.
-     * @param int    $roundingMode The rounding mode.
+     * @param numeric-string $a            The dividend.
+     * @param numeric-string $b            The divisor, must not be zero.
+     * @param int            $roundingMode The rounding mode.
      *
-     * @return string
+     * @return numeric-string
      *
      * @throws \InvalidArgumentException  If the rounding mode is invalid.
      * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided but rounding is necessary.
@@ -571,10 +571,10 @@ abstract class Calculator
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for bitwise operations.
      *
-     * @param string $a
-     * @param string $b
+     * @param numeric-string $a
+     * @param numeric-string $b
      *
-     * @return string
+     * @return numeric-string
      */
     public function and(string $a, string $b) : string
     {
@@ -587,10 +587,10 @@ abstract class Calculator
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for bitwise operations.
      *
-     * @param string $a
-     * @param string $b
+     * @param numeric-string $a
+     * @param numeric-string $b
      *
-     * @return string
+     * @return numeric-string
      */
     public function or(string $a, string $b) : string
     {
@@ -603,10 +603,10 @@ abstract class Calculator
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for bitwise operations.
      *
-     * @param string $a
-     * @param string $b
+     * @param numeric-string $a
+     * @param numeric-string $b
      *
-     * @return string
+     * @return numeric-string
      */
     public function xor(string $a, string $b) : string
     {
@@ -617,10 +617,10 @@ abstract class Calculator
      * Performs a bitwise operation on a decimal number.
      *
      * @param string $operator The operator to use, must be "and", "or" or "xor".
-     * @param string $a        The left operand.
-     * @param string $b        The right operand.
+     * @param numeric-string $a        The left operand.
+     * @param numeric-string $b        The right operand.
      *
-     * @return string
+     * @return numeric-string
      */
     private function bitwise(string $operator, string $a, string $b) : string
     {
@@ -708,7 +708,7 @@ abstract class Calculator
     /**
      * Converts a decimal number to a binary string.
      *
-     * @param string $number The number to convert, positive or zero, only digits.
+     * @param numeric-string $number The number to convert, positive or zero, only digits.
      *
      * @return string
      */
@@ -729,7 +729,7 @@ abstract class Calculator
      *
      * @param string $bytes The bytes representing the number.
      *
-     * @return string
+     * @return numeric-string
      */
     private function toDecimal(string $bytes) : string
     {

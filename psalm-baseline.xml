@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.8.5@e6ec5fa22a7b9e61670a24d07b3119aff80dcd89">
+<files psalm-version="3.12.1@9b860214d58c48b5cbe99bdb17914d0eb723c9cd">
   <file src="src/Internal/Calculator/BcMathCalculator.php">
     <InvalidNullableReturnType occurrences="3">
       <code>string</code>
@@ -19,11 +19,8 @@
     </NullableReturnStatement>
   </file>
   <file src="src/Internal/Calculator/NativeCalculator.php">
-    <InvalidOperand occurrences="6">
-      <code>$a</code>
-      <code>$a</code>
-      <code>$a</code>
-      <code>$b</code>
+    <InvalidOperand occurrences="3">
+      <code>$na</code>
       <code>$blockA</code>
       <code>$blockA</code>
     </InvalidOperand>
@@ -33,8 +30,10 @@
       <code>$i</code>
       <code>$j</code>
     </LoopInvalidation>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$e / 2</code>
-    </PossiblyInvalidArgument>
+    <TypeDoesNotContainType occurrences="3">
+      <code>is_int($result)</code>
+      <code>is_int($na)</code>
+      <code>is_int($nb)</code>
+    </TypeDoesNotContainType>
   </file>
 </files>

@@ -87,6 +87,10 @@ class BcMathCalculator extends Calculator
      */
     public function sqrt(string $n) : string
     {
-        return \bcsqrt($n, 0);
+        // negative numbers should be controlled outside
+        /** @var numeric-string $result */
+        $result = \bcsqrt($n, 0);
+
+        return $result;
     }
 }
