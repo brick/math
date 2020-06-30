@@ -84,7 +84,7 @@ final class BigDecimal extends BigNumber
             throw new \InvalidArgumentException('The scale cannot be negative.');
         }
 
-        return new BigDecimal((string) BigInteger::of($value), $scale);
+        return new BigDecimal(BigInteger::of($value)->toNumericString(), $scale);
     }
 
     /**
@@ -291,6 +291,7 @@ final class BigDecimal extends BigNumber
 
         [, $b] = $this->scaleValues($this, $that);
 
+        /** @var numeric-string $d */
         $d = \rtrim($b, '0');
         $scale = \strlen($b) - \strlen($d);
 
@@ -471,10 +472,11 @@ final class BigDecimal extends BigNumber
 
             $value = \substr($value, 0, $addDigits);
         }
+        /** @var numeric-string $value */
 
-        $value = Calculator::get()->sqrt($value);
+        $sqrtValue = Calculator::get()->sqrt($value);
 
-        return new BigDecimal($value, $scale);
+        return new BigDecimal($sqrtValue, $scale);
     }
 
     /**
@@ -523,6 +525,7 @@ final class BigDecimal extends BigNumber
             }
             $scale = 0;
         }
+        /** @var numeric-string $value */
 
         return new BigDecimal($value, $scale);
     }
@@ -554,6 +557,7 @@ final class BigDecimal extends BigNumber
             $trimmableZeros = $this->scale;
         }
 
+        /** @var numeric-string $value */
         $value = \substr($this->value, 0, -$trimmableZeros);
         $scale = $this->scale - $trimmableZeros;
 
@@ -734,9 +738,9 @@ final class BigDecimal extends BigNumber
     }
 
     /**
-     * {@inheritdoc}
+     * @return numeric-string
      */
-    public function __toString() : string
+    public function toNumericString(): string
     {
         if ($this->scale === 0) {
             return $this->value;
@@ -744,7 +748,16 @@ final class BigDecimal extends BigNumber
 
         $value = $this->getUnscaledValueWithLeadingZeros();
 
+        /** @var numeric-string */
         return \substr($value, 0, -$this->scale) . '.' . \substr($value, -$this->scale);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString() : string
+    {
+        return $this->toNumericString();
     }
 
     /**
@@ -789,7 +802,7 @@ final class BigDecimal extends BigNumber
      * @param BigDecimal $x The first decimal number.
      * @param BigDecimal $y The second decimal number.
      *
-     * @return array{0: string, 1: string} The scaled integer values of $x and $y.
+     * @return array{numeric-string, numeric-string} The scaled integer values of $x and $y.
      */
     private function scaleValues(BigDecimal $x, BigDecimal $y) : array
     {
@@ -802,13 +815,14 @@ final class BigDecimal extends BigNumber
             $a .= \str_repeat('0', $y->scale - $x->scale);
         }
 
+        /** @var array{numeric-string, numeric-string} */
         return [$a, $b];
     }
 
     /**
      * @param int $scale
      *
-     * @return string
+     * @return numeric-string
      */
     private function valueWithMinScale(int $scale) : string
     {
@@ -816,6 +830,7 @@ final class BigDecimal extends BigNumber
 
         if ($this->value !== '0' && $scale > $this->scale) {
             $value .= \str_repeat('0', $scale - $this->scale);
+            /** @var numeric-string $value */
         }
 
         return $value;

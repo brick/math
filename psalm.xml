@@ -16,6 +16,6 @@
 
     <!-- Lower priority for the most common errors in the codebase that don't produce a lot of real value -->
     <issueHandlers>
-        <ArgumentTypeCoercion errorLevel="info" />
+
     </issueHandlers>
 </psalm>

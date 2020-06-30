@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="3.12.1@9b860214d58c48b5cbe99bdb17914d0eb723c9cd">
+  <file src="src/Internal/Calculator.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>(string) $index</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Internal/Calculator/NativeCalculator.php">
     <InvalidOperand occurrences="3">
       <code>$na</code>

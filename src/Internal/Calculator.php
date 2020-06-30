@@ -367,8 +367,8 @@ abstract class Calculator
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for base conversion.
      *
-     * @param numeric-string $number The number, positive or zero, non-empty, case-insensitively validated for the given base.
-     * @param int            $base   The base of the number, validated from 2 to 36.
+     * @param string $number The number, positive or zero, non-empty, case-insensitively validated for the given base.
+     * @param int    $base   The base of the number, validated from 2 to 36.
      *
      * @return numeric-string The converted number, following the Calculator conventions.
      */
@@ -394,6 +394,7 @@ abstract class Calculator
 
         if ($negative) {
             $number = \substr($number, 1);
+            /** @var numeric-string $number */
         }
 
         $number = $this->toArbitraryBase($number, self::ALPHABET, $base);
@@ -408,10 +409,10 @@ abstract class Calculator
     /**
      * Converts a non-negative number in an arbitrary base using a custom alphabet, to base 10.
      *
-     * @param numeric-string $number   The number to convert, validated as a non-empty string,
+     * @param string $number   The number to convert, validated as a non-empty string,
      *                         containing only chars in the given alphabet/base.
-     * @param string         $alphabet The alphabet that contains every digit, validated as 2 chars minimum.
-     * @param int            $base     The base of the number, validated from 2 to alphabet length.
+     * @param string $alphabet The alphabet that contains every digit, validated as 2 chars minimum.
+     * @param int    $base     The base of the number, validated from 2 to alphabet length.
      *
      * @return numeric-string The number in base 10, following the Calculator conventions.
      */
@@ -435,6 +436,7 @@ abstract class Calculator
         $base = (string) $base;
 
         for ($i = \strlen($number) - 1; $i >= 0; $i--) {
+            // TODO Handle "false"
             $index = \strpos($alphabet, $number[$i]);
 
             if ($index !== 0) {

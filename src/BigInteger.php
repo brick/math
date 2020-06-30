@@ -111,6 +111,7 @@ final class BigInteger extends BigNumber
 
         if ($number === '1') {
             // The result will be the same in any base, avoid further calculation.
+            /** @psalm-suppress ArgumentTypeCoercion */
             return new BigInteger($sign . '1');
         }
 
@@ -122,12 +123,14 @@ final class BigInteger extends BigNumber
 
         if ($base === 10) {
             // The number is usable as is, avoid further calculation.
+            /** @psalm-suppress ArgumentTypeCoercion */
             return new BigInteger($sign . $number);
         }
 
-        $result = Calculator::get()->fromBase($number, $base);
+        $base10Number = Calculator::get()->fromBase($number, $base);
 
-        return new BigInteger($sign . $result);
+        /** @psalm-suppress ArgumentTypeCoercion */
+        return new BigInteger($sign . $base10Number);
     }
 
     /**
@@ -1093,11 +1096,19 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * @return numeric-string
+     */
+    public function toNumericString(): string
+    {
+        return $this->value;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function __toString() : string
     {
-        return $this->value;
+        return $this->toNumericString();
     }
 
     /**
