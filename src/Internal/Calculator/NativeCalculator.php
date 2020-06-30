@@ -552,15 +552,14 @@ class NativeCalculator extends Calculator
                 $z++;
             }
 
-            /** @var numeric-string $zeros */
             $zeros = \str_repeat('0', $x - $z);
+            /** @var numeric-string $oneZeroes */
+            $oneZeroes = '1' . $zeros;
+            /** @var numeric-string $bZeroes */
+            $bZeroes = $b . $zeros;
 
-            /** @var numeric-string $qb */
-            $qb = '1' . $zeros;
-            $q = $this->add($q, $qb);
-            /** @var numeric-string $ab */
-            $ab = $b . $zeros;
-            $a = $this->sub($a, $ab);
+            $q = $this->add($q, $oneZeroes);
+            $a = $this->sub($a, $bZeroes);
 
             $r = $a;
 
