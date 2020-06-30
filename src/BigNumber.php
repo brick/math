@@ -50,14 +50,14 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @param BigNumber|int|float|string $value
      *
-     * @return BigNumber
+     * @return self
      *
      * @throws NumberFormatException   If the format of the number is not valid.
      * @throws DivisionByZeroException If the value represents a rational number with a denominator of zero.
      *
      * @psalm-pure
      */
-    public static function of($value) : BigNumber
+    public static function of($value) : self
     {
         if ($value instanceof BigNumber) {
             return $value;
@@ -100,6 +100,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
                 throw DivisionByZeroException::denominatorMustNotBeZero();
             }
 
+            /** @var numeric-string $denominator */
             return new BigRational(
                 new BigInteger($numerator),
                 new BigInteger($denominator),
@@ -135,6 +136,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             if ($scale < 0) {
                 if ($unscaledValue !== '0') {
                     $unscaledValue .= \str_repeat('0', - $scale);
+                    /** @var numeric-string $unscaledValue */
                 }
                 $scale = 0;
             }
@@ -182,7 +184,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @psalm-pure
      */
-    protected static function create(... $args) : BigNumber
+    protected static function create(... $args) : self
     {
         /** @psalm-suppress TooManyArguments */
         return new static(... $args);
@@ -194,14 +196,14 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
      *                                              to an instance of the class this method is called on.
      *
-     * @return static The minimum value.
+     * @return self The minimum value.
      *
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
      *
      * @psalm-pure
      */
-    public static function min(...$values) : BigNumber
+    public static function min(...$values) : self
     {
         $min = null;
 
@@ -226,14 +228,14 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
      *                                              to an instance of the class this method is called on.
      *
-     * @return static The maximum value.
+     * @return self The maximum value.
      *
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
      *
      * @psalm-pure
      */
-    public static function max(...$values) : BigNumber
+    public static function max(...$values) : self
     {
         $max = null;
 
@@ -258,14 +260,14 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @param BigNumber|int|float|string ...$values The numbers to add. All the numbers need to be convertible
      *                                              to an instance of the class this method is called on.
      *
-     * @return static The sum.
+     * @return self The sum.
      *
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
      *
      * @psalm-pure
      */
-    public static function sum(...$values) : BigNumber
+    public static function sum(...$values) : self
     {
         /** @var BigNumber|null $sum */
         $sum = null;
@@ -298,11 +300,11 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @param BigNumber $a
      * @param BigNumber $b
      *
-     * @return BigNumber
+     * @return self
      *
      * @psalm-pure
      */
-    private static function add(BigNumber $a, BigNumber $b) : BigNumber
+    private static function add(BigNumber $a, BigNumber $b) : self
     {
         if ($a instanceof BigRational) {
             return $a->plus($b);
@@ -330,7 +332,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @param string $number The number, validated as a non-empty string of digits with optional leading sign.
      *
-     * @return string
+     * @return numeric-string
      *
      * @psalm-pure
      */
@@ -348,11 +350,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             return '0';
         }
 
-        if ($firstChar === '-') {
-            return '-' . $number;
-        }
-
-        return $number;
+        /** @var numeric-string */
+        return ($firstChar === '-') ? '-' . $number : $number;
     }
 
     /**

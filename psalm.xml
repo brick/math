@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="4"
+    errorLevel="3"
     resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
@@ -13,4 +13,9 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+
+    <!-- Lower priority for the most common errors in the codebase that don't produce a lot of real value -->
+    <issueHandlers>
+        <ArgumentTypeCoercion errorLevel="info" />
+    </issueHandlers>
 </psalm>

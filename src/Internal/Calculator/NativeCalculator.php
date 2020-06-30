@@ -189,7 +189,7 @@ class NativeCalculator extends Calculator
 
                 assert(is_int($q));
 
-                /** @psalm-suppress LessSpecificReturnStatement */
+                /** @var array{numeric-string, numeric-string} */
                 return [
                     (string) $q,
                     (string) $r
@@ -355,6 +355,7 @@ class NativeCalculator extends Calculator
             $result = '1' . $result;
         }
 
+        /** @var numeric-string */
         return $result;
     }
 

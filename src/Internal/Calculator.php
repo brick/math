@@ -99,7 +99,7 @@ abstract class Calculator
      * @param numeric-string $a The first operand.
      * @param numeric-string $b The second operand.
      *
-     * @return array{0: bool, 1: bool, 2: numeric-string, 3: numeric-string} Whether $a and $b are negative, followed by their digits.
+     * @return array{bool, bool, numeric-string, numeric-string} Whether $a and $b are negative, followed by their digits.
      */
     final protected function init(string $a, string $b) : array
     {
@@ -107,8 +107,10 @@ abstract class Calculator
             $aNeg = ($a[0] === '-'),
             $bNeg = ($b[0] === '-'),
 
-            $aNeg ? \substr($a, 1) : $a,
-            $bNeg ? \substr($b, 1) : $b,
+            /** @var numeric-string $aDig */
+            $aDig = $aNeg ? \substr($a, 1) : $a,
+            /** @var numeric-string $bDig */
+            $bDig = $bNeg ? \substr($b, 1) : $b,
         ];
     }
 
@@ -121,6 +123,7 @@ abstract class Calculator
      */
     final public function abs(string $n) : string
     {
+        /** @var numeric-string */
         return ($n[0] === '-') ? \substr($n, 1) : $n;
     }
 
@@ -137,11 +140,8 @@ abstract class Calculator
             return '0';
         }
 
-        if ($n[0] === '-') {
-            return \substr($n, 1);
-        }
-
-        return '-' . $n;
+        /** @var numeric-string  */
+        return ($n[0] === '-') ? \substr($n, 1) : '-' . $n;
     }
 
     /**
@@ -234,7 +234,7 @@ abstract class Calculator
      * @param numeric-string $a The dividend.
      * @param numeric-string $b The divisor, must not be zero.
      *
-     * @return numeric-string[] An array containing the quotient and remainder.
+     * @return array{numeric-string, numeric-string} An array containing the quotient and remainder.
      */
     abstract public function divQR(string $a, string $b) : array;
 
@@ -386,7 +386,7 @@ abstract class Calculator
      * @param numeric-string $number The number to convert, following the Calculator conventions.
      * @param int            $base   The base to convert to, validated from 2 to 36.
      *
-     * @return numeric-string The converted number, lowercase.
+     * @return string The converted number, lowercase.
      */
     public function toBase(string $number, int $base) : string
     {

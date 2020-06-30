@@ -39,8 +39,8 @@ final class BigDecimal extends BigNumber
     /**
      * Protected constructor. Use a factory method to obtain an instance.
      *
-     * @param string $value The unscaled value, validated.
-     * @param int    $scale The scale, validated.
+     * @param numeric-string $value The unscaled value, validated.
+     * @param int            $scale The scale, validated.
      */
     protected function __construct(string $value, int $scale = 0)
     {
@@ -776,6 +776,7 @@ final class BigDecimal extends BigNumber
             throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
         }
 
+        /** @var numeric-string $value */
         [$value, $scale] = \explode(':', $value);
 
         $this->value = $value;

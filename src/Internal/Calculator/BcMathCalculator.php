@@ -44,6 +44,7 @@ class BcMathCalculator extends Calculator
      */
     public function divQ(string $a, string $b) : string
     {
+        /** @var numeric-string */
         return \bcdiv($a, $b, 0);
     }
 
@@ -52,6 +53,7 @@ class BcMathCalculator extends Calculator
      */
     public function divR(string $a, string $b) : string
     {
+        /** @var numeric-string */
         return \bcmod($a, $b);
     }
 
@@ -60,7 +62,9 @@ class BcMathCalculator extends Calculator
      */
     public function divQR(string $a, string $b) : array
     {
+        /** @var numeric-string $q */
         $q = \bcdiv($a, $b, 0);
+        /** @var numeric-string $r */
         $r = \bcmod($a, $b);
 
         return [$q, $r];
@@ -79,6 +83,7 @@ class BcMathCalculator extends Calculator
      */
     public function modPow(string $base, string $exp, string $mod) : string
     {
+        /** @var numeric-string */
         return \bcpowmod($base, $exp, $mod, 0);
     }
 

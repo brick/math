@@ -1105,7 +1105,7 @@ final class BigInteger extends BigNumber
      *
      * @internal
      *
-     * @return string
+     * @return numeric-string
      */
     public function serialize() : string
     {
@@ -1117,7 +1117,7 @@ final class BigInteger extends BigNumber
      *
      * @internal
      *
-     * @param string $value
+     * @param numeric-string $value
      *
      * @return void
      *
