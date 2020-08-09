@@ -253,11 +253,59 @@ abstract class Calculator
      *
      * @param string $base The base number; must be positive or zero.
      * @param string $exp  The exponent; must be positive or zero.
-     * @param string $mod  The modulo; must be strictly positive.
+     * @param string $mod  The modulus; must be strictly positive.
      *
      * @return string The power.
      */
     abstract public function powmod(string $base, string $exp, string $mod) : string;
+
+    /**
+     * @param string $a
+     * @param string $b The modulus; must not be zero.
+     *
+     * @return string
+     */
+    public function mod(string $a, string $b) : string
+    {
+        return $this->divR($this->add($this->divR($a, $b), $b), $b);
+    }
+
+    /**
+     * Returns the modular multiplicative inverse of $x modulo $m.
+     *
+     * If $x has no multiplicative inverse mod m, this method must return null.
+     *
+     * This method can be overridden by the concrete implementation if the underlying library has built-in support.
+     *
+     * @param string $x
+     * @param string $m The modulus; must not be zero.
+     *
+     * @return string|null
+     */
+    public function modInverse(string $x, string $m) : ?string
+    {
+        $m = $this->abs($m);
+
+        if ($m === '1') {
+            return '0';
+        }
+
+        $modVal = $x;
+
+        if ($x[0] === '-' || ($this->cmp($this->abs($x), $m) >= 0)) {
+            $modVal = $this->mod($x, $m);
+        }
+
+        $x = '0';
+        $y = '0';
+        $g = $this->gcdExtended($modVal, $m, $x, $y);
+
+        if ($g !== '1') {
+            return null;
+        }
+
+        return $this->mod($this->add($this->mod($x, $m), $m), $m);
+    }
 
     /**
      * Returns the greatest common divisor of the two numbers.
@@ -281,6 +329,26 @@ abstract class Calculator
         }
 
         return $this->gcd($b, $this->divR($a, $b));
+    }
+
+    private function gcdExtended(string $a, string $b, string &$x, string &$y) : string
+    {
+        if ($a === '0') {
+            $x = '0';
+            $y = '1';
+
+            return $b;
+        }
+
+        $x1 = '0';
+        $y1 = '0';
+
+        $gcd = $this->gcdExtended($this->mod($b, $a), $a, $x1, $y1);
+
+        $x = $this->sub($y1, $this->mul($this->divQ($b, $a), $x1));
+        $y = $x1;
+
+        return $gcd;
     }
 
     /**

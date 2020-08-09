@@ -87,6 +87,20 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
+    public function modInverse(string $x, string $m) : ?string
+    {
+        $result = \gmp_invert($x, $m);
+
+        if ($result === false) {
+            return null;
+        }
+
+        return \gmp_strval($result);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function gcd(string $a, string $b) : string
     {
         return \gmp_strval(\gmp_gcd($a, $b));

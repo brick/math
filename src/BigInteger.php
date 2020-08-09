@@ -455,10 +455,12 @@ final class BigInteger extends BigNumber
         $that = BigInteger::of($that);
 
         if ($that->value === '0') {
-            throw DivisionByZeroException::divisionByZero();
+            throw DivisionByZeroException::modulusMustNotBeZero();
         }
 
-        return $this->remainder($that)->plus($that)->remainder($that);
+        $value = Calculator::get()->mod($this->value, $that->value);
+
+        return new BigInteger($value);
     }
 
     /**
@@ -467,12 +469,12 @@ final class BigInteger extends BigNumber
      * This operation only works on positive numbers.
      *
      * @param BigNumber|int|float|string $exp The positive exponent.
-     * @param BigNumber|int|float|string $mod The modulo. Must not be zero.
+     * @param BigNumber|int|float|string $mod The modulus. Must not be zero.
      *
      * @return BigInteger
      *
      * @throws NegativeNumberException If any of the operands is negative.
-     * @throws DivisionByZeroException If the modulo is zero.
+     * @throws DivisionByZeroException If the modulus is zero.
      */
     public function powerMod($exp, $mod) : BigInteger
     {
@@ -747,46 +749,21 @@ final class BigInteger extends BigNumber
      */
     public function modInverse(BigInteger $m) : BigInteger
     {
-        $m = $m->abs();
+        if ($m->value === '0') {
+            throw DivisionByZeroException::modulusMustNotBeZero();
+        }
 
         if ($m->value === '1') {
             return BigInteger::zero();
         }
 
-        $modVal = $this;
+        $value = Calculator::get()->modInverse($this->value, $m->value);
 
-        if ($this->isNegative() || ($this->abs()->compareTo($m) >= 0)) {
-            $modVal = $this->mod($m);
+        if ($value === null) {
+            throw new MathException('Unable to compute the modInverse for the given modulus.');
         }
 
-        $x = BigInteger::zero();
-        $y = BigInteger::zero();
-        $g = $this->gcdExtended($modVal, $m, $x, $y);
-
-        if (! $g->isEqualTo(BigInteger::one())) {
-            throw new MathException('Unable to compute the modInverse for the given modulus');
-        }
-
-        return $x->mod($m)->plus($m)->mod($m);
-    }
-
-    private function gcdExtended(BigInteger $a, BigInteger $b, BigInteger &$x, BigInteger &$y) : BigInteger
-    {
-        if ($a->isEqualTo(BigInteger::zero())) {
-            $x = BigInteger::zero();
-            $y = BigInteger::one();
-
-            return $b;
-        }
-
-        $x1 = BigInteger::zero();
-        $y1 = BigInteger::zero();
-        $gcd = $this->gcdExtended($b->mod($a), $a, $x1, $y1);
-
-        $x = $y1->minus($b->dividedBy($a, RoundingMode::FLOOR)->multipliedBy($x1));
-        $y = $x1;
-
-        return $gcd;
+        return new BigInteger($value);
     }
 
     /**

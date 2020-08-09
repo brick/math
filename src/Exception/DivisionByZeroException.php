@@ -24,6 +24,16 @@ class DivisionByZeroException extends MathException
      *
      * @psalm-pure
      */
+    public static function modulusMustNotBeZero() : DivisionByZeroException
+    {
+        return new self('The modulus cannot be zero.');
+    }
+
+    /**
+     * @return DivisionByZeroException
+     *
+     * @psalm-pure
+     */
     public static function denominatorMustNotBeZero() : DivisionByZeroException
     {
         return new self('The denominator of a rational number cannot be zero.');
