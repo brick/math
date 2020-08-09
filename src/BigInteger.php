@@ -747,11 +747,11 @@ final class BigInteger extends BigNumber
      */
     public function modInverse(BigInteger $m) : BigInteger
     {
+        $m = $m->abs();
+
         if ($m->value === '1') {
             return BigInteger::zero();
         }
-
-        $m = $m->abs();
 
         $modVal = $this;
 
