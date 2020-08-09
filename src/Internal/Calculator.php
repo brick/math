@@ -257,7 +257,7 @@ abstract class Calculator
      *
      * @return string The power.
      */
-    abstract function powmod(string $base, string $exp, string $mod) : string;
+    abstract public function powmod(string $base, string $exp, string $mod) : string;
 
     /**
      * Returns the greatest common divisor of the two numbers.
