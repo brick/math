@@ -7,3 +7,4 @@ phpunit.php    export-ignore
 phpunit.xml    export-ignore
 README.md      export-ignore
 tests/         export-ignore
+.github/       export-ignore
