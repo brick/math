@@ -6,6 +6,7 @@ namespace Brick\Math\Tests;
 
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\IntegerOverflowException;
+use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\DivisionByZeroException;
@@ -2673,24 +2674,25 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerModInverseThrows
      */
-    public function testModInverseThrows(string $x, string $m) : void
+    public function testModInverseThrows(string $x, string $m, string $expectedException) : void
     {
         $x = BigInteger::of($x);
         $m = BigInteger::of($m);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException($expectedException);
         $x->modInverse($m);
     }
 
     public function providerModInverseThrows() : array
     {
         return [
-            ['1', '0'],
-            ['0', '1000000001'],
-            ['2', '4'],
-            ['99', '9'],
-            ['19', '1000000001'],
-            ['123456789012345678901234567890', '123456789012345678901234567899'],
+            ['0', '0', DivisionByZeroException::class],
+            ['1', '0', DivisionByZeroException::class],
+            ['0', '1000000001', MathException::class],
+            ['2', '4', MathException::class],
+            ['99', '9', MathException::class],
+            ['19', '1000000001', MathException::class],
+            ['123456789012345678901234567890', '123456789012345678901234567899', MathException::class],
         ];
     }
 

@@ -9,6 +9,6 @@ namespace Brick\Math\Exception;
  *
  * This class is abstract to ensure that only fine-grained exceptions are thrown throughout the code.
  */
-abstract class MathException extends \RuntimeException
+class MathException extends \RuntimeException
 {
 }

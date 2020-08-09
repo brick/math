@@ -734,6 +734,17 @@ final class BigInteger extends BigNumber
         return $this->shiftedRight($n)->isOdd();
     }
 
+    /**
+     * Returns the modular multiplicative inverse of this BigInteger modulo $m.
+     *
+     * @param BigInteger $m
+     *
+     * @return BigInteger
+     *
+     * @throws DivisionByZeroException If $m is zero.
+     * @throws MathException           If this BigInteger has no multiplicative inverse mod m (that is, this BigInteger
+     *                                 is not relatively prime to m).
+     */
     public function modInverse(BigInteger $m) : BigInteger
     {
         if ($m->value === '1') {
@@ -753,7 +764,7 @@ final class BigInteger extends BigNumber
         $g = $this->gcdExtended($modVal, $m, $x, $y);
 
         if (! $g->isEqualTo(BigInteger::one())) {
-            throw new \InvalidArgumentException('Unable to compute the modInverse for the given modulus');
+            throw new MathException('Unable to compute the modInverse for the given modulus');
         }
 
         return $x->mod($m)->plus($m)->mod($m);
