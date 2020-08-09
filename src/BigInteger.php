@@ -734,6 +734,38 @@ final class BigInteger extends BigNumber
         return $this->shiftedRight($n)->isOdd();
     }
 
+    public function modInverse(BigInteger $m): BigInteger
+    {
+        $x = BigInteger::zero();
+        $y = BigInteger::zero();
+        $g = $this->gcdExtended($this, $m, $x, $y);
+
+        if (! $g->isEqualTo(BigInteger::one())) {
+            throw new \InvalidArgumentException('Unable to compute the modInverse for the given modulus');
+        }
+
+        return $x->mod($m)->plus($m)->mod($m);
+    }
+
+    private function gcdExtended(BigInteger $a, BigInteger $b, BigInteger &$x, BigInteger &$y): BigInteger
+    {
+        if ($a->isEqualTo(BigInteger::zero())) {
+            $x = BigInteger::zero();
+            $y = BigInteger::one();
+
+            return $b;
+        }
+
+        $x1 = BigInteger::zero();
+        $y1 = BigInteger::zero();
+        $gcd = $this->gcdExtended($b->mod($a), $a, $x1, $y1);
+
+        $x = $y1->minus($b->dividedBy($a, RoundingMode::FLOOR)->multipliedBy($x1));
+        $y = $x1;
+
+        return $gcd;
+    }
+
     /**
      * {@inheritdoc}
      */

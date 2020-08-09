@@ -2639,6 +2639,58 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
+     * @dataProvider providerModInverse
+     */
+    public function testModInverse(string $x, string $m, string $expectedResult) : void
+    {
+        $x = BigInteger::of($x);
+        $m = BigInteger::of($m);
+
+        self::assertSame($expectedResult, (string) $x->modInverse($m));
+    }
+
+    public function providerModInverse() : array
+    {
+        return [
+            ['1', '1', '0'],
+            ['1234567890', '19', '11'],
+            ['1234567890', '1000000001', '189108911'],
+            ['19', '1234567890', '519818059'],
+            ['1000000001', '1234567890', '1001100101'],
+            ['12345', '12346', '12345'],
+            ['1234567890', '137', '42'],
+            ['137', '1234567890', '856087223'],
+            ['1234567890123456', '137', '77'],
+            ['137', '1234567890123456', '540686667207353'],
+            ['590295810358705600000', '137', '128'],
+            ['18506109802501380149367860917982816833935316655779336003703143134999470532428', '115792089237316195423570985008687907853269984665640564039457584007908834671663', '95929095851002583825372225918533539673793386278360575987103577151530201707061'],
+        ];
+    }
+
+    /**
+     * @dataProvider providerModInverseThrows
+     */
+    public function testModInverseThrows(string $x, string $m) : void
+    {
+        $x = BigInteger::of($x);
+        $m = BigInteger::of($m);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $x->modInverse($m);
+    }
+
+    public function providerModInverseThrows() : array
+    {
+        return [
+            ['0', '1000000001'],
+            ['2', '4'],
+            ['99', '9'],
+            ['19', '1000000001'],
+            ['123456789012345678901234567890', '123456789012345678901234567899'],
+        ];
+    }
+
+    /**
      * @dataProvider providerCompareTo
      *
      * @param string $a The base number as a string.
