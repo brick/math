@@ -214,6 +214,38 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Generates a random number in the range 0 to 2^numBits - 1.
+     *
+     * This method is suitable for cryptographic use.
+     *
+     * @param int $numBits The number of bits.
+     *
+     * @return BigInteger
+     *
+     * @throws \InvalidArgumentException If $numBits is negative.
+     */
+    public static function randomBits(int $numBits) : BigInteger
+    {
+        if ($numBits < 0) {
+            throw new \InvalidArgumentException('The number of bits cannot be negative.');
+        }
+
+        if ($numBits === 0) {
+            return BigInteger::zero();
+        }
+
+        $byteLength = intdiv($numBits - 1, 8) + 1;
+
+        $extraBits = ($byteLength * 8 - $numBits);
+        $bitmask   = chr(0xFF >> $extraBits);
+
+        $randomBytes    = random_bytes($byteLength);
+        $randomBytes[0] = $randomBytes[0] & $bitmask;
+
+        return self::fromBinaryString($randomBytes, false);
+    }
+
+    /**
      * Generates a random number between `$min` and `$max`.
      *
      * This method is suitable for cryptographic use.
