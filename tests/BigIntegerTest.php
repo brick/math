@@ -3494,8 +3494,12 @@ class BigIntegerTest extends AbstractTestCase
         $values = array_flip(range($min, $max));
 
         for (;;) {
-            $random = BigInteger::randomBits(10);
-            unset($values[$random->toInt()]);
+            $random = BigInteger::randomBits(10)->toInt();
+            unset($values[$random]);
+
+            if ($random < $min || $random > $max) {
+                self::fail('Random number out of range.');
+            }
 
             if (! $values) {
                 break; // pass
@@ -3533,8 +3537,12 @@ class BigIntegerTest extends AbstractTestCase
         $values = array_flip(range($min, $max));
 
         for (;;) {
-            $random = BigInteger::randomRange($min, $max);
-            unset($values[$random->toInt()]);
+            $random = BigInteger::randomRange($min, $max)->toInt();
+            unset($values[$random]);
+
+            if ($random < $min || $random > $max) {
+                self::fail('Random number out of range.');
+            }
 
             if (! $values) {
                 break; // pass
