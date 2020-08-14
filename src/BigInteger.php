@@ -824,6 +824,8 @@ final class BigInteger extends BigNumber
      * @param int $n The bit to test, 0-based.
      *
      * @return bool
+     *
+     * @throws \InvalidArgumentException If the bit to test is negative.
      */
     public function testBit(int $n) : bool
     {
