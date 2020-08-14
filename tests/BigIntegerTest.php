@@ -3467,6 +3467,45 @@ class BigIntegerTest extends AbstractTestCase
         $number->toBinaryString(false);
     }
 
+    public function testRandomRangeWithMinGreaterThanMax() : void
+    {
+        $this->expectException(MathException::class);
+        BigInteger::randomRange(3, 2);
+    }
+
+    public function testRandomRangeWithSingleValue() : void
+    {
+        $value = '123456789123456789123456789123456789';
+        $random = BigInteger::randomRange($value, $value);
+        self::assertBigIntegerEquals($value, $random);
+    }
+
+    /**
+     * There is only so much we can do without mocking random_bytes().
+     *
+     * If this test fails, this will result in an infinite loop.
+     *
+     * @todo DO mock random_bytes().
+     */
+    public function testRandomRangeYieldsAllValues() : void
+    {
+        $min = -1000;
+        $max = 1000;
+
+        $values = array_flip(range($min, $max));
+
+        for (;;) {
+            $random = BigInteger::randomRange($min, $max);
+            unset($values[$random->toInt()]);
+
+            if (! $values) {
+                break; // pass
+            }
+        }
+
+        self::assertTrue(true); // un-mark as a risky test
+    }
+
     public function testSerialize() : void
     {
         $value = '-1234567890987654321012345678909876543210123456789';

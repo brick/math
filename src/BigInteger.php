@@ -214,6 +214,47 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Generates a random number between `$min` and `$max`.
+     *
+     * @param BigNumber|int|float|string $min The lower bound. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $max The upper bound. Must be convertible to a BigInteger.
+     *
+     * @return BigInteger
+     *
+     * @throws MathException If one of the parameters cannot be converted to a BigInteger,
+     *                       or `$min` is greater than `$max`.
+     */
+    public static function randomRange($min, $max) : BigInteger
+    {
+        $min = BigInteger::of($min);
+        $max = BigInteger::of($max);
+
+        if ($min->isGreaterThan($max)) {
+            throw new MathException('$min cannot be greater than $max.');
+        }
+
+        if ($min->isEqualTo($max)) {
+            return $min;
+        }
+
+        $diff = $max->minus($min);
+
+        $bitLength  = $diff->getBitLength();
+        $byteLength = intdiv($bitLength - 1, 8) + 1;
+
+        $extraBits = ($byteLength * 8 - $bitLength);
+        $bitmask   = chr(0xFF >> $extraBits);
+
+        do {
+            $randomBytes    = random_bytes($byteLength);
+            $randomBytes[0] = $randomBytes[0] & $bitmask;
+            $randomNumber   = self::fromBinaryString($randomBytes, false);
+        } while ($randomNumber->isGreaterThan($diff)); // outside the requested range, try again
+
+        return $randomNumber->plus($min);
+    }
+
+    /**
      * Returns a string containing the binary representation of this BigInteger.
      *
      * The binary string is in big-endian byte-order: the most significant byte is in the zeroth element.
