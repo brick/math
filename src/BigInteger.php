@@ -216,6 +216,8 @@ final class BigInteger extends BigNumber
     /**
      * Generates a random number between `$min` and `$max`.
      *
+     * This method is suitable for cryptographic use.
+     *
      * @param BigNumber|int|float|string $min The lower bound. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string $max The upper bound. Must be convertible to a BigInteger.
      *
