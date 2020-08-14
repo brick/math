@@ -271,19 +271,13 @@ final class BigInteger extends BigNumber
             return $min;
         }
 
-        $diff = $max->minus($min);
+        $diff      = $max->minus($min);
+        $bitLength = $diff->getBitLength();
 
-        $bitLength  = $diff->getBitLength();
-        $byteLength = intdiv($bitLength - 1, 8) + 1;
-
-        $extraBits = ($byteLength * 8 - $bitLength);
-        $bitmask   = chr(0xFF >> $extraBits);
-
+        // try until the number is in range (50% to 100% chance of success)
         do {
-            $randomBytes    = random_bytes($byteLength);
-            $randomBytes[0] = $randomBytes[0] & $bitmask;
-            $randomNumber   = self::fromBinaryString($randomBytes, false);
-        } while ($randomNumber->isGreaterThan($diff)); // outside the requested range, try again
+            $randomNumber = self::randomBits($bitLength);
+        } while ($randomNumber->isGreaterThan($diff));
 
         return $randomNumber->plus($min);
     }
