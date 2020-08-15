@@ -3467,6 +3467,61 @@ class BigIntegerTest extends AbstractTestCase
         $number->toBinaryString(false);
     }
 
+    /**
+     * @dataProvider providerRandomBits
+     */
+    public function testRandomBits(int $numBits, string $randomBytesHex, string $expectedNumber) : void
+    {
+        $actualNumber = BigInteger::randomBits($numBits, function(int $numBytes) use ($randomBytesHex) : string {
+            $randomBytes = hex2bin($randomBytesHex);
+            $randomBytesLength = strlen($randomBytes);
+
+            if ($randomBytesLength !== $numBytes) {
+                self::fail(
+                    "randomBits() was expected to request $randomBytesLength bytes, " .
+                    "but requested $numBytes bytes instead."
+                );
+            }
+
+            return $randomBytes;
+        });
+
+        self::assertBigIntegerEquals($expectedNumber, $actualNumber);
+    }
+
+    public function providerRandomBits() : array
+    {
+        return [
+            [1, '00', '0'],
+            [1, '01', '1'],
+            [1, '02', '0'],
+            [1, '03', '1'],
+            [2, '00', '0'],
+            [2, '01', '1'],
+            [2, '02', '2'],
+            [2, '03', '3'],
+            [2, '04', '0'],
+            [2, '05', '1'],
+            [2, '06', '2'],
+            [2, '07', '3'],
+            [200, '23FA2323B9820B983E098309280D98ACF34793874972398329', '225831908602167927061252758557915341525679553904533200012073'],
+            [199, '23FA2323B9820B983E098309280D98ACF34793874972398329', '225831908602167927061252758557915341525679553904533200012073'],
+            [199, 'A3FA2323B9820B983E098309280D98ACF34793874972398329', '225831908602167927061252758557915341525679553904533200012073'],
+            [198, '23FA2323B9820B983E098309280D98ACF34793874972398329', '225831908602167927061252758557915341525679553904533200012073'],
+            [198, 'E3FA2323B9820B983E098309280D98ACF34793874972398329', '225831908602167927061252758557915341525679553904533200012073'],
+            [197, '23FA2323B9820B983E098309280D98ACF34793874972398329', '24964653069794142618507497015270016210404179681684095599401'],
+            [197, 'C3FA2323B9820B983E098309280D98ACF34793874972398329', '24964653069794142618507497015270016210404179681684095599401'],
+            [196, '23FA2323B9820B983E098309280D98ACF34793874972398329', '24964653069794142618507497015270016210404179681684095599401'],
+            [196, 'D3FA2323B9820B983E098309280D98ACF34793874972398329', '24964653069794142618507497015270016210404179681684095599401'],
+            [195, '23FA2323B9820B983E098309280D98ACF34793874972398329', '24964653069794142618507497015270016210404179681684095599401'],
+            [195, 'DBFA2323B9820B983E098309280D98ACF34793874972398329', '24964653069794142618507497015270016210404179681684095599401'],
+            [194, '23FA2323B9820B983E098309280D98ACF34793874972398329', '24964653069794142618507497015270016210404179681684095599401'],
+            [194, 'DFFA2323B9820B983E098309280D98ACF34793874972398329', '24964653069794142618507497015270016210404179681684095599401'],
+            [193, '23FA2323B9820B983E098309280D98ACF34793874972398329', '12410449599020781090835918168854683378199468792756026573609'],
+            [193, 'FFFA2323B9820B983E098309280D98ACF34793874972398329', '12410449599020781090835918168854683378199468792756026573609'],
+        ];
+    }
+
     public function testRandomBitsWithNegativeBits() : void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3480,33 +3535,84 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * There is only so much we can do without mocking random_bytes().
-     *
-     * If this test fails, this will result in an infinite loop.
-     *
-     * @todo DO mock random_bytes().
+     * @dataProvider providerRandomRange
      */
-    public function testRandomBitsYieldsAllValues() : void
+    public function testRandomRange(string $min, string $max, array $randomBytesHex, string $expectedNumber) : void
     {
-        $min = 0;
-        $max = 1023;
+        $randomBytesCounter = 0;
 
-        $values = array_flip(range($min, $max));
+        $failCounter = function() use ($randomBytesHex, & $randomBytesCounter) {
+            self::fail(sprintf(
+                'randomRange() was expected to request random bytes %d time(s), but requested %d time(s) instead.',
+                count($randomBytesHex),
+                $randomBytesCounter
+            ));
+        };
 
-        for (;;) {
-            $random = BigInteger::randomBits(10)->toInt();
-            unset($values[$random]);
-
-            if ($random < $min || $random > $max) {
-                self::fail('Random number out of range.');
+        $randomBytesGenerator = function(int $numBytes) use ($randomBytesHex, $failCounter, & $randomBytesCounter) {
+            if (! isset($randomBytesHex[$randomBytesCounter])) {
+                $randomBytesCounter++;
+                $failCounter();
             }
 
-            if (! $values) {
-                break; // pass
+            $randomBytes = hex2bin($randomBytesHex[$randomBytesCounter]);
+            $randomBytesLength = strlen($randomBytes);
+
+            if ($randomBytesLength !== $numBytes) {
+                self::fail(
+                    "randomRange() was expected to request $randomBytesLength bytes, " .
+                    "but requested $numBytes bytes instead."
+                );
             }
+
+            $randomBytesCounter++;
+
+            return $randomBytes;
+        };
+
+        $actualNumber = BigInteger::randomRange($min, $max, $randomBytesGenerator);
+
+        if ($randomBytesCounter !== count($randomBytesHex)) {
+            $failCounter();
         }
 
-        self::assertTrue(true); // un-mark as a risky test
+        self::assertBigIntegerEquals($expectedNumber, $actualNumber);
+    }
+
+    public function providerRandomRange() : array
+    {
+        return [
+            ['0', '1', ['00'], '0'],
+            ['0', '1', ['01'], '1'],
+            ['0', '1', ['02'], '0'],
+            ['0', '1', ['03'], '1'],
+
+            ['-2', '-1', ['00'], '-2'],
+            ['-2', '-1', ['01'], '-1'],
+            ['-2', '-1', ['02'], '-2'],
+            ['-2', '-1', ['03'], '-1'],
+
+            ['-1', '1', ['00'], '-1'],
+            ['-1', '1', ['01'], '0'],
+            ['-1', '1', ['02'], '1'],
+            ['-1', '1', ['03', '02'], '1'],
+            ['-1', '1', ['FF', '03', '00'], '-1'],
+            ['-1', '1', ['FF', '03', '01'], '0'],
+            ['-1', '1', ['FF', '03', '02'], '1'],
+
+            ['1', '255', ['00'], '1'],
+            ['1', '255', ['01'], '2'],
+            ['1', '255', ['FD'], '254'],
+            ['1', '255', ['FE'], '255'],
+            ['1', '255', ['FF', '0A'], '11'],
+
+            ['-1', '255', ['0000'], '-1'],
+            ['-1', '255', ['0001'], '0'],
+            ['-1', '255', ['0100'], '255'],
+            ['-1', '255', ['0300'], '255'],
+            ['-1', '255', ['0301', 'F0FF'], '254'],
+            ['-1', '255', ['FFFF', 'FBFF', 'FAFF'], '254'],
+        ];
     }
 
     public function testRandomRangeWithMinGreaterThanMax() : void
@@ -3520,36 +3626,6 @@ class BigIntegerTest extends AbstractTestCase
         $value = '123456789123456789123456789123456789';
         $random = BigInteger::randomRange($value, $value);
         self::assertBigIntegerEquals($value, $random);
-    }
-
-    /**
-     * There is only so much we can do without mocking random_bytes().
-     *
-     * If this test fails, this will result in an infinite loop.
-     *
-     * @todo DO mock random_bytes().
-     */
-    public function testRandomRangeYieldsAllValues() : void
-    {
-        $min = -1000;
-        $max = 1000;
-
-        $values = array_flip(range($min, $max));
-
-        for (;;) {
-            $random = BigInteger::randomRange($min, $max)->toInt();
-            unset($values[$random]);
-
-            if ($random < $min || $random > $max) {
-                self::fail('Random number out of range.');
-            }
-
-            if (! $values) {
-                break; // pass
-            }
-        }
-
-        self::assertTrue(true); // un-mark as a risky test
     }
 
     public function testSerialize() : void
