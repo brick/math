@@ -923,6 +923,7 @@ final class BigInteger extends BigNumber
      * @return BigInteger
      *
      * @throws DivisionByZeroException If $m is zero.
+     * @throws NegativeNumberException If $m is negative.
      * @throws MathException           If this BigInteger has no multiplicative inverse mod m (that is, this BigInteger
      *                                 is not relatively prime to m).
      */
@@ -930,6 +931,10 @@ final class BigInteger extends BigNumber
     {
         if ($m->value === '0') {
             throw DivisionByZeroException::modulusMustNotBeZero();
+        }
+
+        if ($m->isNegative()) {
+            throw new NegativeNumberException('Modulus must not be negative.');
         }
 
         if ($m->value === '1') {

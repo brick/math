@@ -2657,9 +2657,7 @@ class BigIntegerTest extends AbstractTestCase
         return [
             ['1', '1', '0'],
             ['1234567890', '19', '11'],
-            ['1234567890', '-19', '11'],
             ['-1234567890', '19', '8'],
-            ['-1234567890', '-19', '8'],
             ['1234567890', '1000000001', '189108911'],
             ['19', '1234567890', '519818059'],
             ['1000000001', '1234567890', '1001100101'],
@@ -2691,6 +2689,7 @@ class BigIntegerTest extends AbstractTestCase
         return [
             ['0', '0', DivisionByZeroException::class],
             ['1', '0', DivisionByZeroException::class],
+            ['-1234567890', '-19', NegativeNumberException::class],
             ['0', '1000000001', MathException::class],
             ['2', '4', MathException::class],
             ['99', '9', MathException::class],

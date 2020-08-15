@@ -278,14 +278,12 @@ abstract class Calculator
      * This method can be overridden by the concrete implementation if the underlying library has built-in support.
      *
      * @param string $x
-     * @param string $m The modulus; must not be zero.
+     * @param string $m The modulus; must not be negative or zero.
      *
      * @return string|null
      */
     public function modInverse(string $x, string $m) : ?string
     {
-        $m = $this->abs($m);
-
         if ($m === '1') {
             return '0';
         }
