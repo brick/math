@@ -653,7 +653,7 @@ final class BigInteger extends BigNumber
      * @throws NegativeNumberException If any of the operands is negative.
      * @throws DivisionByZeroException If the modulus is zero.
      */
-    public function powerMod($exp, $mod) : BigInteger
+    public function modPow($exp, $mod) : BigInteger
     {
         $exp = BigInteger::of($exp);
         $mod = BigInteger::of($mod);
@@ -666,9 +666,27 @@ final class BigInteger extends BigNumber
             throw DivisionByZeroException::modulusMustNotBeZero();
         }
 
-        $result = Calculator::get()->powmod($this->value, $exp->value, $mod->value);
+        $result = Calculator::get()->modPow($this->value, $exp->value, $mod->value);
 
         return new BigInteger($result);
+    }
+
+    /**
+     * Returns this number raised into power with modulo.
+     *
+     * @deprecated Use modPow() instead.
+     *
+     * @param BigNumber|int|float|string $exp The positive exponent.
+     * @param BigNumber|int|float|string $mod The modulus. Must not be zero.
+     *
+     * @return BigInteger
+     *
+     * @throws NegativeNumberException If any of the operands is negative.
+     * @throws DivisionByZeroException If the modulus is zero.
+     */
+    public function powerMod($exp, $mod) : BigInteger
+    {
+        return $this->modPow($exp, $mod);
     }
 
     /**

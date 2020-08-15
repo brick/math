@@ -235,7 +235,7 @@ class NativeCalculator extends Calculator
      *
      * {@inheritdoc}
      */
-    public function powmod(string $base, string $exp, string $mod) : string
+    public function modPow(string $base, string $exp, string $mod) : string
     {
         // special case: the algorithm below fails with 0 power 0 mod 1 (returns 1 instead of 0)
         if ($base === '0' && $exp === '0' && $mod === '1') {

@@ -1337,14 +1337,15 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerPowerMod
+     * @dataProvider providerModPow
      */
-    public function testPowerMod(string $base, string $exp, string $mod, string $expected) : void
+    public function testModPow(string $base, string $exp, string $mod, string $expected) : void
     {
+        self::assertBigIntegerEquals($expected, BigInteger::of($base)->modPow($exp, $mod));
         self::assertBigIntegerEquals($expected, BigInteger::of($base)->powerMod($exp, $mod));
     }
 
-    public function providerPowerMod() : array
+    public function providerModPow() : array
     {
         return [
             ['0', '0', '1', '0'],

@@ -249,17 +249,6 @@ abstract class Calculator
     abstract public function pow(string $a, int $e) : string;
 
     /**
-     * Raises a number into power with modulo.
-     *
-     * @param string $base The base number; must be positive or zero.
-     * @param string $exp  The exponent; must be positive or zero.
-     * @param string $mod  The modulus; must be strictly positive.
-     *
-     * @return string The power.
-     */
-    abstract public function powmod(string $base, string $exp, string $mod) : string;
-
-    /**
      * @param string $a
      * @param string $b The modulus; must not be zero.
      *
@@ -304,6 +293,17 @@ abstract class Calculator
 
         return $this->mod($this->add($this->mod($x, $m), $m), $m);
     }
+
+    /**
+     * Raises a number into power with modulo.
+     *
+     * @param string $base The base number; must be positive or zero.
+     * @param string $exp  The exponent; must be positive or zero.
+     * @param string $mod  The modulus; must be strictly positive.
+     *
+     * @return string The power.
+     */
+    abstract public function modPow(string $base, string $exp, string $mod) : string;
 
     /**
      * Returns the greatest common divisor of the two numbers.

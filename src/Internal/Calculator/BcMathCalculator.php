@@ -77,7 +77,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function powmod(string $base, string $exp, string $mod) : string
+    public function modPow(string $base, string $exp, string $mod) : string
     {
         return \bcpowmod($base, $exp, $mod, 0);
     }
