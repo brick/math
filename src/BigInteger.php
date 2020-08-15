@@ -641,6 +641,41 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Returns the modular multiplicative inverse of this BigInteger modulo $m.
+     *
+     * @param BigInteger $m
+     *
+     * @return BigInteger
+     *
+     * @throws DivisionByZeroException If $m is zero.
+     * @throws NegativeNumberException If $m is negative.
+     * @throws MathException           If this BigInteger has no multiplicative inverse mod m (that is, this BigInteger
+     *                                 is not relatively prime to m).
+     */
+    public function modInverse(BigInteger $m) : BigInteger
+    {
+        if ($m->value === '0') {
+            throw DivisionByZeroException::modulusMustNotBeZero();
+        }
+
+        if ($m->isNegative()) {
+            throw new NegativeNumberException('Modulus must not be negative.');
+        }
+
+        if ($m->value === '1') {
+            return BigInteger::zero();
+        }
+
+        $value = Calculator::get()->modInverse($this->value, $m->value);
+
+        if ($value === null) {
+            throw new MathException('Unable to compute the modInverse for the given modulus.');
+        }
+
+        return new BigInteger($value);
+    }
+
+    /**
      * Returns this number raised into power with modulo.
      *
      * This operation only works on positive numbers.
@@ -931,41 +966,6 @@ final class BigInteger extends BigNumber
         }
 
         return $this->shiftedRight($n)->isOdd();
-    }
-
-    /**
-     * Returns the modular multiplicative inverse of this BigInteger modulo $m.
-     *
-     * @param BigInteger $m
-     *
-     * @return BigInteger
-     *
-     * @throws DivisionByZeroException If $m is zero.
-     * @throws NegativeNumberException If $m is negative.
-     * @throws MathException           If this BigInteger has no multiplicative inverse mod m (that is, this BigInteger
-     *                                 is not relatively prime to m).
-     */
-    public function modInverse(BigInteger $m) : BigInteger
-    {
-        if ($m->value === '0') {
-            throw DivisionByZeroException::modulusMustNotBeZero();
-        }
-
-        if ($m->isNegative()) {
-            throw new NegativeNumberException('Modulus must not be negative.');
-        }
-
-        if ($m->value === '1') {
-            return BigInteger::zero();
-        }
-
-        $value = Calculator::get()->modInverse($this->value, $m->value);
-
-        if ($value === null) {
-            throw new MathException('Unable to compute the modInverse for the given modulus.');
-        }
-
-        return new BigInteger($value);
     }
 
     /**
