@@ -3472,7 +3472,7 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testRandomBits(int $numBits, string $randomBytesHex, string $expectedNumber) : void
     {
-        $actualNumber = BigInteger::randomBits($numBits, function(int $numBytes) use ($randomBytesHex) : string {
+        $randomBytesGenerator = function(int $numBytes) use ($randomBytesHex) : string {
             $randomBytes = hex2bin($randomBytesHex);
             $randomBytesLength = strlen($randomBytes);
 
@@ -3484,7 +3484,9 @@ class BigIntegerTest extends AbstractTestCase
             }
 
             return $randomBytes;
-        });
+        };
+
+        $actualNumber = BigInteger::randomBits($numBits, $randomBytesGenerator);
 
         self::assertBigIntegerEquals($expectedNumber, $actualNumber);
     }
