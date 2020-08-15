@@ -216,15 +216,18 @@ final class BigInteger extends BigNumber
     /**
      * Generates a random number in the range 0 to 2^numBits - 1.
      *
-     * This method is suitable for cryptographic use.
+     * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
-     * @param int $numBits The number of bits.
+     * @param int           $numBits              The number of bits.
+     * @param callable|null $randomBytesGenerator A function that accepts a number of bytes as an integer, and returns a
+     *                                            string of random bytes of the given length. Defaults to the
+     *                                            `random_bytes()` function.
      *
      * @return BigInteger
      *
      * @throws \InvalidArgumentException If $numBits is negative.
      */
-    public static function randomBits(int $numBits) : BigInteger
+    public static function randomBits(int $numBits, ?callable $randomBytesGenerator = null) : BigInteger
     {
         if ($numBits < 0) {
             throw new \InvalidArgumentException('The number of bits cannot be negative.');
@@ -234,12 +237,16 @@ final class BigInteger extends BigNumber
             return BigInteger::zero();
         }
 
+        if ($randomBytesGenerator === null) {
+            $randomBytesGenerator = 'random_bytes';
+        }
+
         $byteLength = intdiv($numBits - 1, 8) + 1;
 
         $extraBits = ($byteLength * 8 - $numBits);
         $bitmask   = chr(0xFF >> $extraBits);
 
-        $randomBytes    = random_bytes($byteLength);
+        $randomBytes    = $randomBytesGenerator($byteLength);
         $randomBytes[0] = $randomBytes[0] & $bitmask;
 
         return self::fromBinaryString($randomBytes, false);
@@ -248,17 +255,20 @@ final class BigInteger extends BigNumber
     /**
      * Generates a random number between `$min` and `$max`.
      *
-     * This method is suitable for cryptographic use.
+     * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
-     * @param BigNumber|int|float|string $min The lower bound. Must be convertible to a BigInteger.
-     * @param BigNumber|int|float|string $max The upper bound. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $min                  The lower bound. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $max                  The upper bound. Must be convertible to a BigInteger.
+     * @param callable|null              $randomBytesGenerator A function that accepts a number of bytes as an integer,
+     *                                                         and returns a string of random bytes of the given length.
+     *                                                         Defaults to the `random_bytes()` function.
      *
      * @return BigInteger
      *
      * @throws MathException If one of the parameters cannot be converted to a BigInteger,
      *                       or `$min` is greater than `$max`.
      */
-    public static function randomRange($min, $max) : BigInteger
+    public static function randomRange($min, $max, ?callable $randomBytesGenerator = null) : BigInteger
     {
         $min = BigInteger::of($min);
         $max = BigInteger::of($max);
@@ -276,7 +286,7 @@ final class BigInteger extends BigNumber
 
         // try until the number is in range (50% to 100% chance of success)
         do {
-            $randomNumber = self::randomBits($bitLength);
+            $randomNumber = self::randomBits($bitLength, $randomBytesGenerator);
         } while ($randomNumber->isGreaterThan($diff));
 
         return $randomNumber->plus($min);
