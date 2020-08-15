@@ -26,7 +26,7 @@ class DivisionByZeroException extends MathException
      */
     public static function modulusMustNotBeZero() : DivisionByZeroException
     {
-        return new self('The modulus cannot be zero.');
+        return new self('The modulus must not be zero.');
     }
 
     /**

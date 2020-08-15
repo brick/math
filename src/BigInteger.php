@@ -663,7 +663,7 @@ final class BigInteger extends BigNumber
         }
 
         if ($mod->isZero()) {
-            throw DivisionByZeroException::divisionByZero();
+            throw DivisionByZeroException::modulusMustNotBeZero();
         }
 
         $result = Calculator::get()->powmod($this->value, $exp->value, $mod->value);
