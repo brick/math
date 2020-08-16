@@ -65,7 +65,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             return new BigInteger((string) $value);
         }
 
-        if (is_float($value)) {
+        if (\is_float($value)) {
             $value = self::floatToString($value);
         } else {
             $value = (string) $value;
