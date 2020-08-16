@@ -251,6 +251,8 @@ class BigDecimalTest extends AbstractTestCase
             ['.e3'],
             ['+a'],
             ['-a'],
+            ['1e1000000000000000000000000000000'],
+            ['1e-1000000000000000000000000000000'],
             [INF],
             [-INF],
             [NAN],

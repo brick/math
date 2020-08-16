@@ -124,6 +124,10 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             $fractional = $fractional ?? '';
             $exponent = $exponent !== null ? (int) $exponent : 0;
 
+            if ($exponent === PHP_INT_MIN || $exponent === PHP_INT_MAX) {
+                throw new NumberFormatException('Exponent too large.');
+            }
+
             $unscaledValue = self::cleanUp($sign . $integral . $fractional);
 
             $scale = \strlen($fractional) - $exponent;
