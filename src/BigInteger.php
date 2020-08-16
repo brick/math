@@ -214,7 +214,7 @@ final class BigInteger extends BigNumber
     }
 
     /**
-     * Generates a random number in the range 0 to 2^numBits - 1.
+     * Generates a pseudo-random number in the range 0 to 2^numBits - 1.
      *
      * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
@@ -253,7 +253,7 @@ final class BigInteger extends BigNumber
     }
 
     /**
-     * Generates a random number between `$min` and `$max`.
+     * Generates a pseudo-random number between `$min` and `$max`.
      *
      * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
