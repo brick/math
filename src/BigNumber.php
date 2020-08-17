@@ -73,7 +73,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             $value = (string) $value;
         }
 
-        $throw = function() use ($value) {
+        $throw = function() use ($value) : void {
             throw new NumberFormatException(\sprintf(
                 'The given value "%s" does not represent a valid number.',
                 $value
