@@ -289,7 +289,7 @@ final class BigDecimal extends BigNumber
             throw DivisionByZeroException::divisionByZero();
         }
 
-        [$a, $b] = $this->scaleValues($this, $that);
+        [, $b] = $this->scaleValues($this, $that);
 
         $d = \rtrim($b, '0');
         $scale = \strlen($b) - \strlen($d);
