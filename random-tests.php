@@ -11,7 +11,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Brick\Math\Internal\Calculator;
 
-(new class(100) {
+(new class(30) { // max digits
     private $gmp;
     private $bcmath;
     private $native;
