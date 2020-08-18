@@ -653,24 +653,6 @@ final class BigInteger extends BigNumber
     }
 
     /**
-     * Returns this number raised into power with modulo.
-     *
-     * @deprecated Use modPow() instead.
-     *
-     * @param BigNumber|int|float|string $exp The positive exponent.
-     * @param BigNumber|int|float|string $mod The modulus. Must not be zero.
-     *
-     * @return BigInteger
-     *
-     * @throws NegativeNumberException If any of the operands is negative.
-     * @throws DivisionByZeroException If the modulus is zero.
-     */
-    public function powerMod($exp, $mod) : BigInteger
-    {
-        return $this->modPow($exp, $mod);
-    }
-
-    /**
      * Returns the greatest common divisor of this number and the given one.
      *
      * The GCD is always positive, unless both operands are zero, in which case it is zero.

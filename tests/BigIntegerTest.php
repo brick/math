@@ -1357,7 +1357,6 @@ class BigIntegerTest extends AbstractTestCase
     public function testModPow(string $base, string $exp, string $mod, string $expected) : void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($base)->modPow($exp, $mod));
-        self::assertBigIntegerEquals($expected, BigInteger::of($base)->powerMod($exp, $mod));
     }
 
     public function providerModPow() : array
@@ -1380,7 +1379,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * Crypto test from phpseclib test suite.
      */
-    public function testPowerModCrypto() : void
+    public function testModPowCrypto() : void
     {
         if (Calculator::get() instanceof Calculator\NativeCalculator) {
             if (getenv('CI') === 'true') {
@@ -1419,25 +1418,25 @@ class BigIntegerTest extends AbstractTestCase
             16
         );
 
-        $alicePublic = $generator->powerMod($alicePrivate, $prime);
-        $bobPublic   = $generator->powerMod($bobPrivate, $prime);
+        $alicePublic = $generator->modPow($alicePrivate, $prime);
+        $bobPublic   = $generator->modPow($bobPrivate, $prime);
 
-        $aliceShared = $bobPublic->powerMod($alicePrivate, $prime);
-        $bobShared   = $alicePublic->powerMod($bobPrivate, $prime);
+        $aliceShared = $bobPublic->modPow($alicePrivate, $prime);
+        $bobShared   = $alicePublic->modPow($bobPrivate, $prime);
 
         self::assertTrue($aliceShared->isEqualTo($bobShared));
     }
 
     /**
-     * @dataProvider providerPowerModNegativeThrowsException
+     * @dataProvider providerModPowNegativeThrowsException
      */
-    public function testPowerModNegativeThrowsException(int $base, int $exp, int $mod) : void
+    public function testModPowNegativeThrowsException(int $base, int $exp, int $mod) : void
     {
         $this->expectException(NegativeNumberException::class);
-        BigInteger::of($base)->powerMod($exp, $mod);
+        BigInteger::of($base)->modPow($exp, $mod);
     }
 
-    public function providerPowerModNegativeThrowsException() : array
+    public function providerModPowNegativeThrowsException() : array
     {
         return [
             [ 1,  1, -1],
@@ -1446,10 +1445,10 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testPowerModZeroThrowsException() : void
+    public function testModPowZeroThrowsException() : void
     {
         $this->expectException(DivisionByZeroException::class);
-        BigInteger::of(1)->powerMod(1, 0);
+        BigInteger::of(1)->modPow(1, 0);
     }
 
     /**
