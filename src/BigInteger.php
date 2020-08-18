@@ -58,6 +58,30 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Parses a string containing an integer in an arbitrary base.
+     *
+     * @deprecated will be removed in version 0.9 - use fromBase() instead
+     *
+     * The string can optionally be prefixed with the `+` or `-` sign.
+     * For bases greater than 10, both uppercase and lowercase letters are allowed.
+     *
+     * @param string $number The number to parse.
+     * @param int    $base   The base of the number, between 2 and 36.
+     *
+     * @return BigInteger
+     *
+     * @throws \InvalidArgumentException If the number is invalid or the base is out of range.
+     */
+    public static function parse(string $number, int $base = 10) : BigInteger
+    {
+        try {
+            return self::fromBase($number, $base);
+        } catch (NumberFormatException $e) {
+            throw new \InvalidArgumentException($e->getMessage(), 0, $e);
+        }
+    }
+
+    /**
      * Creates a number from a string in a given base.
      *
      * The string can optionally be prefixed with the `+` or `-` sign.
