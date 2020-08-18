@@ -293,59 +293,6 @@ final class BigInteger extends BigNumber
     }
 
     /**
-     * Returns a string containing the binary representation of this BigInteger.
-     *
-     * The binary string is in big-endian byte-order: the most significant byte is in the zeroth element.
-     *
-     * If `$signed` is true, the output will be in two's-complement representation, and a sign bit will be prepended to
-     * the output. If `$signed` is false, no sign bit will be prepended, and this method will throw an exception if the
-     * number is negative.
-     *
-     * The string will contain the minimum number of bytes required to represent this BigInteger, including a sign bit
-     * if `$signed` is true.
-     *
-     * This representation is compatible with the `fromBinaryString()` factory method, as long as the `$signed` flags
-     * match.
-     *
-     * @param bool $signed Whether to output a signed number in two's-complement representation with a leading sign bit.
-     *
-     * @return string
-     *
-     * @throws NegativeNumberException If $signed is false, and the number is negative.
-     */
-    public function toBinaryString(bool $signed = true) : string
-    {
-        if (! $signed && $this->isNegative()) {
-            throw new NegativeNumberException('Cannot convert a negative number to a binary string when $signed is false.');
-        }
-
-        $pad = function(string $hex) : string {
-            return (strlen($hex) % 2 !== 0) ? '0' . $hex : $hex;
-        };
-
-        $hex = $this->abs()->toBase(16);
-        $hex = $pad($hex);
-
-        if ($signed) {
-            if ($this->isNegative()) {
-                $hex = bin2hex(~hex2bin($hex));
-                $hex = self::fromBase($hex, 16)->plus(1)->toBase(16);
-                $hex = $pad($hex);
-
-                if ($hex[0] < '8') {
-                    $hex = 'FF' . $hex;
-                }
-            } else {
-                if ($hex[0] >= '8') {
-                    $hex = '00' . $hex;
-                }
-            }
-        }
-
-        return hex2bin($hex);
-    }
-
-    /**
      * Returns a BigInteger representing zero.
      *
      * @return BigInteger
@@ -1094,6 +1041,59 @@ final class BigInteger extends BigNumber
         }
 
         return Calculator::get()->toArbitraryBase($this->value, $alphabet, $base);
+    }
+
+    /**
+     * Returns a string containing the binary representation of this BigInteger.
+     *
+     * The binary string is in big-endian byte-order: the most significant byte is in the zeroth element.
+     *
+     * If `$signed` is true, the output will be in two's-complement representation, and a sign bit will be prepended to
+     * the output. If `$signed` is false, no sign bit will be prepended, and this method will throw an exception if the
+     * number is negative.
+     *
+     * The string will contain the minimum number of bytes required to represent this BigInteger, including a sign bit
+     * if `$signed` is true.
+     *
+     * This representation is compatible with the `fromBinaryString()` factory method, as long as the `$signed` flags
+     * match.
+     *
+     * @param bool $signed Whether to output a signed number in two's-complement representation with a leading sign bit.
+     *
+     * @return string
+     *
+     * @throws NegativeNumberException If $signed is false, and the number is negative.
+     */
+    public function toBinaryString(bool $signed = true) : string
+    {
+        if (! $signed && $this->isNegative()) {
+            throw new NegativeNumberException('Cannot convert a negative number to a binary string when $signed is false.');
+        }
+
+        $pad = function(string $hex) : string {
+            return (strlen($hex) % 2 !== 0) ? '0' . $hex : $hex;
+        };
+
+        $hex = $this->abs()->toBase(16);
+        $hex = $pad($hex);
+
+        if ($signed) {
+            if ($this->isNegative()) {
+                $hex = bin2hex(~hex2bin($hex));
+                $hex = self::fromBase($hex, 16)->plus(1)->toBase(16);
+                $hex = $pad($hex);
+
+                if ($hex[0] < '8') {
+                    $hex = 'FF' . $hex;
+                }
+            } else {
+                if ($hex[0] >= '8') {
+                    $hex = '00' . $hex;
+                }
+            }
+        }
+
+        return hex2bin($hex);
     }
 
     /**
