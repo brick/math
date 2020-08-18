@@ -11,24 +11,28 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Brick\Math\Internal\Calculator;
 
-(new class {
+(new class(100) {
     private $gmp;
     private $bcmath;
     private $native;
 
-    public function __construct()
+    private $maxDigits;
+
+    public function __construct(int $maxDigits)
     {
         $this->gmp    = new Calculator\GmpCalculator();
         $this->bcmath = new Calculator\BcMathCalculator();
         $this->native = new Calculator\NativeCalculator();
+
+        $this->maxDigits = $maxDigits;
     }
 
     public function __invoke() : void
     {
         for (;;) {
-            $a = self::generateRandomNumber();
-            $b = self::generateRandomNumber();
-            $c = self::generateRandomNumber();
+            $a = $this->generateRandomNumber();
+            $b = $this->generateRandomNumber();
+            $c = $this->generateRandomNumber();
 
             $this->runTests($a, $b);
             $this->runTests($b, $a);
@@ -159,9 +163,9 @@ use Brick\Math\Internal\Calculator;
         die;
     }
 
-    private static function generateRandomNumber() : string
+    private function generateRandomNumber() : string
     {
-        $length = random_int(1, 100);
+        $length = random_int(1, $this->maxDigits);
 
         $number = '';
 
