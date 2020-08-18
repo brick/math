@@ -1092,18 +1092,24 @@ final class BigInteger extends BigNumber
             throw new NegativeNumberException('Cannot convert a negative number to a byte string when $signed is false.');
         }
 
-        $pad = function(string $hex) : string {
-            return (strlen($hex) % 2 !== 0) ? '0' . $hex : $hex;
-        };
-
         $hex = $this->abs()->toBase(16);
-        $hex = $pad($hex);
+
+        if (strlen($hex) % 2 !== 0) {
+            $hex = '0' . $hex;
+        }
+
+        $baseHexLength = strlen($hex);
 
         if ($signed) {
             if ($this->isNegative()) {
                 $hex = bin2hex(~hex2bin($hex));
                 $hex = self::fromBase($hex, 16)->plus(1)->toBase(16);
-                $hex = $pad($hex);
+
+                $hexLength = strlen($hex);
+
+                if ($hexLength < $baseHexLength) {
+                    $hex = str_repeat('0', $baseHexLength - $hexLength) . $hex;
+                }
 
                 if ($hex[0] < '8') {
                     $hex = 'FF' . $hex;
