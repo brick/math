@@ -3275,41 +3275,41 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerFromBinaryString
+     * @dataProvider providerFromBytes
      */
-    public function testFromBinaryString(string $binaryStringHex, bool $signed, string $expectedNumber) : void
+    public function testFromBytes(string $byteStringHex, bool $signed, string $expectedNumber) : void
     {
-        $number = BigInteger::fromBinaryString(hex2bin($binaryStringHex), $signed);
+        $number = BigInteger::fromBytes(hex2bin($byteStringHex), $signed);
         self::assertSame($expectedNumber, (string) $number);
     }
 
-    public function providerFromBinaryString() : Generator
+    public function providerFromBytes() : Generator
     {
-        foreach ($this->providerToBinaryString() as [$expectedNumber, $signed, $binaryStringHex]) {
-            yield [$binaryStringHex, $signed, $expectedNumber];
+        foreach ($this->providerToBytes() as [$expectedNumber, $signed, $byteStringHex]) {
+            yield [$byteStringHex, $signed, $expectedNumber];
 
             // test with extra leading bits: these should return the same number
             $prefix = ($expectedNumber[0] === '-') ? 'FF' : '00';
-            yield [$prefix . $binaryStringHex, $signed, $expectedNumber];
+            yield [$prefix . $byteStringHex, $signed, $expectedNumber];
         }
     }
 
-    public function testFromBinaryStringWithEmptyString() : void
+    public function testFromBytesWithEmptyString() : void
     {
         $this->expectException(NumberFormatException::class);
-        BigInteger::fromBinaryString('');
+        BigInteger::fromBytes('');
     }
 
     /**
-     * @dataProvider providerToBinaryString
+     * @dataProvider providerToBytes
      */
-    public function testToBinaryString(string $number, bool $signed, string $expectedBinaryStringHex) : void
+    public function testToBytes(string $number, bool $signed, string $expectedByteStringHex) : void
     {
-        $binaryString = BigInteger::of($number)->toBinaryString($signed);
-        self::assertSame($expectedBinaryStringHex, strtoupper(bin2hex($binaryString)));
+        $byteString = BigInteger::of($number)->toBytes($signed);
+        self::assertSame($expectedByteStringHex, strtoupper(bin2hex($byteString)));
     }
 
-    public function providerToBinaryString() : array
+    public function providerToBytes() : array
     {
         return [
             ['-32769', true, 'FF7FFF'],
@@ -3461,11 +3461,11 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testToBinaryStringNotSignedWithNegativeNumber() : void
+    public function testToBytesNotSignedWithNegativeNumber() : void
     {
         $number = BigInteger::of(-1);
         $this->expectException(NegativeNumberException::class);
-        $number->toBinaryString(false);
+        $number->toBytes(false);
     }
 
     /**

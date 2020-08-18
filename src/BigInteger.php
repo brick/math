@@ -169,7 +169,7 @@ final class BigInteger extends BigNumber
     }
 
     /**
-     * Translates a string containing the binary representation of a BigInteger into a BigInteger.
+     * Translates a string of bytes containing the binary representation of a BigInteger into a BigInteger.
      *
      * The input string is assumed to be in big-endian byte-order: the most significant byte is in the zeroth element.
      *
@@ -177,10 +177,9 @@ final class BigInteger extends BigNumber
      * interpreted as a sign bit. If `$signed` is false, the input is interpreted as an unsigned number, and the
      * resulting BigInteger will always be positive or zero.
      *
-     * This method can be used to retrieve a number exported by `toBinaryString()`, as long as the `$signed` flags
-     * match.
+     * This method can be used to retrieve a number exported by `toBytes()`, as long as the `$signed` flags match.
      *
-     * @param string $value  The binary string value.
+     * @param string $value  The byte string.
      * @param bool   $signed Whether to interpret as a signed number in two's-complement representation with a leading
      *                       sign bit.
      *
@@ -188,10 +187,10 @@ final class BigInteger extends BigNumber
      *
      * @throws NumberFormatException If the string is empty.
      */
-    public static function fromBinaryString(string $value, bool $signed = true) : BigInteger
+    public static function fromBytes(string $value, bool $signed = true) : BigInteger
     {
         if ($value === '') {
-            throw new NumberFormatException('The binary string must not be empty.');
+            throw new NumberFormatException('The byte string must not be empty.');
         }
 
         $twosComplement = false;
@@ -249,7 +248,7 @@ final class BigInteger extends BigNumber
         $randomBytes    = $randomBytesGenerator($byteLength);
         $randomBytes[0] = $randomBytes[0] & $bitmask;
 
-        return self::fromBinaryString($randomBytes, false);
+        return self::fromBytes($randomBytes, false);
     }
 
     /**
@@ -1044,9 +1043,9 @@ final class BigInteger extends BigNumber
     }
 
     /**
-     * Returns a string containing the binary representation of this BigInteger.
+     * Returns a string of bytes containing the binary representation of this BigInteger.
      *
-     * The binary string is in big-endian byte-order: the most significant byte is in the zeroth element.
+     * The string is in big-endian byte-order: the most significant byte is in the zeroth element.
      *
      * If `$signed` is true, the output will be in two's-complement representation, and a sign bit will be prepended to
      * the output. If `$signed` is false, no sign bit will be prepended, and this method will throw an exception if the
@@ -1055,8 +1054,7 @@ final class BigInteger extends BigNumber
      * The string will contain the minimum number of bytes required to represent this BigInteger, including a sign bit
      * if `$signed` is true.
      *
-     * This representation is compatible with the `fromBinaryString()` factory method, as long as the `$signed` flags
-     * match.
+     * This representation is compatible with the `fromBytes()` factory method, as long as the `$signed` flags match.
      *
      * @param bool $signed Whether to output a signed number in two's-complement representation with a leading sign bit.
      *
@@ -1064,10 +1062,10 @@ final class BigInteger extends BigNumber
      *
      * @throws NegativeNumberException If $signed is false, and the number is negative.
      */
-    public function toBinaryString(bool $signed = true) : string
+    public function toBytes(bool $signed = true) : string
     {
         if (! $signed && $this->isNegative()) {
-            throw new NegativeNumberException('Cannot convert a negative number to a binary string when $signed is false.');
+            throw new NegativeNumberException('Cannot convert a negative number to a byte string when $signed is false.');
         }
 
         $pad = function(string $hex) : string {
