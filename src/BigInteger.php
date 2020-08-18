@@ -196,14 +196,14 @@ final class BigInteger extends BigNumber
         $twosComplement = false;
 
         if ($signed) {
-            $x = ord($value[0]);
+            $x = \ord($value[0]);
 
             if (($twosComplement = ($x >= 0x80))) {
                 $value = ~$value;
             }
         }
 
-        $number = self::fromBase(bin2hex($value), 16);
+        $number = self::fromBase(\bin2hex($value), 16);
 
         if ($twosComplement) {
             return $number->plus(1)->negated();
@@ -240,10 +240,10 @@ final class BigInteger extends BigNumber
             $randomBytesGenerator = 'random_bytes';
         }
 
-        $byteLength = intdiv($numBits - 1, 8) + 1;
+        $byteLength = \intdiv($numBits - 1, 8) + 1;
 
         $extraBits = ($byteLength * 8 - $numBits);
-        $bitmask   = chr(0xFF >> $extraBits);
+        $bitmask   = \chr(0xFF >> $extraBits);
 
         $randomBytes    = $randomBytesGenerator($byteLength);
         $randomBytes[0] = $randomBytes[0] & $bitmask;
@@ -840,7 +840,7 @@ final class BigInteger extends BigNumber
             return $this->abs()->minus(1)->getBitLength();
         }
 
-        return strlen($this->toBase(2));
+        return \strlen($this->toBase(2));
     }
 
     /**
@@ -873,7 +873,7 @@ final class BigInteger extends BigNumber
      */
     public function isEven() : bool
     {
-        return in_array($this->value[-1], ['0', '2', '4', '6', '8'], true);
+        return \in_array($this->value[-1], ['0', '2', '4', '6', '8'], true);
     }
 
     /**
@@ -883,7 +883,7 @@ final class BigInteger extends BigNumber
      */
     public function isOdd() : bool
     {
-        return in_array($this->value[-1], ['1', '3', '5', '7', '9'], true);
+        return \in_array($this->value[-1], ['1', '3', '5', '7', '9'], true);
     }
 
     /**
@@ -1062,21 +1062,21 @@ final class BigInteger extends BigNumber
 
         $hex = $this->abs()->toBase(16);
 
-        if (strlen($hex) % 2 !== 0) {
+        if (\strlen($hex) % 2 !== 0) {
             $hex = '0' . $hex;
         }
 
-        $baseHexLength = strlen($hex);
+        $baseHexLength = \strlen($hex);
 
         if ($signed) {
             if ($this->isNegative()) {
-                $hex = bin2hex(~hex2bin($hex));
+                $hex = \bin2hex(~\hex2bin($hex));
                 $hex = self::fromBase($hex, 16)->plus(1)->toBase(16);
 
-                $hexLength = strlen($hex);
+                $hexLength = \strlen($hex);
 
                 if ($hexLength < $baseHexLength) {
-                    $hex = str_repeat('0', $baseHexLength - $hexLength) . $hex;
+                    $hex = \str_repeat('0', $baseHexLength - $hexLength) . $hex;
                 }
 
                 if ($hex[0] < '8') {
@@ -1089,7 +1089,7 @@ final class BigInteger extends BigNumber
             }
         }
 
-        return hex2bin($hex);
+        return \hex2bin($hex);
     }
 
     /**
