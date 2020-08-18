@@ -767,6 +767,16 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Returns the bitwise-not of this BigInteger.
+     *
+     * @return BigInteger
+     */
+    public function not() : BigInteger
+    {
+        return $this->negated()->minus(1);
+    }
+
+    /**
      * Returns the integer left shifted by a given number of bits.
      *
      * @param int $distance The distance to shift.
