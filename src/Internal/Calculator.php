@@ -695,7 +695,11 @@ abstract class Calculator
                 break;
             }
 
-            $number[$i] = \chr(0);
+            $number[$i] = "\x00";
+
+            if ($i === 0) {
+                $number = "\x01" . $number;
+            }
         }
 
         return $number;
