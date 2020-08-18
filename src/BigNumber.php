@@ -18,20 +18,22 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 {
     /**
      * The regular expression used to parse integer, decimal and rational numbers.
-     *
-     * @var string
      */
     private const PARSE_REGEXP =
         '/^' .
-        '(?<integral>[\-\+]?[0-9]+)' .
-        '(?:' .
+            '(?<sign>[\-\+])?' .
             '(?:' .
-                '(?:\.(?<fractional>[0-9]+))?' .
-                '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
-            ')' . '|' . '(?:' .
-                '(?:\/(?<denominator>[0-9]+))?' .
+                '(?:' .
+                    '(?<integral>[0-9]+)?' .
+                    '(?<point>\.)?' .
+                    '(?<fractional>[0-9]+)?' .
+                    '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
+                ')|(?:' .
+                    '(?<numerator>[0-9]+)' .
+                    '\/?' .
+                    '(?<denominator>[0-9]+)' .
+                ')' .
             ')' .
-        ')?' .
         '$/';
 
     /**
@@ -71,26 +73,62 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             $value = (string) $value;
         }
 
+        $throw = function() use ($value) : void {
+            throw new NumberFormatException(\sprintf(
+                'The given value "%s" does not represent a valid number.',
+                $value
+            ));
+        };
+
         if (\preg_match(self::PARSE_REGEXP, $value, $matches) !== 1) {
-            throw new NumberFormatException(\sprintf('The given value "%s" does not represent a valid number.', $value));
+            $throw();
         }
 
-        if (isset($matches['denominator'])) {
-            $numerator   = self::cleanUp($matches['integral']);
-            $denominator = \ltrim($matches['denominator'], '0');
+        $getMatch = function(string $value) use ($matches) : ?string {
+            return isset($matches[$value]) && $matches[$value] !== '' ? $matches[$value] : null;
+        };
 
-            if ($denominator === '') {
+        $sign        = $getMatch('sign');
+        $numerator   = $getMatch('numerator');
+        $denominator = $getMatch('denominator');
+
+        if ($numerator !== null) {
+            $numerator   = self::cleanUp($sign . $numerator);
+            $denominator = self::cleanUp($denominator);
+
+            if ($denominator === '0') {
                 throw DivisionByZeroException::denominatorMustNotBeZero();
             }
 
-            return new BigRational(new BigInteger($numerator), new BigInteger($denominator), false);
+            return new BigRational(
+                new BigInteger($numerator),
+                new BigInteger($denominator),
+                false
+            );
         }
 
-        if (isset($matches['fractional']) || isset($matches['exponent'])) {
-            $fractional = isset($matches['fractional']) ? $matches['fractional'] : '';
-            $exponent = isset($matches['exponent']) ? (int) $matches['exponent'] : 0;
+        $point      = $getMatch('point');
+        $integral   = $getMatch('integral');
+        $fractional = $getMatch('fractional');
+        $exponent   = $getMatch('exponent');
 
-            $unscaledValue = self::cleanUp($matches['integral'] . $fractional);
+        if ($integral === null && $fractional === null) {
+            $throw();
+        }
+
+        if ($integral === null) {
+            $integral = '0';
+        }
+
+        if ($point !== null || $exponent !== null) {
+            $fractional = $fractional ?? '';
+            $exponent = $exponent !== null ? (int) $exponent : 0;
+
+            if ($exponent === PHP_INT_MIN || $exponent === PHP_INT_MAX) {
+                throw new NumberFormatException('Exponent too large.');
+            }
+
+            $unscaledValue = self::cleanUp($sign . $integral . $fractional);
 
             $scale = \strlen($fractional) - $exponent;
 
@@ -104,7 +142,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             return new BigDecimal($unscaledValue, $scale);
         }
 
-        $integral = self::cleanUp($matches['integral']);
+        $integral = self::cleanUp($sign . $integral);
 
         return new BigInteger($integral);
     }
@@ -290,7 +328,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Removes optional leading zeros and + sign from the given number.
      *
-     * @param string $number The number, validated as a non-empty string of digits with optional sign.
+     * @param string $number The number, validated as a non-empty string of digits with optional leading sign.
      *
      * @return string
      *
