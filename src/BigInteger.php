@@ -626,8 +626,8 @@ final class BigInteger extends BigNumber
      *
      * This operation only works on positive numbers.
      *
-     * @param BigNumber|int|float|string $exp The positive exponent.
-     * @param BigNumber|int|float|string $mod The modulus. Must not be zero.
+     * @param BigNumber|int|float|string $exp The exponent. Must be positive or zero.
+     * @param BigNumber|int|float|string $mod The modulus. Must be strictly positive.
      *
      * @return BigInteger
      *
