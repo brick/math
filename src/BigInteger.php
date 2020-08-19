@@ -1073,6 +1073,7 @@ final class BigInteger extends BigNumber
 
         if ($signed) {
             if ($this->isNegative()) {
+                /** @psalm-suppress PossiblyInvalidOperand */
                 $hex = \bin2hex(~\hex2bin($hex));
                 $hex = self::fromBase($hex, 16)->plus(1)->toBase(16);
 

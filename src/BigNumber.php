@@ -59,7 +59,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     public static function of($value) : self
     {
-        if ($value instanceof BigNumber) {
+        if ($value instanceof self) {
             return $value;
         }
 
@@ -73,7 +73,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             $value = (string) $value;
         }
 
-        $throw = function() use ($value) : void {
+        $throw = static function() use ($value) : void {
             throw new NumberFormatException(\sprintf(
                 'The given value "%s" does not represent a valid number.',
                 $value
@@ -84,7 +84,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             $throw();
         }
 
-        $getMatch = function(string $value) use ($matches) : ?string {
+        $getMatch = static function(string $value) use ($matches) : ?string {
             return isset($matches[$value]) && $matches[$value] !== '' ? $matches[$value] : null;
         };
 
@@ -92,7 +92,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         $numerator   = $getMatch('numerator');
         $denominator = $getMatch('denominator');
 
-        if ($numerator !== null) {
+        if ($numerator !== null && $denominator !== null) {
             $numerator   = self::cleanUp($sign . $numerator);
             $denominator = self::cleanUp($denominator);
 
@@ -100,7 +100,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
                 throw DivisionByZeroException::denominatorMustNotBeZero();
             }
 
-            /** @var numeric-string $denominator */
             return new BigRational(
                 new BigInteger($numerator),
                 new BigInteger($denominator),

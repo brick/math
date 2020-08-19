@@ -249,10 +249,10 @@ abstract class Calculator
     abstract public function pow(string $a, int $e) : string;
 
     /**
-     * @param string $a
-     * @param string $b The modulus; must not be zero.
+     * @param numeric-string $a
+     * @param numeric-string $b The modulus; must not be zero.
      *
-     * @return string
+     * @return numeric-string
      */
     public function mod(string $a, string $b) : string
     {
@@ -266,10 +266,10 @@ abstract class Calculator
      *
      * This method can be overridden by the concrete implementation if the underlying library has built-in support.
      *
-     * @param string $x
-     * @param string $m The modulus; must not be negative or zero.
+     * @param numeric-string $x
+     * @param numeric-string $m The modulus; must not be negative or zero.
      *
-     * @return string|null
+     * @return numeric-string|null
      */
     public function modInverse(string $x, string $m) : ?string
     {
