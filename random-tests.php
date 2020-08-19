@@ -123,8 +123,11 @@ use Brick\Math\Internal\Calculator;
      */
     private function test(string $test, Closure $callback) : void
     {
-        static $counter = 0;
-        static $lastOutputTime = null;
+        static $testCounter = 0;
+        static $lastOutputTime = 0.0;
+        static $currentSecond = 0;
+        static $currentSecondTestCounter = 0;
+        static $testsPerSecond = 0;
 
         $gmpResult    = $callback($this->gmp);
         $bcmathResult = $callback($this->bcmath);
@@ -138,13 +141,20 @@ use Brick\Math\Internal\Calculator;
             self::failure('GMP', 'Native', $test);
         }
 
-        $counter++;
-        $time = microtime(true);
+        $testCounter++;
+        $currentSecondTestCounter++;
 
-        if ($lastOutputTime === null) {
-            $lastOutputTime = $time;
-        } elseif ($time - $lastOutputTime >= 0.1) {
-            echo "\r", number_format($counter);
+        $time = microtime(true);
+        $second = (int) $time;
+
+        if ($second !== $currentSecond) {
+            $currentSecond = $second;
+            $testsPerSecond = $currentSecondTestCounter;
+            $currentSecondTestCounter = 0;
+        }
+
+        if ($time - $lastOutputTime >= 0.1) {
+            echo "\r", number_format($testCounter), ' (', number_format($testsPerSecond) . ' / s)';
             $lastOutputTime = $time;
         }
     }
