@@ -283,9 +283,7 @@ abstract class Calculator
             $modVal = $this->mod($x, $m);
         }
 
-        $x = '0';
-        $y = '0';
-        $g = $this->gcdExtended($modVal, $m, $x, $y);
+        [$x, $y, $g] = $this->gcdExtended($modVal, $m);
 
         if ($g !== '1') {
             return null;
@@ -329,24 +327,23 @@ abstract class Calculator
         return $this->gcd($b, $this->divR($a, $b));
     }
 
-    private function gcdExtended(string $a, string $b, string &$x, string &$y) : string
+    /**
+     * @param numeric-string $a
+     * @param numeric-string $b
+     * @return array{numeric-string, numeric-string, numeric-string}
+     */
+    private function gcdExtended(string $a, string $b) : array
     {
         if ($a === '0') {
-            $x = '0';
-            $y = '1';
-
-            return $b;
+            return ['0', '1', $b];
         }
 
-        $x1 = '0';
-        $y1 = '0';
-
-        $gcd = $this->gcdExtended($this->mod($b, $a), $a, $x1, $y1);
+        [$x1, $y1, $gcd] = $this->gcdExtended($this->mod($b, $a), $a);
 
         $x = $this->sub($y1, $this->mul($this->divQ($b, $a), $x1));
         $y = $x1;
 
-        return $gcd;
+        return [$x, $y, $gcd];
     }
 
     /**
