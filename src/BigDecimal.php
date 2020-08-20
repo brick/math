@@ -23,7 +23,8 @@ final class BigDecimal extends BigNumber
      * No leading zero must be present.
      * No leading minus sign must be present if the value is 0.
      *
-     * @var numeric-string
+     * @var string
+     * @psalm-var numeric-string
      */
     private $value;
 
@@ -39,8 +40,9 @@ final class BigDecimal extends BigNumber
     /**
      * Protected constructor. Use a factory method to obtain an instance.
      *
-     * @param numeric-string $value The unscaled value, validated.
-     * @param int            $scale The scale, validated.
+     * @param string $value The unscaled value, validated.
+     * @psalm-param numeric-string $value
+     * @param int    $scale The scale, validated.
      */
     protected function __construct(string $value, int $scale = 0)
     {
@@ -84,7 +86,7 @@ final class BigDecimal extends BigNumber
             throw new \InvalidArgumentException('The scale cannot be negative.');
         }
 
-        return new BigDecimal(BigInteger::of($value)->toNumericString(), $scale);
+        return new BigDecimal(BigInteger::of($value)->__toString(), $scale);
     }
 
     /**
@@ -738,9 +740,11 @@ final class BigDecimal extends BigNumber
     }
 
     /**
-     * @return numeric-string
+     * {@inheritdoc}
+     *
+     * @psalm-return numeric-string
      */
-    public function toNumericString(): string
+    public function __toString() : string
     {
         if ($this->scale === 0) {
             return $this->value;
@@ -750,14 +754,6 @@ final class BigDecimal extends BigNumber
 
         /** @var numeric-string */
         return \substr($value, 0, -$this->scale) . '.' . \substr($value, -$this->scale);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __toString() : string
-    {
-        return $this->toNumericString();
     }
 
     /**

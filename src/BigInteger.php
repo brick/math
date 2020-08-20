@@ -27,14 +27,16 @@ final class BigInteger extends BigNumber
      * No leading zeros must be present.
      * No leading minus sign must be present if the number is zero.
      *
-     * @var numeric-string
+     * @var string
+     * @psalm-var numeric-string
      */
     private $value;
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.
      *
-     * @param numeric-string $value A string of digits, with optional leading minus sign.
+     * @param string $value A string of digits, with optional leading minus sign.
+     * @psalm-param numeric-string $value
      */
     protected function __construct(string $value)
     {
@@ -1097,19 +1099,13 @@ final class BigInteger extends BigNumber
     }
 
     /**
-     * @return numeric-string
-     */
-    public function toNumericString(): string
-    {
-        return $this->value;
-    }
-
-    /**
      * {@inheritdoc}
+     *
+     * @psalm-return numeric-string
      */
     public function __toString() : string
     {
-        return $this->toNumericString();
+        return $this->value;
     }
 
     /**
@@ -1129,7 +1125,8 @@ final class BigInteger extends BigNumber
      *
      * @internal
      *
-     * @param numeric-string $value
+     * @param string $value
+     * @psalm-param numeric-string $value
      *
      * @return void
      *

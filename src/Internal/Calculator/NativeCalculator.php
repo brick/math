@@ -308,10 +308,10 @@ class NativeCalculator extends Calculator
     /**
      * Performs the addition of two non-signed large integers.
      *
-     * @param numeric-string $a The first operand.
-     * @param numeric-string $b The second operand.
+     * @psalm-param numeric-string $a
+     * @psalm-param numeric-string $b
      *
-     * @return numeric-string
+     * @psalm-return numeric-string
      */
     private function doAdd(string $a, string $b) : string
     {
@@ -362,10 +362,10 @@ class NativeCalculator extends Calculator
     /**
      * Performs the subtraction of two non-signed large integers.
      *
-     * @param numeric-string $a The first operand.
-     * @param numeric-string $b The second operand.
+     * @psalm-param numeric-string $a
+     * @psalm-param numeric-string $b
      *
-     * @return numeric-string
+     * @psalm-return numeric-string
      */
     private function doSub(string $a, string $b) : string
     {
@@ -441,10 +441,10 @@ class NativeCalculator extends Calculator
     /**
      * Performs the multiplication of two non-signed large integers.
      *
-     * @param numeric-string $a The first operand.
-     * @param numeric-string $b The second operand.
+     * @psalm-param numeric-string $a
+     * @psalm-param numeric-string $b
      *
-     * @return numeric-string
+     * @psalm-return numeric-string
      */
     private function doMul(string $a, string $b) : string
     {
@@ -516,10 +516,10 @@ class NativeCalculator extends Calculator
     /**
      * Performs the division of two non-signed large integers.
      *
-     * @param numeric-string $a The first operand.
-     * @param numeric-string $b The second operand.
+     * @psalm-param numeric-string $a
+     * @psalm-param numeric-string $b
      *
-     * @return numeric-string[] The quotient and remainder.
+     * @return array{numeric-string, numeric-string} The quotient and remainder.
      */
     private function doDiv(string $a, string $b) : array
     {
@@ -582,8 +582,8 @@ class NativeCalculator extends Calculator
     /**
      * Compares two non-signed large numbers.
      *
-     * @param numeric-string $a The first operand.
-     * @param numeric-string $b The second operand.
+     * @psalm-param numeric-string $a
+     * @psalm-param numeric-string $b
      *
      * @return int [-1, 0, 1]
      */
@@ -606,10 +606,10 @@ class NativeCalculator extends Calculator
      *
      * The numbers must only consist of digits, without leading minus sign.
      *
-     * @param numeric-string $a The first operand.
-     * @param numeric-string $b The second operand.
+     * @psalm-param numeric-string $a
+     * @psalm-param numeric-string $b
      *
-     * @return array{0: numeric-string, 1: numeric-string, 2: int}
+     * @return array{numeric-string, numeric-string, int}
      */
     private function pad(string $a, string $b) : array
     {
