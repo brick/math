@@ -816,9 +816,7 @@ final class BigDecimal extends BigNumber
     }
 
     /**
-     * @param int $scale
-     *
-     * @return numeric-string
+     * @psalm-return numeric-string
      */
     private function valueWithMinScale(int $scale) : string
     {

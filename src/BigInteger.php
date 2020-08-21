@@ -1113,7 +1113,7 @@ final class BigInteger extends BigNumber
      *
      * @internal
      *
-     * @return numeric-string
+     * @psalm-return numeric-string
      */
     public function serialize() : string
     {

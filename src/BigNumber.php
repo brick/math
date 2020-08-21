@@ -329,11 +329,11 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Removes optional leading zeros and + sign from the given number.
      *
+     * @psalm-pure
+     *
      * @param string $number The number, validated as a non-empty string of digits with optional leading sign.
      *
-     * @return numeric-string
-     *
-     * @psalm-pure
+     * @psalm-return numeric-string
      */
     private static function cleanUp(string $number) : string
     {
