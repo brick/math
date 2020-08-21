@@ -96,10 +96,8 @@ abstract class Calculator
     /**
      * Extracts the sign & digits of the operands.
      *
-     * @param string $a The first operand.
      * @psalm-param numeric-string $a
-     * @param string $b The second operand.
-     * @psalm-param numeric-string $a
+     * @psalm-param numeric-string $b
      *
      * @return array{bool, bool, numeric-string, numeric-string} Whether $a and $b are negative, followed by their digits.
      */
