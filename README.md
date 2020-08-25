@@ -231,6 +231,7 @@ echo BigRational::of('123/456')->dividedBy('9/8'); // 984/4104
 - `and()`
 - `or()`
 - `xor()`
+- `not()`
 
 and bit shifting:
 
