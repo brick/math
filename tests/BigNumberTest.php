@@ -28,7 +28,7 @@ class BigNumberTest extends AbstractTestCase
     {
         $sum = BigNumber::sum(...$values);
 
-        self::assertSame($expectedClass, get_class($sum));
+        self::assertInstanceOf($expectedClass, $sum);
         self::assertSame($expectedSum, (string) $sum);
     }
 
