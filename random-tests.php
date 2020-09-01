@@ -64,7 +64,7 @@ use Brick\Math\Internal\Calculator;
      * @param string $a The left operand.
      * @param string $b The right operand.
      */
-    function runTests(string $a, string $b) : void
+    private function runTests(string $a, string $b) : void
     {
         $this->test("$a + $b", function(Calculator $c) use($a, $b) {
             return $c->add($a, $b);
