@@ -22,6 +22,10 @@
         "php-coveralls/php-coveralls": "^2.2",
         "vimeo/psalm": "^3.5"
     },
+    "suggest": {
+        "ext-bcmath": "It is highly recommended that you install the GMP or BCMath extension to speed up calculations. The fastest available calculator implementation will be automatically selected at runtime.",
+        "ext-gmp": "It is highly recommended that you install the GMP or BCMath extension to speed up calculations. The fastest available calculator implementation will be automatically selected at runtime."
+    },
     "autoload": {
         "psr-4": {
             "Brick\\Math\\": "src/"
