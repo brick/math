@@ -69,11 +69,7 @@ class NativeCalculator extends Calculator
 
         [$aNeg, $bNeg, $aDig, $bDig] = $this->init($a, $b);
 
-        if ($aNeg === $bNeg) {
-            $result = $this->doAdd($aDig, $bDig);
-        } else {
-            $result = $this->doSub($aDig, $bDig);
-        }
+        $result = $aNeg === $bNeg ? $this->doAdd($aDig, $bDig) : $this->doSub($aDig, $bDig);
 
         if ($aNeg) {
             $result = $this->neg($result);

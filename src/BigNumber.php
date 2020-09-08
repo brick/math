@@ -67,11 +67,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             return new BigInteger((string) $value);
         }
 
-        if (\is_float($value)) {
-            $value = self::floatToString($value);
-        } else {
-            $value = (string) $value;
-        }
+        $value = \is_float($value) ? self::floatToString($value) : (string) $value;
 
         $throw = function() use ($value) : void {
             throw new NumberFormatException(\sprintf(
@@ -273,11 +269,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         foreach ($values as $value) {
             $value = static::of($value);
 
-            if ($sum === null) {
-                $sum = $value;
-            } else {
-                $sum = self::add($sum, $value);
-            }
+            $sum = $sum === null ? $value : self::add($sum, $value);
         }
 
         if ($sum === null) {

@@ -677,11 +677,7 @@ final class BigDecimal extends BigNumber
      */
     public function toBigInteger() : BigInteger
     {
-        if ($this->scale === 0) {
-            $zeroScaleDecimal = $this;
-        } else {
-            $zeroScaleDecimal = $this->dividedBy(1, 0);
-        }
+        $zeroScaleDecimal = $this->scale === 0 ? $this : $this->dividedBy(1, 0);
 
         return BigInteger::create($zeroScaleDecimal->value);
     }
