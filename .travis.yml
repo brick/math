@@ -10,6 +10,7 @@ php:
   - 7.2
   - 7.3
   # 7.4 is included in the matrix below, as base version for smoke testing
+  - nightly
 
 env:
   - CALCULATOR=GMP
@@ -18,14 +19,19 @@ env:
 
 before_script:
   - |
-    if [ "x$COVERAGE" != "xyes" ]; then
+    if [ $COVERAGE != "yes" ] && [ $TRAVIS_PHP_VERSION != "nightly" ]; then
       phpenv config-rm xdebug.ini
+    fi
+  - |
+    if [ $TRAVIS_PHP_VERSION == "nightly" ]; then
+      # not all dependencies advertise PHP 8 support yet
+      composer config platform.php 7.4.0
     fi
   - composer install
 
 script:
   - |
-    if [ "x$COVERAGE" == "xyes" ]; then
+    if [ $COVERAGE == "yes" ]; then
       mkdir -p build/logs && vendor/bin/phpunit --coverage-clover build/logs/clover.xml
     else
       vendor/bin/phpunit
@@ -33,7 +39,7 @@ script:
 
 after_script:
   - |
-    if [ "x$COVERAGE" == "xyes" ]; then
+    if [ $COVERAGE == "yes" ]; then
       vendor/bin/php-coveralls -v
     fi
 
