@@ -677,6 +677,9 @@ abstract class Calculator
     }
 
     /**
+     * @psalm-suppress InvalidOperand
+     * @see https://github.com/vimeo/psalm/issues/4456
+     *
      * @param string $number A positive, binary number.
      *
      * @return string

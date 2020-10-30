@@ -77,6 +77,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         };
 
         if (\preg_match(self::PARSE_REGEXP, $value, $matches) !== 1) {
+            /** @psalm-suppress ImpureFunctionCall */
             $throw();
         }
 
@@ -89,6 +90,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         $denominator = $getMatch('denominator');
 
         if ($numerator !== null) {
+            assert($denominator !== null);
+
             $numerator   = self::cleanUp($sign . $numerator);
             $denominator = self::cleanUp($denominator);
 
@@ -109,6 +112,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         $exponent   = $getMatch('exponent');
 
         if ($integral === null && $fractional === null) {
+            /** @psalm-suppress ImpureFunctionCall */
             $throw();
         }
 
@@ -195,6 +199,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
      *
+     * @psalm-suppress LessSpecificReturnStatement
+     * @psalm-suppress MoreSpecificReturnType
      * @psalm-pure
      */
     public static function min(...$values) : BigNumber
@@ -227,6 +233,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
      *
+     * @psalm-suppress LessSpecificReturnStatement
+     * @psalm-suppress MoreSpecificReturnType
      * @psalm-pure
      */
     public static function max(...$values) : BigNumber
@@ -259,6 +267,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
      *
+     * @psalm-suppress LessSpecificReturnStatement
+     * @psalm-suppress MoreSpecificReturnType
      * @psalm-pure
      */
     public static function sum(...$values) : BigNumber

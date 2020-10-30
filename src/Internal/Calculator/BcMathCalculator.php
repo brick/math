@@ -84,6 +84,9 @@ class BcMathCalculator extends Calculator
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-suppress NullableReturnStatement
+     * @psalm-suppress InvalidNullableReturnType
      */
     public function sqrt(string $n) : string
     {

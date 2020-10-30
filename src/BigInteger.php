@@ -1070,7 +1070,10 @@ final class BigInteger extends BigNumber
 
         if ($signed) {
             if ($this->isNegative()) {
-                $hex = \bin2hex(~\hex2bin($hex));
+                $bin = \hex2bin($hex);
+                assert($bin !== false);
+
+                $hex = \bin2hex(~$bin);
                 $hex = self::fromBase($hex, 16)->plus(1)->toBase(16);
 
                 $hexLength = \strlen($hex);
