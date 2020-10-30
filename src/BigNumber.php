@@ -69,7 +69,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
         $value = \is_float($value) ? self::floatToString($value) : (string) $value;
 
-        $throw = function() use ($value) : void {
+        $throw = static function() use ($value) : void {
             throw new NumberFormatException(\sprintf(
                 'The given value "%s" does not represent a valid number.',
                 $value
@@ -81,7 +81,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             $throw();
         }
 
-        $getMatch = function(string $value) use ($matches) : ?string {
+        $getMatch = static function(string $value) use ($matches) : ?string {
             return isset($matches[$value]) && $matches[$value] !== '' ? $matches[$value] : null;
         };
 
