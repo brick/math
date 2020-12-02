@@ -14,7 +14,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.1|^8.0",
+        "php": "^7.1 || ^8.0",
         "ext-json": "*"
     },
     "require-dev": {
