@@ -10,7 +10,7 @@ php:
   - 7.2
   - 7.3
   # 7.4 is included in the matrix below, as base version for smoke testing
-  - 8.0snapshot
+  - 8.0
 
 env:
   - CALCULATOR=GMP
