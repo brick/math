@@ -24,15 +24,15 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerOf
      *
-     * @param string|number $value    The value to convert to a BigInteger.
-     * @param string        $expected The expected string value of the result.
+     * @param string|number $value The value to convert to a BigInteger.
+     * @param string $expected The expected string value of the result.
      */
-    public function testOf($value, string $expected) : void
+    public function testOf($value, string $expected): void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($value));
     }
 
-    public function providerOf() : array
+    public function providerOf(): array
     {
         return [
             [0, '0'],
@@ -104,7 +104,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testOfBigIntegerReturnsThis() : void
+    public function testOfBigIntegerReturnsThis(): void
     {
         $decimal = BigInteger::of(123);
 
@@ -116,13 +116,13 @@ class BigIntegerTest extends AbstractTestCase
      *
      * @param string|number $value
      */
-    public function testOfInvalidFormatThrowsException($value) : void
+    public function testOfInvalidFormatThrowsException($value): void
     {
         $this->expectException(NumberFormatException::class);
         BigInteger::of($value);
     }
 
-    public function providerOfInvalidFormatThrowsException() : array
+    public function providerOfInvalidFormatThrowsException(): array
     {
         return [
             [''],
@@ -145,13 +145,13 @@ class BigIntegerTest extends AbstractTestCase
      *
      * @param float|string $value
      */
-    public function testOfNonConvertibleValueThrowsException($value) : void
+    public function testOfNonConvertibleValueThrowsException($value): void
     {
         $this->expectException(RoundingNecessaryException::class);
         BigInteger::of($value);
     }
 
-    public function providerOfNonConvertibleValueThrowsException() : array
+    public function providerOfNonConvertibleValueThrowsException(): array
     {
         return [
             [1.1],
@@ -163,11 +163,11 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerFromBase
      *
-     * @param string $number   The number to create.
-     * @param int    $base     The base of the number.
+     * @param string $number The number to create.
+     * @param int $base The base of the number.
      * @param string $expected The expected result in base 10.
      */
-    public function testFromBase(string $number, int $base, string $expected) : void
+    public function testFromBase(string $number, int $base, string $expected): void
     {
         self::assertBigIntegerEquals($expected, BigInteger::fromBase($number, $base));
     }
@@ -175,7 +175,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function providerFromBase() : array
+    public function providerFromBase(): array
     {
         return [
             ['0', 10, '0'],
@@ -283,13 +283,13 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerFromBaseWithInvalidValue
      */
-    public function testFromBaseWithInvalidValue(string $value, int $base) : void
+    public function testFromBaseWithInvalidValue(string $value, int $base): void
     {
         $this->expectException(NumberFormatException::class);
         BigInteger::fromBase($value, $base);
     }
 
-    public function providerFromBaseWithInvalidValue() : array
+    public function providerFromBaseWithInvalidValue(): array
     {
         return [
             ['', 10],
@@ -339,13 +339,13 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerFromBaseWithInvalidBase
      */
-    public function testFromBaseWithInvalidBase(int $base) : void
+    public function testFromBaseWithInvalidBase(int $base): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigInteger::fromBase('0', $base);
     }
 
-    public function providerFromBaseWithInvalidBase() : array
+    public function providerFromBaseWithInvalidBase(): array
     {
         return [
             [-2],
@@ -356,19 +356,19 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testZero() : void
+    public function testZero(): void
     {
         self::assertBigIntegerEquals('0', BigInteger::zero());
         self::assertSame(BigInteger::zero(), BigInteger::zero());
     }
 
-    public function testOne() : void
+    public function testOne(): void
     {
         self::assertBigIntegerEquals('1', BigInteger::one());
         self::assertSame(BigInteger::one(), BigInteger::one());
     }
 
-    public function testTen() : void
+    public function testTen(): void
     {
         self::assertBigIntegerEquals('10', BigInteger::ten());
         self::assertSame(BigInteger::ten(), BigInteger::ten());
@@ -377,15 +377,15 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerMin
      *
-     * @param array  $values The values to compare.
-     * @param string $min    The expected minimum value.
+     * @param array $values The values to compare.
+     * @param string $min The expected minimum value.
      */
-    public function testMin(array $values, string $min) : void
+    public function testMin(array $values, string $min): void
     {
         self::assertBigIntegerEquals($min, BigInteger::min(... $values));
     }
 
-    public function providerMin() : array
+    public function providerMin(): array
     {
         return [
             [[0, 1, -1], '-1'],
@@ -398,13 +398,13 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testMinOfZeroValuesThrowsException() : void
+    public function testMinOfZeroValuesThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigInteger::min();
     }
 
-    public function testMinOfNonIntegerValuesThrowsException() : void
+    public function testMinOfNonIntegerValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
         BigInteger::min(1, 1.2);
@@ -413,15 +413,15 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerMax
      *
-     * @param array  $values The values to compare.
-     * @param string $max    The expected maximum value.
+     * @param array $values The values to compare.
+     * @param string $max The expected maximum value.
      */
-    public function testMax(array $values, string $max) : void
+    public function testMax(array $values, string $max): void
     {
         self::assertBigIntegerEquals($max, BigInteger::max(... $values));
     }
 
-    public function providerMax() : array
+    public function providerMax(): array
     {
         return [
             [[0, 1, -1], '1'],
@@ -435,13 +435,13 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testMaxOfZeroValuesThrowsException() : void
+    public function testMaxOfZeroValuesThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigInteger::max();
     }
 
-    public function testMaxOfNonIntegerValuesThrowsException() : void
+    public function testMaxOfNonIntegerValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
         BigInteger::max(1, '3/2');
@@ -450,15 +450,15 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerSum
      *
-     * @param array  $values The values to add.
-     * @param string $sum    The expected sum.
+     * @param array $values The values to add.
+     * @param string $sum The expected sum.
      */
-    public function testSum(array $values, string $sum) : void
+    public function testSum(array $values, string $sum): void
     {
         self::assertBigIntegerEquals($sum, BigInteger::sum(... $values));
     }
 
-    public function providerSum() : array
+    public function providerSum(): array
     {
         return [
             [[-1], '-1'],
@@ -473,13 +473,13 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testSumOfZeroValuesThrowsException() : void
+    public function testSumOfZeroValuesThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigInteger::sum();
     }
 
-    public function testSumOfNonIntegerValuesThrowsException() : void
+    public function testSumOfNonIntegerValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
         BigInteger::sum(1, '3/2');
@@ -492,12 +492,12 @@ class BigIntegerTest extends AbstractTestCase
      * @param string $b The number to add.
      * @param string $r The expected result.
      */
-    public function testPlus(string $a, string $b, string $r) : void
+    public function testPlus(string $a, string $b, string $r): void
     {
         self::assertBigIntegerEquals($r, BigInteger::of($a)->plus($b));
     }
 
-    public function providerPlus() : array
+    public function providerPlus(): array
     {
         return [
             ['5165450198704521651351654564564089798441', '0', '5165450198704521651351654564564089798441'],
@@ -521,12 +521,12 @@ class BigIntegerTest extends AbstractTestCase
      * @param string $b The number to subtract.
      * @param string $r The expected result.
      */
-    public function testMinus(string $a, string $b, string $r) : void
+    public function testMinus(string $a, string $b, string $r): void
     {
         self::assertBigIntegerEquals($r, BigInteger::of($a)->minus($b));
     }
 
-    public function providerMinus() : array
+    public function providerMinus(): array
     {
         return [
             ['5165450198704521651351654564564089798441', '0', '5165450198704521651351654564564089798441'],
@@ -544,16 +544,16 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerMultipliedBy
      *
-     * @param string     $a The base number.
+     * @param string $a The base number.
      * @param string|int $b The number to multiply.
-     * @param string     $r The expected result.
+     * @param string $r The expected result.
      */
-    public function testMultipliedBy(string $a, $b, string $r) : void
+    public function testMultipliedBy(string $a, $b, string $r): void
     {
         self::assertBigIntegerEquals($r, BigInteger::of($a)->multipliedBy($b));
     }
 
-    public function providerMultipliedBy() : array
+    public function providerMultipliedBy(): array
     {
         return [
             ['123456789098765432101234567890987654321', '1', '123456789098765432101234567890987654321'],
@@ -566,7 +566,6 @@ class BigIntegerTest extends AbstractTestCase
             ['0', '-3483910549230593053437', '0'],
             ['-991230349304902390122', '0', '0'],
 
-
             ['1274837942798479387498237897498734984', 30, '38245138283954381624947136924962049520'],
             ['1274837942798479387498237897498734984', 30.0, '38245138283954381624947136924962049520'],
             ['1274837942798479387498237897498734984', '30', '38245138283954381624947136924962049520'],
@@ -578,11 +577,11 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerDividedBy
      *
-     * @param string           $number   The base number.
-     * @param string|int|float $divisor  The divisor.
-     * @param string           $expected The expected result, or a class name if an exception is expected.
+     * @param string $number The base number.
+     * @param string|int|float $divisor The divisor.
+     * @param string $expected The expected result, or a class name if an exception is expected.
      */
-    public function testDividedBy(string $number, $divisor, string $expected) : void
+    public function testDividedBy(string $number, $divisor, string $expected): void
     {
         $number = BigInteger::of($number);
 
@@ -597,7 +596,7 @@ class BigIntegerTest extends AbstractTestCase
         }
     }
 
-    public function providerDividedBy() : array
+    public function providerDividedBy(): array
     {
         return [
             ['123456789098765432101234567890987654321', 1, '123456789098765432101234567890987654321'],
@@ -620,7 +619,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testDividedByWithInvalidRoundingModeThrowsException() : void
+    public function testDividedByWithInvalidRoundingModeThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigInteger::of(1)->dividedBy(2, -1);
@@ -629,13 +628,13 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerDividedByWithRoundingMode
      *
-     * @param int         $roundingMode The rounding mode.
-     * @param string      $number       The number to round.
-     * @param string|null $ten          The expected rounding divided by 10, or null if an exception is expected.
-     * @param string|null $hundred      The expected rounding divided by 100 or null if an exception is expected.
-     * @param string|null $thousand     The expected rounding divided by 1000, or null if an exception is expected.
+     * @param int $roundingMode The rounding mode.
+     * @param string $number The number to round.
+     * @param string|null $ten The expected rounding divided by 10, or null if an exception is expected.
+     * @param string|null $hundred The expected rounding divided by 100 or null if an exception is expected.
+     * @param string|null $thousand The expected rounding divided by 1000, or null if an exception is expected.
      */
-    public function testDividedByWithRoundingMode(int $roundingMode, string $number, ?string $ten, ?string $hundred, ?string $thousand) : void
+    public function testDividedByWithRoundingMode(int $roundingMode, string $number, ?string $ten, ?string $hundred, ?string $thousand): void
     {
         $number = BigInteger::of($number);
 
@@ -644,14 +643,14 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param int         $roundingMode The rounding mode.
-     * @param BigInteger  $number       The number to round.
-     * @param string      $divisor      The divisor.
-     * @param string|null $ten          The expected rounding to a scale of two, or null if an exception is expected.
-     * @param string|null $hundred      The expected rounding to a scale of one, or null if an exception is expected.
-     * @param string|null $thousand     The expected rounding to a scale of zero, or null if an exception is expected.
+     * @param int $roundingMode The rounding mode.
+     * @param BigInteger $number The number to round.
+     * @param string $divisor The divisor.
+     * @param string|null $ten The expected rounding to a scale of two, or null if an exception is expected.
+     * @param string|null $hundred The expected rounding to a scale of one, or null if an exception is expected.
+     * @param string|null $thousand The expected rounding to a scale of zero, or null if an exception is expected.
      */
-    private function doTestDividedByWithRoundingMode(int $roundingMode, BigInteger $number, string $divisor, ?string $ten, ?string $hundred, ?string $thousand) : void
+    private function doTestDividedByWithRoundingMode(int $roundingMode, BigInteger $number, string $divisor, ?string $ten, ?string $hundred, ?string $thousand): void
     {
         foreach ([$ten, $hundred, $thousand] as $expected) {
             $divisor .= '0';
@@ -668,37 +667,37 @@ class BigIntegerTest extends AbstractTestCase
         }
     }
 
-    public function providerDividedByWithRoundingMode() : array
+    public function providerDividedByWithRoundingMode(): array
     {
         return [
-            [RoundingMode::UP,  '3501',  '351',  '36',  '4'],
-            [RoundingMode::UP,  '3500',  '350',  '35',  '4'],
-            [RoundingMode::UP,  '3499',  '350',  '35',  '4'],
-            [RoundingMode::UP,  '3001',  '301',  '31',  '4'],
-            [RoundingMode::UP,  '3000',  '300',  '30',  '3'],
-            [RoundingMode::UP,  '2999',  '300',  '30',  '3'],
-            [RoundingMode::UP,  '2501',  '251',  '26',  '3'],
-            [RoundingMode::UP,  '2500',  '250',  '25',  '3'],
-            [RoundingMode::UP,  '2499',  '250',  '25',  '3'],
-            [RoundingMode::UP,  '2001',  '201',  '21',  '3'],
-            [RoundingMode::UP,  '2000',  '200',  '20',  '2'],
-            [RoundingMode::UP,  '1999',  '200',  '20',  '2'],
-            [RoundingMode::UP,  '1501',  '151',  '16',  '2'],
-            [RoundingMode::UP,  '1500',  '150',  '15',  '2'],
-            [RoundingMode::UP,  '1499',  '150',  '15',  '2'],
-            [RoundingMode::UP,  '1001',  '101',  '11',  '2'],
-            [RoundingMode::UP,  '1000',  '100',  '10',  '1'],
-            [RoundingMode::UP,   '999',  '100',  '10',  '1'],
-            [RoundingMode::UP,   '501',   '51',   '6',  '1'],
-            [RoundingMode::UP,   '500',   '50',   '5',  '1'],
-            [RoundingMode::UP,   '499',   '50',   '5',  '1'],
-            [RoundingMode::UP,     '1',    '1',   '1',  '1'],
-            [RoundingMode::UP,     '0',    '0',   '0',  '0'],
-            [RoundingMode::UP,    '-1',   '-1',  '-1', '-1'],
-            [RoundingMode::UP,  '-499',  '-50',  '-5', '-1'],
-            [RoundingMode::UP,  '-500',  '-50',  '-5', '-1'],
-            [RoundingMode::UP,  '-501',  '-51',  '-6', '-1'],
-            [RoundingMode::UP,  '-999', '-100', '-10', '-1'],
+            [RoundingMode::UP, '3501', '351', '36', '4'],
+            [RoundingMode::UP, '3500', '350', '35', '4'],
+            [RoundingMode::UP, '3499', '350', '35', '4'],
+            [RoundingMode::UP, '3001', '301', '31', '4'],
+            [RoundingMode::UP, '3000', '300', '30', '3'],
+            [RoundingMode::UP, '2999', '300', '30', '3'],
+            [RoundingMode::UP, '2501', '251', '26', '3'],
+            [RoundingMode::UP, '2500', '250', '25', '3'],
+            [RoundingMode::UP, '2499', '250', '25', '3'],
+            [RoundingMode::UP, '2001', '201', '21', '3'],
+            [RoundingMode::UP, '2000', '200', '20', '2'],
+            [RoundingMode::UP, '1999', '200', '20', '2'],
+            [RoundingMode::UP, '1501', '151', '16', '2'],
+            [RoundingMode::UP, '1500', '150', '15', '2'],
+            [RoundingMode::UP, '1499', '150', '15', '2'],
+            [RoundingMode::UP, '1001', '101', '11', '2'],
+            [RoundingMode::UP, '1000', '100', '10', '1'],
+            [RoundingMode::UP, '999', '100', '10', '1'],
+            [RoundingMode::UP, '501', '51', '6', '1'],
+            [RoundingMode::UP, '500', '50', '5', '1'],
+            [RoundingMode::UP, '499', '50', '5', '1'],
+            [RoundingMode::UP, '1', '1', '1', '1'],
+            [RoundingMode::UP, '0', '0', '0', '0'],
+            [RoundingMode::UP, '-1', '-1', '-1', '-1'],
+            [RoundingMode::UP, '-499', '-50', '-5', '-1'],
+            [RoundingMode::UP, '-500', '-50', '-5', '-1'],
+            [RoundingMode::UP, '-501', '-51', '-6', '-1'],
+            [RoundingMode::UP, '-999', '-100', '-10', '-1'],
             [RoundingMode::UP, '-1000', '-100', '-10', '-1'],
             [RoundingMode::UP, '-1001', '-101', '-11', '-2'],
             [RoundingMode::UP, '-1499', '-150', '-15', '-2'],
@@ -717,34 +716,34 @@ class BigIntegerTest extends AbstractTestCase
             [RoundingMode::UP, '-3500', '-350', '-35', '-4'],
             [RoundingMode::UP, '-3501', '-351', '-36', '-4'],
 
-            [RoundingMode::DOWN,  '3501',  '350',  '35',  '3'],
-            [RoundingMode::DOWN,  '3500',  '350',  '35',  '3'],
-            [RoundingMode::DOWN,  '3499',  '349',  '34',  '3'],
-            [RoundingMode::DOWN,  '3001',  '300',  '30',  '3'],
-            [RoundingMode::DOWN,  '3000',  '300',  '30',  '3'],
-            [RoundingMode::DOWN,  '2999',  '299',  '29',  '2'],
-            [RoundingMode::DOWN,  '2501',  '250',  '25',  '2'],
-            [RoundingMode::DOWN,  '2500',  '250',  '25',  '2'],
-            [RoundingMode::DOWN,  '2499',  '249',  '24',  '2'],
-            [RoundingMode::DOWN,  '2001',  '200',  '20',  '2'],
-            [RoundingMode::DOWN,  '2000',  '200',  '20',  '2'],
-            [RoundingMode::DOWN,  '1999',  '199',  '19',  '1'],
-            [RoundingMode::DOWN,  '1501',  '150',  '15',  '1'],
-            [RoundingMode::DOWN,  '1500',  '150',  '15',  '1'],
-            [RoundingMode::DOWN,  '1499',  '149',  '14',  '1'],
-            [RoundingMode::DOWN,  '1001',  '100',  '10',  '1'],
-            [RoundingMode::DOWN,  '1000',  '100',  '10',  '1'],
-            [RoundingMode::DOWN,   '999',   '99',   '9',  '0'],
-            [RoundingMode::DOWN,   '501',   '50',   '5',  '0'],
-            [RoundingMode::DOWN,   '500',   '50',   '5',  '0'],
-            [RoundingMode::DOWN,   '499',   '49',   '4',  '0'],
-            [RoundingMode::DOWN,     '1',    '0',   '0',  '0'],
-            [RoundingMode::DOWN,     '0',    '0',   '0',  '0'],
-            [RoundingMode::DOWN,    '-1',    '0',   '0',  '0'],
-            [RoundingMode::DOWN,  '-499',  '-49',  '-4',  '0'],
-            [RoundingMode::DOWN,  '-500',  '-50',  '-5',  '0'],
-            [RoundingMode::DOWN,  '-501',  '-50',  '-5',  '0'],
-            [RoundingMode::DOWN,  '-999',  '-99',  '-9',  '0'],
+            [RoundingMode::DOWN, '3501', '350', '35', '3'],
+            [RoundingMode::DOWN, '3500', '350', '35', '3'],
+            [RoundingMode::DOWN, '3499', '349', '34', '3'],
+            [RoundingMode::DOWN, '3001', '300', '30', '3'],
+            [RoundingMode::DOWN, '3000', '300', '30', '3'],
+            [RoundingMode::DOWN, '2999', '299', '29', '2'],
+            [RoundingMode::DOWN, '2501', '250', '25', '2'],
+            [RoundingMode::DOWN, '2500', '250', '25', '2'],
+            [RoundingMode::DOWN, '2499', '249', '24', '2'],
+            [RoundingMode::DOWN, '2001', '200', '20', '2'],
+            [RoundingMode::DOWN, '2000', '200', '20', '2'],
+            [RoundingMode::DOWN, '1999', '199', '19', '1'],
+            [RoundingMode::DOWN, '1501', '150', '15', '1'],
+            [RoundingMode::DOWN, '1500', '150', '15', '1'],
+            [RoundingMode::DOWN, '1499', '149', '14', '1'],
+            [RoundingMode::DOWN, '1001', '100', '10', '1'],
+            [RoundingMode::DOWN, '1000', '100', '10', '1'],
+            [RoundingMode::DOWN, '999', '99', '9', '0'],
+            [RoundingMode::DOWN, '501', '50', '5', '0'],
+            [RoundingMode::DOWN, '500', '50', '5', '0'],
+            [RoundingMode::DOWN, '499', '49', '4', '0'],
+            [RoundingMode::DOWN, '1', '0', '0', '0'],
+            [RoundingMode::DOWN, '0', '0', '0', '0'],
+            [RoundingMode::DOWN, '-1', '0', '0', '0'],
+            [RoundingMode::DOWN, '-499', '-49', '-4', '0'],
+            [RoundingMode::DOWN, '-500', '-50', '-5', '0'],
+            [RoundingMode::DOWN, '-501', '-50', '-5', '0'],
+            [RoundingMode::DOWN, '-999', '-99', '-9', '0'],
             [RoundingMode::DOWN, '-1000', '-100', '-10', '-1'],
             [RoundingMode::DOWN, '-1001', '-100', '-10', '-1'],
             [RoundingMode::DOWN, '-1499', '-149', '-14', '-1'],
@@ -763,34 +762,34 @@ class BigIntegerTest extends AbstractTestCase
             [RoundingMode::DOWN, '-3500', '-350', '-35', '-3'],
             [RoundingMode::DOWN, '-3501', '-350', '-35', '-3'],
 
-            [RoundingMode::CEILING,  '3501',  '351',  '36',  '4'],
-            [RoundingMode::CEILING,  '3500',  '350',  '35',  '4'],
-            [RoundingMode::CEILING,  '3499',  '350',  '35',  '4'],
-            [RoundingMode::CEILING,  '3001',  '301',  '31',  '4'],
-            [RoundingMode::CEILING,  '3000',  '300',  '30',  '3'],
-            [RoundingMode::CEILING,  '2999',  '300',  '30',  '3'],
-            [RoundingMode::CEILING,  '2501',  '251',  '26',  '3'],
-            [RoundingMode::CEILING,  '2500',  '250',  '25',  '3'],
-            [RoundingMode::CEILING,  '2499',  '250',  '25',  '3'],
-            [RoundingMode::CEILING,  '2001',  '201',  '21',  '3'],
-            [RoundingMode::CEILING,  '2000',  '200',  '20',  '2'],
-            [RoundingMode::CEILING,  '1999',  '200',  '20',  '2'],
-            [RoundingMode::CEILING,  '1501',  '151',  '16',  '2'],
-            [RoundingMode::CEILING,  '1500',  '150',  '15',  '2'],
-            [RoundingMode::CEILING,  '1499',  '150',  '15',  '2'],
-            [RoundingMode::CEILING,  '1001',  '101',  '11',  '2'],
-            [RoundingMode::CEILING,  '1000',  '100',  '10',  '1'],
-            [RoundingMode::CEILING,   '999',  '100',  '10',  '1'],
-            [RoundingMode::CEILING,   '501',   '51',   '6',  '1'],
-            [RoundingMode::CEILING,   '500',   '50',   '5',  '1'],
-            [RoundingMode::CEILING,   '499',   '50',   '5',  '1'],
-            [RoundingMode::CEILING,     '1',    '1',   '1',  '1'],
-            [RoundingMode::CEILING,     '0',    '0',   '0',  '0'],
-            [RoundingMode::CEILING,    '-1',    '0',   '0',  '0'],
-            [RoundingMode::CEILING,  '-499',  '-49' , '-4',  '0'],
-            [RoundingMode::CEILING,  '-500',  '-50' , '-5',  '0'],
-            [RoundingMode::CEILING,  '-501',  '-50',  '-5',  '0'],
-            [RoundingMode::CEILING,  '-999',  '-99',  '-9',  '0'],
+            [RoundingMode::CEILING, '3501', '351', '36', '4'],
+            [RoundingMode::CEILING, '3500', '350', '35', '4'],
+            [RoundingMode::CEILING, '3499', '350', '35', '4'],
+            [RoundingMode::CEILING, '3001', '301', '31', '4'],
+            [RoundingMode::CEILING, '3000', '300', '30', '3'],
+            [RoundingMode::CEILING, '2999', '300', '30', '3'],
+            [RoundingMode::CEILING, '2501', '251', '26', '3'],
+            [RoundingMode::CEILING, '2500', '250', '25', '3'],
+            [RoundingMode::CEILING, '2499', '250', '25', '3'],
+            [RoundingMode::CEILING, '2001', '201', '21', '3'],
+            [RoundingMode::CEILING, '2000', '200', '20', '2'],
+            [RoundingMode::CEILING, '1999', '200', '20', '2'],
+            [RoundingMode::CEILING, '1501', '151', '16', '2'],
+            [RoundingMode::CEILING, '1500', '150', '15', '2'],
+            [RoundingMode::CEILING, '1499', '150', '15', '2'],
+            [RoundingMode::CEILING, '1001', '101', '11', '2'],
+            [RoundingMode::CEILING, '1000', '100', '10', '1'],
+            [RoundingMode::CEILING, '999', '100', '10', '1'],
+            [RoundingMode::CEILING, '501', '51', '6', '1'],
+            [RoundingMode::CEILING, '500', '50', '5', '1'],
+            [RoundingMode::CEILING, '499', '50', '5', '1'],
+            [RoundingMode::CEILING, '1', '1', '1', '1'],
+            [RoundingMode::CEILING, '0', '0', '0', '0'],
+            [RoundingMode::CEILING, '-1', '0', '0', '0'],
+            [RoundingMode::CEILING, '-499', '-49' , '-4', '0'],
+            [RoundingMode::CEILING, '-500', '-50' , '-5', '0'],
+            [RoundingMode::CEILING, '-501', '-50', '-5', '0'],
+            [RoundingMode::CEILING, '-999', '-99', '-9', '0'],
             [RoundingMode::CEILING, '-1000', '-100', '-10', '-1'],
             [RoundingMode::CEILING, '-1001', '-100', '-10', '-1'],
             [RoundingMode::CEILING, '-1499', '-149', '-14', '-1'],
@@ -809,34 +808,34 @@ class BigIntegerTest extends AbstractTestCase
             [RoundingMode::CEILING, '-3500', '-350', '-35', '-3'],
             [RoundingMode::CEILING, '-3501', '-350', '-35', '-3'],
 
-            [RoundingMode::FLOOR,  '3501',  '350',  '35',  '3'],
-            [RoundingMode::FLOOR,  '3500',  '350',  '35',  '3'],
-            [RoundingMode::FLOOR,  '3499',  '349',  '34',  '3'],
-            [RoundingMode::FLOOR,  '3001',  '300',  '30',  '3'],
-            [RoundingMode::FLOOR,  '3000',  '300',  '30',  '3'],
-            [RoundingMode::FLOOR,  '2999',  '299',  '29',  '2'],
-            [RoundingMode::FLOOR,  '2501',  '250',  '25',  '2'],
-            [RoundingMode::FLOOR,  '2500',  '250',  '25',  '2'],
-            [RoundingMode::FLOOR,  '2499',  '249',  '24',  '2'],
-            [RoundingMode::FLOOR,  '2001',  '200',  '20',  '2'],
-            [RoundingMode::FLOOR,  '2000',  '200',  '20',  '2'],
-            [RoundingMode::FLOOR,  '1999',  '199',  '19',  '1'],
-            [RoundingMode::FLOOR,  '1501',  '150',  '15',  '1'],
-            [RoundingMode::FLOOR,  '1500',  '150',  '15',  '1'],
-            [RoundingMode::FLOOR,  '1499',  '149',  '14',  '1'],
-            [RoundingMode::FLOOR,  '1001',  '100',  '10',  '1'],
-            [RoundingMode::FLOOR,  '1000',  '100',  '10',  '1'],
-            [RoundingMode::FLOOR,   '999',   '99',   '9',  '0'],
-            [RoundingMode::FLOOR,   '501',   '50',   '5',  '0'],
-            [RoundingMode::FLOOR,   '500',   '50',   '5',  '0'],
-            [RoundingMode::FLOOR,   '499',   '49',   '4',  '0'],
-            [RoundingMode::FLOOR,     '1',    '0',   '0',  '0'],
-            [RoundingMode::FLOOR,     '0',    '0',   '0',  '0'],
-            [RoundingMode::FLOOR,    '-1',   '-1',  '-1', '-1'],
-            [RoundingMode::FLOOR,  '-499',  '-50',  '-5', '-1'],
-            [RoundingMode::FLOOR,  '-500',  '-50',  '-5', '-1'],
-            [RoundingMode::FLOOR,  '-501',  '-51',  '-6', '-1'],
-            [RoundingMode::FLOOR,  '-999', '-100', '-10', '-1'],
+            [RoundingMode::FLOOR, '3501', '350', '35', '3'],
+            [RoundingMode::FLOOR, '3500', '350', '35', '3'],
+            [RoundingMode::FLOOR, '3499', '349', '34', '3'],
+            [RoundingMode::FLOOR, '3001', '300', '30', '3'],
+            [RoundingMode::FLOOR, '3000', '300', '30', '3'],
+            [RoundingMode::FLOOR, '2999', '299', '29', '2'],
+            [RoundingMode::FLOOR, '2501', '250', '25', '2'],
+            [RoundingMode::FLOOR, '2500', '250', '25', '2'],
+            [RoundingMode::FLOOR, '2499', '249', '24', '2'],
+            [RoundingMode::FLOOR, '2001', '200', '20', '2'],
+            [RoundingMode::FLOOR, '2000', '200', '20', '2'],
+            [RoundingMode::FLOOR, '1999', '199', '19', '1'],
+            [RoundingMode::FLOOR, '1501', '150', '15', '1'],
+            [RoundingMode::FLOOR, '1500', '150', '15', '1'],
+            [RoundingMode::FLOOR, '1499', '149', '14', '1'],
+            [RoundingMode::FLOOR, '1001', '100', '10', '1'],
+            [RoundingMode::FLOOR, '1000', '100', '10', '1'],
+            [RoundingMode::FLOOR, '999', '99', '9', '0'],
+            [RoundingMode::FLOOR, '501', '50', '5', '0'],
+            [RoundingMode::FLOOR, '500', '50', '5', '0'],
+            [RoundingMode::FLOOR, '499', '49', '4', '0'],
+            [RoundingMode::FLOOR, '1', '0', '0', '0'],
+            [RoundingMode::FLOOR, '0', '0', '0', '0'],
+            [RoundingMode::FLOOR, '-1', '-1', '-1', '-1'],
+            [RoundingMode::FLOOR, '-499', '-50', '-5', '-1'],
+            [RoundingMode::FLOOR, '-500', '-50', '-5', '-1'],
+            [RoundingMode::FLOOR, '-501', '-51', '-6', '-1'],
+            [RoundingMode::FLOOR, '-999', '-100', '-10', '-1'],
             [RoundingMode::FLOOR, '-1000', '-100', '-10', '-1'],
             [RoundingMode::FLOOR, '-1001', '-101', '-11', '-2'],
             [RoundingMode::FLOOR, '-1499', '-150', '-15', '-2'],
@@ -855,34 +854,34 @@ class BigIntegerTest extends AbstractTestCase
             [RoundingMode::FLOOR, '-3500', '-350', '-35', '-4'],
             [RoundingMode::FLOOR, '-3501', '-351', '-36', '-4'],
 
-            [RoundingMode::HALF_UP,  '3501',  '350',  '35',  '4'],
-            [RoundingMode::HALF_UP,  '3500',  '350',  '35',  '4'],
-            [RoundingMode::HALF_UP,  '3499',  '350',  '35',  '3'],
-            [RoundingMode::HALF_UP,  '3001',  '300',  '30',  '3'],
-            [RoundingMode::HALF_UP,  '3000',  '300',  '30',  '3'],
-            [RoundingMode::HALF_UP,  '2999',  '300',  '30',  '3'],
-            [RoundingMode::HALF_UP,  '2501',  '250',  '25',  '3'],
-            [RoundingMode::HALF_UP,  '2500',  '250',  '25',  '3'],
-            [RoundingMode::HALF_UP,  '2499',  '250',  '25',  '2'],
-            [RoundingMode::HALF_UP,  '2001',  '200',  '20',  '2'],
-            [RoundingMode::HALF_UP,  '2000',  '200',  '20',  '2'],
-            [RoundingMode::HALF_UP,  '1999',  '200',  '20',  '2'],
-            [RoundingMode::HALF_UP,  '1501',  '150',  '15',  '2'],
-            [RoundingMode::HALF_UP,  '1500',  '150',  '15',  '2'],
-            [RoundingMode::HALF_UP,  '1499',  '150',  '15',  '1'],
-            [RoundingMode::HALF_UP,  '1001',  '100',  '10',  '1'],
-            [RoundingMode::HALF_UP,  '1000',  '100',  '10',  '1'],
-            [RoundingMode::HALF_UP,   '999',  '100',  '10',  '1'],
-            [RoundingMode::HALF_UP,   '501',   '50',   '5',  '1'],
-            [RoundingMode::HALF_UP,   '500',   '50',   '5',  '1'],
-            [RoundingMode::HALF_UP,   '499',   '50',   '5',  '0'],
-            [RoundingMode::HALF_UP,     '1',    '0',   '0',  '0'],
-            [RoundingMode::HALF_UP,     '0',    '0',   '0',  '0'],
-            [RoundingMode::HALF_UP,    '-1',    '0',   '0',  '0'],
-            [RoundingMode::HALF_UP,  '-499',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_UP,  '-500',  '-50',  '-5', '-1'],
-            [RoundingMode::HALF_UP,  '-501',  '-50',  '-5', '-1'],
-            [RoundingMode::HALF_UP,  '-999', '-100', '-10', '-1'],
+            [RoundingMode::HALF_UP, '3501', '350', '35', '4'],
+            [RoundingMode::HALF_UP, '3500', '350', '35', '4'],
+            [RoundingMode::HALF_UP, '3499', '350', '35', '3'],
+            [RoundingMode::HALF_UP, '3001', '300', '30', '3'],
+            [RoundingMode::HALF_UP, '3000', '300', '30', '3'],
+            [RoundingMode::HALF_UP, '2999', '300', '30', '3'],
+            [RoundingMode::HALF_UP, '2501', '250', '25', '3'],
+            [RoundingMode::HALF_UP, '2500', '250', '25', '3'],
+            [RoundingMode::HALF_UP, '2499', '250', '25', '2'],
+            [RoundingMode::HALF_UP, '2001', '200', '20', '2'],
+            [RoundingMode::HALF_UP, '2000', '200', '20', '2'],
+            [RoundingMode::HALF_UP, '1999', '200', '20', '2'],
+            [RoundingMode::HALF_UP, '1501', '150', '15', '2'],
+            [RoundingMode::HALF_UP, '1500', '150', '15', '2'],
+            [RoundingMode::HALF_UP, '1499', '150', '15', '1'],
+            [RoundingMode::HALF_UP, '1001', '100', '10', '1'],
+            [RoundingMode::HALF_UP, '1000', '100', '10', '1'],
+            [RoundingMode::HALF_UP, '999', '100', '10', '1'],
+            [RoundingMode::HALF_UP, '501', '50', '5', '1'],
+            [RoundingMode::HALF_UP, '500', '50', '5', '1'],
+            [RoundingMode::HALF_UP, '499', '50', '5', '0'],
+            [RoundingMode::HALF_UP, '1', '0', '0', '0'],
+            [RoundingMode::HALF_UP, '0', '0', '0', '0'],
+            [RoundingMode::HALF_UP, '-1', '0', '0', '0'],
+            [RoundingMode::HALF_UP, '-499', '-50', '-5', '0'],
+            [RoundingMode::HALF_UP, '-500', '-50', '-5', '-1'],
+            [RoundingMode::HALF_UP, '-501', '-50', '-5', '-1'],
+            [RoundingMode::HALF_UP, '-999', '-100', '-10', '-1'],
             [RoundingMode::HALF_UP, '-1000', '-100', '-10', '-1'],
             [RoundingMode::HALF_UP, '-1001', '-100', '-10', '-1'],
             [RoundingMode::HALF_UP, '-1499', '-150', '-15', '-1'],
@@ -901,34 +900,34 @@ class BigIntegerTest extends AbstractTestCase
             [RoundingMode::HALF_UP, '-3500', '-350', '-35', '-4'],
             [RoundingMode::HALF_UP, '-3501', '-350', '-35', '-4'],
 
-            [RoundingMode::HALF_DOWN,  '3501',  '350',  '35',  '4'],
-            [RoundingMode::HALF_DOWN,  '3500',  '350',  '35',  '3'],
-            [RoundingMode::HALF_DOWN,  '3499',  '350',  '35',  '3'],
-            [RoundingMode::HALF_DOWN,  '3001',  '300',  '30',  '3'],
-            [RoundingMode::HALF_DOWN,  '3000',  '300',  '30',  '3'],
-            [RoundingMode::HALF_DOWN,  '2999',  '300',  '30',  '3'],
-            [RoundingMode::HALF_DOWN,  '2501',  '250',  '25',  '3'],
-            [RoundingMode::HALF_DOWN,  '2500',  '250',  '25',  '2'],
-            [RoundingMode::HALF_DOWN,  '2499',  '250',  '25',  '2'],
-            [RoundingMode::HALF_DOWN,  '2001',  '200',  '20',  '2'],
-            [RoundingMode::HALF_DOWN,  '2000',  '200',  '20',  '2'],
-            [RoundingMode::HALF_DOWN,  '1999',  '200',  '20',  '2'],
-            [RoundingMode::HALF_DOWN,  '1501',  '150',  '15',  '2'],
-            [RoundingMode::HALF_DOWN,  '1500',  '150',  '15',  '1'],
-            [RoundingMode::HALF_DOWN,  '1499',  '150',  '15',  '1'],
-            [RoundingMode::HALF_DOWN,  '1001',  '100',  '10',  '1'],
-            [RoundingMode::HALF_DOWN,  '1000',  '100',  '10',  '1'],
-            [RoundingMode::HALF_DOWN,   '999',  '100',  '10',  '1'],
-            [RoundingMode::HALF_DOWN,   '501',   '50',   '5',  '1'],
-            [RoundingMode::HALF_DOWN,   '500',   '50',   '5',  '0'],
-            [RoundingMode::HALF_DOWN,   '499',   '50',   '5',  '0'],
-            [RoundingMode::HALF_DOWN,     '1',    '0',   '0',  '0'],
-            [RoundingMode::HALF_DOWN,     '0',    '0',   '0',  '0'],
-            [RoundingMode::HALF_DOWN,    '-1',    '0',   '0',  '0'],
-            [RoundingMode::HALF_DOWN,  '-499',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_DOWN,  '-500',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_DOWN,  '-501',  '-50',  '-5', '-1'],
-            [RoundingMode::HALF_DOWN,  '-999', '-100', '-10', '-1'],
+            [RoundingMode::HALF_DOWN, '3501', '350', '35', '4'],
+            [RoundingMode::HALF_DOWN, '3500', '350', '35', '3'],
+            [RoundingMode::HALF_DOWN, '3499', '350', '35', '3'],
+            [RoundingMode::HALF_DOWN, '3001', '300', '30', '3'],
+            [RoundingMode::HALF_DOWN, '3000', '300', '30', '3'],
+            [RoundingMode::HALF_DOWN, '2999', '300', '30', '3'],
+            [RoundingMode::HALF_DOWN, '2501', '250', '25', '3'],
+            [RoundingMode::HALF_DOWN, '2500', '250', '25', '2'],
+            [RoundingMode::HALF_DOWN, '2499', '250', '25', '2'],
+            [RoundingMode::HALF_DOWN, '2001', '200', '20', '2'],
+            [RoundingMode::HALF_DOWN, '2000', '200', '20', '2'],
+            [RoundingMode::HALF_DOWN, '1999', '200', '20', '2'],
+            [RoundingMode::HALF_DOWN, '1501', '150', '15', '2'],
+            [RoundingMode::HALF_DOWN, '1500', '150', '15', '1'],
+            [RoundingMode::HALF_DOWN, '1499', '150', '15', '1'],
+            [RoundingMode::HALF_DOWN, '1001', '100', '10', '1'],
+            [RoundingMode::HALF_DOWN, '1000', '100', '10', '1'],
+            [RoundingMode::HALF_DOWN, '999', '100', '10', '1'],
+            [RoundingMode::HALF_DOWN, '501', '50', '5', '1'],
+            [RoundingMode::HALF_DOWN, '500', '50', '5', '0'],
+            [RoundingMode::HALF_DOWN, '499', '50', '5', '0'],
+            [RoundingMode::HALF_DOWN, '1', '0', '0', '0'],
+            [RoundingMode::HALF_DOWN, '0', '0', '0', '0'],
+            [RoundingMode::HALF_DOWN, '-1', '0', '0', '0'],
+            [RoundingMode::HALF_DOWN, '-499', '-50', '-5', '0'],
+            [RoundingMode::HALF_DOWN, '-500', '-50', '-5', '0'],
+            [RoundingMode::HALF_DOWN, '-501', '-50', '-5', '-1'],
+            [RoundingMode::HALF_DOWN, '-999', '-100', '-10', '-1'],
             [RoundingMode::HALF_DOWN, '-1000', '-100', '-10', '-1'],
             [RoundingMode::HALF_DOWN, '-1001', '-100', '-10', '-1'],
             [RoundingMode::HALF_DOWN, '-1499', '-150', '-15', '-1'],
@@ -947,34 +946,34 @@ class BigIntegerTest extends AbstractTestCase
             [RoundingMode::HALF_DOWN, '-3500', '-350', '-35', '-3'],
             [RoundingMode::HALF_DOWN, '-3501', '-350', '-35', '-4'],
 
-            [RoundingMode::HALF_CEILING,  '3501',  '350',  '35',  '4'],
-            [RoundingMode::HALF_CEILING,  '3500',  '350',  '35',  '4'],
-            [RoundingMode::HALF_CEILING,  '3499',  '350',  '35',  '3'],
-            [RoundingMode::HALF_CEILING,  '3001',  '300',  '30',  '3'],
-            [RoundingMode::HALF_CEILING,  '3000',  '300',  '30',  '3'],
-            [RoundingMode::HALF_CEILING,  '2999',  '300',  '30',  '3'],
-            [RoundingMode::HALF_CEILING,  '2501',  '250',  '25',  '3'],
-            [RoundingMode::HALF_CEILING,  '2500',  '250',  '25',  '3'],
-            [RoundingMode::HALF_CEILING,  '2499',  '250',  '25',  '2'],
-            [RoundingMode::HALF_CEILING,  '2001',  '200',  '20',  '2'],
-            [RoundingMode::HALF_CEILING,  '2000',  '200',  '20',  '2'],
-            [RoundingMode::HALF_CEILING,  '1999',  '200',  '20',  '2'],
-            [RoundingMode::HALF_CEILING,  '1501',  '150',  '15',  '2'],
-            [RoundingMode::HALF_CEILING,  '1500',  '150',  '15',  '2'],
-            [RoundingMode::HALF_CEILING,  '1499',  '150',  '15',  '1'],
-            [RoundingMode::HALF_CEILING,  '1001',  '100',  '10',  '1'],
-            [RoundingMode::HALF_CEILING,  '1000',  '100',  '10',  '1'],
-            [RoundingMode::HALF_CEILING,   '999',  '100',  '10',  '1'],
-            [RoundingMode::HALF_CEILING,   '501',   '50',   '5',  '1'],
-            [RoundingMode::HALF_CEILING,   '500',   '50',   '5',  '1'],
-            [RoundingMode::HALF_CEILING,   '499',   '50',   '5',  '0'],
-            [RoundingMode::HALF_CEILING,     '1',    '0',   '0',  '0'],
-            [RoundingMode::HALF_CEILING,     '0',    '0',   '0',  '0'],
-            [RoundingMode::HALF_CEILING,    '-1',    '0',   '0',  '0'],
-            [RoundingMode::HALF_CEILING,  '-499',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_CEILING,  '-500',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_CEILING,  '-501',  '-50',  '-5', '-1'],
-            [RoundingMode::HALF_CEILING,  '-999', '-100', '-10', '-1'],
+            [RoundingMode::HALF_CEILING, '3501', '350', '35', '4'],
+            [RoundingMode::HALF_CEILING, '3500', '350', '35', '4'],
+            [RoundingMode::HALF_CEILING, '3499', '350', '35', '3'],
+            [RoundingMode::HALF_CEILING, '3001', '300', '30', '3'],
+            [RoundingMode::HALF_CEILING, '3000', '300', '30', '3'],
+            [RoundingMode::HALF_CEILING, '2999', '300', '30', '3'],
+            [RoundingMode::HALF_CEILING, '2501', '250', '25', '3'],
+            [RoundingMode::HALF_CEILING, '2500', '250', '25', '3'],
+            [RoundingMode::HALF_CEILING, '2499', '250', '25', '2'],
+            [RoundingMode::HALF_CEILING, '2001', '200', '20', '2'],
+            [RoundingMode::HALF_CEILING, '2000', '200', '20', '2'],
+            [RoundingMode::HALF_CEILING, '1999', '200', '20', '2'],
+            [RoundingMode::HALF_CEILING, '1501', '150', '15', '2'],
+            [RoundingMode::HALF_CEILING, '1500', '150', '15', '2'],
+            [RoundingMode::HALF_CEILING, '1499', '150', '15', '1'],
+            [RoundingMode::HALF_CEILING, '1001', '100', '10', '1'],
+            [RoundingMode::HALF_CEILING, '1000', '100', '10', '1'],
+            [RoundingMode::HALF_CEILING, '999', '100', '10', '1'],
+            [RoundingMode::HALF_CEILING, '501', '50', '5', '1'],
+            [RoundingMode::HALF_CEILING, '500', '50', '5', '1'],
+            [RoundingMode::HALF_CEILING, '499', '50', '5', '0'],
+            [RoundingMode::HALF_CEILING, '1', '0', '0', '0'],
+            [RoundingMode::HALF_CEILING, '0', '0', '0', '0'],
+            [RoundingMode::HALF_CEILING, '-1', '0', '0', '0'],
+            [RoundingMode::HALF_CEILING, '-499', '-50', '-5', '0'],
+            [RoundingMode::HALF_CEILING, '-500', '-50', '-5', '0'],
+            [RoundingMode::HALF_CEILING, '-501', '-50', '-5', '-1'],
+            [RoundingMode::HALF_CEILING, '-999', '-100', '-10', '-1'],
             [RoundingMode::HALF_CEILING, '-1000', '-100', '-10', '-1'],
             [RoundingMode::HALF_CEILING, '-1001', '-100', '-10', '-1'],
             [RoundingMode::HALF_CEILING, '-1499', '-150', '-15', '-1'],
@@ -993,34 +992,34 @@ class BigIntegerTest extends AbstractTestCase
             [RoundingMode::HALF_CEILING, '-3500', '-350', '-35', '-3'],
             [RoundingMode::HALF_CEILING, '-3501', '-350', '-35', '-4'],
 
-            [RoundingMode::HALF_FLOOR,  '3501',  '350',  '35',  '4'],
-            [RoundingMode::HALF_FLOOR,  '3500',  '350',  '35',  '3'],
-            [RoundingMode::HALF_FLOOR,  '3499',  '350',  '35',  '3'],
-            [RoundingMode::HALF_FLOOR,  '3001',  '300',  '30',  '3'],
-            [RoundingMode::HALF_FLOOR,  '3000',  '300',  '30',  '3'],
-            [RoundingMode::HALF_FLOOR,  '2999',  '300',  '30',  '3'],
-            [RoundingMode::HALF_FLOOR,  '2501',  '250',  '25',  '3'],
-            [RoundingMode::HALF_FLOOR,  '2500',  '250',  '25',  '2'],
-            [RoundingMode::HALF_FLOOR,  '2499',  '250',  '25',  '2'],
-            [RoundingMode::HALF_FLOOR,  '2001',  '200',  '20',  '2'],
-            [RoundingMode::HALF_FLOOR,  '2000',  '200',  '20',  '2'],
-            [RoundingMode::HALF_FLOOR,  '1999',  '200',  '20',  '2'],
-            [RoundingMode::HALF_FLOOR,  '1501',  '150',  '15',  '2'],
-            [RoundingMode::HALF_FLOOR,  '1500',  '150',  '15',  '1'],
-            [RoundingMode::HALF_FLOOR,  '1499',  '150',  '15',  '1'],
-            [RoundingMode::HALF_FLOOR,  '1001',  '100',  '10',  '1'],
-            [RoundingMode::HALF_FLOOR,  '1000',  '100',  '10',  '1'],
-            [RoundingMode::HALF_FLOOR,   '999',  '100',  '10',  '1'],
-            [RoundingMode::HALF_FLOOR,   '501',   '50',   '5',  '1'],
-            [RoundingMode::HALF_FLOOR,   '500',   '50',   '5',  '0'],
-            [RoundingMode::HALF_FLOOR,   '499',   '50',   '5',  '0'],
-            [RoundingMode::HALF_FLOOR,     '1',    '0',   '0',  '0'],
-            [RoundingMode::HALF_FLOOR,     '0',    '0',   '0',  '0'],
-            [RoundingMode::HALF_FLOOR,    '-1',    '0',   '0',  '0'],
-            [RoundingMode::HALF_FLOOR,  '-499',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_FLOOR,  '-500',  '-50',  '-5', '-1'],
-            [RoundingMode::HALF_FLOOR,  '-501',  '-50',  '-5', '-1'],
-            [RoundingMode::HALF_FLOOR,  '-999', '-100', '-10', '-1'],
+            [RoundingMode::HALF_FLOOR, '3501', '350', '35', '4'],
+            [RoundingMode::HALF_FLOOR, '3500', '350', '35', '3'],
+            [RoundingMode::HALF_FLOOR, '3499', '350', '35', '3'],
+            [RoundingMode::HALF_FLOOR, '3001', '300', '30', '3'],
+            [RoundingMode::HALF_FLOOR, '3000', '300', '30', '3'],
+            [RoundingMode::HALF_FLOOR, '2999', '300', '30', '3'],
+            [RoundingMode::HALF_FLOOR, '2501', '250', '25', '3'],
+            [RoundingMode::HALF_FLOOR, '2500', '250', '25', '2'],
+            [RoundingMode::HALF_FLOOR, '2499', '250', '25', '2'],
+            [RoundingMode::HALF_FLOOR, '2001', '200', '20', '2'],
+            [RoundingMode::HALF_FLOOR, '2000', '200', '20', '2'],
+            [RoundingMode::HALF_FLOOR, '1999', '200', '20', '2'],
+            [RoundingMode::HALF_FLOOR, '1501', '150', '15', '2'],
+            [RoundingMode::HALF_FLOOR, '1500', '150', '15', '1'],
+            [RoundingMode::HALF_FLOOR, '1499', '150', '15', '1'],
+            [RoundingMode::HALF_FLOOR, '1001', '100', '10', '1'],
+            [RoundingMode::HALF_FLOOR, '1000', '100', '10', '1'],
+            [RoundingMode::HALF_FLOOR, '999', '100', '10', '1'],
+            [RoundingMode::HALF_FLOOR, '501', '50', '5', '1'],
+            [RoundingMode::HALF_FLOOR, '500', '50', '5', '0'],
+            [RoundingMode::HALF_FLOOR, '499', '50', '5', '0'],
+            [RoundingMode::HALF_FLOOR, '1', '0', '0', '0'],
+            [RoundingMode::HALF_FLOOR, '0', '0', '0', '0'],
+            [RoundingMode::HALF_FLOOR, '-1', '0', '0', '0'],
+            [RoundingMode::HALF_FLOOR, '-499', '-50', '-5', '0'],
+            [RoundingMode::HALF_FLOOR, '-500', '-50', '-5', '-1'],
+            [RoundingMode::HALF_FLOOR, '-501', '-50', '-5', '-1'],
+            [RoundingMode::HALF_FLOOR, '-999', '-100', '-10', '-1'],
             [RoundingMode::HALF_FLOOR, '-1000', '-100', '-10', '-1'],
             [RoundingMode::HALF_FLOOR, '-1001', '-100', '-10', '-1'],
             [RoundingMode::HALF_FLOOR, '-1499', '-150', '-15', '-1'],
@@ -1039,34 +1038,34 @@ class BigIntegerTest extends AbstractTestCase
             [RoundingMode::HALF_FLOOR, '-3500', '-350', '-35', '-4'],
             [RoundingMode::HALF_FLOOR, '-3501', '-350', '-35', '-4'],
 
-            [RoundingMode::HALF_EVEN,  '3501',  '350',  '35',  '4'],
-            [RoundingMode::HALF_EVEN,  '3500',  '350',  '35',  '4'],
-            [RoundingMode::HALF_EVEN,  '3499',  '350',  '35',  '3'],
-            [RoundingMode::HALF_EVEN,  '3001',  '300',  '30',  '3'],
-            [RoundingMode::HALF_EVEN,  '3000',  '300',  '30',  '3'],
-            [RoundingMode::HALF_EVEN,  '2999',  '300',  '30',  '3'],
-            [RoundingMode::HALF_EVEN,  '2501',  '250',  '25',  '3'],
-            [RoundingMode::HALF_EVEN,  '2500',  '250',  '25',  '2'],
-            [RoundingMode::HALF_EVEN,  '2499',  '250',  '25',  '2'],
-            [RoundingMode::HALF_EVEN,  '2001',  '200',  '20',  '2'],
-            [RoundingMode::HALF_EVEN,  '2000',  '200',  '20',  '2'],
-            [RoundingMode::HALF_EVEN,  '1999',  '200',  '20',  '2'],
-            [RoundingMode::HALF_EVEN,  '1501',  '150',  '15',  '2'],
-            [RoundingMode::HALF_EVEN,  '1500',  '150',  '15',  '2'],
-            [RoundingMode::HALF_EVEN,  '1499',  '150',  '15',  '1'],
-            [RoundingMode::HALF_EVEN,  '1001',  '100',  '10',  '1'],
-            [RoundingMode::HALF_EVEN,  '1000',  '100',  '10',  '1'],
-            [RoundingMode::HALF_EVEN,   '999',  '100',  '10',  '1'],
-            [RoundingMode::HALF_EVEN,   '501',   '50',   '5',  '1'],
-            [RoundingMode::HALF_EVEN,   '500',   '50',   '5',  '0'],
-            [RoundingMode::HALF_EVEN,   '499',   '50',   '5',  '0'],
-            [RoundingMode::HALF_EVEN,     '1',    '0',   '0',  '0'],
-            [RoundingMode::HALF_EVEN,     '0',    '0',   '0',  '0'],
-            [RoundingMode::HALF_EVEN,    '-1',    '0',   '0',  '0'],
-            [RoundingMode::HALF_EVEN,  '-499',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_EVEN,  '-500',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_EVEN,  '-501',  '-50',  '-5', '-1'],
-            [RoundingMode::HALF_EVEN,  '-999', '-100', '-10', '-1'],
+            [RoundingMode::HALF_EVEN, '3501', '350', '35', '4'],
+            [RoundingMode::HALF_EVEN, '3500', '350', '35', '4'],
+            [RoundingMode::HALF_EVEN, '3499', '350', '35', '3'],
+            [RoundingMode::HALF_EVEN, '3001', '300', '30', '3'],
+            [RoundingMode::HALF_EVEN, '3000', '300', '30', '3'],
+            [RoundingMode::HALF_EVEN, '2999', '300', '30', '3'],
+            [RoundingMode::HALF_EVEN, '2501', '250', '25', '3'],
+            [RoundingMode::HALF_EVEN, '2500', '250', '25', '2'],
+            [RoundingMode::HALF_EVEN, '2499', '250', '25', '2'],
+            [RoundingMode::HALF_EVEN, '2001', '200', '20', '2'],
+            [RoundingMode::HALF_EVEN, '2000', '200', '20', '2'],
+            [RoundingMode::HALF_EVEN, '1999', '200', '20', '2'],
+            [RoundingMode::HALF_EVEN, '1501', '150', '15', '2'],
+            [RoundingMode::HALF_EVEN, '1500', '150', '15', '2'],
+            [RoundingMode::HALF_EVEN, '1499', '150', '15', '1'],
+            [RoundingMode::HALF_EVEN, '1001', '100', '10', '1'],
+            [RoundingMode::HALF_EVEN, '1000', '100', '10', '1'],
+            [RoundingMode::HALF_EVEN, '999', '100', '10', '1'],
+            [RoundingMode::HALF_EVEN, '501', '50', '5', '1'],
+            [RoundingMode::HALF_EVEN, '500', '50', '5', '0'],
+            [RoundingMode::HALF_EVEN, '499', '50', '5', '0'],
+            [RoundingMode::HALF_EVEN, '1', '0', '0', '0'],
+            [RoundingMode::HALF_EVEN, '0', '0', '0', '0'],
+            [RoundingMode::HALF_EVEN, '-1', '0', '0', '0'],
+            [RoundingMode::HALF_EVEN, '-499', '-50', '-5', '0'],
+            [RoundingMode::HALF_EVEN, '-500', '-50', '-5', '0'],
+            [RoundingMode::HALF_EVEN, '-501', '-50', '-5', '-1'],
+            [RoundingMode::HALF_EVEN, '-999', '-100', '-10', '-1'],
             [RoundingMode::HALF_EVEN, '-1000', '-100', '-10', '-1'],
             [RoundingMode::HALF_EVEN, '-1001', '-100', '-10', '-1'],
             [RoundingMode::HALF_EVEN, '-1499', '-150', '-15', '-1'],
@@ -1085,51 +1084,51 @@ class BigIntegerTest extends AbstractTestCase
             [RoundingMode::HALF_EVEN, '-3500', '-350', '-35', '-4'],
             [RoundingMode::HALF_EVEN, '-3501', '-350', '-35', '-4'],
 
-            [RoundingMode::UNNECESSARY,  '3501',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '3500',  '350',  '35', null],
-            [RoundingMode::UNNECESSARY,  '3499',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '3001',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '3000',  '300',  '30',  '3'],
-            [RoundingMode::UNNECESSARY,  '2999',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '2501',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '2500',  '250',  '25', null],
-            [RoundingMode::UNNECESSARY,  '2499',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '2001',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '2000',  '200',  '20',  '2'],
-            [RoundingMode::UNNECESSARY,  '1999',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '1501',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '1500',  '150',  '15', null],
-            [RoundingMode::UNNECESSARY,  '1499',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '1001',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '1000',  '100',  '10',  '1'],
-            [RoundingMode::UNNECESSARY,   '999',   null,  null, null],
-            [RoundingMode::UNNECESSARY,   '501',   null,  null, null],
-            [RoundingMode::UNNECESSARY,   '500',   '50',   '5', null],
-            [RoundingMode::UNNECESSARY,   '499',   null,  null, null],
-            [RoundingMode::UNNECESSARY,     '1',   null,  null, null],
-            [RoundingMode::UNNECESSARY,     '0',    '0',   '0',  '0'],
-            [RoundingMode::UNNECESSARY,    '-1',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '-499',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '-500',  '-50',  '-5', null],
-            [RoundingMode::UNNECESSARY,  '-501',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '-999',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '3501', null, null, null],
+            [RoundingMode::UNNECESSARY, '3500', '350', '35', null],
+            [RoundingMode::UNNECESSARY, '3499', null, null, null],
+            [RoundingMode::UNNECESSARY, '3001', null, null, null],
+            [RoundingMode::UNNECESSARY, '3000', '300', '30', '3'],
+            [RoundingMode::UNNECESSARY, '2999', null, null, null],
+            [RoundingMode::UNNECESSARY, '2501', null, null, null],
+            [RoundingMode::UNNECESSARY, '2500', '250', '25', null],
+            [RoundingMode::UNNECESSARY, '2499', null, null, null],
+            [RoundingMode::UNNECESSARY, '2001', null, null, null],
+            [RoundingMode::UNNECESSARY, '2000', '200', '20', '2'],
+            [RoundingMode::UNNECESSARY, '1999', null, null, null],
+            [RoundingMode::UNNECESSARY, '1501', null, null, null],
+            [RoundingMode::UNNECESSARY, '1500', '150', '15', null],
+            [RoundingMode::UNNECESSARY, '1499', null, null, null],
+            [RoundingMode::UNNECESSARY, '1001', null, null, null],
+            [RoundingMode::UNNECESSARY, '1000', '100', '10', '1'],
+            [RoundingMode::UNNECESSARY, '999', null, null, null],
+            [RoundingMode::UNNECESSARY, '501', null, null, null],
+            [RoundingMode::UNNECESSARY, '500', '50', '5', null],
+            [RoundingMode::UNNECESSARY, '499', null, null, null],
+            [RoundingMode::UNNECESSARY, '1', null, null, null],
+            [RoundingMode::UNNECESSARY, '0', '0', '0', '0'],
+            [RoundingMode::UNNECESSARY, '-1', null, null, null],
+            [RoundingMode::UNNECESSARY, '-499', null, null, null],
+            [RoundingMode::UNNECESSARY, '-500', '-50', '-5', null],
+            [RoundingMode::UNNECESSARY, '-501', null, null, null],
+            [RoundingMode::UNNECESSARY, '-999', null, null, null],
             [RoundingMode::UNNECESSARY, '-1000', '-100', '-10', '-1'],
-            [RoundingMode::UNNECESSARY, '-1001',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-1499',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '-1001', null, null, null],
+            [RoundingMode::UNNECESSARY, '-1499', null, null, null],
             [RoundingMode::UNNECESSARY, '-1500', '-150', '-15', null],
-            [RoundingMode::UNNECESSARY, '-1501',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-1999',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '-1501', null, null, null],
+            [RoundingMode::UNNECESSARY, '-1999', null, null, null],
             [RoundingMode::UNNECESSARY, '-2000', '-200', '-20', '-2'],
-            [RoundingMode::UNNECESSARY, '-2001',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-2499',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '-2001', null, null, null],
+            [RoundingMode::UNNECESSARY, '-2499', null, null, null],
             [RoundingMode::UNNECESSARY, '-2500', '-250', '-25', null],
-            [RoundingMode::UNNECESSARY, '-2501',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-2999',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '-2501', null, null, null],
+            [RoundingMode::UNNECESSARY, '-2999', null, null, null],
             [RoundingMode::UNNECESSARY, '-3000', '-300', '-30', '-3'],
-            [RoundingMode::UNNECESSARY, '-3001',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-3499',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '-3001', null, null, null],
+            [RoundingMode::UNNECESSARY, '-3499', null, null, null],
             [RoundingMode::UNNECESSARY, '-3500', '-350', '-35', null],
-            [RoundingMode::UNNECESSARY, '-3501',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '-3501', null, null, null],
         ];
     }
 
@@ -1137,15 +1136,15 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerQuotientAndRemainder
      *
      * @param string $dividend The dividend.
-     * @param string $divisor  The divisor.
+     * @param string $divisor The divisor.
      * @param string $quotient The expected quotient.
      */
-    public function testQuotient(string $dividend, string $divisor, string $quotient) : void
+    public function testQuotient(string $dividend, string $divisor, string $quotient): void
     {
         self::assertBigIntegerEquals($quotient, BigInteger::of($dividend)->quotient($divisor));
     }
 
-    public function testQuotientOfZeroThrowsException() : void
+    public function testQuotientOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigInteger::of(1)->quotient(0);
@@ -1154,17 +1153,17 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerQuotientAndRemainder
      *
-     * @param string $dividend  The dividend.
-     * @param string $divisor   The divisor.
-     * @param string $quotient  The expected quotient (ignored for this test).
+     * @param string $dividend The dividend.
+     * @param string $divisor The divisor.
+     * @param string $quotient The expected quotient (ignored for this test).
      * @param string $remainder The expected remainder.
      */
-    public function testRemainder(string $dividend, string $divisor, string $quotient, string $remainder) : void
+    public function testRemainder(string $dividend, string $divisor, string $quotient, string $remainder): void
     {
         self::assertBigIntegerEquals($remainder, BigInteger::of($dividend)->remainder($divisor));
     }
 
-    public function testRemainderOfZeroThrowsException() : void
+    public function testRemainderOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigInteger::of(1)->remainder(0);
@@ -1173,12 +1172,12 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerQuotientAndRemainder
      *
-     * @param string $dividend  The dividend.
-     * @param string $divisor   The divisor.
-     * @param string $quotient  The expected quotient.
+     * @param string $dividend The dividend.
+     * @param string $divisor The divisor.
+     * @param string $quotient The expected quotient.
      * @param string $remainder The expected remainder.
      */
-    public function testQuotientAndRemainder(string $dividend, string $divisor, string $quotient, string $remainder) : void
+    public function testQuotientAndRemainder(string $dividend, string $divisor, string $quotient, string $remainder): void
     {
         [$q, $r] = BigInteger::of($dividend)->quotientAndRemainder($divisor);
 
@@ -1186,7 +1185,7 @@ class BigIntegerTest extends AbstractTestCase
         self::assertBigIntegerEquals($remainder, $r);
     }
 
-    public function providerQuotientAndRemainder() : array
+    public function providerQuotientAndRemainder(): array
     {
         return [
             ['1', '123', '0', '1'],
@@ -1248,7 +1247,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testQuotientAndRemainderByZeroThrowsException() : void
+    public function testQuotientAndRemainderByZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigInteger::of(1)->quotientAndRemainder(0);
@@ -1257,12 +1256,12 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerMod
      */
-    public function testMod(string $dividend, string $divisor, string $expected) : void
+    public function testMod(string $dividend, string $divisor, string $expected): void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($dividend)->mod($divisor));
     }
 
-    public function providerMod() : array
+    public function providerMod(): array
     {
         return [
             ['0', '1', '0'],
@@ -1273,14 +1272,14 @@ class BigIntegerTest extends AbstractTestCase
             ['-1', '123', '122'],
             ['-1', '-123', '-1'],
 
-            ['2',   '7', '2'],
-            ['2',  '-7', '-5'],
-            ['-2',  '7', '5'],
+            ['2', '7', '2'],
+            ['2', '-7', '-5'],
+            ['-2', '7', '5'],
             ['-2', '-7', '-2'],
 
-            ['12',   '7', '5'],
-            ['12',  '-7', '-2'],
-            ['-12',  '7', '2'],
+            ['12', '7', '5'],
+            ['12', '-7', '-2'],
+            ['-12', '7', '2'],
             ['-12', '-7', '-5'],
 
             ['123', '1', '0'],
@@ -1318,15 +1317,15 @@ class BigIntegerTest extends AbstractTestCase
             ['-1999999999999999999999999', '2000000000000000000000000', '1'],
             ['-1999999999999999999999999', '-2000000000000000000000000', '-1999999999999999999999999'],
 
-            ['1000000000000000000000000000000',   '3',   '1'],
-            ['1000000000000000000000000000000',  '-3',  '-2'],
-            ['1000000000000000000000000000000',   '9',   '1'],
-            ['1000000000000000000000000000000',  '-9',  '-8'],
-            ['1000000000000000000000000000000',  '11',   '1'],
+            ['1000000000000000000000000000000', '3', '1'],
+            ['1000000000000000000000000000000', '-3', '-2'],
+            ['1000000000000000000000000000000', '9', '1'],
+            ['1000000000000000000000000000000', '-9', '-8'],
+            ['1000000000000000000000000000000', '11', '1'],
             ['1000000000000000000000000000000', '-11', '-10'],
-            ['1000000000000000000000000000000',  '13',   '1'],
+            ['1000000000000000000000000000000', '13', '1'],
             ['1000000000000000000000000000000', '-13', '-12'],
-            ['1000000000000000000000000000000',  '21',   '1'],
+            ['1000000000000000000000000000000', '21', '1'],
             ['1000000000000000000000000000000', '-21', '-20'],
 
             ['123456789123456789123456789', '987654321987654321', '850308642973765431'],
@@ -1345,7 +1344,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testModZeroThrowsException() : void
+    public function testModZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigInteger::of(1)->mod(0);
@@ -1354,12 +1353,12 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerModPow
      */
-    public function testModPow(string $base, string $exp, string $mod, string $expected) : void
+    public function testModPow(string $base, string $exp, string $mod, string $expected): void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($base)->modPow($exp, $mod));
     }
 
-    public function providerModPow() : array
+    public function providerModPow(): array
     {
         return [
             ['0', '0', '1', '0'],
@@ -1379,7 +1378,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * Crypto test from phpseclib test suite.
      */
-    public function testModPowCrypto() : void
+    public function testModPowCrypto(): void
     {
         if (Calculator::get() instanceof Calculator\NativeCalculator) {
             if (getenv('CI') === 'true') {
@@ -1419,10 +1418,10 @@ class BigIntegerTest extends AbstractTestCase
         );
 
         $alicePublic = $generator->modPow($alicePrivate, $prime);
-        $bobPublic   = $generator->modPow($bobPrivate, $prime);
+        $bobPublic = $generator->modPow($bobPrivate, $prime);
 
         $aliceShared = $bobPublic->modPow($alicePrivate, $prime);
-        $bobShared   = $alicePublic->modPow($bobPrivate, $prime);
+        $bobShared = $alicePublic->modPow($bobPrivate, $prime);
 
         self::assertTrue($aliceShared->isEqualTo($bobShared));
     }
@@ -1430,22 +1429,22 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerModPowNegativeThrowsException
      */
-    public function testModPowNegativeThrowsException(int $base, int $exp, int $mod) : void
+    public function testModPowNegativeThrowsException(int $base, int $exp, int $mod): void
     {
         $this->expectException(NegativeNumberException::class);
         BigInteger::of($base)->modPow($exp, $mod);
     }
 
-    public function providerModPowNegativeThrowsException() : array
+    public function providerModPowNegativeThrowsException(): array
     {
         return [
-            [ 1,  1, -1],
-            [ 1, -1,  1],
-            [-1,  1,  1],
+            [ 1, 1, -1],
+            [ 1, -1, 1],
+            [-1, 1, 1],
         ];
     }
 
-    public function testModPowZeroThrowsException() : void
+    public function testModPowZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigInteger::of(1)->modPow(1, 0);
@@ -1454,49 +1453,49 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerPower
      *
-     * @param string $number   The base number.
-     * @param int    $exponent The exponent to apply.
+     * @param string $number The base number.
+     * @param int $exponent The exponent to apply.
      * @param string $expected The expected result.
      */
-    public function testPower(string $number, int $exponent, string $expected) : void
+    public function testPower(string $number, int $exponent, string $expected): void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($number)->power($exponent));
     }
 
-    public function providerPower() : array
+    public function providerPower(): array
     {
         return [
             ['-3', 0, '1'],
             ['-2', 0, '1'],
             ['-1', 0, '1'],
-            ['0',  0, '1'],
-            ['1',  0, '1'],
-            ['2',  0, '1'],
-            ['3',  0, '1'],
+            ['0', 0, '1'],
+            ['1', 0, '1'],
+            ['2', 0, '1'],
+            ['3', 0, '1'],
 
             ['-3', 1, '-3'],
             ['-2', 1, '-2'],
             ['-1', 1, '-1'],
-            ['0',  1,  '0'],
-            ['1',  1,  '1'],
-            ['2',  1,  '2'],
-            ['3',  1,  '3'],
+            ['0', 1, '0'],
+            ['1', 1, '1'],
+            ['2', 1, '2'],
+            ['3', 1, '3'],
 
             ['-3', 2, '9'],
             ['-2', 2, '4'],
             ['-1', 2, '1'],
-            ['0',  2, '0'],
-            ['1',  2, '1'],
-            ['2',  2, '4'],
-            ['3',  2, '9'],
+            ['0', 2, '0'],
+            ['1', 2, '1'],
+            ['2', 2, '4'],
+            ['3', 2, '9'],
 
             ['-3', 3, '-27'],
-            ['-2', 3,  '-8'],
-            ['-1', 3,  '-1'],
-            ['0',  3,   '0'],
-            ['1',  3,   '1'],
-            ['2',  3,   '8'],
-            ['3',  3,  '27'],
+            ['-2', 3, '-8'],
+            ['-1', 3, '-1'],
+            ['0', 3, '0'],
+            ['1', 3, '1'],
+            ['2', 3, '8'],
+            ['3', 3, '27'],
 
             ['0', 1000000, '0'],
             ['1', 1000000, '1'],
@@ -1515,13 +1514,13 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerPowerWithInvalidExponentThrowsException
      */
-    public function testPowerWithInvalidExponentThrowsException(int $power) : void
+    public function testPowerWithInvalidExponentThrowsException(int $power): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigInteger::of(1)->power($power);
     }
 
-    public function providerPowerWithInvalidExponentThrowsException() : array
+    public function providerPowerWithInvalidExponentThrowsException(): array
     {
         return [
             [-1],
@@ -1532,11 +1531,11 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerGcd
      *
-     * @param string $a   The first number.
-     * @param string $b   The second number.
+     * @param string $a The first number.
+     * @param string $b The second number.
      * @param string $gcd The expected GCD.
      */
-    public function testGcd(string $a, string $b, string $gcd) : void
+    public function testGcd(string $a, string $b, string $gcd): void
     {
         $a = BigInteger::of($a);
         $b = BigInteger::of($b);
@@ -1544,7 +1543,7 @@ class BigIntegerTest extends AbstractTestCase
         self::assertBigIntegerEquals($gcd, $a->gcd($b));
     }
 
-    public function providerGcd() : \Generator
+    public function providerGcd(): \Generator
     {
         $tests = [
             ['0', '0', '0'],
@@ -1632,14 +1631,14 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerSqrt
      */
-    public function testSqrt(string $number, string $sqrt) : void
+    public function testSqrt(string $number, string $sqrt): void
     {
         $number = BigInteger::of($number);
 
         self::assertBigIntegerEquals($sqrt, $number->sqrt());
     }
 
-    public function providerSqrt() : array
+    public function providerSqrt(): array
     {
         return [
             ['0', '0'],
@@ -1981,7 +1980,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testSqrtOfNegativeNumber() : void
+    public function testSqrtOfNegativeNumber(): void
     {
         $number = BigInteger::of(-1);
         $this->expectException(NegativeNumberException::class);
@@ -1991,15 +1990,15 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerAbs
      *
-     * @param string $number   The number as a string.
+     * @param string $number The number as a string.
      * @param string $expected The expected absolute result.
      */
-    public function testAbs(string $number, string $expected) : void
+    public function testAbs(string $number, string $expected): void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($number)->abs());
     }
 
-    public function providerAbs() : array
+    public function providerAbs(): array
     {
         return [
             ['0', '0'],
@@ -2011,15 +2010,15 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerNegated
      *
-     * @param string $number   The number to negate as a string.
+     * @param string $number The number to negate as a string.
      * @param string $expected The expected negated result.
      */
-    public function testNegated(string $number, string $expected) : void
+    public function testNegated(string $number, string $expected): void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($number)->negated());
     }
 
-    public function providerNegated() : array
+    public function providerNegated(): array
     {
         return [
             ['0', '0'],
@@ -2035,12 +2034,12 @@ class BigIntegerTest extends AbstractTestCase
      * @param string $b The second operand as a string.
      * @param string $c The expected result.
      */
-    public function testOr(string $a, string $b, string $c) : void
+    public function testOr(string $a, string $b, string $c): void
     {
         self::assertBigIntegerEquals($c, BigInteger::of($a)->or($b));
     }
 
-    public function providerOr() : array
+    public function providerOr(): array
     {
         return [
             ['-1', '-2', '-1'],
@@ -2107,12 +2106,12 @@ class BigIntegerTest extends AbstractTestCase
      * @param string $b The second operand as a string.
      * @param string $c The expected result.
      */
-    public function testAnd(string $a, string $b, string $c) : void
+    public function testAnd(string $a, string $b, string $c): void
     {
         self::assertBigIntegerEquals($c, BigInteger::of($a)->and($b));
     }
 
-    public function providerAnd() : array
+    public function providerAnd(): array
     {
         return [
             ['-1', '-2', '-2'],
@@ -2184,12 +2183,12 @@ class BigIntegerTest extends AbstractTestCase
      * @param string $b The second operand as a string.
      * @param string $c The expected result.
      */
-    public function testXor(string $a, string $b, string $c) : void
+    public function testXor(string $a, string $b, string $c): void
     {
         self::assertBigIntegerEquals($c, BigInteger::of($a)->xor($b));
     }
 
-    public function providerXor() : array
+    public function providerXor(): array
     {
         return [
             ['-1', '-2', '1'],
@@ -2254,12 +2253,12 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerNot
      */
-    public function testNot(string $number, string $expected) : void
+    public function testNot(string $number, string $expected): void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($number)->not());
     }
 
-    public function providerNot() : array
+    public function providerNot(): array
     {
         return [
             ['-32769', '32768'],
@@ -2288,10 +2287,10 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerShiftedLeft
      *
      * @param string $a The base number as a string.
-     * @param int    $b The distance to shift.
+     * @param int $b The distance to shift.
      * @param string $c The expected shifted result.
      */
-    public function testShiftedLeft(string $a, int $b, string $c) : void
+    public function testShiftedLeft(string $a, int $b, string $c): void
     {
         self::assertBigIntegerEquals($c, BigInteger::of($a)->shiftedLeft($b));
     }
@@ -2300,15 +2299,15 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerShiftedLeft
      *
      * @param string $a The base number as a string.
-     * @param int    $b The distance to shift, negated.
+     * @param int $b The distance to shift, negated.
      * @param string $c The expected shifted result.
      */
-    public function testShiftedRight(string $a, int $b, string $c) : void
+    public function testShiftedRight(string $a, int $b, string $c): void
     {
         self::assertBigIntegerEquals($c, BigInteger::of($a)->shiftedRight(- $b));
     }
 
-    public function providerShiftedLeft() : array
+    public function providerShiftedLeft(): array
     {
         return [
             ['-1', 1, '-2'],
@@ -2326,145 +2325,145 @@ class BigIntegerTest extends AbstractTestCase
             ['123456789012345678901234567890123456789', -1234, '0'],
 
             // positive numbers
-            ['940284045728639319919',                                     -30, '875707758337'],
-            ['42978362369910548649285004217387822572104484',              -29, '80053438190204181986460470068059531'],
-            ['459345371944440232668194594123525547022502888486824664',    -28, '1711194857748002680645117886824628513390209110'],
-            ['6040754049963507472881320692872216084477635',               -27, '45007124915447141773114507592262447'],
-            ['4078667231774103305184642707',                              -26, '60776877876730312484'],
-            ['49933972074091440160998613689415662078540305149310089516',  -25, '1488148333850247864752966573518981399492630515972'],
-            ['7469704937412423665301806569774896261346003606',            -24, '445229109371448973733294401751452461561'],
-            ['4991662329264086789092371305806367691268283251684722',      -23, '595052519948969696651979840493961297424827009'],
-            ['24261999837317270532438045068264219175859948',              -22, '5784511527375524170979987399164252084'],
-            ['30371555400148612343',                                      -21, '14482286167215'],
-            ['5661131843547409961338457445416414214646503036114430',      -20, '5398876040980730019892175145546354498526099239'],
-            ['8205785117713792771432053488594',                           -19, '15651293025424562018264872'],
+            ['940284045728639319919', -30, '875707758337'],
+            ['42978362369910548649285004217387822572104484', -29, '80053438190204181986460470068059531'],
+            ['459345371944440232668194594123525547022502888486824664', -28, '1711194857748002680645117886824628513390209110'],
+            ['6040754049963507472881320692872216084477635', -27, '45007124915447141773114507592262447'],
+            ['4078667231774103305184642707', -26, '60776877876730312484'],
+            ['49933972074091440160998613689415662078540305149310089516', -25, '1488148333850247864752966573518981399492630515972'],
+            ['7469704937412423665301806569774896261346003606', -24, '445229109371448973733294401751452461561'],
+            ['4991662329264086789092371305806367691268283251684722', -23, '595052519948969696651979840493961297424827009'],
+            ['24261999837317270532438045068264219175859948', -22, '5784511527375524170979987399164252084'],
+            ['30371555400148612343', -21, '14482286167215'],
+            ['5661131843547409961338457445416414214646503036114430', -20, '5398876040980730019892175145546354498526099239'],
+            ['8205785117713792771432053488594', -19, '15651293025424562018264872'],
             ['121092557102525568761309643138214893231215421503311254716', -18, '461931446466543459935415813973292897152768789304013'],
-            ['176832410305963244194755884422808046154',                   -17, '1349124224136072114522978854544128'],
-            ['9257459072334599354676845177097713467419426212966300860',   -16, '141257615239480580973462603410304465750418490798435'],
-            ['358222782083114778901537224',                               -15, '10932091738376305508469'],
-            ['3589719402585266626776181409564006983030',                  -14, '219099084630448402513194666111084410'],
-            ['4053727526539426059356755247362494',                        -13, '494839785954519782636322662031'],
-            ['725310076963322368834522210259051',                         -12, '177077655508623625203740773989'],
-            ['15618902589710355419154884565473458',                       -11, '7626417280132009482009220979235'],
-            ['4176145333272593876621060606107583696',                     -10, '4078266927024017457637754498151937'],
-            ['36957174148569349375515',                                    -9, '72181980758924510499'],
-            ['72983575681651773692689777',                                 -8, '285092092506452240987069'],
-            ['9789916499422385005848170375683173495755783',                -7, '76483722651737382858188831060024792935592'],
-            ['22219967481086668708627972044908677992130264215',            -6, '347186991891979198572312063201698093627035378'],
-            ['476504808428399978450599528182547',                          -5, '14890775263387499326581235255704'],
-            ['806897646899661595924',                                      -4, '50431102931228849745'],
-            ['19227989434278291392821522776905972539189753171235',         -3, '2403498679284786424102690347113246567398719146404'],
-            ['145495876920185147465944298588326187',                       -2, '36373969230046286866486074647081546'],
-            ['43390213276209209707014978611315057',                        -1, '21695106638104604853507489305657528'],
-            ['107341060399080801706832336473384922229279580',               0, '107341060399080801706832336473384922229279580'],
-            ['4599979410301725512972129610968772187254123116327',           1, '9199958820603451025944259221937544374508246232654'],
-            ['1668450699560464956',                                         2, '6673802798241859824'],
-            ['97153745662292681364860198',                                  3, '777229965298341450918881584'],
-            ['3009085333029300076464813411170930572730358705813',           4, '48145365328468801223437014578734889163685739293008'],
-            ['1259873000065121436479893867676',                             5, '40315936002083885967356603765632'],
-            ['5095511474364199858927072259281168',                          6, '326112734359308790971332624593994752'],
-            ['8881118206295853395928412137856827361',                       7, '1136783130405869234678836753645673902208'],
-            ['73610836099012694560370201022735572',                         8, '18844374041347249807454771461820306432'],
-            ['7873342832620148736874355104307939702351545648205041367132',  9, '4031151530301516153279669813405665127603991371880981179971584'],
-            ['80476295381045062126801719697',                              10, '82407726470190143617844960969728'],
-            ['3897101494489818878437105205',                               11, '7981263860715149063039191459840'],
-            ['71689619759395149437011083050942636989790',                  12, '293640682534482532093997396176661041110179840'],
-            ['333645680629360116658609620408319342692139569341169',        13, '2733225415715718075667330010384952055334007352042856448'],
-            ['890373515888093126475933575522120914024009528750',           14, '14587879684310517784181695701354429055369372119040000'],
-            ['30946288676751711479181903524629432893',                     15, '1014047987359800081749832614695057257037824'],
-            ['8574513284773012626093531873375657960',                      16, '561939302630884155463665704853547120066560'],
-            ['69030243610586785879463086990006910709030034224',            17, '9047932090526831198792985737954185800453984645808128'],
-            ['6865607235477540676116751515371066',                         18, '1799777743137024422999949709245432725504'],
-            ['5735193503479456072418969854460250',                         19, '3006893131552237065296396867055255552000'],
-            ['9048587571607615464851554762153259902641683626953182',       20, '9488131761486026993672183886279616655672406050816059768832'],
-            ['2370160098545184898273',                                     21, '4970585990984231599783018496'],
-            ['6371742038227378435605172332194796999298927822243',          22, '26725023117905246281972516733613965833347490160545103872'],
-            ['26207519883779202355130662492597335498961566699008934586',   23, '219844610957229287109867916430701949345272990103839940739596288'],
-            ['74820994561612168747902380445044412766494233082859272179',   24, '1255287987094992663312007783640686242576631311185475906949873664'],
-            ['7863511842172307126057945',                                  25, '263855673389365411744426743562240'],
-            ['90830051704668768299',                                       26, '6095501586961584536825102336'],
-            ['231276168421338512977415195026',                             27, '31041361866057401930727182789066620928'],
-            ['11591917961288582194173295725806158',                        28, '3111681783853090908886389181179626990338048'],
-            ['38341121775077207775413588',                                 29, '20584233014488759408799784166752256'],
-            ['891298514985607971246244019814562069431',                    30, '957024493209138036794881606984780018192056582144'],
+            ['176832410305963244194755884422808046154', -17, '1349124224136072114522978854544128'],
+            ['9257459072334599354676845177097713467419426212966300860', -16, '141257615239480580973462603410304465750418490798435'],
+            ['358222782083114778901537224', -15, '10932091738376305508469'],
+            ['3589719402585266626776181409564006983030', -14, '219099084630448402513194666111084410'],
+            ['4053727526539426059356755247362494', -13, '494839785954519782636322662031'],
+            ['725310076963322368834522210259051', -12, '177077655508623625203740773989'],
+            ['15618902589710355419154884565473458', -11, '7626417280132009482009220979235'],
+            ['4176145333272593876621060606107583696', -10, '4078266927024017457637754498151937'],
+            ['36957174148569349375515', -9, '72181980758924510499'],
+            ['72983575681651773692689777', -8, '285092092506452240987069'],
+            ['9789916499422385005848170375683173495755783', -7, '76483722651737382858188831060024792935592'],
+            ['22219967481086668708627972044908677992130264215', -6, '347186991891979198572312063201698093627035378'],
+            ['476504808428399978450599528182547', -5, '14890775263387499326581235255704'],
+            ['806897646899661595924', -4, '50431102931228849745'],
+            ['19227989434278291392821522776905972539189753171235', -3, '2403498679284786424102690347113246567398719146404'],
+            ['145495876920185147465944298588326187', -2, '36373969230046286866486074647081546'],
+            ['43390213276209209707014978611315057', -1, '21695106638104604853507489305657528'],
+            ['107341060399080801706832336473384922229279580', 0, '107341060399080801706832336473384922229279580'],
+            ['4599979410301725512972129610968772187254123116327', 1, '9199958820603451025944259221937544374508246232654'],
+            ['1668450699560464956', 2, '6673802798241859824'],
+            ['97153745662292681364860198', 3, '777229965298341450918881584'],
+            ['3009085333029300076464813411170930572730358705813', 4, '48145365328468801223437014578734889163685739293008'],
+            ['1259873000065121436479893867676', 5, '40315936002083885967356603765632'],
+            ['5095511474364199858927072259281168', 6, '326112734359308790971332624593994752'],
+            ['8881118206295853395928412137856827361', 7, '1136783130405869234678836753645673902208'],
+            ['73610836099012694560370201022735572', 8, '18844374041347249807454771461820306432'],
+            ['7873342832620148736874355104307939702351545648205041367132', 9, '4031151530301516153279669813405665127603991371880981179971584'],
+            ['80476295381045062126801719697', 10, '82407726470190143617844960969728'],
+            ['3897101494489818878437105205', 11, '7981263860715149063039191459840'],
+            ['71689619759395149437011083050942636989790', 12, '293640682534482532093997396176661041110179840'],
+            ['333645680629360116658609620408319342692139569341169', 13, '2733225415715718075667330010384952055334007352042856448'],
+            ['890373515888093126475933575522120914024009528750', 14, '14587879684310517784181695701354429055369372119040000'],
+            ['30946288676751711479181903524629432893', 15, '1014047987359800081749832614695057257037824'],
+            ['8574513284773012626093531873375657960', 16, '561939302630884155463665704853547120066560'],
+            ['69030243610586785879463086990006910709030034224', 17, '9047932090526831198792985737954185800453984645808128'],
+            ['6865607235477540676116751515371066', 18, '1799777743137024422999949709245432725504'],
+            ['5735193503479456072418969854460250', 19, '3006893131552237065296396867055255552000'],
+            ['9048587571607615464851554762153259902641683626953182', 20, '9488131761486026993672183886279616655672406050816059768832'],
+            ['2370160098545184898273', 21, '4970585990984231599783018496'],
+            ['6371742038227378435605172332194796999298927822243', 22, '26725023117905246281972516733613965833347490160545103872'],
+            ['26207519883779202355130662492597335498961566699008934586', 23, '219844610957229287109867916430701949345272990103839940739596288'],
+            ['74820994561612168747902380445044412766494233082859272179', 24, '1255287987094992663312007783640686242576631311185475906949873664'],
+            ['7863511842172307126057945', 25, '263855673389365411744426743562240'],
+            ['90830051704668768299', 26, '6095501586961584536825102336'],
+            ['231276168421338512977415195026', 27, '31041361866057401930727182789066620928'],
+            ['11591917961288582194173295725806158', 28, '3111681783853090908886389181179626990338048'],
+            ['38341121775077207775413588', 29, '20584233014488759408799784166752256'],
+            ['891298514985607971246244019814562069431', 30, '957024493209138036794881606984780018192056582144'],
 
             // negative numbers
-            ['-1237372339423270864540664117814',                            -30, '-1152392792909658387807'],
-            ['-35734786450376781153321',                                    -29, '-66561226640599'],
-            ['-350375475884383289232681762242910646883',                    -28, '-1305250361131069396557963498842'],
-            ['-4617840391045771047614500006075',                            -27, '-34405592017216764745225'],
-            ['-27995582655724767116836664611604632973',                     -26, '-417166689868640409660885700757'],
-            ['-88315321329400450504411498573284859753834938505',            -25, '-2632001678031696394217356996932174556072'],
-            ['-437674836865187689637228663',                                -24, '-26087453178476553538'],
-            ['-192317801462512108553659234',                                -23, '-22926068480314267702'],
-            ['-126204812290953464957001472236330489664',                    -22, '-30089572022188535918474548396190'],
-            ['-5028144589183389011262798573489176268405',                   -21, '-2397606176940626626616858755821789'],
-            ['-60642321304451950418527643944555492427721664313816',         -20, '-57833024315311384600188869423442356517526307'],
-            ['-5519655948197797131908202',                                  -19, '-10527908226390451683'],
-            ['-441338568999382089736819258485250',                          -18, '-1683573032376793250033642802'],
-            ['-15197228212774116306143991214042822478217336134849845725',   -17, '-115945649816697054337646417343466358018625916556167'],
-            ['-86508083500205763872897394724129182619208043270959408954',   -16, '-1320008598330776426283224406801287576587036793074943'],
-            ['-314559273451051294518231893383720551240487085598205396',     -15, '-9599587202485696243842526043204362525649630297797'],
-            ['-1773964912051971854901509472944599559',                      -14, '-108274225589109610284515959042029'],
-            ['-950863346236503075147803',                                   -13, '-116072185819885629291'],
-            ['-123039115193432540987413574511885183658944',                 -12, '-30038846482771616452005267214815718667'],
-            ['-44855253438053014529473887873121988016001',                  -11, '-21901979217799323500719671813047845711'],
-            ['-969661032422144957997200094060422207789677054',              -10, '-946934601974750935544140716855881062294607'],
-            ['-447489909594763600404330986711528177365046540847822',         -9, '-874003729677272657039708958420953471416106525094'],
-            ['-14045183720116080215449840714517462781770864',                -8, '-54863998906703438341600940291083838991293'],
-            ['-3299830436298183536285101988500049758',                       -7, '-25779925283579558877227359285156639'],
-            ['-5019351831439253154367591191464319',                          -6, '-78427372366238330536993612366630'],
+            ['-1237372339423270864540664117814', -30, '-1152392792909658387807'],
+            ['-35734786450376781153321', -29, '-66561226640599'],
+            ['-350375475884383289232681762242910646883', -28, '-1305250361131069396557963498842'],
+            ['-4617840391045771047614500006075', -27, '-34405592017216764745225'],
+            ['-27995582655724767116836664611604632973', -26, '-417166689868640409660885700757'],
+            ['-88315321329400450504411498573284859753834938505', -25, '-2632001678031696394217356996932174556072'],
+            ['-437674836865187689637228663', -24, '-26087453178476553538'],
+            ['-192317801462512108553659234', -23, '-22926068480314267702'],
+            ['-126204812290953464957001472236330489664', -22, '-30089572022188535918474548396190'],
+            ['-5028144589183389011262798573489176268405', -21, '-2397606176940626626616858755821789'],
+            ['-60642321304451950418527643944555492427721664313816', -20, '-57833024315311384600188869423442356517526307'],
+            ['-5519655948197797131908202', -19, '-10527908226390451683'],
+            ['-441338568999382089736819258485250', -18, '-1683573032376793250033642802'],
+            ['-15197228212774116306143991214042822478217336134849845725', -17, '-115945649816697054337646417343466358018625916556167'],
+            ['-86508083500205763872897394724129182619208043270959408954', -16, '-1320008598330776426283224406801287576587036793074943'],
+            ['-314559273451051294518231893383720551240487085598205396', -15, '-9599587202485696243842526043204362525649630297797'],
+            ['-1773964912051971854901509472944599559', -14, '-108274225589109610284515959042029'],
+            ['-950863346236503075147803', -13, '-116072185819885629291'],
+            ['-123039115193432540987413574511885183658944', -12, '-30038846482771616452005267214815718667'],
+            ['-44855253438053014529473887873121988016001', -11, '-21901979217799323500719671813047845711'],
+            ['-969661032422144957997200094060422207789677054', -10, '-946934601974750935544140716855881062294607'],
+            ['-447489909594763600404330986711528177365046540847822', -9, '-874003729677272657039708958420953471416106525094'],
+            ['-14045183720116080215449840714517462781770864', -8, '-54863998906703438341600940291083838991293'],
+            ['-3299830436298183536285101988500049758', -7, '-25779925283579558877227359285156639'],
+            ['-5019351831439253154367591191464319', -6, '-78427372366238330536993612366630'],
             ['-38795226574432330534560721103703978442243266604688184102678', -5, '-1212350830451010329205022534490749326320102081396505753209'],
-            ['-550505672867291116049922196115226897669049024412835',         -4, '-34406604554205694753120137257201681104315564025803'],
-            ['-4181785333295290828956638533933522764',                       -3, '-522723166661911353619579816741690346'],
-            ['-58253383391148486554155255025355913',                         -2, '-14563345847787121638538813756338979'],
-            ['-78072807980226950108001170178',                               -1, '-39036403990113475054000585089'],
-            ['-2739739627183043192544967754527367420831889358990397380',      0, '-2739739627183043192544967754527367420831889358990397380'],
-            ['-6802649114840946885444462648295302',                           1, '-13605298229681893770888925296590604'],
-            ['-7711910168688261765675862240931391560',                        2, '-30847640674753047062703448963725566240'],
-            ['-78150769840135288210477422',                                   3, '-625206158721082305683819376'],
-            ['-48416578493609461712161279293681',                             4, '-774665255897751387394580468698896'],
-            ['-963028038608902450630794252350953199258094761611',             5, '-30816897235484878420185416075230502376259032371552'],
-            ['-1425323867965759220038394395246107977999821',                  6, '-91220727549808590082457241295750910591988544'],
-            ['-224892690751744072093860005492753257',                         7, '-28786264416223241228014080703072416896'],
-            ['-1342157478927956315396',                                       8, '-343592314605556816741376'],
-            ['-5671022663122810048459617618469813436271952017702608325',      9, '-2903563603518878744811324220656544479371239433063735462400'],
+            ['-550505672867291116049922196115226897669049024412835', -4, '-34406604554205694753120137257201681104315564025803'],
+            ['-4181785333295290828956638533933522764', -3, '-522723166661911353619579816741690346'],
+            ['-58253383391148486554155255025355913', -2, '-14563345847787121638538813756338979'],
+            ['-78072807980226950108001170178', -1, '-39036403990113475054000585089'],
+            ['-2739739627183043192544967754527367420831889358990397380', 0, '-2739739627183043192544967754527367420831889358990397380'],
+            ['-6802649114840946885444462648295302', 1, '-13605298229681893770888925296590604'],
+            ['-7711910168688261765675862240931391560', 2, '-30847640674753047062703448963725566240'],
+            ['-78150769840135288210477422', 3, '-625206158721082305683819376'],
+            ['-48416578493609461712161279293681', 4, '-774665255897751387394580468698896'],
+            ['-963028038608902450630794252350953199258094761611', 5, '-30816897235484878420185416075230502376259032371552'],
+            ['-1425323867965759220038394395246107977999821', 6, '-91220727549808590082457241295750910591988544'],
+            ['-224892690751744072093860005492753257', 7, '-28786264416223241228014080703072416896'],
+            ['-1342157478927956315396', 8, '-343592314605556816741376'],
+            ['-5671022663122810048459617618469813436271952017702608325', 9, '-2903563603518878744811324220656544479371239433063735462400'],
             ['-46213908327252308063252283743615825103944376575531142630707', 10, '-47323042127106363456770338553462604906439041613343890053843968'],
-            ['-1443335666407076242843975171397153215688292050',              11, '-2955951444801692145344461151021369785729622118400'],
-            ['-387072173209607249289609530361384',                           12, '-1585447621466551293090240636360228864'],
-            ['-30736899295720315680717',                                     13, '-251796679030540826056433664'],
-            ['-66511372620325071045088',                                     14, '-1089722329011405964002721792'],
-            ['-16831212979074223740',                                        15, '-551525186898304163512320'],
-            ['-2867585884213675945325235733',                                16, '-187930108507827466752834648997888'],
-            ['-847247216997347939369738040936389314911814493500001189',      17, '-111050387226276389109070304501614420284121349292032155844608'],
-            ['-4089932815136020694242664',                                   18, '-1072151347891017008871548911616'],
-            ['-9681942860006157944589342578524581427227754117530',           19, '-5076126458186908536452857241809495747318384750771568640'],
-            ['-3145980648451124121924460760091441029335360706964602774838',  20, '-3298799804430285927271063365973642868776355188666115319228530688'],
-            ['-19270031819736683617335308049302261495063213645341141',       21, '-40412185770824425521461975946210336298894808622754464530432'],
-            ['-5854557994845898152102048100066000953660980958739',           22, '-24555796016014130002954228754299228063944067079162822656'],
-            ['-537126409576534616665629846223812575792202734591383198404',   23, '-4505742896384994897638235853071843963791078197015153829197381632'],
-            ['-207462793032740058202867058129136',                           24, '-3480648090673575028322072453517070565376'],
-            ['-8403828351720334896765545419908214',                          25, '-281985686967472060310746513735221612904448'],
-            ['-1998653332269111002668466897443760635558181763512849966686',  26, '-134127354658394581678981782109055280140227584054864010666735304704'],
-            ['-939931592701732496693966621537',                              27, '-126155482847847917370031711250532007936'],
-            ['-40818093627295495469409741857838451891730234',                28, '-10957023575893760373076938106451152007890667992776704'],
-            ['-690188350197447300310251',                                    29, '-370542049022278912189502337318912'],
-            ['-21087241977645058543789195285783471320391',                   30, '-22642253664205972385394994417649345764608320733184'],
+            ['-1443335666407076242843975171397153215688292050', 11, '-2955951444801692145344461151021369785729622118400'],
+            ['-387072173209607249289609530361384', 12, '-1585447621466551293090240636360228864'],
+            ['-30736899295720315680717', 13, '-251796679030540826056433664'],
+            ['-66511372620325071045088', 14, '-1089722329011405964002721792'],
+            ['-16831212979074223740', 15, '-551525186898304163512320'],
+            ['-2867585884213675945325235733', 16, '-187930108507827466752834648997888'],
+            ['-847247216997347939369738040936389314911814493500001189', 17, '-111050387226276389109070304501614420284121349292032155844608'],
+            ['-4089932815136020694242664', 18, '-1072151347891017008871548911616'],
+            ['-9681942860006157944589342578524581427227754117530', 19, '-5076126458186908536452857241809495747318384750771568640'],
+            ['-3145980648451124121924460760091441029335360706964602774838', 20, '-3298799804430285927271063365973642868776355188666115319228530688'],
+            ['-19270031819736683617335308049302261495063213645341141', 21, '-40412185770824425521461975946210336298894808622754464530432'],
+            ['-5854557994845898152102048100066000953660980958739', 22, '-24555796016014130002954228754299228063944067079162822656'],
+            ['-537126409576534616665629846223812575792202734591383198404', 23, '-4505742896384994897638235853071843963791078197015153829197381632'],
+            ['-207462793032740058202867058129136', 24, '-3480648090673575028322072453517070565376'],
+            ['-8403828351720334896765545419908214', 25, '-281985686967472060310746513735221612904448'],
+            ['-1998653332269111002668466897443760635558181763512849966686', 26, '-134127354658394581678981782109055280140227584054864010666735304704'],
+            ['-939931592701732496693966621537', 27, '-126155482847847917370031711250532007936'],
+            ['-40818093627295495469409741857838451891730234', 28, '-10957023575893760373076938106451152007890667992776704'],
+            ['-690188350197447300310251', 29, '-370542049022278912189502337318912'],
+            ['-21087241977645058543789195285783471320391', 30, '-22642253664205972385394994417649345764608320733184'],
         ];
     }
 
     /**
      * @dataProvider providerGetBitLength
      *
-     * @param string $number    The number to test.
-     * @param int    $bitLength The expected bit length.
+     * @param string $number The number to test.
+     * @param int $bitLength The expected bit length.
      */
-    public function testGetBitLength(string $number, int $bitLength) : void
+    public function testGetBitLength(string $number, int $bitLength): void
     {
         self::assertSame($bitLength, BigInteger::of($number)->getBitLength());
     }
 
-    public function providerGetBitLength() : array
+    public function providerGetBitLength(): array
     {
         return [
             ['-10141204801825835211973625643009', 104],
@@ -2533,15 +2532,15 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerGetLowestSetBit
      *
-     * @param string $number       The number to test.
-     * @param int    $lowestSetBit The expected lowest set bit.
+     * @param string $number The number to test.
+     * @param int $lowestSetBit The expected lowest set bit.
      */
-    public function testGetLowestSetBit(string $number, int $lowestSetBit) : void
+    public function testGetLowestSetBit(string $number, int $lowestSetBit): void
     {
         self::assertSame($lowestSetBit, BigInteger::of($number)->getLowestSetBit());
     }
 
-    public function providerGetLowestSetBit() : array
+    public function providerGetLowestSetBit(): array
     {
         return [
             ['-10', 1],
@@ -2580,9 +2579,9 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerIsOdd
      *
      * @param string $number The number to test.
-     * @param bool   $isOdd  Whether the number is even.
+     * @param bool $isOdd Whether the number is even.
      */
-    public function testIsEven(string $number, bool $isOdd) : void
+    public function testIsEven(string $number, bool $isOdd): void
     {
         self::assertSame(! $isOdd, BigInteger::of($number)->isEven());
     }
@@ -2591,14 +2590,14 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerIsOdd
      *
      * @param string $number The number to test.
-     * @param bool   $isOdd  Whether the number is even.
+     * @param bool $isOdd Whether the number is even.
      */
-    public function testIsOdd(string $number, bool $isOdd) : void
+    public function testIsOdd(string $number, bool $isOdd): void
     {
         self::assertSame($isOdd, BigInteger::of($number)->isOdd());
     }
 
-    public function providerIsOdd() : \Generator
+    public function providerIsOdd(): \Generator
     {
         $tests = [
             ['123456789012345678900', false],
@@ -2622,16 +2621,16 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerTestBit
      *
-     * @param BigInteger $number   The number in base 2.
-     * @param int        $n        The bit to test.
-     * @param bool       $expected The expected result.
+     * @param BigInteger $number The number in base 2.
+     * @param int $n The bit to test.
+     * @param bool $expected The expected result.
      */
-    public function testTestBit(BigInteger $number, int $n, bool $expected) : void
+    public function testTestBit(BigInteger $number, int $n, bool $expected): void
     {
         self::assertSame($expected, $number->testBit($n));
     }
 
-    public function providerTestBit() : \Generator
+    public function providerTestBit(): \Generator
     {
         $base2BitsSetTests = [
             ['0', []],
@@ -2684,7 +2683,7 @@ class BigIntegerTest extends AbstractTestCase
         }
     }
 
-    public function testTestNegativeBitThrowsException() : void
+    public function testTestNegativeBitThrowsException(): void
     {
         $number = BigInteger::one();
 
@@ -2695,7 +2694,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerModInverse
      */
-    public function testModInverse(string $x, string $m, string $expectedResult) : void
+    public function testModInverse(string $x, string $m, string $expectedResult): void
     {
         $x = BigInteger::of($x);
         $m = BigInteger::of($m);
@@ -2703,7 +2702,7 @@ class BigIntegerTest extends AbstractTestCase
         self::assertSame($expectedResult, (string) $x->modInverse($m));
     }
 
-    public function providerModInverse() : array
+    public function providerModInverse(): array
     {
         return [
             ['1', '1', '0'],
@@ -2726,7 +2725,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerModInverseThrows
      */
-    public function testModInverseThrows(string $x, string $m, string $expectedException) : void
+    public function testModInverseThrows(string $x, string $m, string $expectedException): void
     {
         $x = BigInteger::of($x);
         $m = BigInteger::of($m);
@@ -2735,7 +2734,7 @@ class BigIntegerTest extends AbstractTestCase
         $x->modInverse($m);
     }
 
-    public function providerModInverseThrows() : array
+    public function providerModInverseThrows(): array
     {
         return [
             ['0', '0', DivisionByZeroException::class],
@@ -2754,9 +2753,9 @@ class BigIntegerTest extends AbstractTestCase
      *
      * @param string $a The base number as a string.
      * @param string $b The number to compare to as a string.
-     * @param int    $c The expected comparison result.
+     * @param int $c The expected comparison result.
      */
-    public function testCompareTo(string $a, string $b, int $c) : void
+    public function testCompareTo(string $a, string $b, int $c): void
     {
         self::assertSame($c, BigInteger::of($a)->compareTo($b));
     }
@@ -2766,9 +2765,9 @@ class BigIntegerTest extends AbstractTestCase
      *
      * @param string $a The base number as a string.
      * @param string $b The number to compare to as a string.
-     * @param int    $c The comparison result.
+     * @param int $c The comparison result.
      */
-    public function testIsEqualTo(string $a, string $b, int $c) : void
+    public function testIsEqualTo(string $a, string $b, int $c): void
     {
         self::assertSame($c === 0, BigInteger::of($a)->isEqualTo($b));
     }
@@ -2778,9 +2777,9 @@ class BigIntegerTest extends AbstractTestCase
      *
      * @param string $a The base number as a string.
      * @param string $b The number to compare to as a string.
-     * @param int    $c The comparison result.
+     * @param int $c The comparison result.
      */
-    public function testIsLessThan(string $a, string $b, int $c) : void
+    public function testIsLessThan(string $a, string $b, int $c): void
     {
         self::assertSame($c < 0, BigInteger::of($a)->isLessThan($b));
     }
@@ -2790,9 +2789,9 @@ class BigIntegerTest extends AbstractTestCase
      *
      * @param string $a The base number as a string.
      * @param string $b The number to compare to as a string.
-     * @param int    $c The comparison result.
+     * @param int $c The comparison result.
      */
-    public function testIsLessThanOrEqualTo(string $a, string $b, int $c) : void
+    public function testIsLessThanOrEqualTo(string $a, string $b, int $c): void
     {
         self::assertSame($c <= 0, BigInteger::of($a)->isLessThanOrEqualTo($b));
     }
@@ -2802,9 +2801,9 @@ class BigIntegerTest extends AbstractTestCase
      *
      * @param string $a The base number as a string.
      * @param string $b The number to compare to as a string.
-     * @param int    $c The comparison result.
+     * @param int $c The comparison result.
      */
-    public function testIsGreaterThan(string $a, string $b, int $c) : void
+    public function testIsGreaterThan(string $a, string $b, int $c): void
     {
         self::assertSame($c > 0, BigInteger::of($a)->isGreaterThan($b));
     }
@@ -2814,42 +2813,42 @@ class BigIntegerTest extends AbstractTestCase
      *
      * @param string $a The base number as a string.
      * @param string $b The number to compare to as a string.
-     * @param int    $c The comparison result.
+     * @param int $c The comparison result.
      */
-    public function testIsGreaterThanOrEqualTo(string $a, string $b, int $c) : void
+    public function testIsGreaterThanOrEqualTo(string $a, string $b, int $c): void
     {
         self::assertSame($c >= 0, BigInteger::of($a)->isGreaterThanOrEqualTo($b));
     }
 
-    public function providerCompareTo() : array
+    public function providerCompareTo(): array
     {
         return [
-            ['123', '123',  0],
+            ['123', '123', 0],
             ['123', '456', -1],
-            ['456', '123',  1],
-            ['456', '456',  0],
+            ['456', '123', 1],
+            ['456', '456', 0],
 
-            ['-123', '-123',  0],
-            ['-123',  '456', -1],
-            [ '456', '-123',  1],
-            [ '456',  '456',  0],
+            ['-123', '-123', 0],
+            ['-123', '456', -1],
+            [ '456', '-123', 1],
+            [ '456', '456', 0],
 
-            [ '123',  '123',  0],
-            [ '123', '-456',  1],
-            ['-456',  '123', -1],
-            ['-456',  '456', -1],
+            [ '123', '123', 0],
+            [ '123', '-456', 1],
+            ['-456', '123', -1],
+            ['-456', '456', -1],
 
-            ['-123', '-123',  0],
-            ['-123', '-456',  1],
+            ['-123', '-123', 0],
+            ['-123', '-456', 1],
             ['-456', '-123', -1],
-            ['-456', '-456',  0],
+            ['-456', '-456', 0],
 
-            [ '9999999999999999999999999',  '11111111111111111111111111111111111111111111', -1],
-            [ '9999999999999999999999999', '-11111111111111111111111111111111111111111111',  1],
-            ['-9999999999999999999999999',  '11111111111111111111111111111111111111111111', -1],
-            ['-9999999999999999999999999', '-11111111111111111111111111111111111111111111',  1],
+            [ '9999999999999999999999999', '11111111111111111111111111111111111111111111', -1],
+            [ '9999999999999999999999999', '-11111111111111111111111111111111111111111111', 1],
+            ['-9999999999999999999999999', '11111111111111111111111111111111111111111111', -1],
+            ['-9999999999999999999999999', '-11111111111111111111111111111111111111111111', 1],
 
-            [ '11111111111111111111111111111111111111111111', '9999999999999999999999999',  1],
+            [ '11111111111111111111111111111111111111111111', '9999999999999999999999999', 1],
             [ '11111111111111111111111111111111111111111111', '-9999999999999999999999999', 1],
             ['-11111111111111111111111111111111111111111111', '9999999999999999999999999', -1],
             ['-11111111111111111111111111111111111111111111','-9999999999999999999999999', -1],
@@ -2868,9 +2867,9 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerSign
      *
      * @param int|string $number The number to test.
-     * @param int        $sign   The sign of the number.
+     * @param int $sign The sign of the number.
      */
-    public function testGetSign($number, int $sign) : void
+    public function testGetSign($number, int $sign): void
     {
         self::assertSame($sign, BigInteger::of($number)->getSign());
     }
@@ -2879,9 +2878,9 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerSign
      *
      * @param int|string $number The number to test.
-     * @param int        $sign   The sign of the number.
+     * @param int $sign The sign of the number.
      */
-    public function testIsZero($number, int $sign) : void
+    public function testIsZero($number, int $sign): void
     {
         self::assertSame($sign === 0, BigInteger::of($number)->isZero());
     }
@@ -2890,9 +2889,9 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerSign
      *
      * @param int|string $number The number to test.
-     * @param int        $sign   The sign of the number.
+     * @param int $sign The sign of the number.
      */
-    public function testIsNegative($number, int $sign) : void
+    public function testIsNegative($number, int $sign): void
     {
         self::assertSame($sign < 0, BigInteger::of($number)->isNegative());
     }
@@ -2901,9 +2900,9 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerSign
      *
      * @param int|string $number The number to test.
-     * @param int        $sign   The sign of the number.
+     * @param int $sign The sign of the number.
      */
-    public function testIsNegativeOrZero($number, int $sign) : void
+    public function testIsNegativeOrZero($number, int $sign): void
     {
         self::assertSame($sign <= 0, BigInteger::of($number)->isNegativeOrZero());
     }
@@ -2912,9 +2911,9 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerSign
      *
      * @param int|string $number The number to test.
-     * @param int        $sign   The sign of the number.
+     * @param int $sign The sign of the number.
      */
-    public function testIsPositive($number, int $sign) : void
+    public function testIsPositive($number, int $sign): void
     {
         self::assertSame($sign > 0, BigInteger::of($number)->isPositive());
     }
@@ -2923,19 +2922,19 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerSign
      *
      * @param int|string $number The number to test.
-     * @param int        $sign   The sign of the number.
+     * @param int $sign The sign of the number.
      */
-    public function testIsPositiveOrZero($number, int $sign) : void
+    public function testIsPositiveOrZero($number, int $sign): void
     {
         self::assertSame($sign >= 0, BigInteger::of($number)->isPositiveOrZero());
     }
 
-    public function providerSign() : array
+    public function providerSign(): array
     {
         return [
-            [ 0,  0],
-            [-0,  0],
-            [ 1,  1],
+            [ 0, 0],
+            [-0, 0],
+            [ 1, 1],
             [-1, -1],
 
             [PHP_INT_MAX, 1],
@@ -2950,15 +2949,15 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerToScale
      *
      * @param string $number
-     * @param int    $scale
+     * @param int $scale
      * @param string $expected
      */
-    public function testToScale(string $number, int $scale, string $expected) : void
+    public function testToScale(string $number, int $scale, string $expected): void
     {
         self::assertBigDecimalEquals($expected, BigInteger::of($number)->toScale($scale));
     }
 
-    public function providerToScale() : array
+    public function providerToScale(): array
     {
         return [
             ['12345678901234567890123456789', 0, '12345678901234567890123456789'],
@@ -2970,12 +2969,12 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerToInt
      */
-    public function testToInt(int $number) : void
+    public function testToInt(int $number): void
     {
         self::assertSame($number, BigInteger::of((string) $number)->toInt());
     }
 
-    public function providerToInt() : array
+    public function providerToInt(): array
     {
         return [
             [PHP_INT_MIN],
@@ -2988,13 +2987,13 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testToIntNegativeOverflowThrowsException() : void
+    public function testToIntNegativeOverflowThrowsException(): void
     {
         $this->expectException(IntegerOverflowException::class);
         BigInteger::of(PHP_INT_MIN)->minus(1)->toInt();
     }
 
-    public function testToIntPositiveOverflowThrowsException() : void
+    public function testToIntPositiveOverflowThrowsException(): void
     {
         $this->expectException(IntegerOverflowException::class);
         BigInteger::of(PHP_INT_MAX)->plus(1)->toInt();
@@ -3004,14 +3003,14 @@ class BigIntegerTest extends AbstractTestCase
      * @dataProvider providerToFloat
      *
      * @param string $value The big integer value.
-     * @param float  $float The expected float value.
+     * @param float $float The expected float value.
      */
-    public function testToFloat(string $value, float $float) : void
+    public function testToFloat(string $value, float $float): void
     {
         self::assertSame($float, BigInteger::of($value)->toFloat());
     }
 
-    public function providerToFloat() : array
+    public function providerToFloat(): array
     {
         return [
             ['0', 0.0],
@@ -3027,89 +3026,89 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerToBase
      *
-     * @param string $number   The number to convert, in base 10.
-     * @param int    $base     The base to convert the number to.
+     * @param string $number The number to convert, in base 10.
+     * @param int $base The base to convert the number to.
      * @param string $expected The expected result.
      */
-    public function testToBase(string $number, int $base, string $expected) : void
+    public function testToBase(string $number, int $base, string $expected): void
     {
         self::assertSame($expected, BigInteger::of($number)->toBase($base));
     }
 
-    public function providerToBase() : \Generator
+    public function providerToBase(): \Generator
     {
         $tests = [
             ['640998479760579495168036691627608949', 36, '110011001100110011001111'],
             ['335582856048758779730579523833856636', 35, '110011001100110011001111'],
             ['172426711023004493064981145981549295', 34, '110011001100110011001111'],
-            ['86853227285668653965326574185738990',  33, '110011001100110011001111'],
-            ['42836489934972583913564073319498785',  32, '110011001100110011001111'],
-            ['20658924711984480538771889603666144',  31, '110011001100110011001111'],
-            ['9728140488839986222205212599027931',   30, '110011001100110011001111'],
-            ['4465579470019956787945275674107410',   29, '110011001100110011001111'],
-            ['1994689924537781753408144504465645',   28, '110011001100110011001111'],
-            ['865289950909412968716094193925700',    27, '110011001100110011001111'],
-            ['363729369583879309352831568000039',    26, '110011001100110011001111'],
-            ['147793267388865354156500488297526',    25, '110011001100110011001111'],
-            ['57888012016107577099138793486425',     24, '110011001100110011001111'],
-            ['21788392294523974761749372677800',     23, '110011001100110011001111'],
-            ['7852874701996329566765721637715',      22, '110011001100110011001111'],
-            ['2699289081943123258094476428634',      21, '110011001100110011001111'],
-            ['880809345058406615041344008421',       20, '110011001100110011001111'],
-            ['271401690926468032718781859340',       19, '110011001100110011001111'],
-            ['78478889737009209699633503455',        18, '110011001100110011001111'],
-            ['21142384915931646646976872830',        17, '110011001100110011001111'],
-            ['5261325448418072742917574929',         16, '110011001100110011001111'],
-            ['1197116069565850925807253616',         15, '110011001100110011001111'],
-            ['245991074299834917455374155',          14, '110011001100110011001111'],
-            ['44967318722190498361960610',           13, '110011001100110011001111'],
-            ['7177144825886069940574045',            12, '110011001100110011001111'],
-            ['976899716207148313491924',             11, '110011001100110011001111'],
-            ['110011001100110011001111',             10, '110011001100110011001111'],
-            ['9849210196991880028870',                9, '110011001100110011001111'],
-            ['664244955832213832265',                 8, '110011001100110011001111'],
-            ['31291601125492514360',                  7, '110011001100110011001111'],
-            ['922063395565287619',                    6, '110011001100110011001111'],
-            ['14328039609468906',                     5, '110011001100110011001111'],
-            ['88305875046485',                        4, '110011001100110011001111'],
-            ['127093291420',                          3, '110011001100110011001111'],
-            ['13421775',                              2, '110011001100110011001111'],
+            ['86853227285668653965326574185738990', 33, '110011001100110011001111'],
+            ['42836489934972583913564073319498785', 32, '110011001100110011001111'],
+            ['20658924711984480538771889603666144', 31, '110011001100110011001111'],
+            ['9728140488839986222205212599027931', 30, '110011001100110011001111'],
+            ['4465579470019956787945275674107410', 29, '110011001100110011001111'],
+            ['1994689924537781753408144504465645', 28, '110011001100110011001111'],
+            ['865289950909412968716094193925700', 27, '110011001100110011001111'],
+            ['363729369583879309352831568000039', 26, '110011001100110011001111'],
+            ['147793267388865354156500488297526', 25, '110011001100110011001111'],
+            ['57888012016107577099138793486425', 24, '110011001100110011001111'],
+            ['21788392294523974761749372677800', 23, '110011001100110011001111'],
+            ['7852874701996329566765721637715', 22, '110011001100110011001111'],
+            ['2699289081943123258094476428634', 21, '110011001100110011001111'],
+            ['880809345058406615041344008421', 20, '110011001100110011001111'],
+            ['271401690926468032718781859340', 19, '110011001100110011001111'],
+            ['78478889737009209699633503455', 18, '110011001100110011001111'],
+            ['21142384915931646646976872830', 17, '110011001100110011001111'],
+            ['5261325448418072742917574929', 16, '110011001100110011001111'],
+            ['1197116069565850925807253616', 15, '110011001100110011001111'],
+            ['245991074299834917455374155', 14, '110011001100110011001111'],
+            ['44967318722190498361960610', 13, '110011001100110011001111'],
+            ['7177144825886069940574045', 12, '110011001100110011001111'],
+            ['976899716207148313491924', 11, '110011001100110011001111'],
+            ['110011001100110011001111', 10, '110011001100110011001111'],
+            ['9849210196991880028870', 9, '110011001100110011001111'],
+            ['664244955832213832265', 8, '110011001100110011001111'],
+            ['31291601125492514360', 7, '110011001100110011001111'],
+            ['922063395565287619', 6, '110011001100110011001111'],
+            ['14328039609468906', 5, '110011001100110011001111'],
+            ['88305875046485', 4, '110011001100110011001111'],
+            ['127093291420', 3, '110011001100110011001111'],
+            ['13421775', 2, '110011001100110011001111'],
 
             ['106300512100105327644605138221229898724869759421181854980', 36, 'zyxwvutsrqponmlkjihgfedcba9876543210'],
-            ['1101553773143634726491620528194292510495517905608180485',   35,  'yxwvutsrqponmlkjihgfedcba9876543210'],
-            ['11745843093701610854378775891116314824081102660800418',     34,   'xwvutsrqponmlkjihgfedcba9876543210'],
-            ['128983956064237823710866404905431464703849549412368',       33,    'wvutsrqponmlkjihgfedcba9876543210'],
-            ['1459980823972598128486511383358617792788444579872',         32,     'vutsrqponmlkjihgfedcba9876543210'],
-            ['17050208381689099029767742314582582184093573615',           31,      'utsrqponmlkjihgfedcba9876543210'],
-            ['205646315052919334126040428061831153388822830',             30,       'tsrqponmlkjihgfedcba9876543210'],
-            ['2564411043271974895869785066497940850811934',               29,        'srqponmlkjihgfedcba9876543210'],
-            ['33100056003358651440264672384704297711484',                 28,         'rqponmlkjihgfedcba9876543210'],
-            ['442770531899482980347734468443677777577',                   27,          'qponmlkjihgfedcba9876543210'],
-            ['6146269788878825859099399609538763450',                     26,           'ponmlkjihgfedcba9876543210'],
-            ['88663644327703473714387251271141900',                       25,            'onmlkjihgfedcba9876543210'],
-            ['1331214537196502869015340298036888',                        24,             'nmlkjihgfedcba9876543210'],
-            ['20837326537038308910317109288851',                          23,              'mlkjihgfedcba9876543210'],
-            ['340653664490377789692799452102',                            22,               'lkjihgfedcba9876543210'],
-            ['5827980550840017565077671610',                              21,                'kjihgfedcba9876543210'],
-            ['104567135734072022160664820',                               20,                 'jihgfedcba9876543210'],
-            ['1972313422155189164466189',                                 19,                  'ihgfedcba9876543210'],
-            ['39210261334551566857170',                                   18,                   'hgfedcba9876543210'],
-            ['824008854613343261192',                                     17,                    'gfedcba9876543210'],
-            ['18364758544493064720',                                      16,                     'fedcba9876543210'],
-            ['435659737878916215',                                        15,                      'edcba9876543210'],
-            ['11046255305880158',                                         14,                       'dcba9876543210'],
-            ['300771807240918',                                           13,                        'cba9876543210'],
-            ['8842413667692',                                             12,                         'ba9876543210'],
-            ['282458553905',                                              11,                          'a9876543210'],
-            ['9876543210',                                                10,                           '9876543210'],
-            ['381367044',                                                  9,                            '876543210'],
-            ['16434824',                                                   8,                             '76543210'],
-            ['800667',                                                     7,                              '6543210'],
-            ['44790',                                                      6,                               '543210'],
-            ['2930',                                                       5,                                '43210'],
-            ['228',                                                        4,                                 '3210'],
-            ['21',                                                         3,                                  '210'],
-            ['2',                                                          2,                                   '10'],
+            ['1101553773143634726491620528194292510495517905608180485', 35, 'yxwvutsrqponmlkjihgfedcba9876543210'],
+            ['11745843093701610854378775891116314824081102660800418', 34, 'xwvutsrqponmlkjihgfedcba9876543210'],
+            ['128983956064237823710866404905431464703849549412368', 33, 'wvutsrqponmlkjihgfedcba9876543210'],
+            ['1459980823972598128486511383358617792788444579872', 32, 'vutsrqponmlkjihgfedcba9876543210'],
+            ['17050208381689099029767742314582582184093573615', 31, 'utsrqponmlkjihgfedcba9876543210'],
+            ['205646315052919334126040428061831153388822830', 30, 'tsrqponmlkjihgfedcba9876543210'],
+            ['2564411043271974895869785066497940850811934', 29, 'srqponmlkjihgfedcba9876543210'],
+            ['33100056003358651440264672384704297711484', 28, 'rqponmlkjihgfedcba9876543210'],
+            ['442770531899482980347734468443677777577', 27, 'qponmlkjihgfedcba9876543210'],
+            ['6146269788878825859099399609538763450', 26, 'ponmlkjihgfedcba9876543210'],
+            ['88663644327703473714387251271141900', 25, 'onmlkjihgfedcba9876543210'],
+            ['1331214537196502869015340298036888', 24, 'nmlkjihgfedcba9876543210'],
+            ['20837326537038308910317109288851', 23, 'mlkjihgfedcba9876543210'],
+            ['340653664490377789692799452102', 22, 'lkjihgfedcba9876543210'],
+            ['5827980550840017565077671610', 21, 'kjihgfedcba9876543210'],
+            ['104567135734072022160664820', 20, 'jihgfedcba9876543210'],
+            ['1972313422155189164466189', 19, 'ihgfedcba9876543210'],
+            ['39210261334551566857170', 18, 'hgfedcba9876543210'],
+            ['824008854613343261192', 17, 'gfedcba9876543210'],
+            ['18364758544493064720', 16, 'fedcba9876543210'],
+            ['435659737878916215', 15, 'edcba9876543210'],
+            ['11046255305880158', 14, 'dcba9876543210'],
+            ['300771807240918', 13, 'cba9876543210'],
+            ['8842413667692', 12, 'ba9876543210'],
+            ['282458553905', 11, 'a9876543210'],
+            ['9876543210', 10, '9876543210'],
+            ['381367044', 9, '876543210'],
+            ['16434824', 8, '76543210'],
+            ['800667', 7, '6543210'],
+            ['44790', 6, '543210'],
+            ['2930', 5, '43210'],
+            ['228', 4, '3210'],
+            ['21', 3, '210'],
+            ['2', 2, '10'],
 
             ['1', 2, '1'],
             ['0', 2, '0'],
@@ -3130,13 +3129,13 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerToInvalidBaseThrowsException
      */
-    public function testToInvalidBaseThrowsException(int $base) : void
+    public function testToInvalidBaseThrowsException(int $base): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigInteger::of(0)->toBase($base);
     }
 
-    public function providerToInvalidBaseThrowsException() : array
+    public function providerToInvalidBaseThrowsException(): array
     {
         return [
             [-2],
@@ -3150,14 +3149,14 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerFromArbitraryBase
      */
-    public function testFromArbitraryBase(string $base10, string $alphabet, string $baseN) : void
+    public function testFromArbitraryBase(string $base10, string $alphabet, string $baseN): void
     {
         $number = BigInteger::fromArbitraryBase($baseN, $alphabet);
 
         self::assertBigIntegerEquals($base10, $number);
     }
 
-    public function providerFromArbitraryBase() : \Generator
+    public function providerFromArbitraryBase(): \Generator
     {
         foreach ($this->providerArbitraryBase() as [$base10, $alphabet, $baseN]) {
             yield [$base10, $alphabet, $baseN];
@@ -3171,7 +3170,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerArbitraryBase
      */
-    public function testToArbitraryBase(string $base10, string $alphabet, string $baseN) : void
+    public function testToArbitraryBase(string $base10, string $alphabet, string $baseN): void
     {
         $base10 = BigInteger::of($base10);
         $actual = $base10->toArbitraryBase($alphabet);
@@ -3179,11 +3178,11 @@ class BigIntegerTest extends AbstractTestCase
         self::assertSame($baseN, $actual);
     }
 
-    public function providerArbitraryBase() : array
+    public function providerArbitraryBase(): array
     {
-        $base7  = '0123456';
-        $base8  = '01234567';
-        $base9  = '012345678';
+        $base7 = '0123456';
+        $base8 = '01234567';
+        $base9 = '012345678';
         $base10 = '0123456789';
         $base11 = '0123456789A';
         $base12 = '0123456789AB';
@@ -3257,7 +3256,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerArbitraryBaseWithInvalidAlphabet
      */
-    public function testFromArbitraryBaseWithInvalidAlphabet(string $alphabet) : void
+    public function testFromArbitraryBaseWithInvalidAlphabet(string $alphabet): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The alphabet must contain at least 2 chars.');
@@ -3268,7 +3267,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerFromArbitraryBaseWithInvalidNumber
      */
-    public function testFromArbitraryBaseWithInvalidNumber(string $number, string $alphabet, string $expectedMessage) : void
+    public function testFromArbitraryBaseWithInvalidNumber(string $number, string $alphabet, string $expectedMessage): void
     {
         $this->expectException(NumberFormatException::class);
         $this->expectExceptionMessage($expectedMessage);
@@ -3276,7 +3275,7 @@ class BigIntegerTest extends AbstractTestCase
         BigInteger::fromArbitraryBase($number, $alphabet);
     }
 
-    public function providerFromArbitraryBaseWithInvalidNumber() : array
+    public function providerFromArbitraryBaseWithInvalidNumber(): array
     {
         return [
             ['', '01', 'The number cannot be empty.'],
@@ -3295,7 +3294,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerArbitraryBaseWithInvalidAlphabet
      */
-    public function testToArbitraryBaseWithInvalidAlphabet(string $alphabet) : void
+    public function testToArbitraryBaseWithInvalidAlphabet(string $alphabet): void
     {
         $number = BigInteger::of(123);
 
@@ -3305,7 +3304,7 @@ class BigIntegerTest extends AbstractTestCase
         $number->toArbitraryBase($alphabet);
     }
 
-    public function providerArbitraryBaseWithInvalidAlphabet() : array
+    public function providerArbitraryBaseWithInvalidAlphabet(): array
     {
         return [
             [''],
@@ -3313,7 +3312,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testToArbitraryBaseOnNegativeNumber() : void
+    public function testToArbitraryBaseOnNegativeNumber(): void
     {
         $number = BigInteger::of(-123);
 
@@ -3326,13 +3325,13 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerFromBytes
      */
-    public function testFromBytes(string $byteStringHex, bool $signed, string $expectedNumber) : void
+    public function testFromBytes(string $byteStringHex, bool $signed, string $expectedNumber): void
     {
         $number = BigInteger::fromBytes(hex2bin($byteStringHex), $signed);
         self::assertSame($expectedNumber, (string) $number);
     }
 
-    public function providerFromBytes() : Generator
+    public function providerFromBytes(): Generator
     {
         foreach ($this->providerToBytes() as [$expectedNumber, $signed, $byteStringHex]) {
             yield [$byteStringHex, $signed, $expectedNumber];
@@ -3343,7 +3342,7 @@ class BigIntegerTest extends AbstractTestCase
         }
     }
 
-    public function testFromBytesWithEmptyString() : void
+    public function testFromBytesWithEmptyString(): void
     {
         $this->expectException(NumberFormatException::class);
         BigInteger::fromBytes('');
@@ -3352,13 +3351,13 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerToBytes
      */
-    public function testToBytes(string $number, bool $signed, string $expectedByteStringHex) : void
+    public function testToBytes(string $number, bool $signed, string $expectedByteStringHex): void
     {
         $byteString = BigInteger::of($number)->toBytes($signed);
         self::assertSame($expectedByteStringHex, strtoupper(bin2hex($byteString)));
     }
 
-    public function providerToBytes() : array
+    public function providerToBytes(): array
     {
         return [
             ['-549755813889', true, 'FF7FFFFFFFFF'],
@@ -3546,7 +3545,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testToBytesNotSignedWithNegativeNumber() : void
+    public function testToBytesNotSignedWithNegativeNumber(): void
     {
         $number = BigInteger::of(-1);
         $this->expectException(NegativeNumberException::class);
@@ -3556,9 +3555,9 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerRandomBits
      */
-    public function testRandomBits(int $numBits, string $randomBytesHex, string $expectedNumber) : void
+    public function testRandomBits(int $numBits, string $randomBytesHex, string $expectedNumber): void
     {
-        $randomBytesGenerator = function(int $numBytes) use ($randomBytesHex) : string {
+        $randomBytesGenerator = function(int $numBytes) use ($randomBytesHex): string {
             $randomBytes = hex2bin($randomBytesHex);
             $randomBytesLength = strlen($randomBytes);
 
@@ -3577,7 +3576,7 @@ class BigIntegerTest extends AbstractTestCase
         self::assertBigIntegerEquals($expectedNumber, $actualNumber);
     }
 
-    public function providerRandomBits() : array
+    public function providerRandomBits(): array
     {
         return [
             [1, '00', '0'],
@@ -3610,13 +3609,13 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testRandomBitsWithNegativeBits() : void
+    public function testRandomBitsWithNegativeBits(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigInteger::randomBits(-1);
     }
 
-    public function testRandomBitsWithZeroBits() : void
+    public function testRandomBitsWithZeroBits(): void
     {
         $random = BigInteger::randomBits(0);
         self::assertBigIntegerEquals('0', $random);
@@ -3625,7 +3624,7 @@ class BigIntegerTest extends AbstractTestCase
     /**
      * @dataProvider providerRandomRange
      */
-    public function testRandomRange(string $min, string $max, array $randomBytesHex, string $expectedNumber) : void
+    public function testRandomRange(string $min, string $max, array $randomBytesHex, string $expectedNumber): void
     {
         $randomBytesCounter = 0;
 
@@ -3667,7 +3666,7 @@ class BigIntegerTest extends AbstractTestCase
         self::assertBigIntegerEquals($expectedNumber, $actualNumber);
     }
 
-    public function providerRandomRange() : array
+    public function providerRandomRange(): array
     {
         return [
             ['0', '1', ['00'], '0'],
@@ -3703,20 +3702,20 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testRandomRangeWithMinGreaterThanMax() : void
+    public function testRandomRangeWithMinGreaterThanMax(): void
     {
         $this->expectException(MathException::class);
         BigInteger::randomRange(3, 2);
     }
 
-    public function testRandomRangeWithSingleValue() : void
+    public function testRandomRangeWithSingleValue(): void
     {
         $value = '123456789123456789123456789123456789';
         $random = BigInteger::randomRange($value, $value);
         self::assertBigIntegerEquals($value, $random);
     }
 
-    public function testSerialize() : void
+    public function testSerialize(): void
     {
         $value = '-1234567890987654321012345678909876543210123456789';
 
@@ -3725,13 +3724,13 @@ class BigIntegerTest extends AbstractTestCase
         self::assertBigIntegerEquals($value, \unserialize(\serialize($number)));
     }
 
-    public function testDirectCallToUnserialize() : void
+    public function testDirectCallToUnserialize(): void
     {
         $this->expectException(\LogicException::class);
         BigInteger::zero()->unserialize('123');
     }
 
-    public function testJsonSerialize() : void
+    public function testJsonSerialize(): void
     {
         $value = '-1234567890987654321012345678909876543210123456789';
 

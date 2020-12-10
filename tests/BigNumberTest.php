@@ -20,11 +20,11 @@ class BigNumberTest extends AbstractTestCase
     /**
      * @dataProvider providerSum
      *
-     * @param array  $values        The values to add.
+     * @param array $values The values to add.
      * @param string $expectedClass The expected class name.
-     * @param string $expectedSum   The expected sum.
+     * @param string $expectedSum The expected sum.
      */
-    public function testSum(array $values, string $expectedClass, string $expectedSum) : void
+    public function testSum(array $values, string $expectedClass, string $expectedSum): void
     {
         $sum = BigNumber::sum(...$values);
 
@@ -32,7 +32,7 @@ class BigNumberTest extends AbstractTestCase
         self::assertSame($expectedSum, (string) $sum);
     }
 
-    public function providerSum() : array
+    public function providerSum(): array
     {
         return [
             [[-1], BigInteger::class, '-1'],

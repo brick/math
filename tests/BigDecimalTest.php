@@ -20,16 +20,16 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerOf
      *
-     * @param string|number $value         The value to convert to a BigDecimal.
-     * @param string        $unscaledValue The expected unscaled value.
-     * @param int           $scale         The expected scale.
+     * @param string|number $value The value to convert to a BigDecimal.
+     * @param string $unscaledValue The expected unscaled value.
+     * @param int $scale The expected scale.
      */
-    public function testOf($value, string $unscaledValue, int $scale) : void
+    public function testOf($value, string $unscaledValue, int $scale): void
     {
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($value));
     }
 
-    public function providerOf() : array
+    public function providerOf(): array
     {
         return [
             [0, '0', 0],
@@ -187,7 +187,7 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerOfFloatInDifferentLocales
      */
-    public function testOfFloatInDifferentLocales(string $locale) : void
+    public function testOfFloatInDifferentLocales(string $locale): void
     {
         $originalLocale = setlocale(LC_NUMERIC, '0');
         $setLocale = setlocale(LC_NUMERIC, $locale);
@@ -198,7 +198,7 @@ class BigDecimalTest extends AbstractTestCase
         }
 
         // Test a large enough number (thousands separator) with decimal digits (decimal separator)
-        self::assertSame('2500.5', (string) BigDecimal::of(5001/2));
+        self::assertSame('2500.5', (string) BigDecimal::of(5001 / 2));
 
         // Ensure that the locale has been reset to its original value by BigNumber::of()
         self::assertSame($locale, setlocale(LC_NUMERIC, '0'));
@@ -206,7 +206,7 @@ class BigDecimalTest extends AbstractTestCase
         setlocale(LC_NUMERIC, $originalLocale);
     }
 
-    public function providerOfFloatInDifferentLocales() : array
+    public function providerOfFloatInDifferentLocales(): array
     {
         return [
             ['C'],
@@ -225,13 +225,13 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerOfInvalidValueThrowsException
      */
-    public function testOfInvalidValueThrowsException($value) : void
+    public function testOfInvalidValueThrowsException($value): void
     {
         $this->expectException(NumberFormatException::class);
         BigDecimal::of($value);
     }
 
-    public function providerOfInvalidValueThrowsException() : array
+    public function providerOfInvalidValueThrowsException(): array
     {
         return [
             [''],
@@ -262,7 +262,7 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testOfBigDecimalReturnsThis() : void
+    public function testOfBigDecimalReturnsThis(): void
     {
         $decimal = BigDecimal::of(123);
 
@@ -272,17 +272,17 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerOfUnscaledValue
      *
-     * @param string|int $unscaledValue         The unscaled value of the BigDecimal to create.
-     * @param int        $scale                 The scale of the BigDecimal to create.
-     * @param string     $expectedUnscaledValue The expected result unscaled value.
+     * @param string|int $unscaledValue The unscaled value of the BigDecimal to create.
+     * @param int $scale The scale of the BigDecimal to create.
+     * @param string $expectedUnscaledValue The expected result unscaled value.
      */
-    public function testOfUnscaledValue($unscaledValue, int $scale, string $expectedUnscaledValue) : void
+    public function testOfUnscaledValue($unscaledValue, int $scale, string $expectedUnscaledValue): void
     {
         $number = BigDecimal::ofUnscaledValue($unscaledValue, $scale);
         self::assertBigDecimalInternalValues($expectedUnscaledValue, $scale, $number);
     }
 
-    public function providerOfUnscaledValue() : array
+    public function providerOfUnscaledValue(): array
     {
         return [
             [123456789, 0, '123456789'],
@@ -306,31 +306,31 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testOfUnscaledValueWithDefaultScale() : void
+    public function testOfUnscaledValueWithDefaultScale(): void
     {
         $number = BigDecimal::ofUnscaledValue('123456789');
         self::assertBigDecimalInternalValues('123456789', 0, $number);
     }
 
-    public function testOfUnscaledValueWithNegativeScaleThrowsException() : void
+    public function testOfUnscaledValueWithNegativeScaleThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigDecimal::ofUnscaledValue('0', -1);
     }
 
-    public function testZero() : void
+    public function testZero(): void
     {
         self::assertBigDecimalInternalValues('0', 0, BigDecimal::zero());
         self::assertSame(BigDecimal::zero(), BigDecimal::zero());
     }
 
-    public function testOne() : void
+    public function testOne(): void
     {
         self::assertBigDecimalInternalValues('1', 0, BigDecimal::one());
         self::assertSame(BigDecimal::one(), BigDecimal::one());
     }
 
-    public function testTen() : void
+    public function testTen(): void
     {
         self::assertBigDecimalInternalValues('10', 0, BigDecimal::ten());
         self::assertSame(BigDecimal::ten(), BigDecimal::ten());
@@ -339,15 +339,15 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerMin
      *
-     * @param array  $values The values to compare.
-     * @param string $min    The expected minimum value.
+     * @param array $values The values to compare.
+     * @param string $min The expected minimum value.
      */
-    public function testMin(array $values, string $min) : void
+    public function testMin(array $values, string $min): void
     {
         self::assertBigDecimalEquals($min, BigDecimal::min(... $values));
     }
 
-    public function providerMin() : array
+    public function providerMin(): array
     {
         return [
             [[0, 1, -1], '-1'],
@@ -365,13 +365,13 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testMinOfZeroValuesThrowsException() : void
+    public function testMinOfZeroValuesThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigDecimal::min();
     }
 
-    public function testMinOfNonDecimalValuesThrowsException() : void
+    public function testMinOfNonDecimalValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
         BigDecimal::min(1, '1/3');
@@ -380,15 +380,15 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerMax
      *
-     * @param array  $values The values to compare.
-     * @param string $max    The expected maximum value.
+     * @param array $values The values to compare.
+     * @param string $max The expected maximum value.
      */
-    public function testMax(array $values, string $max) : void
+    public function testMax(array $values, string $max): void
     {
         self::assertBigDecimalEquals($max, BigDecimal::max(... $values));
     }
 
-    public function providerMax() : array
+    public function providerMax(): array
     {
         return [
             [[0, 0.9, -1.00], '0.9'],
@@ -410,13 +410,13 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testMaxOfZeroValuesThrowsException() : void
+    public function testMaxOfZeroValuesThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigDecimal::max();
     }
 
-    public function testMaxOfNonDecimalValuesThrowsException() : void
+    public function testMaxOfNonDecimalValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
         BigDecimal::min(1, '3/7');
@@ -425,15 +425,15 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerSum
      *
-     * @param array  $values The values to add.
-     * @param string $sum    The expected sum.
+     * @param array $values The values to add.
+     * @param string $sum The expected sum.
      */
-    public function testSum(array $values, string $sum) : void
+    public function testSum(array $values, string $sum): void
     {
         self::assertBigDecimalEquals($sum, BigDecimal::sum(... $values));
     }
 
-    public function providerSum() : array
+    public function providerSum(): array
     {
         return [
             [[0, 0.9, -1.00], '-0.1'],
@@ -455,13 +455,13 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testSumOfZeroValuesThrowsException() : void
+    public function testSumOfZeroValuesThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigDecimal::sum();
     }
 
-    public function testSumOfNonDecimalValuesThrowsException() : void
+    public function testSumOfNonDecimalValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
         BigDecimal::min(1, '3/7');
@@ -470,67 +470,67 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerPlus
      *
-     * @param string $a             The base number.
-     * @param string $b             The number to add.
+     * @param string $a The base number.
+     * @param string $b The number to add.
      * @param string $unscaledValue The expected unscaled value.
-     * @param int    $scale         The expected scale.
+     * @param int $scale The expected scale.
      */
-    public function testPlus(string $a, string $b, string $unscaledValue, int $scale) : void
+    public function testPlus(string $a, string $b, string $unscaledValue, int $scale): void
     {
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($a)->plus($b));
     }
 
-    public function providerPlus() : array
+    public function providerPlus(): array
     {
         return [
-            ['123',    '999',    '1122',   0],
-            ['123',    '999.0',  '11220',  1],
-            ['123',    '999.00', '112200', 2],
-            ['123.0',  '999',    '11220',  1],
-            ['123.0',  '999.0',  '11220',  1],
-            ['123.0',  '999.00', '112200', 2],
-            ['123.00', '999',    '112200', 2],
-            ['123.00', '999.0',  '112200', 2],
+            ['123', '999', '1122', 0],
+            ['123', '999.0', '11220', 1],
+            ['123', '999.00', '112200', 2],
+            ['123.0', '999', '11220', 1],
+            ['123.0', '999.0', '11220', 1],
+            ['123.0', '999.00', '112200', 2],
+            ['123.00', '999', '112200', 2],
+            ['123.00', '999.0', '112200', 2],
             ['123.00', '999.00', '112200', 2],
 
-            ['0',    '999',    '999',   0],
-            ['0',    '999.0',  '9990',  1],
-            ['0',    '999.00', '99900', 2],
-            ['0.0',  '999',    '9990',  1],
-            ['0.0',  '999.0',  '9990',  1],
-            ['0.0',  '999.00', '99900', 2],
-            ['0.00', '999',    '99900', 2],
-            ['0.00', '999.0',  '99900', 2],
+            ['0', '999', '999', 0],
+            ['0', '999.0', '9990', 1],
+            ['0', '999.00', '99900', 2],
+            ['0.0', '999', '9990', 1],
+            ['0.0', '999.0', '9990', 1],
+            ['0.0', '999.00', '99900', 2],
+            ['0.00', '999', '99900', 2],
+            ['0.00', '999.0', '99900', 2],
             ['0.00', '999.00', '99900', 2],
 
-            ['123',    '-999',    '-876',   0],
-            ['123',    '-999.0',  '-8760',  1],
-            ['123',    '-999.00', '-87600', 2],
-            ['123.0',  '-999',    '-8760',  1],
-            ['123.0',  '-999.0',  '-8760',  1],
-            ['123.0',  '-999.00', '-87600', 2],
-            ['123.00', '-999',    '-87600', 2],
-            ['123.00', '-999.0',  '-87600', 2],
+            ['123', '-999', '-876', 0],
+            ['123', '-999.0', '-8760', 1],
+            ['123', '-999.00', '-87600', 2],
+            ['123.0', '-999', '-8760', 1],
+            ['123.0', '-999.0', '-8760', 1],
+            ['123.0', '-999.00', '-87600', 2],
+            ['123.00', '-999', '-87600', 2],
+            ['123.00', '-999.0', '-87600', 2],
             ['123.00', '-999.00', '-87600', 2],
 
-            ['-123',    '999',    '876',   0],
-            ['-123',    '999.0',  '8760',  1],
-            ['-123',    '999.00', '87600', 2],
-            ['-123.0',  '999',    '8760',  1],
-            ['-123.0',  '999.0',  '8760',  1],
-            ['-123.0',  '999.00', '87600', 2],
-            ['-123.00', '999',    '87600', 2],
-            ['-123.00', '999.0',  '87600', 2],
+            ['-123', '999', '876', 0],
+            ['-123', '999.0', '8760', 1],
+            ['-123', '999.00', '87600', 2],
+            ['-123.0', '999', '8760', 1],
+            ['-123.0', '999.0', '8760', 1],
+            ['-123.0', '999.00', '87600', 2],
+            ['-123.00', '999', '87600', 2],
+            ['-123.00', '999.0', '87600', 2],
             ['-123.00', '999.00', '87600', 2],
 
-            ['-123',    '-999',    '-1122',   0],
-            ['-123',    '-999.0',  '-11220',  1],
-            ['-123',    '-999.00', '-112200', 2],
-            ['-123.0',  '-999',    '-11220',  1],
-            ['-123.0',  '-999.0',  '-11220',  1],
-            ['-123.0',  '-999.00', '-112200', 2],
-            ['-123.00', '-999',    '-112200', 2],
-            ['-123.00', '-999.0',  '-112200', 2],
+            ['-123', '-999', '-1122', 0],
+            ['-123', '-999.0', '-11220', 1],
+            ['-123', '-999.00', '-112200', 2],
+            ['-123.0', '-999', '-11220', 1],
+            ['-123.0', '-999.0', '-11220', 1],
+            ['-123.0', '-999.00', '-112200', 2],
+            ['-123.00', '-999', '-112200', 2],
+            ['-123.00', '-999.0', '-112200', 2],
             ['-123.00', '-999.00', '-112200', 2],
 
             ['23487837847837428335.322387091', '309049304233535454687656.2392', '309072792071383292115991561587091', 9],
@@ -546,59 +546,59 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerMinus
      *
-     * @param string $a             The base number.
-     * @param string $b             The number to subtract.
+     * @param string $a The base number.
+     * @param string $b The number to subtract.
      * @param string $unscaledValue The expected unscaled value.
-     * @param int    $scale         The expected scale.
+     * @param int $scale The expected scale.
      */
-    public function testMinus(string $a, string $b, string $unscaledValue, int $scale) : void
+    public function testMinus(string $a, string $b, string $unscaledValue, int $scale): void
     {
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($a)->minus($b));
     }
 
-    public function providerMinus() : array
+    public function providerMinus(): array
     {
         return [
-            ['123',    '999',    '-876',   0],
-            ['123',    '999.0',  '-8760',  1],
-            ['123',    '999.00', '-87600', 2],
-            ['123.0',  '999',    '-8760',  1],
-            ['123.0',  '999.0',  '-8760',  1],
-            ['123.0',  '999.00', '-87600', 2],
-            ['123.00', '999',    '-87600', 2],
-            ['123.00', '999.0',  '-87600', 2],
+            ['123', '999', '-876', 0],
+            ['123', '999.0', '-8760', 1],
+            ['123', '999.00', '-87600', 2],
+            ['123.0', '999', '-8760', 1],
+            ['123.0', '999.0', '-8760', 1],
+            ['123.0', '999.00', '-87600', 2],
+            ['123.00', '999', '-87600', 2],
+            ['123.00', '999.0', '-87600', 2],
             ['123.00', '999.00', '-87600', 2],
-            ['0',      '999',    '-999',   0],
-            ['0',      '999.0',  '-9990',  1],
+            ['0', '999', '-999', 0],
+            ['0', '999.0', '-9990', 1],
 
-            ['123',    '-999',    '1122',   0],
-            ['123',    '-999.0',  '11220',  1],
-            ['123',    '-999.00', '112200', 2],
-            ['123.0',  '-999',    '11220',  1],
-            ['123.0',  '-999.0',  '11220',  1],
-            ['123.0',  '-999.00', '112200', 2],
-            ['123.00', '-999',    '112200', 2],
-            ['123.00', '-999.0',  '112200', 2],
+            ['123', '-999', '1122', 0],
+            ['123', '-999.0', '11220', 1],
+            ['123', '-999.00', '112200', 2],
+            ['123.0', '-999', '11220', 1],
+            ['123.0', '-999.0', '11220', 1],
+            ['123.0', '-999.00', '112200', 2],
+            ['123.00', '-999', '112200', 2],
+            ['123.00', '-999.0', '112200', 2],
             ['123.00', '-999.00', '112200', 2],
 
-            ['-123',    '999',    '-1122',   0],
-            ['-123',    '999.0',  '-11220',  1],
-            ['-123',    '999.00', '-112200', 2],
-            ['-123.0',  '999',    '-11220',  1],
-            ['-123.0',  '999.0',  '-11220',  1],
-            ['-123.0',  '999.00', '-112200', 2],
-            ['-123.00', '999',    '-112200', 2],
-            ['-123.00', '999.0',  '-112200', 2],
+            ['-123', '999', '-1122', 0],
+            ['-123', '999.0', '-11220', 1],
+            ['-123', '999.00', '-112200', 2],
+            ['-123.0', '999', '-11220', 1],
+            ['-123.0', '999.0', '-11220', 1],
+            ['-123.0', '999.00', '-112200', 2],
+            ['-123.00', '999', '-112200', 2],
+            ['-123.00', '999.0', '-112200', 2],
             ['-123.00', '999.00', '-112200', 2],
 
-            ['-123',    '-999',    '876',   0],
-            ['-123',    '-999.0',  '8760',  1],
-            ['-123',    '-999.00', '87600', 2],
-            ['-123.0',  '-999',    '8760',  1],
-            ['-123.0',  '-999.0',  '8760',  1],
-            ['-123.0',  '-999.00', '87600', 2],
-            ['-123.00', '-999',    '87600', 2],
-            ['-123.00', '-999.0',  '87600', 2],
+            ['-123', '-999', '876', 0],
+            ['-123', '-999.0', '8760', 1],
+            ['-123', '-999.00', '87600', 2],
+            ['-123.0', '-999', '8760', 1],
+            ['-123.0', '-999.0', '8760', 1],
+            ['-123.0', '-999.00', '87600', 2],
+            ['-123.00', '-999', '87600', 2],
+            ['-123.00', '-999.0', '87600', 2],
             ['-123.00', '-999.00', '87600', 2],
 
             ['234878378477428335.3223334343487091', '309049304233536.2392', '2345693291731947990831334343487091', 16],
@@ -615,27 +615,27 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerMultipliedBy
      *
-     * @param string $a             The base number.
-     * @param string $b             The number to multiply.
+     * @param string $a The base number.
+     * @param string $b The number to multiply.
      * @param string $unscaledValue The expected unscaled value.
-     * @param int    $scale         The expected scale.
+     * @param int $scale The expected scale.
      */
-    public function testMultipliedBy(string $a, string $b, string $unscaledValue, int $scale) : void
+    public function testMultipliedBy(string $a, string $b, string $unscaledValue, int $scale): void
     {
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($a)->multipliedBy($b));
     }
 
-    public function providerMultipliedBy() : array
+    public function providerMultipliedBy(): array
     {
         return [
-            ['123',    '999',    '122877',     0],
-            ['123',    '999.0',  '1228770',    1],
-            ['123',    '999.00', '12287700',   2],
-            ['123.0',  '999',    '1228770',    1],
-            ['123.0',  '999.0',  '12287700',   2],
-            ['123.0',  '999.00', '122877000',  3],
-            ['123.00', '999',    '12287700',   2],
-            ['123.00', '999.0',  '122877000',  3],
+            ['123', '999', '122877', 0],
+            ['123', '999.0', '1228770', 1],
+            ['123', '999.00', '12287700', 2],
+            ['123.0', '999', '1228770', 1],
+            ['123.0', '999.0', '12287700', 2],
+            ['123.0', '999.00', '122877000', 3],
+            ['123.00', '999', '12287700', 2],
+            ['123.00', '999.0', '122877000', 3],
             ['123.00', '999.00', '1228770000', 4],
 
             ['123.0', '0.1', '1230', 2],
@@ -643,74 +643,74 @@ class BigDecimalTest extends AbstractTestCase
             ['123.1', '0.01', '1231', 3],
             ['123.1', '0.001', '1231', 4],
 
-            ['123',    '-999',    '-122877',     0],
-            ['123',    '-999.0',  '-1228770',    1],
-            ['123',    '-999.00', '-12287700',   2],
-            ['123.0',  '-999',    '-1228770',    1],
-            ['123.0',  '-999.0',  '-12287700',   2],
-            ['123.0',  '-999.00', '-122877000',  3],
-            ['123.00', '-999',    '-12287700',   2],
-            ['123.00', '-999.0',  '-122877000',  3],
+            ['123', '-999', '-122877', 0],
+            ['123', '-999.0', '-1228770', 1],
+            ['123', '-999.00', '-12287700', 2],
+            ['123.0', '-999', '-1228770', 1],
+            ['123.0', '-999.0', '-12287700', 2],
+            ['123.0', '-999.00', '-122877000', 3],
+            ['123.00', '-999', '-12287700', 2],
+            ['123.00', '-999.0', '-122877000', 3],
             ['123.00', '-999.00', '-1228770000', 4],
 
-            ['-123',    '999',    '-122877',     0],
-            ['-123',    '999.0',  '-1228770',    1],
-            ['-123',    '999.00', '-12287700',   2],
-            ['-123.0',  '999',    '-1228770',    1],
-            ['-123.0',  '999.0',  '-12287700',   2],
-            ['-123.0',  '999.00', '-122877000',  3],
-            ['-123.00', '999',    '-12287700',   2],
-            ['-123.00', '999.0',  '-122877000',  3],
+            ['-123', '999', '-122877', 0],
+            ['-123', '999.0', '-1228770', 1],
+            ['-123', '999.00', '-12287700', 2],
+            ['-123.0', '999', '-1228770', 1],
+            ['-123.0', '999.0', '-12287700', 2],
+            ['-123.0', '999.00', '-122877000', 3],
+            ['-123.00', '999', '-12287700', 2],
+            ['-123.00', '999.0', '-122877000', 3],
             ['-123.00', '999.00', '-1228770000', 4],
 
-            ['-123',    '-999',    '122877',     0],
-            ['-123',    '-999.0',  '1228770',    1],
-            ['-123',    '-999.00', '12287700',   2],
-            ['-123.0',  '-999',    '1228770',    1],
-            ['-123.0',  '-999.0',  '12287700',   2],
-            ['-123.0',  '-999.00', '122877000',  3],
-            ['-123.00', '-999',    '12287700',   2],
-            ['-123.00', '-999.0',  '122877000',  3],
+            ['-123', '-999', '122877', 0],
+            ['-123', '-999.0', '1228770', 1],
+            ['-123', '-999.00', '12287700', 2],
+            ['-123.0', '-999', '1228770', 1],
+            ['-123.0', '-999.0', '12287700', 2],
+            ['-123.0', '-999.00', '122877000', 3],
+            ['-123.00', '-999', '12287700', 2],
+            ['-123.00', '-999.0', '122877000', 3],
             ['-123.00', '-999.00', '1228770000', 4],
 
-            ['1',    '999',    '999',     0],
-            ['1',    '999.0',  '9990',    1],
-            ['1',    '999.00', '99900',   2],
-            ['1.0',  '999',    '9990',    1],
-            ['1.0',  '999.0',  '99900',   2],
-            ['1.0',  '999.00', '999000',  3],
-            ['1.00', '999',    '99900',   2],
-            ['1.00', '999.0',  '999000',  3],
+            ['1', '999', '999', 0],
+            ['1', '999.0', '9990', 1],
+            ['1', '999.00', '99900', 2],
+            ['1.0', '999', '9990', 1],
+            ['1.0', '999.0', '99900', 2],
+            ['1.0', '999.00', '999000', 3],
+            ['1.00', '999', '99900', 2],
+            ['1.00', '999.0', '999000', 3],
             ['1.00', '999.00', '9990000', 4],
 
-            ['123',    '1',    '123',     0],
-            ['123',    '1.0',  '1230',    1],
-            ['123',    '1.00', '12300',   2],
-            ['123.0',  '1',    '1230',    1],
-            ['123.0',  '1.0',  '12300',   2],
-            ['123.0',  '1.00', '123000',  3],
-            ['123.00', '1',    '12300',   2],
-            ['123.00', '1.0',  '123000',  3],
+            ['123', '1', '123', 0],
+            ['123', '1.0', '1230', 1],
+            ['123', '1.00', '12300', 2],
+            ['123.0', '1', '1230', 1],
+            ['123.0', '1.0', '12300', 2],
+            ['123.0', '1.00', '123000', 3],
+            ['123.00', '1', '12300', 2],
+            ['123.00', '1.0', '123000', 3],
             ['123.00', '1.00', '1230000', 4],
 
-            ['0',    '999',    '0', 0],
-            ['0',    '999.0',  '0', 1],
-            ['0',    '999.00', '0', 2],
-            ['0.0',  '999',    '0', 1],
-            ['0.0',  '999.0',  '0', 2],
-            ['0.0',  '999.00', '0', 3],
-            ['0.00', '999',    '0', 2],
-            ['0.00', '999.0',  '0', 3],
+            ['0', '999', '0', 0],
+            ['0', '999.0', '0', 1],
+            ['0', '999.00', '0', 2],
+            ['0.0', '999', '0', 1],
+            ['0.0', '999.0', '0', 2],
+            ['0.0', '999.00', '0', 3],
+            ['0.00', '999', '0', 2],
+            ['0.00', '999.0', '0', 3],
             ['0.00', '999.00', '0', 4],
 
-            ['123',    '0',    '0', 0],
-            ['123',    '0.0',  '0', 1],
-            ['123',    '0.00', '0', 2],
-            ['123.0',  '0',    '0', 1],
-            ['123.0',  '0.0',  '0', 2],
-            ['123.0',  '0.00', '0', 3],
-            ['123.00', '0',    '0', 2],
-            ['123.00', '0.0',  '0', 3],
+            ['123', '0', '0', 0],
+            ['123', '0.0', '0', 1],
+            ['123', '0.00', '0', 2],
+            ['123.0', '0', '0', 1],
+            ['123.0', '0.0', '0', 2],
+            ['123.0', '0.00', '0', 3],
+            ['123.00', '0', '0', 2],
+            ['123.00', '0.0', '0', 3],
             ['123.00', '0.00', '0', 4],
 
             ['589252.156111130', '999.2563989942545241223454', '5888139876152080735720775399923986443020', 31],
@@ -726,28 +726,28 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerDividedBy
      *
-     * @param string   $a             The base number.
-     * @param string   $b             The number to divide.
-     * @param int|null $scale         The desired scale of the result.
-     * @param int      $roundingMode  The rounding mode.
-     * @param string   $unscaledValue The expected unscaled value of the result.
-     * @param int      $expectedScale The expected scale of the result.
+     * @param string $a The base number.
+     * @param string $b The number to divide.
+     * @param int|null $scale The desired scale of the result.
+     * @param int $roundingMode The rounding mode.
+     * @param string $unscaledValue The expected unscaled value of the result.
+     * @param int $expectedScale The expected scale of the result.
      */
-    public function testDividedBy(string $a, string $b, ?int $scale, int $roundingMode, string $unscaledValue, int $expectedScale) : void
+    public function testDividedBy(string $a, string $b, ?int $scale, int $roundingMode, string $unscaledValue, int $expectedScale): void
     {
         $decimal = BigDecimal::of($a)->dividedBy($b, $scale, $roundingMode);
         self::assertBigDecimalInternalValues($unscaledValue, $expectedScale, $decimal);
     }
 
-    public function providerDividedBy() : array
+    public function providerDividedBy(): array
     {
         return [
-            [ '7',  '0.2', 0, RoundingMode::UNNECESSARY,  '35', 0],
+            [ '7', '0.2', 0, RoundingMode::UNNECESSARY, '35', 0],
             [ '7', '-0.2', 0, RoundingMode::UNNECESSARY, '-35', 0],
-            ['-7',  '0.2', 0, RoundingMode::UNNECESSARY, '-35', 0],
-            ['-7', '-0.2', 0, RoundingMode::UNNECESSARY,  '35', 0],
+            ['-7', '0.2', 0, RoundingMode::UNNECESSARY, '-35', 0],
+            ['-7', '-0.2', 0, RoundingMode::UNNECESSARY, '35', 0],
 
-            ['1234567890123456789', '0.01', 0,  RoundingMode::UNNECESSARY, '123456789012345678900', 0],
+            ['1234567890123456789', '0.01', 0, RoundingMode::UNNECESSARY, '123456789012345678900', 0],
             ['1234567890123456789', '0.010', 0, RoundingMode::UNNECESSARY, '123456789012345678900', 0],
 
             ['1324794783847839472983.343898', '1', 6, RoundingMode::UNNECESSARY, '1324794783847839472983343898', 6],
@@ -768,13 +768,13 @@ class BigDecimalTest extends AbstractTestCase
      *
      * @param string|number $zero
      */
-    public function testDividedByByZeroThrowsException($zero) : void
+    public function testDividedByByZeroThrowsException($zero): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigDecimal::of(1)->dividedBy($zero, 0);
     }
 
-    public function providerDividedByByZeroThrowsException() : array
+    public function providerDividedByByZeroThrowsException(): array
     {
         return [
             [0],
@@ -788,11 +788,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerExactlyDividedBy
      *
-     * @param string|number $number   The number to divide.
-     * @param string|number $divisor  The divisor.
-     * @param string        $expected The expected result, or a class name if an exception is expected.
+     * @param string|number $number The number to divide.
+     * @param string|number $divisor The divisor.
+     * @param string $expected The expected result, or a class name if an exception is expected.
      */
-    public function testExactlyDividedBy($number, $divisor, string $expected) : void
+    public function testExactlyDividedBy($number, $divisor, string $expected): void
     {
         $number = BigDecimal::of($number);
 
@@ -807,7 +807,7 @@ class BigDecimalTest extends AbstractTestCase
         }
     }
 
-    public function providerExactlyDividedBy() : array
+    public function providerExactlyDividedBy(): array
     {
         return [
             [1, 1, '1'],
@@ -841,7 +841,7 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testExactlyDividedByZero() : void
+    public function testExactlyDividedByZero(): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigDecimal::of(1)->exactlyDividedBy(0);
@@ -850,17 +850,17 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerDividedByWithRoundingNecessaryThrowsException
      *
-     * @param string $a     The base number.
-     * @param string $b     The number to divide by.
-     * @param int    $scale The desired scale.
+     * @param string $a The base number.
+     * @param string $b The number to divide by.
+     * @param int $scale The desired scale.
      */
-    public function testDividedByWithRoundingNecessaryThrowsException(string $a, string $b, int $scale) : void
+    public function testDividedByWithRoundingNecessaryThrowsException(string $a, string $b, int $scale): void
     {
         $this->expectException(RoundingNecessaryException::class);
         BigDecimal::of($a)->dividedBy($b, $scale);
     }
 
-    public function providerDividedByWithRoundingNecessaryThrowsException() : array
+    public function providerDividedByWithRoundingNecessaryThrowsException(): array
     {
         return [
             ['1.234', '123.456', 3],
@@ -869,13 +869,13 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testDividedByWithNegativeScaleThrowsException() : void
+    public function testDividedByWithNegativeScaleThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigDecimal::of(1)->dividedBy(2, -1);
     }
 
-    public function testDividedByWithInvalidRoundingModeThrowsException() : void
+    public function testDividedByWithInvalidRoundingModeThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigDecimal::of(1)->dividedBy(2, 0, -1);
@@ -884,13 +884,13 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerRoundingMode
      *
-     * @param int         $roundingMode The rounding mode.
-     * @param string      $number       The number to round.
-     * @param string|null $two          The expected rounding to a scale of two, or null if an exception is expected.
-     * @param string|null $one          The expected rounding to a scale of one, or null if an exception is expected.
-     * @param string|null $zero         The expected rounding to a scale of zero, or null if an exception is expected.
+     * @param int $roundingMode The rounding mode.
+     * @param string $number The number to round.
+     * @param string|null $two The expected rounding to a scale of two, or null if an exception is expected.
+     * @param string|null $one The expected rounding to a scale of one, or null if an exception is expected.
+     * @param string|null $zero The expected rounding to a scale of zero, or null if an exception is expected.
      */
-    public function testRoundingMode(int $roundingMode, string $number, ?string $two, ?string $one, ?string $zero) : void
+    public function testRoundingMode(int $roundingMode, string $number, ?string $two, ?string $one, ?string $zero): void
     {
         $number = BigDecimal::of($number);
 
@@ -899,14 +899,14 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @param int         $roundingMode The rounding mode.
-     * @param BigDecimal  $number       The number to round.
-     * @param string      $divisor      The divisor.
-     * @param string|null $two          The expected rounding to a scale of two, or null if an exception is expected.
-     * @param string|null $one          The expected rounding to a scale of one, or null if an exception is expected.
-     * @param string|null $zero         The expected rounding to a scale of zero, or null if an exception is expected.
+     * @param int $roundingMode The rounding mode.
+     * @param BigDecimal $number The number to round.
+     * @param string $divisor The divisor.
+     * @param string|null $two The expected rounding to a scale of two, or null if an exception is expected.
+     * @param string|null $one The expected rounding to a scale of one, or null if an exception is expected.
+     * @param string|null $zero The expected rounding to a scale of zero, or null if an exception is expected.
      */
-    private function doTestRoundingMode(int $roundingMode, BigDecimal $number, string $divisor, ?string $two, ?string $one, ?string $zero) : void
+    private function doTestRoundingMode(int $roundingMode, BigDecimal $number, string $divisor, ?string $two, ?string $one, ?string $zero): void
     {
         foreach ([$zero, $one, $two] as $scale => $expected) {
             if ($expected === null) {
@@ -921,36 +921,36 @@ class BigDecimalTest extends AbstractTestCase
         }
     }
 
-    public function providerRoundingMode() : array
+    public function providerRoundingMode(): array
     {
         return [
-            [RoundingMode::UP,  '3.501',  '351',  '36',  '4'],
-            [RoundingMode::UP,  '3.500',  '350',  '35',  '4'],
-            [RoundingMode::UP,  '3.499',  '350',  '35',  '4'],
-            [RoundingMode::UP,  '3.001',  '301',  '31',  '4'],
-            [RoundingMode::UP,  '3.000',  '300',  '30',  '3'],
-            [RoundingMode::UP,  '2.999',  '300',  '30',  '3'],
-            [RoundingMode::UP,  '2.501',  '251',  '26',  '3'],
-            [RoundingMode::UP,  '2.500',  '250',  '25',  '3'],
-            [RoundingMode::UP,  '2.499',  '250',  '25',  '3'],
-            [RoundingMode::UP,  '2.001',  '201',  '21',  '3'],
-            [RoundingMode::UP,  '2.000',  '200',  '20',  '2'],
-            [RoundingMode::UP,  '1.999',  '200',  '20',  '2'],
-            [RoundingMode::UP,  '1.501',  '151',  '16',  '2'],
-            [RoundingMode::UP,  '1.500',  '150',  '15',  '2'],
-            [RoundingMode::UP,  '1.499',  '150',  '15',  '2'],
-            [RoundingMode::UP,  '1.001',  '101',  '11',  '2'],
-            [RoundingMode::UP,  '1.000',  '100',  '10',  '1'],
-            [RoundingMode::UP,  '0.999',  '100',  '10',  '1'],
-            [RoundingMode::UP,  '0.501',   '51',   '6',  '1'],
-            [RoundingMode::UP,  '0.500',   '50',   '5',  '1'],
-            [RoundingMode::UP,  '0.499',   '50',   '5',  '1'],
-            [RoundingMode::UP,  '0.001',    '1',   '1',  '1'],
-            [RoundingMode::UP,  '0.000',    '0',   '0',  '0'],
-            [RoundingMode::UP, '-0.001',   '-1',  '-1', '-1'],
-            [RoundingMode::UP, '-0.499',  '-50',  '-5', '-1'],
-            [RoundingMode::UP, '-0.500',  '-50',  '-5', '-1'],
-            [RoundingMode::UP, '-0.501',  '-51',  '-6', '-1'],
+            [RoundingMode::UP, '3.501', '351', '36', '4'],
+            [RoundingMode::UP, '3.500', '350', '35', '4'],
+            [RoundingMode::UP, '3.499', '350', '35', '4'],
+            [RoundingMode::UP, '3.001', '301', '31', '4'],
+            [RoundingMode::UP, '3.000', '300', '30', '3'],
+            [RoundingMode::UP, '2.999', '300', '30', '3'],
+            [RoundingMode::UP, '2.501', '251', '26', '3'],
+            [RoundingMode::UP, '2.500', '250', '25', '3'],
+            [RoundingMode::UP, '2.499', '250', '25', '3'],
+            [RoundingMode::UP, '2.001', '201', '21', '3'],
+            [RoundingMode::UP, '2.000', '200', '20', '2'],
+            [RoundingMode::UP, '1.999', '200', '20', '2'],
+            [RoundingMode::UP, '1.501', '151', '16', '2'],
+            [RoundingMode::UP, '1.500', '150', '15', '2'],
+            [RoundingMode::UP, '1.499', '150', '15', '2'],
+            [RoundingMode::UP, '1.001', '101', '11', '2'],
+            [RoundingMode::UP, '1.000', '100', '10', '1'],
+            [RoundingMode::UP, '0.999', '100', '10', '1'],
+            [RoundingMode::UP, '0.501', '51', '6', '1'],
+            [RoundingMode::UP, '0.500', '50', '5', '1'],
+            [RoundingMode::UP, '0.499', '50', '5', '1'],
+            [RoundingMode::UP, '0.001', '1', '1', '1'],
+            [RoundingMode::UP, '0.000', '0', '0', '0'],
+            [RoundingMode::UP, '-0.001', '-1', '-1', '-1'],
+            [RoundingMode::UP, '-0.499', '-50', '-5', '-1'],
+            [RoundingMode::UP, '-0.500', '-50', '-5', '-1'],
+            [RoundingMode::UP, '-0.501', '-51', '-6', '-1'],
             [RoundingMode::UP, '-0.999', '-100', '-10', '-1'],
             [RoundingMode::UP, '-1.000', '-100', '-10', '-1'],
             [RoundingMode::UP, '-1.001', '-101', '-11', '-2'],
@@ -970,34 +970,34 @@ class BigDecimalTest extends AbstractTestCase
             [RoundingMode::UP, '-3.500', '-350', '-35', '-4'],
             [RoundingMode::UP, '-3.501', '-351', '-36', '-4'],
 
-            [RoundingMode::DOWN,  '3.501',  '350',  '35',  '3'],
-            [RoundingMode::DOWN,  '3.500',  '350',  '35',  '3'],
-            [RoundingMode::DOWN,  '3.499',  '349',  '34',  '3'],
-            [RoundingMode::DOWN,  '3.001',  '300',  '30',  '3'],
-            [RoundingMode::DOWN,  '3.000',  '300',  '30',  '3'],
-            [RoundingMode::DOWN,  '2.999',  '299',  '29',  '2'],
-            [RoundingMode::DOWN,  '2.501',  '250',  '25',  '2'],
-            [RoundingMode::DOWN,  '2.500',  '250',  '25',  '2'],
-            [RoundingMode::DOWN,  '2.499',  '249',  '24',  '2'],
-            [RoundingMode::DOWN,  '2.001',  '200',  '20',  '2'],
-            [RoundingMode::DOWN,  '2.000',  '200',  '20',  '2'],
-            [RoundingMode::DOWN,  '1.999',  '199',  '19',  '1'],
-            [RoundingMode::DOWN,  '1.501',  '150',  '15',  '1'],
-            [RoundingMode::DOWN,  '1.500',  '150',  '15',  '1'],
-            [RoundingMode::DOWN,  '1.499',  '149',  '14',  '1'],
-            [RoundingMode::DOWN,  '1.001',  '100',  '10',  '1'],
-            [RoundingMode::DOWN,  '1.000',  '100',  '10',  '1'],
-            [RoundingMode::DOWN,  '0.999',   '99',   '9',  '0'],
-            [RoundingMode::DOWN,  '0.501',   '50',   '5',  '0'],
-            [RoundingMode::DOWN,  '0.500',   '50',   '5',  '0'],
-            [RoundingMode::DOWN,  '0.499',   '49',   '4',  '0'],
-            [RoundingMode::DOWN,  '0.001',    '0',   '0',  '0'],
-            [RoundingMode::DOWN,  '0.000',    '0',   '0',  '0'],
-            [RoundingMode::DOWN, '-0.001',    '0',   '0',  '0'],
-            [RoundingMode::DOWN, '-0.499',  '-49',  '-4',  '0'],
-            [RoundingMode::DOWN, '-0.500',  '-50',  '-5',  '0'],
-            [RoundingMode::DOWN, '-0.501',  '-50',  '-5',  '0'],
-            [RoundingMode::DOWN, '-0.999',  '-99',  '-9',  '0'],
+            [RoundingMode::DOWN, '3.501', '350', '35', '3'],
+            [RoundingMode::DOWN, '3.500', '350', '35', '3'],
+            [RoundingMode::DOWN, '3.499', '349', '34', '3'],
+            [RoundingMode::DOWN, '3.001', '300', '30', '3'],
+            [RoundingMode::DOWN, '3.000', '300', '30', '3'],
+            [RoundingMode::DOWN, '2.999', '299', '29', '2'],
+            [RoundingMode::DOWN, '2.501', '250', '25', '2'],
+            [RoundingMode::DOWN, '2.500', '250', '25', '2'],
+            [RoundingMode::DOWN, '2.499', '249', '24', '2'],
+            [RoundingMode::DOWN, '2.001', '200', '20', '2'],
+            [RoundingMode::DOWN, '2.000', '200', '20', '2'],
+            [RoundingMode::DOWN, '1.999', '199', '19', '1'],
+            [RoundingMode::DOWN, '1.501', '150', '15', '1'],
+            [RoundingMode::DOWN, '1.500', '150', '15', '1'],
+            [RoundingMode::DOWN, '1.499', '149', '14', '1'],
+            [RoundingMode::DOWN, '1.001', '100', '10', '1'],
+            [RoundingMode::DOWN, '1.000', '100', '10', '1'],
+            [RoundingMode::DOWN, '0.999', '99', '9', '0'],
+            [RoundingMode::DOWN, '0.501', '50', '5', '0'],
+            [RoundingMode::DOWN, '0.500', '50', '5', '0'],
+            [RoundingMode::DOWN, '0.499', '49', '4', '0'],
+            [RoundingMode::DOWN, '0.001', '0', '0', '0'],
+            [RoundingMode::DOWN, '0.000', '0', '0', '0'],
+            [RoundingMode::DOWN, '-0.001', '0', '0', '0'],
+            [RoundingMode::DOWN, '-0.499', '-49', '-4', '0'],
+            [RoundingMode::DOWN, '-0.500', '-50', '-5', '0'],
+            [RoundingMode::DOWN, '-0.501', '-50', '-5', '0'],
+            [RoundingMode::DOWN, '-0.999', '-99', '-9', '0'],
             [RoundingMode::DOWN, '-1.000', '-100', '-10', '-1'],
             [RoundingMode::DOWN, '-1.001', '-100', '-10', '-1'],
             [RoundingMode::DOWN, '-1.499', '-149', '-14', '-1'],
@@ -1016,34 +1016,34 @@ class BigDecimalTest extends AbstractTestCase
             [RoundingMode::DOWN, '-3.500', '-350', '-35', '-3'],
             [RoundingMode::DOWN, '-3.501', '-350', '-35', '-3'],
 
-            [RoundingMode::CEILING,  '3.501',  '351',  '36',  '4'],
-            [RoundingMode::CEILING,  '3.500',  '350',  '35',  '4'],
-            [RoundingMode::CEILING,  '3.499',  '350',  '35',  '4'],
-            [RoundingMode::CEILING,  '3.001',  '301',  '31',  '4'],
-            [RoundingMode::CEILING,  '3.000',  '300',  '30',  '3'],
-            [RoundingMode::CEILING,  '2.999',  '300',  '30',  '3'],
-            [RoundingMode::CEILING,  '2.501',  '251',  '26',  '3'],
-            [RoundingMode::CEILING,  '2.500',  '250',  '25',  '3'],
-            [RoundingMode::CEILING,  '2.499',  '250',  '25',  '3'],
-            [RoundingMode::CEILING,  '2.001',  '201',  '21',  '3'],
-            [RoundingMode::CEILING,  '2.000',  '200',  '20',  '2'],
-            [RoundingMode::CEILING,  '1.999',  '200',  '20',  '2'],
-            [RoundingMode::CEILING,  '1.501',  '151',  '16',  '2'],
-            [RoundingMode::CEILING,  '1.500',  '150',  '15',  '2'],
-            [RoundingMode::CEILING,  '1.499',  '150',  '15',  '2'],
-            [RoundingMode::CEILING,  '1.001',  '101',  '11',  '2'],
-            [RoundingMode::CEILING,  '1.000',  '100',  '10',  '1'],
-            [RoundingMode::CEILING,  '0.999',  '100',  '10',  '1'],
-            [RoundingMode::CEILING,  '0.501',   '51',   '6',  '1'],
-            [RoundingMode::CEILING,  '0.500',   '50',   '5',  '1'],
-            [RoundingMode::CEILING,  '0.499',   '50',   '5',  '1'],
-            [RoundingMode::CEILING,  '0.001',    '1',   '1',  '1'],
-            [RoundingMode::CEILING,  '0.000',    '0',   '0',  '0'],
-            [RoundingMode::CEILING, '-0.001',    '0',   '0',  '0'],
-            [RoundingMode::CEILING, '-0.499',  '-49' , '-4',  '0'],
-            [RoundingMode::CEILING, '-0.500',  '-50' , '-5',  '0'],
-            [RoundingMode::CEILING, '-0.501',  '-50',  '-5',  '0'],
-            [RoundingMode::CEILING, '-0.999',  '-99',  '-9',  '0'],
+            [RoundingMode::CEILING, '3.501', '351', '36', '4'],
+            [RoundingMode::CEILING, '3.500', '350', '35', '4'],
+            [RoundingMode::CEILING, '3.499', '350', '35', '4'],
+            [RoundingMode::CEILING, '3.001', '301', '31', '4'],
+            [RoundingMode::CEILING, '3.000', '300', '30', '3'],
+            [RoundingMode::CEILING, '2.999', '300', '30', '3'],
+            [RoundingMode::CEILING, '2.501', '251', '26', '3'],
+            [RoundingMode::CEILING, '2.500', '250', '25', '3'],
+            [RoundingMode::CEILING, '2.499', '250', '25', '3'],
+            [RoundingMode::CEILING, '2.001', '201', '21', '3'],
+            [RoundingMode::CEILING, '2.000', '200', '20', '2'],
+            [RoundingMode::CEILING, '1.999', '200', '20', '2'],
+            [RoundingMode::CEILING, '1.501', '151', '16', '2'],
+            [RoundingMode::CEILING, '1.500', '150', '15', '2'],
+            [RoundingMode::CEILING, '1.499', '150', '15', '2'],
+            [RoundingMode::CEILING, '1.001', '101', '11', '2'],
+            [RoundingMode::CEILING, '1.000', '100', '10', '1'],
+            [RoundingMode::CEILING, '0.999', '100', '10', '1'],
+            [RoundingMode::CEILING, '0.501', '51', '6', '1'],
+            [RoundingMode::CEILING, '0.500', '50', '5', '1'],
+            [RoundingMode::CEILING, '0.499', '50', '5', '1'],
+            [RoundingMode::CEILING, '0.001', '1', '1', '1'],
+            [RoundingMode::CEILING, '0.000', '0', '0', '0'],
+            [RoundingMode::CEILING, '-0.001', '0', '0', '0'],
+            [RoundingMode::CEILING, '-0.499', '-49' , '-4', '0'],
+            [RoundingMode::CEILING, '-0.500', '-50' , '-5', '0'],
+            [RoundingMode::CEILING, '-0.501', '-50', '-5', '0'],
+            [RoundingMode::CEILING, '-0.999', '-99', '-9', '0'],
             [RoundingMode::CEILING, '-1.000', '-100', '-10', '-1'],
             [RoundingMode::CEILING, '-1.001', '-100', '-10', '-1'],
             [RoundingMode::CEILING, '-1.499', '-149', '-14', '-1'],
@@ -1062,33 +1062,33 @@ class BigDecimalTest extends AbstractTestCase
             [RoundingMode::CEILING, '-3.500', '-350', '-35', '-3'],
             [RoundingMode::CEILING, '-3.501', '-350', '-35', '-3'],
 
-            [RoundingMode::FLOOR,  '3.501',  '350',  '35',  '3'],
-            [RoundingMode::FLOOR,  '3.500',  '350',  '35',  '3'],
-            [RoundingMode::FLOOR,  '3.499',  '349',  '34',  '3'],
-            [RoundingMode::FLOOR,  '3.001',  '300',  '30',  '3'],
-            [RoundingMode::FLOOR,  '3.000',  '300',  '30',  '3'],
-            [RoundingMode::FLOOR,  '2.999',  '299',  '29',  '2'],
-            [RoundingMode::FLOOR,  '2.501',  '250',  '25',  '2'],
-            [RoundingMode::FLOOR,  '2.500',  '250',  '25',  '2'],
-            [RoundingMode::FLOOR,  '2.499',  '249',  '24',  '2'],
-            [RoundingMode::FLOOR,  '2.001',  '200',  '20',  '2'],
-            [RoundingMode::FLOOR,  '2.000',  '200',  '20',  '2'],
-            [RoundingMode::FLOOR,  '1.999',  '199',  '19',  '1'],
-            [RoundingMode::FLOOR,  '1.501',  '150',  '15',  '1'],
-            [RoundingMode::FLOOR,  '1.500',  '150',  '15',  '1'],
-            [RoundingMode::FLOOR,  '1.499',  '149',  '14',  '1'],
-            [RoundingMode::FLOOR,  '1.001',  '100',  '10',  '1'],
-            [RoundingMode::FLOOR,  '1.000',  '100',  '10',  '1'],
-            [RoundingMode::FLOOR,  '0.999',   '99',   '9',  '0'],
-            [RoundingMode::FLOOR,  '0.501',   '50',   '5',  '0'],
-            [RoundingMode::FLOOR,  '0.500',   '50',   '5',  '0'],
-            [RoundingMode::FLOOR,  '0.499',   '49',   '4',  '0'],
-            [RoundingMode::FLOOR,  '0.001',    '0',   '0',  '0'],
-            [RoundingMode::FLOOR,  '0.000',    '0',   '0',  '0'],
-            [RoundingMode::FLOOR, '-0.001',   '-1',  '-1', '-1'],
-            [RoundingMode::FLOOR, '-0.499',  '-50',  '-5', '-1'],
-            [RoundingMode::FLOOR, '-0.500',  '-50',  '-5', '-1'],
-            [RoundingMode::FLOOR, '-0.501',  '-51',  '-6', '-1'],
+            [RoundingMode::FLOOR, '3.501', '350', '35', '3'],
+            [RoundingMode::FLOOR, '3.500', '350', '35', '3'],
+            [RoundingMode::FLOOR, '3.499', '349', '34', '3'],
+            [RoundingMode::FLOOR, '3.001', '300', '30', '3'],
+            [RoundingMode::FLOOR, '3.000', '300', '30', '3'],
+            [RoundingMode::FLOOR, '2.999', '299', '29', '2'],
+            [RoundingMode::FLOOR, '2.501', '250', '25', '2'],
+            [RoundingMode::FLOOR, '2.500', '250', '25', '2'],
+            [RoundingMode::FLOOR, '2.499', '249', '24', '2'],
+            [RoundingMode::FLOOR, '2.001', '200', '20', '2'],
+            [RoundingMode::FLOOR, '2.000', '200', '20', '2'],
+            [RoundingMode::FLOOR, '1.999', '199', '19', '1'],
+            [RoundingMode::FLOOR, '1.501', '150', '15', '1'],
+            [RoundingMode::FLOOR, '1.500', '150', '15', '1'],
+            [RoundingMode::FLOOR, '1.499', '149', '14', '1'],
+            [RoundingMode::FLOOR, '1.001', '100', '10', '1'],
+            [RoundingMode::FLOOR, '1.000', '100', '10', '1'],
+            [RoundingMode::FLOOR, '0.999', '99', '9', '0'],
+            [RoundingMode::FLOOR, '0.501', '50', '5', '0'],
+            [RoundingMode::FLOOR, '0.500', '50', '5', '0'],
+            [RoundingMode::FLOOR, '0.499', '49', '4', '0'],
+            [RoundingMode::FLOOR, '0.001', '0', '0', '0'],
+            [RoundingMode::FLOOR, '0.000', '0', '0', '0'],
+            [RoundingMode::FLOOR, '-0.001', '-1', '-1', '-1'],
+            [RoundingMode::FLOOR, '-0.499', '-50', '-5', '-1'],
+            [RoundingMode::FLOOR, '-0.500', '-50', '-5', '-1'],
+            [RoundingMode::FLOOR, '-0.501', '-51', '-6', '-1'],
             [RoundingMode::FLOOR, '-0.999', '-100', '-10', '-1'],
             [RoundingMode::FLOOR, '-1.000', '-100', '-10', '-1'],
             [RoundingMode::FLOOR, '-1.001', '-101', '-11', '-2'],
@@ -1108,33 +1108,33 @@ class BigDecimalTest extends AbstractTestCase
             [RoundingMode::FLOOR, '-3.500', '-350', '-35', '-4'],
             [RoundingMode::FLOOR, '-3.501', '-351', '-36', '-4'],
 
-            [RoundingMode::HALF_UP,  '3.501',  '350',  '35',  '4'],
-            [RoundingMode::HALF_UP,  '3.500',  '350',  '35',  '4'],
-            [RoundingMode::HALF_UP,  '3.499',  '350',  '35',  '3'],
-            [RoundingMode::HALF_UP,  '3.001',  '300',  '30',  '3'],
-            [RoundingMode::HALF_UP,  '3.000',  '300',  '30',  '3'],
-            [RoundingMode::HALF_UP,  '2.999',  '300',  '30',  '3'],
-            [RoundingMode::HALF_UP,  '2.501',  '250',  '25',  '3'],
-            [RoundingMode::HALF_UP,  '2.500',  '250',  '25',  '3'],
-            [RoundingMode::HALF_UP,  '2.499',  '250',  '25',  '2'],
-            [RoundingMode::HALF_UP,  '2.001',  '200',  '20',  '2'],
-            [RoundingMode::HALF_UP,  '2.000',  '200',  '20',  '2'],
-            [RoundingMode::HALF_UP,  '1.999',  '200',  '20',  '2'],
-            [RoundingMode::HALF_UP,  '1.501',  '150',  '15',  '2'],
-            [RoundingMode::HALF_UP,  '1.500',  '150',  '15',  '2'],
-            [RoundingMode::HALF_UP,  '1.499',  '150',  '15',  '1'],
-            [RoundingMode::HALF_UP,  '1.001',  '100',  '10',  '1'],
-            [RoundingMode::HALF_UP,  '1.000',  '100',  '10',  '1'],
-            [RoundingMode::HALF_UP,  '0.999',  '100',  '10',  '1'],
-            [RoundingMode::HALF_UP,  '0.501',   '50',   '5',  '1'],
-            [RoundingMode::HALF_UP,  '0.500',   '50',   '5',  '1'],
-            [RoundingMode::HALF_UP,  '0.499',   '50',   '5',  '0'],
-            [RoundingMode::HALF_UP,  '0.001',    '0',   '0',  '0'],
-            [RoundingMode::HALF_UP,  '0.000',    '0',   '0',  '0'],
-            [RoundingMode::HALF_UP, '-0.001',    '0',   '0',  '0'],
-            [RoundingMode::HALF_UP, '-0.499',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_UP, '-0.500',  '-50',  '-5', '-1'],
-            [RoundingMode::HALF_UP, '-0.501',  '-50',  '-5', '-1'],
+            [RoundingMode::HALF_UP, '3.501', '350', '35', '4'],
+            [RoundingMode::HALF_UP, '3.500', '350', '35', '4'],
+            [RoundingMode::HALF_UP, '3.499', '350', '35', '3'],
+            [RoundingMode::HALF_UP, '3.001', '300', '30', '3'],
+            [RoundingMode::HALF_UP, '3.000', '300', '30', '3'],
+            [RoundingMode::HALF_UP, '2.999', '300', '30', '3'],
+            [RoundingMode::HALF_UP, '2.501', '250', '25', '3'],
+            [RoundingMode::HALF_UP, '2.500', '250', '25', '3'],
+            [RoundingMode::HALF_UP, '2.499', '250', '25', '2'],
+            [RoundingMode::HALF_UP, '2.001', '200', '20', '2'],
+            [RoundingMode::HALF_UP, '2.000', '200', '20', '2'],
+            [RoundingMode::HALF_UP, '1.999', '200', '20', '2'],
+            [RoundingMode::HALF_UP, '1.501', '150', '15', '2'],
+            [RoundingMode::HALF_UP, '1.500', '150', '15', '2'],
+            [RoundingMode::HALF_UP, '1.499', '150', '15', '1'],
+            [RoundingMode::HALF_UP, '1.001', '100', '10', '1'],
+            [RoundingMode::HALF_UP, '1.000', '100', '10', '1'],
+            [RoundingMode::HALF_UP, '0.999', '100', '10', '1'],
+            [RoundingMode::HALF_UP, '0.501', '50', '5', '1'],
+            [RoundingMode::HALF_UP, '0.500', '50', '5', '1'],
+            [RoundingMode::HALF_UP, '0.499', '50', '5', '0'],
+            [RoundingMode::HALF_UP, '0.001', '0', '0', '0'],
+            [RoundingMode::HALF_UP, '0.000', '0', '0', '0'],
+            [RoundingMode::HALF_UP, '-0.001', '0', '0', '0'],
+            [RoundingMode::HALF_UP, '-0.499', '-50', '-5', '0'],
+            [RoundingMode::HALF_UP, '-0.500', '-50', '-5', '-1'],
+            [RoundingMode::HALF_UP, '-0.501', '-50', '-5', '-1'],
             [RoundingMode::HALF_UP, '-0.999', '-100', '-10', '-1'],
             [RoundingMode::HALF_UP, '-1.000', '-100', '-10', '-1'],
             [RoundingMode::HALF_UP, '-1.001', '-100', '-10', '-1'],
@@ -1154,33 +1154,33 @@ class BigDecimalTest extends AbstractTestCase
             [RoundingMode::HALF_UP, '-3.500', '-350', '-35', '-4'],
             [RoundingMode::HALF_UP, '-3.501', '-350', '-35', '-4'],
 
-            [RoundingMode::HALF_DOWN,  '3.501',  '350',  '35',  '4'],
-            [RoundingMode::HALF_DOWN,  '3.500',  '350',  '35',  '3'],
-            [RoundingMode::HALF_DOWN,  '3.499',  '350',  '35',  '3'],
-            [RoundingMode::HALF_DOWN,  '3.001',  '300',  '30',  '3'],
-            [RoundingMode::HALF_DOWN,  '3.000',  '300',  '30',  '3'],
-            [RoundingMode::HALF_DOWN,  '2.999',  '300',  '30',  '3'],
-            [RoundingMode::HALF_DOWN,  '2.501',  '250',  '25',  '3'],
-            [RoundingMode::HALF_DOWN,  '2.500',  '250',  '25',  '2'],
-            [RoundingMode::HALF_DOWN,  '2.499',  '250',  '25',  '2'],
-            [RoundingMode::HALF_DOWN,  '2.001',  '200',  '20',  '2'],
-            [RoundingMode::HALF_DOWN,  '2.000',  '200',  '20',  '2'],
-            [RoundingMode::HALF_DOWN,  '1.999',  '200',  '20',  '2'],
-            [RoundingMode::HALF_DOWN,  '1.501',  '150',  '15',  '2'],
-            [RoundingMode::HALF_DOWN,  '1.500',  '150',  '15',  '1'],
-            [RoundingMode::HALF_DOWN,  '1.499',  '150',  '15',  '1'],
-            [RoundingMode::HALF_DOWN,  '1.001',  '100',  '10',  '1'],
-            [RoundingMode::HALF_DOWN,  '1.000',  '100',  '10',  '1'],
-            [RoundingMode::HALF_DOWN,  '0.999',  '100',  '10',  '1'],
-            [RoundingMode::HALF_DOWN,  '0.501',   '50',   '5',  '1'],
-            [RoundingMode::HALF_DOWN,  '0.500',   '50',   '5',  '0'],
-            [RoundingMode::HALF_DOWN,  '0.499',   '50',   '5',  '0'],
-            [RoundingMode::HALF_DOWN,  '0.001',    '0',   '0',  '0'],
-            [RoundingMode::HALF_DOWN,  '0.000',    '0',   '0',  '0'],
-            [RoundingMode::HALF_DOWN, '-0.001',    '0',   '0',  '0'],
-            [RoundingMode::HALF_DOWN, '-0.499',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_DOWN, '-0.500',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_DOWN, '-0.501',  '-50',  '-5', '-1'],
+            [RoundingMode::HALF_DOWN, '3.501', '350', '35', '4'],
+            [RoundingMode::HALF_DOWN, '3.500', '350', '35', '3'],
+            [RoundingMode::HALF_DOWN, '3.499', '350', '35', '3'],
+            [RoundingMode::HALF_DOWN, '3.001', '300', '30', '3'],
+            [RoundingMode::HALF_DOWN, '3.000', '300', '30', '3'],
+            [RoundingMode::HALF_DOWN, '2.999', '300', '30', '3'],
+            [RoundingMode::HALF_DOWN, '2.501', '250', '25', '3'],
+            [RoundingMode::HALF_DOWN, '2.500', '250', '25', '2'],
+            [RoundingMode::HALF_DOWN, '2.499', '250', '25', '2'],
+            [RoundingMode::HALF_DOWN, '2.001', '200', '20', '2'],
+            [RoundingMode::HALF_DOWN, '2.000', '200', '20', '2'],
+            [RoundingMode::HALF_DOWN, '1.999', '200', '20', '2'],
+            [RoundingMode::HALF_DOWN, '1.501', '150', '15', '2'],
+            [RoundingMode::HALF_DOWN, '1.500', '150', '15', '1'],
+            [RoundingMode::HALF_DOWN, '1.499', '150', '15', '1'],
+            [RoundingMode::HALF_DOWN, '1.001', '100', '10', '1'],
+            [RoundingMode::HALF_DOWN, '1.000', '100', '10', '1'],
+            [RoundingMode::HALF_DOWN, '0.999', '100', '10', '1'],
+            [RoundingMode::HALF_DOWN, '0.501', '50', '5', '1'],
+            [RoundingMode::HALF_DOWN, '0.500', '50', '5', '0'],
+            [RoundingMode::HALF_DOWN, '0.499', '50', '5', '0'],
+            [RoundingMode::HALF_DOWN, '0.001', '0', '0', '0'],
+            [RoundingMode::HALF_DOWN, '0.000', '0', '0', '0'],
+            [RoundingMode::HALF_DOWN, '-0.001', '0', '0', '0'],
+            [RoundingMode::HALF_DOWN, '-0.499', '-50', '-5', '0'],
+            [RoundingMode::HALF_DOWN, '-0.500', '-50', '-5', '0'],
+            [RoundingMode::HALF_DOWN, '-0.501', '-50', '-5', '-1'],
             [RoundingMode::HALF_DOWN, '-0.999', '-100', '-10', '-1'],
             [RoundingMode::HALF_DOWN, '-1.000', '-100', '-10', '-1'],
             [RoundingMode::HALF_DOWN, '-1.001', '-100', '-10', '-1'],
@@ -1200,33 +1200,33 @@ class BigDecimalTest extends AbstractTestCase
             [RoundingMode::HALF_DOWN, '-3.500', '-350', '-35', '-3'],
             [RoundingMode::HALF_DOWN, '-3.501', '-350', '-35', '-4'],
 
-            [RoundingMode::HALF_CEILING,  '3.501',  '350',  '35',  '4'],
-            [RoundingMode::HALF_CEILING,  '3.500',  '350',  '35',  '4'],
-            [RoundingMode::HALF_CEILING,  '3.499',  '350',  '35',  '3'],
-            [RoundingMode::HALF_CEILING,  '3.001',  '300',  '30',  '3'],
-            [RoundingMode::HALF_CEILING,  '3.000',  '300',  '30',  '3'],
-            [RoundingMode::HALF_CEILING,  '2.999',  '300',  '30',  '3'],
-            [RoundingMode::HALF_CEILING,  '2.501',  '250',  '25',  '3'],
-            [RoundingMode::HALF_CEILING,  '2.500',  '250',  '25',  '3'],
-            [RoundingMode::HALF_CEILING,  '2.499',  '250',  '25',  '2'],
-            [RoundingMode::HALF_CEILING,  '2.001',  '200',  '20',  '2'],
-            [RoundingMode::HALF_CEILING,  '2.000',  '200',  '20',  '2'],
-            [RoundingMode::HALF_CEILING,  '1.999',  '200',  '20',  '2'],
-            [RoundingMode::HALF_CEILING,  '1.501',  '150',  '15',  '2'],
-            [RoundingMode::HALF_CEILING,  '1.500',  '150',  '15',  '2'],
-            [RoundingMode::HALF_CEILING,  '1.499',  '150',  '15',  '1'],
-            [RoundingMode::HALF_CEILING,  '1.001',  '100',  '10',  '1'],
-            [RoundingMode::HALF_CEILING,  '1.000',  '100',  '10',  '1'],
-            [RoundingMode::HALF_CEILING,  '0.999',  '100',  '10',  '1'],
-            [RoundingMode::HALF_CEILING,  '0.501',   '50',   '5',  '1'],
-            [RoundingMode::HALF_CEILING,  '0.500',   '50',   '5',  '1'],
-            [RoundingMode::HALF_CEILING,  '0.499',   '50',   '5',  '0'],
-            [RoundingMode::HALF_CEILING,  '0.001',    '0',   '0',  '0'],
-            [RoundingMode::HALF_CEILING,  '0.000',    '0',   '0',  '0'],
-            [RoundingMode::HALF_CEILING, '-0.001',    '0',   '0',  '0'],
-            [RoundingMode::HALF_CEILING, '-0.499',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_CEILING, '-0.500',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_CEILING, '-0.501',  '-50',  '-5', '-1'],
+            [RoundingMode::HALF_CEILING, '3.501', '350', '35', '4'],
+            [RoundingMode::HALF_CEILING, '3.500', '350', '35', '4'],
+            [RoundingMode::HALF_CEILING, '3.499', '350', '35', '3'],
+            [RoundingMode::HALF_CEILING, '3.001', '300', '30', '3'],
+            [RoundingMode::HALF_CEILING, '3.000', '300', '30', '3'],
+            [RoundingMode::HALF_CEILING, '2.999', '300', '30', '3'],
+            [RoundingMode::HALF_CEILING, '2.501', '250', '25', '3'],
+            [RoundingMode::HALF_CEILING, '2.500', '250', '25', '3'],
+            [RoundingMode::HALF_CEILING, '2.499', '250', '25', '2'],
+            [RoundingMode::HALF_CEILING, '2.001', '200', '20', '2'],
+            [RoundingMode::HALF_CEILING, '2.000', '200', '20', '2'],
+            [RoundingMode::HALF_CEILING, '1.999', '200', '20', '2'],
+            [RoundingMode::HALF_CEILING, '1.501', '150', '15', '2'],
+            [RoundingMode::HALF_CEILING, '1.500', '150', '15', '2'],
+            [RoundingMode::HALF_CEILING, '1.499', '150', '15', '1'],
+            [RoundingMode::HALF_CEILING, '1.001', '100', '10', '1'],
+            [RoundingMode::HALF_CEILING, '1.000', '100', '10', '1'],
+            [RoundingMode::HALF_CEILING, '0.999', '100', '10', '1'],
+            [RoundingMode::HALF_CEILING, '0.501', '50', '5', '1'],
+            [RoundingMode::HALF_CEILING, '0.500', '50', '5', '1'],
+            [RoundingMode::HALF_CEILING, '0.499', '50', '5', '0'],
+            [RoundingMode::HALF_CEILING, '0.001', '0', '0', '0'],
+            [RoundingMode::HALF_CEILING, '0.000', '0', '0', '0'],
+            [RoundingMode::HALF_CEILING, '-0.001', '0', '0', '0'],
+            [RoundingMode::HALF_CEILING, '-0.499', '-50', '-5', '0'],
+            [RoundingMode::HALF_CEILING, '-0.500', '-50', '-5', '0'],
+            [RoundingMode::HALF_CEILING, '-0.501', '-50', '-5', '-1'],
             [RoundingMode::HALF_CEILING, '-0.999', '-100', '-10', '-1'],
             [RoundingMode::HALF_CEILING, '-1.000', '-100', '-10', '-1'],
             [RoundingMode::HALF_CEILING, '-1.001', '-100', '-10', '-1'],
@@ -1246,33 +1246,33 @@ class BigDecimalTest extends AbstractTestCase
             [RoundingMode::HALF_CEILING, '-3.500', '-350', '-35', '-3'],
             [RoundingMode::HALF_CEILING, '-3.501', '-350', '-35', '-4'],
 
-            [RoundingMode::HALF_FLOOR,  '3.501',  '350',  '35',  '4'],
-            [RoundingMode::HALF_FLOOR,  '3.500',  '350',  '35',  '3'],
-            [RoundingMode::HALF_FLOOR,  '3.499',  '350',  '35',  '3'],
-            [RoundingMode::HALF_FLOOR,  '3.001',  '300',  '30',  '3'],
-            [RoundingMode::HALF_FLOOR,  '3.000',  '300',  '30',  '3'],
-            [RoundingMode::HALF_FLOOR,  '2.999',  '300',  '30',  '3'],
-            [RoundingMode::HALF_FLOOR,  '2.501',  '250',  '25',  '3'],
-            [RoundingMode::HALF_FLOOR,  '2.500',  '250',  '25',  '2'],
-            [RoundingMode::HALF_FLOOR,  '2.499',  '250',  '25',  '2'],
-            [RoundingMode::HALF_FLOOR,  '2.001',  '200',  '20',  '2'],
-            [RoundingMode::HALF_FLOOR,  '2.000',  '200',  '20',  '2'],
-            [RoundingMode::HALF_FLOOR,  '1.999',  '200',  '20',  '2'],
-            [RoundingMode::HALF_FLOOR,  '1.501',  '150',  '15',  '2'],
-            [RoundingMode::HALF_FLOOR,  '1.500',  '150',  '15',  '1'],
-            [RoundingMode::HALF_FLOOR,  '1.499',  '150',  '15',  '1'],
-            [RoundingMode::HALF_FLOOR,  '1.001',  '100',  '10',  '1'],
-            [RoundingMode::HALF_FLOOR,  '1.000',  '100',  '10',  '1'],
-            [RoundingMode::HALF_FLOOR,  '0.999',  '100',  '10',  '1'],
-            [RoundingMode::HALF_FLOOR,  '0.501',   '50',   '5',  '1'],
-            [RoundingMode::HALF_FLOOR,  '0.500',   '50',   '5',  '0'],
-            [RoundingMode::HALF_FLOOR,  '0.499',   '50',   '5',  '0'],
-            [RoundingMode::HALF_FLOOR,  '0.001',    '0',   '0',  '0'],
-            [RoundingMode::HALF_FLOOR,  '0.000',    '0',   '0',  '0'],
-            [RoundingMode::HALF_FLOOR, '-0.001',    '0',   '0',  '0'],
-            [RoundingMode::HALF_FLOOR, '-0.499',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_FLOOR, '-0.500',  '-50',  '-5', '-1'],
-            [RoundingMode::HALF_FLOOR, '-0.501',  '-50',  '-5', '-1'],
+            [RoundingMode::HALF_FLOOR, '3.501', '350', '35', '4'],
+            [RoundingMode::HALF_FLOOR, '3.500', '350', '35', '3'],
+            [RoundingMode::HALF_FLOOR, '3.499', '350', '35', '3'],
+            [RoundingMode::HALF_FLOOR, '3.001', '300', '30', '3'],
+            [RoundingMode::HALF_FLOOR, '3.000', '300', '30', '3'],
+            [RoundingMode::HALF_FLOOR, '2.999', '300', '30', '3'],
+            [RoundingMode::HALF_FLOOR, '2.501', '250', '25', '3'],
+            [RoundingMode::HALF_FLOOR, '2.500', '250', '25', '2'],
+            [RoundingMode::HALF_FLOOR, '2.499', '250', '25', '2'],
+            [RoundingMode::HALF_FLOOR, '2.001', '200', '20', '2'],
+            [RoundingMode::HALF_FLOOR, '2.000', '200', '20', '2'],
+            [RoundingMode::HALF_FLOOR, '1.999', '200', '20', '2'],
+            [RoundingMode::HALF_FLOOR, '1.501', '150', '15', '2'],
+            [RoundingMode::HALF_FLOOR, '1.500', '150', '15', '1'],
+            [RoundingMode::HALF_FLOOR, '1.499', '150', '15', '1'],
+            [RoundingMode::HALF_FLOOR, '1.001', '100', '10', '1'],
+            [RoundingMode::HALF_FLOOR, '1.000', '100', '10', '1'],
+            [RoundingMode::HALF_FLOOR, '0.999', '100', '10', '1'],
+            [RoundingMode::HALF_FLOOR, '0.501', '50', '5', '1'],
+            [RoundingMode::HALF_FLOOR, '0.500', '50', '5', '0'],
+            [RoundingMode::HALF_FLOOR, '0.499', '50', '5', '0'],
+            [RoundingMode::HALF_FLOOR, '0.001', '0', '0', '0'],
+            [RoundingMode::HALF_FLOOR, '0.000', '0', '0', '0'],
+            [RoundingMode::HALF_FLOOR, '-0.001', '0', '0', '0'],
+            [RoundingMode::HALF_FLOOR, '-0.499', '-50', '-5', '0'],
+            [RoundingMode::HALF_FLOOR, '-0.500', '-50', '-5', '-1'],
+            [RoundingMode::HALF_FLOOR, '-0.501', '-50', '-5', '-1'],
             [RoundingMode::HALF_FLOOR, '-0.999', '-100', '-10', '-1'],
             [RoundingMode::HALF_FLOOR, '-1.000', '-100', '-10', '-1'],
             [RoundingMode::HALF_FLOOR, '-1.001', '-100', '-10', '-1'],
@@ -1292,33 +1292,33 @@ class BigDecimalTest extends AbstractTestCase
             [RoundingMode::HALF_FLOOR, '-3.500', '-350', '-35', '-4'],
             [RoundingMode::HALF_FLOOR, '-3.501', '-350', '-35', '-4'],
 
-            [RoundingMode::HALF_EVEN,  '3.501',  '350',  '35',  '4'],
-            [RoundingMode::HALF_EVEN,  '3.500',  '350',  '35',  '4'],
-            [RoundingMode::HALF_EVEN,  '3.499',  '350',  '35',  '3'],
-            [RoundingMode::HALF_EVEN,  '3.001',  '300',  '30',  '3'],
-            [RoundingMode::HALF_EVEN,  '3.000',  '300',  '30',  '3'],
-            [RoundingMode::HALF_EVEN,  '2.999',  '300',  '30',  '3'],
-            [RoundingMode::HALF_EVEN,  '2.501',  '250',  '25',  '3'],
-            [RoundingMode::HALF_EVEN,  '2.500',  '250',  '25',  '2'],
-            [RoundingMode::HALF_EVEN,  '2.499',  '250',  '25',  '2'],
-            [RoundingMode::HALF_EVEN,  '2.001',  '200',  '20',  '2'],
-            [RoundingMode::HALF_EVEN,  '2.000',  '200',  '20',  '2'],
-            [RoundingMode::HALF_EVEN,  '1.999',  '200',  '20',  '2'],
-            [RoundingMode::HALF_EVEN,  '1.501',  '150',  '15',  '2'],
-            [RoundingMode::HALF_EVEN,  '1.500',  '150',  '15',  '2'],
-            [RoundingMode::HALF_EVEN,  '1.499',  '150',  '15',  '1'],
-            [RoundingMode::HALF_EVEN,  '1.001',  '100',  '10',  '1'],
-            [RoundingMode::HALF_EVEN,  '1.000',  '100',  '10',  '1'],
-            [RoundingMode::HALF_EVEN,  '0.999',  '100',  '10',  '1'],
-            [RoundingMode::HALF_EVEN,  '0.501',   '50',   '5',  '1'],
-            [RoundingMode::HALF_EVEN,  '0.500',   '50',   '5',  '0'],
-            [RoundingMode::HALF_EVEN,  '0.499',   '50',   '5',  '0'],
-            [RoundingMode::HALF_EVEN,  '0.001',    '0',   '0',  '0'],
-            [RoundingMode::HALF_EVEN,  '0.000',    '0',   '0',  '0'],
-            [RoundingMode::HALF_EVEN, '-0.001',    '0',   '0',  '0'],
-            [RoundingMode::HALF_EVEN, '-0.499',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_EVEN, '-0.500',  '-50',  '-5',  '0'],
-            [RoundingMode::HALF_EVEN, '-0.501',  '-50',  '-5', '-1'],
+            [RoundingMode::HALF_EVEN, '3.501', '350', '35', '4'],
+            [RoundingMode::HALF_EVEN, '3.500', '350', '35', '4'],
+            [RoundingMode::HALF_EVEN, '3.499', '350', '35', '3'],
+            [RoundingMode::HALF_EVEN, '3.001', '300', '30', '3'],
+            [RoundingMode::HALF_EVEN, '3.000', '300', '30', '3'],
+            [RoundingMode::HALF_EVEN, '2.999', '300', '30', '3'],
+            [RoundingMode::HALF_EVEN, '2.501', '250', '25', '3'],
+            [RoundingMode::HALF_EVEN, '2.500', '250', '25', '2'],
+            [RoundingMode::HALF_EVEN, '2.499', '250', '25', '2'],
+            [RoundingMode::HALF_EVEN, '2.001', '200', '20', '2'],
+            [RoundingMode::HALF_EVEN, '2.000', '200', '20', '2'],
+            [RoundingMode::HALF_EVEN, '1.999', '200', '20', '2'],
+            [RoundingMode::HALF_EVEN, '1.501', '150', '15', '2'],
+            [RoundingMode::HALF_EVEN, '1.500', '150', '15', '2'],
+            [RoundingMode::HALF_EVEN, '1.499', '150', '15', '1'],
+            [RoundingMode::HALF_EVEN, '1.001', '100', '10', '1'],
+            [RoundingMode::HALF_EVEN, '1.000', '100', '10', '1'],
+            [RoundingMode::HALF_EVEN, '0.999', '100', '10', '1'],
+            [RoundingMode::HALF_EVEN, '0.501', '50', '5', '1'],
+            [RoundingMode::HALF_EVEN, '0.500', '50', '5', '0'],
+            [RoundingMode::HALF_EVEN, '0.499', '50', '5', '0'],
+            [RoundingMode::HALF_EVEN, '0.001', '0', '0', '0'],
+            [RoundingMode::HALF_EVEN, '0.000', '0', '0', '0'],
+            [RoundingMode::HALF_EVEN, '-0.001', '0', '0', '0'],
+            [RoundingMode::HALF_EVEN, '-0.499', '-50', '-5', '0'],
+            [RoundingMode::HALF_EVEN, '-0.500', '-50', '-5', '0'],
+            [RoundingMode::HALF_EVEN, '-0.501', '-50', '-5', '-1'],
             [RoundingMode::HALF_EVEN, '-0.999', '-100', '-10', '-1'],
             [RoundingMode::HALF_EVEN, '-1.000', '-100', '-10', '-1'],
             [RoundingMode::HALF_EVEN, '-1.001', '-100', '-10', '-1'],
@@ -1338,63 +1338,63 @@ class BigDecimalTest extends AbstractTestCase
             [RoundingMode::HALF_EVEN, '-3.500', '-350', '-35', '-4'],
             [RoundingMode::HALF_EVEN, '-3.501', '-350', '-35', '-4'],
 
-            [RoundingMode::UNNECESSARY,  '3.501',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '3.500',  '350',  '35', null],
-            [RoundingMode::UNNECESSARY,  '3.499',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '3.001',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '3.000',  '300',  '30',  '3'],
-            [RoundingMode::UNNECESSARY,  '2.999',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '2.501',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '2.500',  '250',  '25', null],
-            [RoundingMode::UNNECESSARY,  '2.499',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '2.001',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '2.000',  '200',  '20',  '2'],
-            [RoundingMode::UNNECESSARY,  '1.999',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '1.501',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '1.500',  '150',  '15', null],
-            [RoundingMode::UNNECESSARY,  '1.499',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '1.001',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '1.000',  '100',  '10',  '1'],
-            [RoundingMode::UNNECESSARY,  '0.999',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '0.501',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '0.500',   '50',   '5', null],
-            [RoundingMode::UNNECESSARY,  '0.499',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '0.001',   null,  null, null],
-            [RoundingMode::UNNECESSARY,  '0.000',    '0',   '0',  '0'],
-            [RoundingMode::UNNECESSARY, '-0.001',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-0.499',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-0.500',  '-50',  '-5', null],
-            [RoundingMode::UNNECESSARY, '-0.501',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-0.999',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '3.501', null, null, null],
+            [RoundingMode::UNNECESSARY, '3.500', '350', '35', null],
+            [RoundingMode::UNNECESSARY, '3.499', null, null, null],
+            [RoundingMode::UNNECESSARY, '3.001', null, null, null],
+            [RoundingMode::UNNECESSARY, '3.000', '300', '30', '3'],
+            [RoundingMode::UNNECESSARY, '2.999', null, null, null],
+            [RoundingMode::UNNECESSARY, '2.501', null, null, null],
+            [RoundingMode::UNNECESSARY, '2.500', '250', '25', null],
+            [RoundingMode::UNNECESSARY, '2.499', null, null, null],
+            [RoundingMode::UNNECESSARY, '2.001', null, null, null],
+            [RoundingMode::UNNECESSARY, '2.000', '200', '20', '2'],
+            [RoundingMode::UNNECESSARY, '1.999', null, null, null],
+            [RoundingMode::UNNECESSARY, '1.501', null, null, null],
+            [RoundingMode::UNNECESSARY, '1.500', '150', '15', null],
+            [RoundingMode::UNNECESSARY, '1.499', null, null, null],
+            [RoundingMode::UNNECESSARY, '1.001', null, null, null],
+            [RoundingMode::UNNECESSARY, '1.000', '100', '10', '1'],
+            [RoundingMode::UNNECESSARY, '0.999', null, null, null],
+            [RoundingMode::UNNECESSARY, '0.501', null, null, null],
+            [RoundingMode::UNNECESSARY, '0.500', '50', '5', null],
+            [RoundingMode::UNNECESSARY, '0.499', null, null, null],
+            [RoundingMode::UNNECESSARY, '0.001', null, null, null],
+            [RoundingMode::UNNECESSARY, '0.000', '0', '0', '0'],
+            [RoundingMode::UNNECESSARY, '-0.001', null, null, null],
+            [RoundingMode::UNNECESSARY, '-0.499', null, null, null],
+            [RoundingMode::UNNECESSARY, '-0.500', '-50', '-5', null],
+            [RoundingMode::UNNECESSARY, '-0.501', null, null, null],
+            [RoundingMode::UNNECESSARY, '-0.999', null, null, null],
             [RoundingMode::UNNECESSARY, '-1.000', '-100', '-10', '-1'],
-            [RoundingMode::UNNECESSARY, '-1.001',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-1.499',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '-1.001', null, null, null],
+            [RoundingMode::UNNECESSARY, '-1.499', null, null, null],
             [RoundingMode::UNNECESSARY, '-1.500', '-150', '-15', null],
-            [RoundingMode::UNNECESSARY, '-1.501',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-1.999',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '-1.501', null, null, null],
+            [RoundingMode::UNNECESSARY, '-1.999', null, null, null],
             [RoundingMode::UNNECESSARY, '-2.000', '-200', '-20', '-2'],
-            [RoundingMode::UNNECESSARY, '-2.001',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-2.499',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '-2.001', null, null, null],
+            [RoundingMode::UNNECESSARY, '-2.499', null, null, null],
             [RoundingMode::UNNECESSARY, '-2.500', '-250', '-25', null],
-            [RoundingMode::UNNECESSARY, '-2.501',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-2.999',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '-2.501', null, null, null],
+            [RoundingMode::UNNECESSARY, '-2.999', null, null, null],
             [RoundingMode::UNNECESSARY, '-3.000', '-300', '-30', '-3'],
-            [RoundingMode::UNNECESSARY, '-3.001',   null,  null, null],
-            [RoundingMode::UNNECESSARY, '-3.499',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '-3.001', null, null, null],
+            [RoundingMode::UNNECESSARY, '-3.499', null, null, null],
             [RoundingMode::UNNECESSARY, '-3.500', '-350', '-35', null],
-            [RoundingMode::UNNECESSARY, '-3.501',   null,  null, null],
+            [RoundingMode::UNNECESSARY, '-3.501', null, null, null],
         ];
     }
 
     /**
      * @dataProvider providerQuotientAndRemainder
      *
-     * @param string $dividend  The dividend.
-     * @param string $divisor   The divisor.
-     * @param string $quotient  The expected quotient.
+     * @param string $dividend The dividend.
+     * @param string $divisor The divisor.
+     * @param string $quotient The expected quotient.
      * @param string $remainder The expected remainder.
      */
-    public function testQuotientAndRemainder(string $dividend, string $divisor, string $quotient, string $remainder) : void
+    public function testQuotientAndRemainder(string $dividend, string $divisor, string $quotient, string $remainder): void
     {
         $dividend = BigDecimal::of($dividend);
 
@@ -1407,7 +1407,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalEquals($remainder, $r);
     }
 
-    public function providerQuotientAndRemainder() : array
+    public function providerQuotientAndRemainder(): array
     {
         return [
             ['1', '123', '0', '1'],
@@ -1476,19 +1476,19 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testQuotientOfZeroThrowsException() : void
+    public function testQuotientOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigDecimal::of(1.2)->quotient(0);
     }
 
-    public function testRemainderOfZeroThrowsException() : void
+    public function testRemainderOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigDecimal::of(1.2)->remainder(0);
     }
 
-    public function testQuotientAndRemainderOfZeroThrowsException() : void
+    public function testQuotientAndRemainderOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigDecimal::of(1.2)->quotientAndRemainder(0);
@@ -1497,14 +1497,14 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerSqrt
      */
-    public function testSqrt(string $number, int $scale, string $sqrt) : void
+    public function testSqrt(string $number, int $scale, string $sqrt): void
     {
         $number = BigDecimal::of($number);
 
         self::assertBigDecimalEquals($sqrt, $number->sqrt($scale));
     }
 
-    public function providerSqrt() : array
+    public function providerSqrt(): array
     {
         return [
             ['0', 0, '0'],
@@ -1701,14 +1701,14 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testSqrtOfNegativeNumber() : void
+    public function testSqrtOfNegativeNumber(): void
     {
         $number = BigDecimal::of(-1);
         $this->expectException(NegativeNumberException::class);
         $number->sqrt(0);
     }
 
-    public function testSqrtWithNegativeScale() : void
+    public function testSqrtWithNegativeScale(): void
     {
         $number = BigDecimal::of(1);
         $this->expectException(\InvalidArgumentException::class);
@@ -1718,50 +1718,50 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerPower
      *
-     * @param string  $number        The base number.
-     * @param int     $exponent      The exponent to apply.
-     * @param string  $unscaledValue The expected unscaled value of the result.
-     * @param int     $scale         The expected scale of the result.
+     * @param string $number The base number.
+     * @param int $exponent The exponent to apply.
+     * @param string $unscaledValue The expected unscaled value of the result.
+     * @param int $scale The expected scale of the result.
      */
-    public function testPower(string $number, int $exponent, string $unscaledValue, int $scale) : void
+    public function testPower(string $number, int $exponent, string $unscaledValue, int $scale): void
     {
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->power($exponent));
     }
 
-    public function providerPower() : array
+    public function providerPower(): array
     {
         return [
             ['-3', 0, '1', 0],
             ['-2', 0, '1', 0],
             ['-1', 0, '1', 0],
-            ['0',  0, '1', 0],
-            ['1',  0, '1', 0],
-            ['2',  0, '1', 0],
-            ['3',  0, '1', 0],
+            ['0', 0, '1', 0],
+            ['1', 0, '1', 0],
+            ['2', 0, '1', 0],
+            ['3', 0, '1', 0],
 
             ['-3', 1, '-3', 0],
             ['-2', 1, '-2', 0],
             ['-1', 1, '-1', 0],
-            ['0',  1,  '0', 0],
-            ['1',  1,  '1', 0],
-            ['2',  1,  '2', 0],
-            ['3',  1,  '3', 0],
+            ['0', 1, '0', 0],
+            ['1', 1, '1', 0],
+            ['2', 1, '2', 0],
+            ['3', 1, '3', 0],
 
             ['-3', 2, '9', 0],
             ['-2', 2, '4', 0],
             ['-1', 2, '1', 0],
-            ['0',  2, '0', 0],
-            ['1',  2, '1', 0],
-            ['2',  2, '4', 0],
-            ['3',  2, '9', 0],
+            ['0', 2, '0', 0],
+            ['1', 2, '1', 0],
+            ['2', 2, '4', 0],
+            ['3', 2, '9', 0],
 
             ['-3', 3, '-27', 0],
-            ['-2', 3,  '-8', 0],
-            ['-1', 3,  '-1', 0],
-            ['0',  3,   '0', 0],
-            ['1',  3,   '1', 0],
-            ['2',  3,   '8', 0],
-            ['3',  3,  '27', 0],
+            ['-2', 3, '-8', 0],
+            ['-1', 3, '-1', 0],
+            ['0', 3, '0', 0],
+            ['1', 3, '1', 0],
+            ['2', 3, '8', 0],
+            ['3', 3, '27', 0],
 
             ['0', 1000000, '0', 0],
             ['1', 1000000, '1', 0],
@@ -1782,13 +1782,13 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerPowerWithInvalidExponentThrowsException
      */
-    public function testPowerWithInvalidExponentThrowsException(int $power) : void
+    public function testPowerWithInvalidExponentThrowsException(int $power): void
     {
         $this->expectException(\InvalidArgumentException::class);
         BigDecimal::of(1)->power($power);
     }
 
-    public function providerPowerWithInvalidExponentThrowsException() : array
+    public function providerPowerWithInvalidExponentThrowsException(): array
     {
         return [
             [-1],
@@ -1799,19 +1799,19 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider toScaleProvider
      *
-     * @param string $number        The number to scale.
-     * @param int    $toScale       The scale to apply.
-     * @param int    $roundingMode  The rounding mode to apply.
+     * @param string $number The number to scale.
+     * @param int $toScale The scale to apply.
+     * @param int $roundingMode The rounding mode to apply.
      * @param string $unscaledValue The expected unscaled value of the result.
-     * @param int    $scale         The expected scale of the result.
+     * @param int $scale The expected scale of the result.
      */
-    public function testToScale(string $number, int $toScale, int $roundingMode, string $unscaledValue, int $scale) : void
+    public function testToScale(string $number, int $toScale, int $roundingMode, string $unscaledValue, int $scale): void
     {
         $decimal = BigDecimal::of($number)->toScale($toScale, $roundingMode);
         self::assertBigDecimalInternalValues($unscaledValue, $scale, $decimal);
     }
 
-    public function toScaleProvider() : array
+    public function toScaleProvider(): array
     {
         return [
             ['123.45', 0, RoundingMode::DOWN, '123', 0],
@@ -1824,16 +1824,16 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerWithPointMovedLeft
      *
-     * @param string $number   The decimal number as a string.
-     * @param int    $places   The number of decimal places to move left.
+     * @param string $number The decimal number as a string.
+     * @param int $places The number of decimal places to move left.
      * @param string $expected The expected result.
      */
-    public function testWithPointMovedLeft(string $number, int $places, string $expected) : void
+    public function testWithPointMovedLeft(string $number, int $places, string $expected): void
     {
         self::assertBigDecimalEquals($expected, BigDecimal::of($number)->withPointMovedLeft($places));
     }
 
-    public function providerWithPointMovedLeft() : array
+    public function providerWithPointMovedLeft(): array
     {
         return [
             ['0', -2, '0'],
@@ -1907,16 +1907,16 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerWithPointMovedRight
      *
-     * @param string $number   The decimal number as a string.
-     * @param int    $places   The number of decimal places to move right.
+     * @param string $number The decimal number as a string.
+     * @param int $places The number of decimal places to move right.
      * @param string $expected The expected result.
      */
-    public function testWithPointMovedRight(string $number, int $places, string $expected) : void
+    public function testWithPointMovedRight(string $number, int $places, string $expected): void
     {
         self::assertBigDecimalEquals($expected, BigDecimal::of($number)->withPointMovedRight($places));
     }
 
-    public function providerWithPointMovedRight() : array
+    public function providerWithPointMovedRight(): array
     {
         return [
             ['0', -2, '0.00'],
@@ -1990,15 +1990,15 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerStripTrailingZeros
      *
-     * @param string $number   The number to trim.
+     * @param string $number The number to trim.
      * @param string $expected The expected result.
      */
-    public function testStripTrailingZeros(string $number, string $expected) : void
+    public function testStripTrailingZeros(string $number, string $expected): void
     {
         self::assertBigDecimalEquals($expected, BigDecimal::of($number)->stripTrailingZeros());
     }
 
-    public function providerStripTrailingZeros() : array
+    public function providerStripTrailingZeros(): array
     {
         return [
             ['0', '0'],
@@ -2035,16 +2035,16 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerAbs
      *
-     * @param string $number        The number as a string.
+     * @param string $number The number as a string.
      * @param string $unscaledValue The expected unscaled value of the absolute result.
-     * @param int    $scale         The expected scale of the absolute result.
+     * @param int $scale The expected scale of the absolute result.
      */
-    public function testAbs(string $number, string $unscaledValue, int $scale) : void
+    public function testAbs(string $number, string $unscaledValue, int $scale): void
     {
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->abs());
     }
 
-    public function providerAbs() : array
+    public function providerAbs(): array
     {
         return [
             ['123', '123', 0],
@@ -2057,16 +2057,16 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerNegated
      *
-     * @param string $number        The number to negate as a string.
+     * @param string $number The number to negate as a string.
      * @param string $unscaledValue The expected unscaled value of the result.
-     * @param int    $scale         The expected scale of the result.
+     * @param int $scale The expected scale of the result.
      */
-    public function testNegated(string $number, string $unscaledValue, int $scale) : void
+    public function testNegated(string $number, string $unscaledValue, int $scale): void
     {
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->negated());
     }
 
-    public function providerNegated() : array
+    public function providerNegated(): array
     {
         return [
             ['123', '-123', 0],
@@ -2079,11 +2079,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string           $a The base number as a string.
+     * @param string $a The base number as a string.
      * @param string|int|float $b The number to compare to.
-     * @param int              $c The comparison result.
+     * @param int $c The comparison result.
      */
-    public function testCompareTo(string $a, $b, int $c) : void
+    public function testCompareTo(string $a, $b, int $c): void
     {
         self::assertSame($c, BigDecimal::of($a)->compareTo($b));
     }
@@ -2091,11 +2091,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string           $a The base number as a string.
+     * @param string $a The base number as a string.
      * @param string|int|float $b The number to compare to.
-     * @param int              $c The comparison result.
+     * @param int $c The comparison result.
      */
-    public function testIsEqualTo(string $a, $b, int $c) : void
+    public function testIsEqualTo(string $a, $b, int $c): void
     {
         self::assertSame($c === 0, BigDecimal::of($a)->isEqualTo($b));
     }
@@ -2103,11 +2103,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string           $a The base number as a string.
+     * @param string $a The base number as a string.
      * @param string|int|float $b The number to compare to.
-     * @param int              $c The comparison result.
+     * @param int $c The comparison result.
      */
-    public function testIsLessThan(string $a, $b, int $c) : void
+    public function testIsLessThan(string $a, $b, int $c): void
     {
         self::assertSame($c < 0, BigDecimal::of($a)->isLessThan($b));
     }
@@ -2115,11 +2115,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string           $a The base number as a string.
+     * @param string $a The base number as a string.
      * @param string|int|float $b The number to compare to.
-     * @param int              $c The comparison result.
+     * @param int $c The comparison result.
      */
-    public function testIsLessThanOrEqualTo(string $a, $b, int $c) : void
+    public function testIsLessThanOrEqualTo(string $a, $b, int $c): void
     {
         self::assertSame($c <= 0, BigDecimal::of($a)->isLessThanOrEqualTo($b));
     }
@@ -2127,11 +2127,11 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string           $a The base number as a string.
+     * @param string $a The base number as a string.
      * @param string|int|float $b The number to compare to.
-     * @param int              $c The comparison result.
+     * @param int $c The comparison result.
      */
-    public function testIsGreaterThan(string $a, $b, int $c) : void
+    public function testIsGreaterThan(string $a, $b, int $c): void
     {
         self::assertSame($c > 0, BigDecimal::of($a)->isGreaterThan($b));
     }
@@ -2139,53 +2139,53 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerCompareTo
      *
-     * @param string           $a The base number as a string.
+     * @param string $a The base number as a string.
      * @param string|int|float $b The number to compare to.
-     * @param int              $c The comparison result.
+     * @param int $c The comparison result.
      */
-    public function testIsGreaterThanOrEqualTo(string $a, $b, int $c) : void
+    public function testIsGreaterThanOrEqualTo(string $a, $b, int $c): void
     {
         self::assertSame($c >= 0, BigDecimal::of($a)->isGreaterThanOrEqualTo($b));
     }
 
-    public function providerCompareTo() : array
+    public function providerCompareTo(): array
     {
         return [
-            ['123', '123',  0],
+            ['123', '123', 0],
             ['123', '456', -1],
-            ['456', '123',  1],
-            ['456', '456',  0],
+            ['456', '123', 1],
+            ['456', '456', 0],
 
-            ['-123', '-123',  0],
-            ['-123',  '456', -1],
-            [ '456', '-123',  1],
-            [ '456',  '456',  0],
+            ['-123', '-123', 0],
+            ['-123', '456', -1],
+            [ '456', '-123', 1],
+            [ '456', '456', 0],
 
-            [ '123',  '123',  0],
-            [ '123', '-456',  1],
-            ['-456',  '123', -1],
-            ['-456',  '456', -1],
+            [ '123', '123', 0],
+            [ '123', '-456', 1],
+            ['-456', '123', -1],
+            ['-456', '456', -1],
 
-            ['-123', '-123',  0],
-            ['-123', '-456',  1],
+            ['-123', '-123', 0],
+            ['-123', '-456', 1],
             ['-456', '-123', -1],
-            ['-456', '-456',  0],
+            ['-456', '-456', 0],
 
-            ['123.000000000000000000000000000000000000000000000', '123',  0],
-            ['123.000000000000000000000000000000000000000000001', '123',  1],
+            ['123.000000000000000000000000000000000000000000000', '123', 0],
+            ['123.000000000000000000000000000000000000000000001', '123', 1],
             ['122.999999999999999999999999999999999999999999999', '123', -1],
 
-            ['123.0', '123.000000000000000000000000000000000000000000000',  0],
+            ['123.0', '123.000000000000000000000000000000000000000000000', 0],
             ['123.0', '123.000000000000000000000000000000000000000000001', -1],
-            ['123.0', '122.999999999999999999999999999999999999999999999',  1],
+            ['123.0', '122.999999999999999999999999999999999999999999999', 1],
 
             ['-0.000000000000000000000000000000000000000000000000001', '0', -1],
-            [ '0.000000000000000000000000000000000000000000000000001', '0',  1],
-            [ '0.000000000000000000000000000000000000000000000000000', '0',  0],
+            [ '0.000000000000000000000000000000000000000000000000001', '0', 1],
+            [ '0.000000000000000000000000000000000000000000000000000', '0', 0],
 
-            ['0', '-0.000000000000000000000000000000000000000000000000001',  1],
-            ['0',  '0.000000000000000000000000000000000000000000000000001', -1],
-            ['0',  '0.000000000000000000000000000000000000000000000000000',  0],
+            ['0', '-0.000000000000000000000000000000000000000000000000001', 1],
+            ['0', '0.000000000000000000000000000000000000000000000000001', -1],
+            ['0', '0.000000000000000000000000000000000000000000000000000', 0],
 
             ['123.9999999999999999999999999999999999999', 124, -1],
             ['124.0000000000000000000000000000000000000', '124', 0],
@@ -2201,9 +2201,9 @@ class BigDecimalTest extends AbstractTestCase
      * @dataProvider providerSign
      *
      * @param number|string $number The number to test.
-     * @param int           $sign   The sign of the number.
+     * @param int $sign The sign of the number.
      */
-    public function testGetSign($number, int $sign) : void
+    public function testGetSign($number, int $sign): void
     {
         self::assertSame($sign, BigDecimal::of($number)->getSign());
     }
@@ -2212,9 +2212,9 @@ class BigDecimalTest extends AbstractTestCase
      * @dataProvider providerSign
      *
      * @param number|string $number The number to test.
-     * @param int           $sign   The sign of the number.
+     * @param int $sign The sign of the number.
      */
-    public function testIsZero($number, int $sign) : void
+    public function testIsZero($number, int $sign): void
     {
         self::assertSame($sign === 0, BigDecimal::of($number)->isZero());
     }
@@ -2223,9 +2223,9 @@ class BigDecimalTest extends AbstractTestCase
      * @dataProvider providerSign
      *
      * @param number|string $number The number to test.
-     * @param int           $sign   The sign of the number.
+     * @param int $sign The sign of the number.
      */
-    public function testIsNegative($number, int $sign) : void
+    public function testIsNegative($number, int $sign): void
     {
         self::assertSame($sign < 0, BigDecimal::of($number)->isNegative());
     }
@@ -2234,9 +2234,9 @@ class BigDecimalTest extends AbstractTestCase
      * @dataProvider providerSign
      *
      * @param number|string $number The number to test.
-     * @param int           $sign   The sign of the number.
+     * @param int $sign The sign of the number.
      */
-    public function testIsNegativeOrZero($number, int $sign) : void
+    public function testIsNegativeOrZero($number, int $sign): void
     {
         self::assertSame($sign <= 0, BigDecimal::of($number)->isNegativeOrZero());
     }
@@ -2245,9 +2245,9 @@ class BigDecimalTest extends AbstractTestCase
      * @dataProvider providerSign
      *
      * @param number|string $number The number to test.
-     * @param int           $sign   The sign of the number.
+     * @param int $sign The sign of the number.
      */
-    public function testIsPositive($number, int $sign) : void
+    public function testIsPositive($number, int $sign): void
     {
         self::assertSame($sign > 0, BigDecimal::of($number)->isPositive());
     }
@@ -2256,42 +2256,42 @@ class BigDecimalTest extends AbstractTestCase
      * @dataProvider providerSign
      *
      * @param number|string $number The number to test.
-     * @param int           $sign   The sign of the number.
+     * @param int $sign The sign of the number.
      */
-    public function testIsPositiveOrZero($number, int $sign) : void
+    public function testIsPositiveOrZero($number, int $sign): void
     {
         self::assertSame($sign >= 0, BigDecimal::of($number)->isPositiveOrZero());
     }
 
-    public function providerSign() : array
+    public function providerSign(): array
     {
         return [
-            [ 0,  0],
-            [-0,  0],
-            [ 1,  1],
+            [ 0, 0],
+            [-0, 0],
+            [ 1, 1],
             [-1, -1],
 
             [PHP_INT_MAX, 1],
             [PHP_INT_MIN, -1],
 
-            [ 1.0,  1],
+            [ 1.0, 1],
             [-1.0, -1],
-            [ 0.1,  1],
+            [ 0.1, 1],
             [-0.1, -1],
-            [ 0.0,  0],
-            [-0.0,  0],
+            [ 0.0, 0],
+            [-0.0, 0],
 
-            [ '1.00',  1],
+            [ '1.00', 1],
             ['-1.00', -1],
-            [ '0.10',  1],
+            [ '0.10', 1],
             ['-0.10', -1],
-            [ '0.01',  1],
+            [ '0.01', 1],
             ['-0.01', -1],
-            [ '0.00',  0],
-            ['-0.00',  0],
+            [ '0.00', 0],
+            ['-0.00', 0],
 
-            [ '0.000000000000000000000000000000000000000000000000000000000000000000000000000001',  1],
-            [ '0.000000000000000000000000000000000000000000000000000000000000000000000000000000',  0],
+            [ '0.000000000000000000000000000000000000000000000000000000000000000000000000000001', 1],
+            [ '0.000000000000000000000000000000000000000000000000000000000000000000000000000000', 0],
             ['-0.000000000000000000000000000000000000000000000000000000000000000000000000000001', -1]
         ];
     }
@@ -2299,15 +2299,15 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerGetIntegralPart
      *
-     * @param string $number   The number to test.
+     * @param string $number The number to test.
      * @param string $expected The expected integral value.
      */
-    public function testGetIntegralPart(string $number, string $expected) : void
+    public function testGetIntegralPart(string $number, string $expected): void
     {
         self::assertSame($expected, BigDecimal::of($number)->getIntegralPart());
     }
 
-    public function providerGetIntegralPart() : array
+    public function providerGetIntegralPart(): array
     {
         return [
             ['1.23', '1'],
@@ -2323,15 +2323,15 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerGetFractionalPart
      *
-     * @param string $number   The number to test.
+     * @param string $number The number to test.
      * @param string $expected The expected fractional value.
      */
-    public function testGetFractionalPart(string $number, string $expected) : void
+    public function testGetFractionalPart(string $number, string $expected): void
     {
         self::assertSame($expected, BigDecimal::of($number)->getFractionalPart());
     }
 
-    public function providerGetFractionalPart() : array
+    public function providerGetFractionalPart(): array
     {
         return [
             ['1.23', '23'],
@@ -2346,15 +2346,15 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerHasNonZeroFractionalPart
      *
-     * @param string $number                   The number to test.
-     * @param bool   $hasNonZeroFractionalPart The expected return value.
+     * @param string $number The number to test.
+     * @param bool $hasNonZeroFractionalPart The expected return value.
      */
-    public function testHasNonZeroFractionalPart(string $number, bool $hasNonZeroFractionalPart) : void
+    public function testHasNonZeroFractionalPart(string $number, bool $hasNonZeroFractionalPart): void
     {
         self::assertSame($hasNonZeroFractionalPart, BigDecimal::of($number)->hasNonZeroFractionalPart());
     }
 
-    public function providerHasNonZeroFractionalPart() : array
+    public function providerHasNonZeroFractionalPart(): array
     {
         return [
             ['1', false],
@@ -2369,15 +2369,15 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerToBigInteger
      *
-     * @param string $decimal  The number to convert.
+     * @param string $decimal The number to convert.
      * @param string $expected The expected value.
      */
-    public function testToBigInteger(string $decimal, string $expected) : void
+    public function testToBigInteger(string $decimal, string $expected): void
     {
         self::assertBigIntegerEquals($expected, BigDecimal::of($decimal)->toBigInteger());
     }
 
-    public function providerToBigInteger() : array
+    public function providerToBigInteger(): array
     {
         return [
             ['0', '0'],
@@ -2393,13 +2393,13 @@ class BigDecimalTest extends AbstractTestCase
      *
      * @param string $decimal A decimal number with a non-zero fractional part.
      */
-    public function testToBigIntegerThrowsExceptionWhenRoundingNecessary(string $decimal) : void
+    public function testToBigIntegerThrowsExceptionWhenRoundingNecessary(string $decimal): void
     {
         $this->expectException(RoundingNecessaryException::class);
         BigDecimal::of($decimal)->toBigInteger();
     }
 
-    public function providerToBigIntegerThrowsExceptionWhenRoundingNecessary() : array
+    public function providerToBigIntegerThrowsExceptionWhenRoundingNecessary(): array
     {
         return [
             ['0.1'],
@@ -2417,15 +2417,15 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerToBigRational
      *
-     * @param string $decimal  The decimal number to test.
+     * @param string $decimal The decimal number to test.
      * @param string $rational The expected rational number.
      */
-    public function testToBigRational(string $decimal, string $rational) : void
+    public function testToBigRational(string $decimal, string $rational): void
     {
         self::assertBigRationalEquals($rational, BigDecimal::of($decimal)->toBigRational());
     }
 
-    public function providerToBigRational() : array
+    public function providerToBigRational(): array
     {
         return [
             ['0', '0'],
@@ -2463,13 +2463,13 @@ class BigDecimalTest extends AbstractTestCase
      *
      * @param int $number The decimal number to test.
      */
-    public function testToInt(int $number) : void
+    public function testToInt(int $number): void
     {
         self::assertSame($number, BigDecimal::of($number)->toInt());
         self::assertSame($number, BigDecimal::of($number . '.0')->toInt());
     }
 
-    public function providerToInt() : array
+    public function providerToInt(): array
     {
         return [
             [PHP_INT_MIN],
@@ -2487,13 +2487,13 @@ class BigDecimalTest extends AbstractTestCase
      *
      * @param string $number A valid decimal number that cannot safely be converted to a native integer.
      */
-    public function testToIntThrowsException(string $number) : void
+    public function testToIntThrowsException(string $number): void
     {
         $this->expectException(MathException::class);
         BigDecimal::of($number)->toInt();
     }
 
-    public function providerToIntThrowsException() : array
+    public function providerToIntThrowsException(): array
     {
         return [
             ['-999999999999999999999999999999'],
@@ -2507,14 +2507,14 @@ class BigDecimalTest extends AbstractTestCase
      * @dataProvider providerToFloat
      *
      * @param string $value The big decimal value.
-     * @param float  $float The expected float value.
+     * @param float $float The expected float value.
      */
-    public function testToFloat(string $value, float $float) : void
+    public function testToFloat(string $value, float $float): void
     {
         self::assertSame($float, BigDecimal::of($value)->toFloat());
     }
 
-    public function providerToFloat() : array
+    public function providerToFloat(): array
     {
         return [
             ['0', 0.0],
@@ -2531,28 +2531,28 @@ class BigDecimalTest extends AbstractTestCase
      * @dataProvider providerToString
      *
      * @param string $unscaledValue The unscaled value.
-     * @param int    $scale         The scale.
-     * @param string $expected      The expected string representation.
+     * @param int $scale The scale.
+     * @param string $expected The expected string representation.
      */
-    public function testToString(string $unscaledValue, int $scale, string $expected) : void
+    public function testToString(string $unscaledValue, int $scale, string $expected): void
     {
         self::assertSame($expected, (string) BigDecimal::ofUnscaledValue($unscaledValue, $scale));
     }
 
-    public function providerToString() : array
+    public function providerToString(): array
     {
         return [
-            ['0',   0, '0'],
-            ['0',   1, '0.0'],
-            ['1',   1, '0.1'],
-            ['0',   2, '0.00'],
-            ['1',   2, '0.01'],
-            ['10',  2, '0.10'],
-            ['11',  2, '0.11'],
-            ['11',  3, '0.011'],
-            ['1',   0, '1'],
-            ['10',  1, '1.0'],
-            ['11',  1, '1.1'],
+            ['0', 0, '0'],
+            ['0', 1, '0.0'],
+            ['1', 1, '0.1'],
+            ['0', 2, '0.00'],
+            ['1', 2, '0.01'],
+            ['10', 2, '0.10'],
+            ['11', 2, '0.11'],
+            ['11', 3, '0.011'],
+            ['1', 0, '1'],
+            ['10', 1, '1.0'],
+            ['11', 1, '1.1'],
             ['100', 2, '1.00'],
             ['101', 2, '1.01'],
             ['110', 2, '1.10'],
@@ -2560,15 +2560,15 @@ class BigDecimalTest extends AbstractTestCase
             ['111', 3, '0.111'],
             ['111', 4, '0.0111'],
 
-            ['-1',   1, '-0.1'],
-            ['-1',   2, '-0.01'],
-            ['-10',  2, '-0.10'],
-            ['-11',  2, '-0.11'],
-            ['-12',  3, '-0.012'],
-            ['-12',  4, '-0.0012'],
-            ['-1',   0, '-1'],
-            ['-10',  1, '-1.0'],
-            ['-12',  1, '-1.2'],
+            ['-1', 1, '-0.1'],
+            ['-1', 2, '-0.01'],
+            ['-10', 2, '-0.10'],
+            ['-11', 2, '-0.11'],
+            ['-12', 3, '-0.012'],
+            ['-12', 4, '-0.0012'],
+            ['-1', 0, '-1'],
+            ['-10', 1, '-1.0'],
+            ['-12', 1, '-1.2'],
             ['-100', 2, '-1.00'],
             ['-101', 2, '-1.01'],
             ['-120', 2, '-1.20'],
@@ -2578,7 +2578,7 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testSerialize() : void
+    public function testSerialize(): void
     {
         $value = '-1234567890987654321012345678909876543210123456789';
         $scale = 37;
@@ -2588,7 +2588,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues($value, $scale, \unserialize(\serialize($number)));
     }
 
-    public function testDirectCallToUnserialize() : void
+    public function testDirectCallToUnserialize(): void
     {
         $this->expectException(\LogicException::class);
         BigDecimal::zero()->unserialize('123:0');

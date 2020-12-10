@@ -18,7 +18,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function add(string $a, string $b) : string
+    public function add(string $a, string $b): string
     {
         return \bcadd($a, $b, 0);
     }
@@ -26,7 +26,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function sub(string $a, string $b) : string
+    public function sub(string $a, string $b): string
     {
         return \bcsub($a, $b, 0);
     }
@@ -34,7 +34,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function mul(string $a, string $b) : string
+    public function mul(string $a, string $b): string
     {
         return \bcmul($a, $b, 0);
     }
@@ -42,7 +42,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divQ(string $a, string $b) : string
+    public function divQ(string $a, string $b): string
     {
         return \bcdiv($a, $b, 0);
     }
@@ -50,7 +50,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divR(string $a, string $b) : string
+    public function divR(string $a, string $b): string
     {
         return \bcmod($a, $b);
     }
@@ -58,7 +58,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divQR(string $a, string $b) : array
+    public function divQR(string $a, string $b): array
     {
         $q = \bcdiv($a, $b, 0);
         $r = \bcmod($a, $b);
@@ -69,7 +69,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function pow(string $a, int $e) : string
+    public function pow(string $a, int $e): string
     {
         return \bcpow($a, (string) $e, 0);
     }
@@ -77,7 +77,7 @@ class BcMathCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function modPow(string $base, string $exp, string $mod) : string
+    public function modPow(string $base, string $exp, string $mod): string
     {
         return \bcpowmod($base, $exp, $mod, 0);
     }
@@ -88,7 +88,7 @@ class BcMathCalculator extends Calculator
      * @psalm-suppress NullableReturnStatement
      * @psalm-suppress InvalidNullableReturnType
      */
-    public function sqrt(string $n) : string
+    public function sqrt(string $n): string
     {
         return \bcsqrt($n, 0);
     }

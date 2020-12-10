@@ -14,7 +14,7 @@ class RoundingNecessaryException extends MathException
      *
      * @psalm-pure
      */
-    public static function roundingNecessary() : RoundingNecessaryException
+    public static function roundingNecessary(): RoundingNecessaryException
     {
         return new self('Rounding is necessary to represent the result of the operation at this scale.');
     }

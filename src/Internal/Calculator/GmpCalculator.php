@@ -18,7 +18,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function add(string $a, string $b) : string
+    public function add(string $a, string $b): string
     {
         return \gmp_strval(\gmp_add($a, $b));
     }
@@ -26,7 +26,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function sub(string $a, string $b) : string
+    public function sub(string $a, string $b): string
     {
         return \gmp_strval(\gmp_sub($a, $b));
     }
@@ -34,7 +34,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function mul(string $a, string $b) : string
+    public function mul(string $a, string $b): string
     {
         return \gmp_strval(\gmp_mul($a, $b));
     }
@@ -42,7 +42,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divQ(string $a, string $b) : string
+    public function divQ(string $a, string $b): string
     {
         return \gmp_strval(\gmp_div_q($a, $b));
     }
@@ -50,7 +50,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divR(string $a, string $b) : string
+    public function divR(string $a, string $b): string
     {
         return \gmp_strval(\gmp_div_r($a, $b));
     }
@@ -58,7 +58,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function divQR(string $a, string $b) : array
+    public function divQR(string $a, string $b): array
     {
         [$q, $r] = \gmp_div_qr($a, $b);
 
@@ -71,7 +71,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function pow(string $a, int $e) : string
+    public function pow(string $a, int $e): string
     {
         return \gmp_strval(\gmp_pow($a, $e));
     }
@@ -79,7 +79,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function modInverse(string $x, string $m) : ?string
+    public function modInverse(string $x, string $m): ?string
     {
         $result = \gmp_invert($x, $m);
 
@@ -93,7 +93,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function modPow(string $base, string $exp, string $mod) : string
+    public function modPow(string $base, string $exp, string $mod): string
     {
         return \gmp_strval(\gmp_powm($base, $exp, $mod));
     }
@@ -101,7 +101,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function gcd(string $a, string $b) : string
+    public function gcd(string $a, string $b): string
     {
         return \gmp_strval(\gmp_gcd($a, $b));
     }
@@ -109,7 +109,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function fromBase(string $number, int $base) : string
+    public function fromBase(string $number, int $base): string
     {
         return \gmp_strval(\gmp_init($number, $base));
     }
@@ -117,7 +117,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function toBase(string $number, int $base) : string
+    public function toBase(string $number, int $base): string
     {
         return \gmp_strval($number, $base);
     }
@@ -125,7 +125,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function and(string $a, string $b) : string
+    public function and(string $a, string $b): string
     {
         return \gmp_strval(\gmp_and($a, $b));
     }
@@ -133,7 +133,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function or(string $a, string $b) : string
+    public function or(string $a, string $b): string
     {
         return \gmp_strval(\gmp_or($a, $b));
     }
@@ -141,7 +141,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritdoc}
      */
-    public function xor(string $a, string $b) : string
+    public function xor(string $a, string $b): string
     {
         return \gmp_strval(\gmp_xor($a, $b));
     }
@@ -149,7 +149,7 @@ class GmpCalculator extends Calculator
     /**
      * {@inheritDoc}
      */
-    public function sqrt(string $n) : string
+    public function sqrt(string $n): string
     {
         return \gmp_strval(\gmp_sqrt($n));
     }
