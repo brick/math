@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  psalm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.0"
+
+      - name: Install composer dependencies
+        run: composer install --no-interaction --no-progress --no-suggest
+
+      - name: Run Psalm
+        run: vendor/bin/psalm --show-info=false --find-unused-psalm-suppress --no-progress
+
+  phpunit:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version:
+          - "7.1"
+          - "7.2"
+          - "7.3"
+          - "7.4"
+          - "8.0"
+        calculator:
+          - GMP
+          - BCMath
+          - Native
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: xdebug
+
+      - name: Install composer dependencies
+        run: composer install --no-interaction --no-progress --no-suggest
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit
+        env:
+          CALCULATOR: ${{ matrix.calculator }}
+        if: ${{ matrix.php-version != '8.0' }}
+
+      - name: Run PHPUnit with coverage
+        run: |
+          mkdir -p mkdir -p build/logs
+          vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+        env:
+          CALCULATOR: ${{ matrix.calculator }}
+        if: ${{ matrix.php-version == '8.0' }}
+
+      - name: Upload coverage report to Coveralls
+        run: vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ matrix.php-version == '8.0' }}
