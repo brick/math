@@ -8,6 +8,7 @@ on:
 
 jobs:
   psalm:
+    name: Psalm
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +27,7 @@ jobs:
         run: vendor/bin/psalm --show-info=false --find-unused-psalm-suppress --no-progress
 
   phpunit:
+    name: PHPUnit
     runs-on: ubuntu-latest
 
     strategy:
