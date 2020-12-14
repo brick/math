@@ -20,7 +20,7 @@ jobs:
           php-version: "8.0"
 
       - name: Install composer dependencies
-        run: composer install --no-interaction --no-progress --no-suggest
+        uses: "ramsey/composer-install@v1"
 
       - name: Run Psalm
         run: vendor/bin/psalm --show-info=false --find-unused-psalm-suppress --no-progress
@@ -52,7 +52,7 @@ jobs:
           coverage: xdebug
 
       - name: Install composer dependencies
-        run: composer install --no-interaction --no-progress --no-suggest
+        uses: "ramsey/composer-install@v1"
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit
