@@ -41,6 +41,9 @@ class BcMathCalculator extends Calculator
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-suppress InvalidNullableReturnType
+     * @psalm-suppress NullableReturnStatement
      */
     public function divQ(string $a, string $b) : string
     {
@@ -49,6 +52,9 @@ class BcMathCalculator extends Calculator
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-suppress InvalidNullableReturnType
+     * @psalm-suppress NullableReturnStatement
      */
     public function divR(string $a, string $b) : string
     {
@@ -63,6 +69,9 @@ class BcMathCalculator extends Calculator
         $q = \bcdiv($a, $b, 0);
         $r = \bcmod($a, $b);
 
+        assert($q !== null);
+        assert($r !== null);
+
         return [$q, $r];
     }
 
@@ -76,6 +85,9 @@ class BcMathCalculator extends Calculator
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-suppress InvalidNullableReturnType
+     * @psalm-suppress NullableReturnStatement
      */
     public function modPow(string $base, string $exp, string $mod) : string
     {

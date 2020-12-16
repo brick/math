@@ -185,10 +185,11 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @return static
      *
      * @psalm-pure
+     * @psalm-suppress TooManyArguments
+     * @psalm-suppress UnsafeInstantiation
      */
     protected static function create(... $args) : BigNumber
     {
-        /** @psalm-suppress TooManyArguments */
         return new static(... $args);
     }
 
