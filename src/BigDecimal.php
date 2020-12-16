@@ -96,7 +96,10 @@ final class BigDecimal extends BigNumber
      */
     public static function zero() : BigDecimal
     {
-        /** @psalm-suppress ImpureStaticVariable */
+        /**
+         * @psalm-suppress ImpureStaticVariable
+         * @var BigDecimal|null $zero
+         */
         static $zero;
 
         if ($zero === null) {
@@ -115,7 +118,10 @@ final class BigDecimal extends BigNumber
      */
     public static function one() : BigDecimal
     {
-        /** @psalm-suppress ImpureStaticVariable */
+        /**
+         * @psalm-suppress ImpureStaticVariable
+         * @var BigDecimal|null $one
+         */
         static $one;
 
         if ($one === null) {
@@ -134,7 +140,10 @@ final class BigDecimal extends BigNumber
      */
     public static function ten() : BigDecimal
     {
-        /** @psalm-suppress ImpureStaticVariable */
+        /**
+         * @psalm-suppress ImpureStaticVariable
+         * @var BigDecimal|null $ten
+         */
         static $ten;
 
         if ($ten === null) {
