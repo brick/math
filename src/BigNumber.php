@@ -67,6 +67,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             return new BigInteger((string) $value);
         }
 
+        /** @psalm-suppress RedundantCastGivenDocblockType We cannot trust the untyped $value here! */
         $value = \is_float($value) ? self::floatToString($value) : (string) $value;
 
         $throw = static function() use ($value) : void {
