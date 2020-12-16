@@ -92,7 +92,11 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         if ($numerator !== null) {
             assert($denominator !== null);
 
-            $numerator   = self::cleanUp($sign . $numerator);
+            if ($sign !== null) {
+                $numerator = $sign . $numerator;
+            }
+
+            $numerator   = self::cleanUp($numerator);
             $denominator = self::cleanUp($denominator);
 
             if ($denominator === '0') {
@@ -121,14 +125,14 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         }
 
         if ($point !== null || $exponent !== null) {
-            $fractional = $fractional ?? '';
-            $exponent = $exponent !== null ? (int) $exponent : 0;
+            $fractional = ($fractional ?? '');
+            $exponent = ($exponent !== null) ? (int) $exponent : 0;
 
             if ($exponent === PHP_INT_MIN || $exponent === PHP_INT_MAX) {
                 throw new NumberFormatException('Exponent too large.');
             }
 
-            $unscaledValue = self::cleanUp($sign . $integral . $fractional);
+            $unscaledValue = self::cleanUp(($sign ?? ''). $integral . $fractional);
 
             $scale = \strlen($fractional) - $exponent;
 
@@ -142,7 +146,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             return new BigDecimal($unscaledValue, $scale);
         }
 
-        $integral = self::cleanUp($sign . $integral);
+        $integral = self::cleanUp(($sign ?? '') . $integral);
 
         return new BigInteger($integral);
     }
