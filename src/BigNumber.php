@@ -78,7 +78,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         };
 
         if (\preg_match(self::PARSE_REGEXP, $value, $matches) !== 1) {
-            /** @psalm-suppress ImpureFunctionCall */
             $throw();
         }
 
@@ -117,7 +116,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         $exponent   = $getMatch('exponent');
 
         if ($integral === null && $fractional === null) {
-            /** @psalm-suppress ImpureFunctionCall */
             $throw();
         }
 
