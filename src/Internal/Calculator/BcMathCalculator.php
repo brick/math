@@ -58,6 +58,10 @@ class BcMathCalculator extends Calculator
      */
     public function divR(string $a, string $b) : string
     {
+        if (version_compare(PHP_VERSION, '7.2') >= 0) {
+            return \bcmod($a, $b, 0);
+        }
+
         return \bcmod($a, $b);
     }
 
