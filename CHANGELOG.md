@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.2](https://github.com/brick/math/releases/tag/0.9.2) - 2021-01-20
+
+🐛 **Bug fix**
+
+- Incorrect results could be returned when using the BCMath calculator, with a default scale set with `bcscale()`, on PHP >= 7.2 (#55).
+
 ## [0.9.1](https://github.com/brick/math/releases/tag/0.9.1) - 2020-08-19
 
 ✨ New features
