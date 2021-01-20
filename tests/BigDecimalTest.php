@@ -10,7 +10,6 @@ use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
-use Brick\Math\Internal\Calculator;
 use Brick\Math\RoundingMode;
 
 /**
@@ -846,22 +845,6 @@ class BigDecimalTest extends AbstractTestCase
     {
         $this->expectException(DivisionByZeroException::class);
         BigDecimal::of(1)->exactlyDividedBy(0);
-    }
-
-    public function testExactlyDividedByWithNonZeroBcMathDefaultScale(): void
-    {
-        if (! Calculator::get() instanceof Calculator\BcMathCalculator) {
-            self::markTestSkipped('This test targets the BCMath calculator only.');
-        }
-
-        $previousScale = bcscale();
-        bcscale(8);
-
-        try {
-            self::assertSame('0.1', (string) BigDecimal::of(1)->exactlyDividedBy(10));
-        } finally {
-            bcscale($previousScale);
-        }
     }
 
     /**

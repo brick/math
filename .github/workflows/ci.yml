@@ -70,6 +70,13 @@ jobs:
           CALCULATOR: ${{ matrix.calculator }}
         if: ${{ matrix.php-version == '8.0' }}
 
+      - name: Run PHPUnit with bcscale()
+        run: vendor/bin/phpunit
+        env:
+          CALCULATOR: BCMath
+          BCMATH_DEFAULT_SCALE: 8
+        if: ${{ matrix.calculator == 'BCMath' }}
+
       - name: Upload coverage report to Coveralls
         run: vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
         env:

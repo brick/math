@@ -42,3 +42,10 @@ function getCalculatorImplementation()
 }
 
 Calculator::set(getCalculatorImplementation());
+
+$scale = \getenv('BCMATH_DEFAULT_SCALE');
+
+if ($scale !== false) {
+    echo "Using bcscale($scale)", PHP_EOL;
+    \bcscale((int) $scale);
+}
