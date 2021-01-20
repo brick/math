@@ -67,7 +67,12 @@ class BcMathCalculator extends Calculator
     public function divQR(string $a, string $b) : array
     {
         $q = \bcdiv($a, $b, 0);
-        $r = \bcmod($a, $b);
+
+        if (version_compare(PHP_VERSION, '7.2') >= 0) {
+            $r = \bcmod($a, $b, 0);
+        } else {
+            $r = \bcmod($a, $b);
+        }
 
         assert($q !== null);
         assert($r !== null);
