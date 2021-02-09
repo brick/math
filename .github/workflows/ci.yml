@@ -51,7 +51,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: xdebug
+          coverage: pcov
 
       - name: Install composer dependencies
         uses: "ramsey/composer-install@v1"
@@ -64,7 +64,7 @@ jobs:
 
       - name: Run PHPUnit with coverage
         run: |
-          mkdir -p mkdir -p build/logs
+          mkdir -p build/logs
           vendor/bin/phpunit --coverage-clover build/logs/clover.xml
         env:
           CALCULATOR: ${{ matrix.calculator }}
