@@ -794,7 +794,7 @@ final class BigDecimal extends BigNumber
      * @param BigDecimal $x The first decimal number.
      * @param BigDecimal $y The second decimal number.
      *
-     * @return array{0: string, 1: string} The scaled integer values of $x and $y.
+     * @return array{string, string} The scaled integer values of $x and $y.
      */
     private function scaleValues(BigDecimal $x, BigDecimal $y) : array
     {
