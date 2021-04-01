@@ -10,31 +10,31 @@ namespace Brick\Math\Exception;
 class DivisionByZeroException extends MathException
 {
     /**
-     * @return DivisionByZeroException
+     * @return $this
      *
      * @psalm-pure
      */
-    public static function divisionByZero() : DivisionByZeroException
+    public static function divisionByZero() : self
     {
         return new self('Division by zero.');
     }
 
     /**
-     * @return DivisionByZeroException
+     * @return $this
      *
      * @psalm-pure
      */
-    public static function modulusMustNotBeZero() : DivisionByZeroException
+    public static function modulusMustNotBeZero() : self
     {
         return new self('The modulus must not be zero.');
     }
 
     /**
-     * @return DivisionByZeroException
+     * @return $this
      *
      * @psalm-pure
      */
-    public static function denominatorMustNotBeZero() : DivisionByZeroException
+    public static function denominatorMustNotBeZero() : self
     {
         return new self('The denominator of a rational number cannot be zero.');
     }

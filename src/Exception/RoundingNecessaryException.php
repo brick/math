@@ -10,11 +10,11 @@ namespace Brick\Math\Exception;
 class RoundingNecessaryException extends MathException
 {
     /**
-     * @return RoundingNecessaryException
+     * @return $this
      *
      * @psalm-pure
      */
-    public static function roundingNecessary() : RoundingNecessaryException
+    public static function roundingNecessary() : self
     {
         return new self('Rounding is necessary to represent the result of the operation at this scale.');
     }
