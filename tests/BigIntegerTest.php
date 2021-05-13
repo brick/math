@@ -1383,7 +1383,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         if (Calculator::get() instanceof Calculator\NativeCalculator) {
             if (getenv('CI') === 'true') {
-                $this->markTestSkipped('This test is currently too slow and makes Travis CI timeout.');
+                $this->markTestSkipped('This test is currently too slow for the CI.');
             }
         }
 
