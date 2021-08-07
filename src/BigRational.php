@@ -477,7 +477,7 @@ final class BigRational extends BigNumber
      */
     public function __unserialize(array $data): void
     {
-        if (isset($this->value)) {
+        if (isset($this->numerator)) {
             throw new \LogicException('__unserialize() is an internal function, it must not be called directly.');
         }
 
