@@ -456,7 +456,7 @@ final class BigRational extends BigNumber
      *
      * @internal
      *
-     * @return array{numerator: \Brick\Math\BigInteger, denominator: \Brick\Math\BigInteger}
+     * @return array{numerator: BigInteger, denominator: BigInteger}
      */
     public function __serialize(): array
     {
@@ -469,7 +469,7 @@ final class BigRational extends BigNumber
      * @internal
      * @psalm-suppress RedundantPropertyInitializationCheck
      *
-     * @param array{numerator: \Brick\Math\BigInteger, denominator: \Brick\Math\BigInteger} $data
+     * @param array{numerator: BigInteger, denominator: BigInteger} $data
      *
      * @return void
      *
