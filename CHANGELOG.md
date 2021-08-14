@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+🚀 **Compatibility with PHP 8.1**
+
+- Removes a warning on PHP 8.1 due to the `Serializable` interface being deprecated (thanks @TRowbotham)
+
 ## [0.9.2](https://github.com/brick/math/releases/tag/0.9.2) - 2021-01-20
 
 🐛 **Bug fix**
