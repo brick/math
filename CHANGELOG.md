@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 🚀 **Compatibility with PHP 8.1**
 
-- Support for custom object serialization; this removes a warning on PHP 8.1 due to the `Serializable` interface being deprecated (thanks @TRowbotham)
+- Support for custom object serialization; this removes a warning on PHP 8.1 due to the `Serializable` interface being deprecated (#60) thanks @TRowbotham
 
 ## [0.9.2](https://github.com/brick/math/releases/tag/0.9.2) - 2021-01-20
 
