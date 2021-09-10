@@ -54,13 +54,6 @@ jobs:
 
       - name: Install composer dependencies
         uses: "ramsey/composer-install@v1"
-        if: ${{ matrix.php-version != '8.1' }}
-
-      - name: Install composer dependencies (PHP 8.1)
-        uses: "ramsey/composer-install@v1"
-        with:
-          composer-options: "--ignore-platform-reqs"
-        if: ${{ matrix.php-version == '8.1' }}
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit
