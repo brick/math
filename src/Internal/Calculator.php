@@ -493,6 +493,8 @@ abstract class Calculator
      *
      * @throws \InvalidArgumentException  If the rounding mode is invalid.
      * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided but rounding is necessary.
+     *
+     * @psalm-suppress ImpureFunctionCall
      */
     final public function divRound(string $a, string $b, int $roundingMode) : string
     {
