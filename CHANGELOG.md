@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.0](https://github.com/brick/math/releases/tag/0.10.0) - 2022-06-18
+
+💥 **Breaking changes**
+
+- Minimum PHP version is now 7.4
+
 ## [0.9.3](https://github.com/brick/math/releases/tag/0.9.3) - 2021-08-15
 
 🚀 **Compatibility with PHP 8.1**
