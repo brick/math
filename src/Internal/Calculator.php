@@ -34,10 +34,8 @@ abstract class Calculator
 
     /**
      * The Calculator instance in use.
-     *
-     * @var Calculator|null
      */
-    private static $instance;
+    private static ?Calculator $instance = null;
 
     /**
      * Sets the Calculator instance to use.
