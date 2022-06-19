@@ -1,7 +1,0 @@
-source: src
-destination: api
-title: Brick\Math
-baseUrl: http://brick.io/math/
-accessLevels: [public]
-noSourceCode: true
-templateTheme: bootstrap
