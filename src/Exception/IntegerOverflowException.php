@@ -12,13 +12,9 @@ use Brick\Math\BigInteger;
 class IntegerOverflowException extends MathException
 {
     /**
-     * @param BigInteger $value
-     *
-     * @return IntegerOverflowException
-     *
      * @psalm-pure
      */
-    public static function toIntOverflow(BigInteger $value) : IntegerOverflowException
+    public static function toIntOverflow(BigInteger $value): self
     {
         $message = '%s is out of range %d to %d and cannot be represented as an integer.';
 

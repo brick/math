@@ -12,11 +12,9 @@ class NumberFormatException extends MathException
     /**
      * @param string $char The failing character.
      *
-     * @return NumberFormatException
-     *
      * @psalm-pure
      */
-    public static function charNotInAlphabet(string $char) : self
+    public static function charNotInAlphabet(string $char): self
     {
         $ord = \ord($char);
 
