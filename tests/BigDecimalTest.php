@@ -14,7 +14,6 @@ use Brick\Math\RoundingMode;
 use InvalidArgumentException;
 use Iterator;
 use LogicException;
-use Throwable;
 
 /**
  * Unit tests for class BigDecimal.
@@ -883,13 +882,9 @@ class BigDecimalTest extends AbstractTestCase
         ?string $one,
         ?string $zero
     ): void {
-        try {
-            $number = BigDecimal::of($number);
-            $this->doTestRoundingMode($roundingMode, $number, '1', $two, $one, $zero);
-            $this->doTestRoundingMode($roundingMode, $number->negated(), '-1', $two, $one, $zero);
-        } catch (Throwable $e) {
-            static::fail('This test is not supposed to fail.');
-        }
+        $number = BigDecimal::of($number);
+        $this->doTestRoundingMode($roundingMode, $number, '1', $two, $one, $zero);
+        $this->doTestRoundingMode($roundingMode, $number->negated(), '-1', $two, $one, $zero);
     }
 
     public function providerRoundingMode(): Iterator
