@@ -611,9 +611,9 @@ abstract class Calculator
     /**
      * Performs a bitwise operation on a decimal number.
      *
-     * @param string $operator The operator to use, must be "and", "or" or "xor".
-     * @param string $a        The left operand.
-     * @param string $b        The right operand.
+     * @param 'and'|'or'|'xor' $operator The operator to use.
+     * @param string           $a        The left operand.
+     * @param string           $b        The right operand.
      *
      * @return string
      */
