@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.1](https://github.com/brick/math/releases/tag/0.10.1) - 2022-08-02
+
+✨ **New features**
+
+- `BigInteger::gcdMultiple()` returns the GCD of multiple `BigInteger` numbers
+
 ## [0.10.0](https://github.com/brick/math/releases/tag/0.10.0) - 2022-06-18
 
 💥 **Breaking changes**

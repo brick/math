@@ -359,6 +359,21 @@ final class BigInteger extends BigNumber
         return $ten;
     }
 
+    public static function gcdMultiple(BigInteger $a, BigInteger ...$n): BigInteger
+    {
+        $result = $a;
+
+        foreach ($n as $next) {
+            $result = $result->gcd($next);
+
+            if ($result->isEqualTo(1)) {
+                return $result;
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Returns the sum of this number and the given one.
      *

@@ -375,6 +375,46 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
+     * @param string[] $values
+     *
+     * @dataProvider providerGcdMultiple
+     */
+    public function testGcdMultiple(array $values, string $expectedGCD): void
+    {
+        $values = array_map(fn (string $value) => BigInteger::of($value), $values);
+        $actualGCD = BigInteger::gcdMultiple(...$values);
+
+        self::assertSame($expectedGCD, (string) $actualGCD);
+    }
+
+    public function providerGcdMultiple(): Generator
+    {
+        // 1 value
+        foreach (['-2', '-1', '0', '1', '2'] as $value) {
+            yield [[$value], $value];
+        }
+
+        // 2 values
+        foreach ($this->providerGcd() as [$a, $b, $gcd]) {
+            yield [[$a, $b], $gcd];
+        }
+
+        // n values
+        yield [['2', '4', '7'], '1'];
+        yield [['2', '4', '8'], '2'];
+        yield [['2', '4', '-7'], '1'];
+        yield [['2', '4', '-8'], '2'];
+        yield [['28', '56', '77777'], '7'];
+        yield [['28', '56', '77778'], '2'];
+        yield [['28', '56', '77782'], '2'];
+        yield [['28', '56', '77783'], '1'];
+        yield [['28', '56', '77784'], '28'];
+        yield [['28', '56', '77784', '4'], '4'];
+        yield [['28', '56', '77784', '14'], '14'];
+        yield [['28', '56', '77784', '14', '4'], '2'];
+    }
+
+    /**
      * @dataProvider providerMin
      *
      * @param array  $values The values to compare.
