@@ -232,7 +232,7 @@ abstract class Calculator
      * @param string $a The dividend.
      * @param string $b The divisor, must not be zero.
      *
-     * @return string[] An array containing the quotient and remainder.
+     * @return array{string, string} An array containing the quotient and remainder.
      */
     abstract public function divQR(string $a, string $b) : array;
 
