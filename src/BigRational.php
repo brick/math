@@ -429,7 +429,8 @@ final class BigRational extends BigNumber
      */
     public function toFloat() : float
     {
-        return $this->numerator->toFloat() / $this->denominator->toFloat();
+        $simplified = $this->simplified();
+        return $simplified->numerator->toFloat() / $simplified->denominator->toFloat();
     }
 
     /**

@@ -892,6 +892,38 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
+    public function testIdentityOperationResultsInDifferentToFloatValueWithoutSimplification() : void
+    {
+        $expectedValue = 11.46;
+        $conversionFactor = BigRational::of('0.45359237');
+        $value = BigRational::of($expectedValue);
+
+        $identicalValueAfterMathOperations = $value->multipliedBy($conversionFactor)
+            ->dividedBy($conversionFactor)
+            ->multipliedBy($conversionFactor)
+            ->dividedBy($conversionFactor)
+            ->multipliedBy($conversionFactor)
+            ->dividedBy($conversionFactor);
+
+        self::assertSame($expectedValue, $identicalValueAfterMathOperations->toFloat());
+
+        // Assert that simplification is required and the test would fail without it
+        self::assertNotSame(
+            $expectedValue,
+            $identicalValueAfterMathOperations->getNumerator()->toFloat() / $identicalValueAfterMathOperations->getDenominator()->toFloat(),
+        );
+    }
+
+    public function testToFloatConversionPerformsSimplificationToPreventOverflow() : void
+    {
+        $int = BigInteger::of('1e4000');
+        $val = BigRational::nd($int, $int);
+
+        self::assertInfinite($val->getNumerator()->toFloat());
+        // Assert that simplification is required and the test would fail without it
+        self::assertSame(1.0, $val->toFloat());
+    }
+
     /**
      * @dataProvider providerToFloat
      *
