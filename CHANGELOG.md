@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.2](https://github.com/brick/math/releases/tag/0.10.2) - 2022-08-11
+
+👌 **Improvements**
+
+- `BigRational::toFloat()` now simplifies the fraction before performing division (#73) thanks to @olsavmic
+
 ## [0.10.1](https://github.com/brick/math/releases/tag/0.10.1) - 2022-08-02
 
 ✨ **New features**
