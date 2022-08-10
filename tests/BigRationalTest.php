@@ -916,12 +916,8 @@ class BigRationalTest extends AbstractTestCase
 
     public function testToFloatConversionPerformsSimplificationToPreventOverflow() : void
     {
-        $val = BigRational::of(1);
-        $factor = 10000;
-
-        for ($i = 0; $i < 1000; ++$i) {
-            $val = $val->multipliedBy($factor)->dividedBy($factor);
-        }
+        $int = BigInteger::of('1e4000');
+        $val = BigRational::nd($int, $int);
 
         self::assertInfinite($val->getNumerator()->toFloat());
         // Assert that simplification is required and the test would fail without it
