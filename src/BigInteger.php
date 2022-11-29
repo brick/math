@@ -50,7 +50,7 @@ final class BigInteger extends BigNumber
      *
      * @psalm-pure
      */
-    public static function of($value) : BigNumber
+    public static function of(BigNumber|int|float|string $value) : BigInteger
     {
         return parent::of($value)->toBigInteger();
     }
@@ -269,8 +269,11 @@ final class BigInteger extends BigNumber
      * @throws MathException If one of the parameters cannot be converted to a BigInteger,
      *                       or `$min` is greater than `$max`.
      */
-    public static function randomRange($min, $max, ?callable $randomBytesGenerator = null) : BigInteger
-    {
+    public static function randomRange(
+        BigNumber|int|float|string $min,
+        BigNumber|int|float|string $max,
+        ?callable $randomBytesGenerator = null
+    ) : BigInteger {
         $min = BigInteger::of($min);
         $max = BigInteger::of($max);
 
@@ -383,7 +386,7 @@ final class BigInteger extends BigNumber
      *
      * @throws MathException If the number is not valid, or is not convertible to a BigInteger.
      */
-    public function plus($that) : BigInteger
+    public function plus(BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -409,7 +412,7 @@ final class BigInteger extends BigNumber
      *
      * @throws MathException If the number is not valid, or is not convertible to a BigInteger.
      */
-    public function minus($that) : BigInteger
+    public function minus(BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -431,7 +434,7 @@ final class BigInteger extends BigNumber
      *
      * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigInteger.
      */
-    public function multipliedBy($that) : BigInteger
+    public function multipliedBy(BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -459,7 +462,7 @@ final class BigInteger extends BigNumber
      * @throws MathException If the divisor is not a valid number, is not convertible to a BigInteger, is zero,
      *                       or RoundingMode::UNNECESSARY is used and the remainder is not zero.
      */
-    public function dividedBy($that, int $roundingMode = RoundingMode::UNNECESSARY) : BigInteger
+    public function dividedBy(BigNumber|int|float|string $that, int $roundingMode = RoundingMode::UNNECESSARY) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -515,7 +518,7 @@ final class BigInteger extends BigNumber
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function quotient($that) : BigInteger
+    public function quotient(BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -543,7 +546,7 @@ final class BigInteger extends BigNumber
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function remainder($that) : BigInteger
+    public function remainder(BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -569,7 +572,7 @@ final class BigInteger extends BigNumber
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function quotientAndRemainder($that) : array
+    public function quotientAndRemainder(BigNumber|int|float|string $that) : array
     {
         $that = BigInteger::of($that);
 
@@ -599,7 +602,7 @@ final class BigInteger extends BigNumber
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function mod($that) : BigInteger
+    public function mod(BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -660,7 +663,7 @@ final class BigInteger extends BigNumber
      * @throws NegativeNumberException If any of the operands is negative.
      * @throws DivisionByZeroException If the modulus is zero.
      */
-    public function modPow($exp, $mod) : BigInteger
+    public function modPow(BigNumber|int|float|string $exp, BigNumber|int|float|string $mod) : BigInteger
     {
         $exp = BigInteger::of($exp);
         $mod = BigInteger::of($mod);
@@ -687,7 +690,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      */
-    public function gcd($that) : BigInteger
+    public function gcd(BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -753,7 +756,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      */
-    public function and($that) : BigInteger
+    public function and(BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -769,7 +772,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      */
-    public function or($that) : BigInteger
+    public function or(BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -785,7 +788,7 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger
      */
-    public function xor($that) : BigInteger
+    public function xor(BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -935,7 +938,7 @@ final class BigInteger extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function compareTo($that) : int
+    public function compareTo(BigNumber|int|float|string $that) : int
     {
         $that = BigNumber::of($that);
 

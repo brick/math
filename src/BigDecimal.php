@@ -55,7 +55,7 @@ final class BigDecimal extends BigNumber
      *
      * @psalm-pure
      */
-    public static function of($value) : BigNumber
+    public static function of(BigNumber|int|float|string $value) : BigDecimal
     {
         return parent::of($value)->toBigDecimal();
     }
@@ -74,7 +74,7 @@ final class BigDecimal extends BigNumber
      *
      * @psalm-pure
      */
-    public static function ofUnscaledValue($value, int $scale = 0) : BigDecimal
+    public static function ofUnscaledValue(BigNumber|int|float|string $value, int $scale = 0) : BigDecimal
     {
         if ($scale < 0) {
             throw new \InvalidArgumentException('The scale cannot be negative.');
@@ -160,7 +160,7 @@ final class BigDecimal extends BigNumber
      *
      * @throws MathException If the number is not valid, or is not convertible to a BigDecimal.
      */
-    public function plus($that) : BigDecimal
+    public function plus(BigNumber|int|float|string $that) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -191,7 +191,7 @@ final class BigDecimal extends BigNumber
      *
      * @throws MathException If the number is not valid, or is not convertible to a BigDecimal.
      */
-    public function minus($that) : BigDecimal
+    public function minus(BigNumber|int|float|string $that) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -218,7 +218,7 @@ final class BigDecimal extends BigNumber
      *
      * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigDecimal.
      */
-    public function multipliedBy($that) : BigDecimal
+    public function multipliedBy(BigNumber|int|float|string $that) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -248,7 +248,7 @@ final class BigDecimal extends BigNumber
      * @throws \InvalidArgumentException If the scale or rounding mode is invalid.
      * @throws MathException             If the number is invalid, is zero, or rounding was necessary.
      */
-    public function dividedBy($that, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
+    public function dividedBy(BigNumber|int|float|string $that, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -286,7 +286,7 @@ final class BigDecimal extends BigNumber
      * @throws MathException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero,
      *                       or the result yields an infinite number of digits.
      */
-    public function exactlyDividedBy($that) : BigDecimal
+    public function exactlyDividedBy(BigNumber|int|float|string $that) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -360,7 +360,7 @@ final class BigDecimal extends BigNumber
      *
      * @throws MathException If the divisor is not a valid decimal number, or is zero.
      */
-    public function quotient($that) : BigDecimal
+    public function quotient(BigNumber|int|float|string $that) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -387,7 +387,7 @@ final class BigDecimal extends BigNumber
      *
      * @throws MathException If the divisor is not a valid decimal number, or is zero.
      */
-    public function remainder($that) : BigDecimal
+    public function remainder(BigNumber|int|float|string $that) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -416,7 +416,7 @@ final class BigDecimal extends BigNumber
      *
      * @throws MathException If the divisor is not a valid decimal number, or is zero.
      */
-    public function quotientAndRemainder($that) : array
+    public function quotientAndRemainder(BigNumber|int|float|string $that) : array
     {
         $that = BigDecimal::of($that);
 
@@ -588,7 +588,7 @@ final class BigDecimal extends BigNumber
     /**
      * {@inheritdoc}
      */
-    public function compareTo($that) : int
+    public function compareTo(BigNumber|int|float|string $that) : int
     {
         $that = BigNumber::of($that);
 

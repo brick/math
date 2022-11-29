@@ -57,7 +57,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @psalm-pure
      */
-    public static function of($value) : BigNumber
+    public static function of(BigNumber|int|float|string $value) : BigNumber
     {
         if ($value instanceof BigNumber) {
             return $value;
@@ -67,8 +67,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             return new BigInteger((string) $value);
         }
 
-        /** @psalm-suppress RedundantCastGivenDocblockType We cannot trust the untyped $value here! */
-        $value = \is_float($value) ? self::floatToString($value) : (string) $value;
+        $value = \is_float($value) ? self::floatToString($value) : $value;
 
         $throw = static function() use ($value) : void {
             throw new NumberFormatException(\sprintf(
@@ -205,7 +204,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @psalm-suppress MoreSpecificReturnType
      * @psalm-pure
      */
-    public static function min(...$values) : BigNumber
+    public static function min(BigNumber|int|float|string ...$values) : BigNumber
     {
         $min = null;
 
@@ -239,7 +238,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @psalm-suppress MoreSpecificReturnType
      * @psalm-pure
      */
-    public static function max(...$values) : BigNumber
+    public static function max(BigNumber|int|float|string ...$values) : BigNumber
     {
         $max = null;
 
@@ -273,7 +272,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @psalm-suppress MoreSpecificReturnType
      * @psalm-pure
      */
-    public static function sum(...$values) : BigNumber
+    public static function sum(BigNumber|int|float|string ...$values) : BigNumber
     {
         /** @var BigNumber|null $sum */
         $sum = null;
@@ -366,7 +365,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isEqualTo($that) : bool
+    public function isEqualTo(BigNumber|int|float|string $that) : bool
     {
         return $this->compareTo($that) === 0;
     }
@@ -378,7 +377,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isLessThan($that) : bool
+    public function isLessThan(BigNumber|int|float|string $that) : bool
     {
         return $this->compareTo($that) < 0;
     }
@@ -390,7 +389,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isLessThanOrEqualTo($that) : bool
+    public function isLessThanOrEqualTo(BigNumber|int|float|string $that) : bool
     {
         return $this->compareTo($that) <= 0;
     }
@@ -402,7 +401,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isGreaterThan($that) : bool
+    public function isGreaterThan(BigNumber|int|float|string $that) : bool
     {
         return $this->compareTo($that) > 0;
     }
@@ -414,7 +413,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @return bool
      */
-    public function isGreaterThanOrEqualTo($that) : bool
+    public function isGreaterThanOrEqualTo(BigNumber|int|float|string $that) : bool
     {
         return $this->compareTo($that) >= 0;
     }
@@ -485,7 +484,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @throws MathException If the number is not valid.
      */
-    abstract public function compareTo($that) : int;
+    abstract public function compareTo(BigNumber|int|float|string $that) : int;
 
     /**
      * Converts this number to a BigInteger.
