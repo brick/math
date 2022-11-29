@@ -58,11 +58,7 @@ class BcMathCalculator extends Calculator
      */
     public function divR(string $a, string $b) : string
     {
-        if (version_compare(PHP_VERSION, '7.2') >= 0) {
-            return \bcmod($a, $b, 0);
-        }
-
-        return \bcmod($a, $b);
+        return \bcmod($a, $b, 0);
     }
 
     /**
@@ -71,12 +67,7 @@ class BcMathCalculator extends Calculator
     public function divQR(string $a, string $b) : array
     {
         $q = \bcdiv($a, $b, 0);
-
-        if (version_compare(PHP_VERSION, '7.2') >= 0) {
-            $r = \bcmod($a, $b, 0);
-        } else {
-            $r = \bcmod($a, $b);
-        }
+        $r = \bcmod($a, $b, 0);
 
         assert($q !== null);
         assert($r !== null);
