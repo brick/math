@@ -970,7 +970,7 @@ final class BigInteger extends BigNumber
      */
     public function toBigDecimal() : BigDecimal
     {
-        return BigDecimal::create($this->value);
+        return self::newBigDecimal($this->value);
     }
 
     /**
@@ -978,7 +978,7 @@ final class BigInteger extends BigNumber
      */
     public function toBigRational() : BigRational
     {
-        return BigRational::create($this, BigInteger::one(), false);
+        return self::newBigRational($this, BigInteger::one(), false);
     }
 
     /**

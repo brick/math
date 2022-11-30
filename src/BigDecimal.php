@@ -618,7 +618,7 @@ final class BigDecimal extends BigNumber
      */
     public function getUnscaledValue() : BigInteger
     {
-        return BigInteger::create($this->value);
+        return self::newBigInteger($this->value);
     }
 
     /**
@@ -684,7 +684,7 @@ final class BigDecimal extends BigNumber
     {
         $zeroScaleDecimal = $this->scale === 0 ? $this : $this->dividedBy(1, 0);
 
-        return BigInteger::create($zeroScaleDecimal->value);
+        return self::newBigInteger($zeroScaleDecimal->value);
     }
 
     /**
@@ -700,10 +700,10 @@ final class BigDecimal extends BigNumber
      */
     public function toBigRational() : BigRational
     {
-        $numerator = BigInteger::create($this->value);
-        $denominator = BigInteger::create('1' . \str_repeat('0', $this->scale));
+        $numerator = self::newBigInteger($this->value);
+        $denominator = self::newBigInteger('1' . \str_repeat('0', $this->scale));
 
-        return BigRational::create($numerator, $denominator, false);
+        return self::newBigRational($numerator, $denominator, false);
     }
 
     /**

@@ -172,21 +172,36 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     }
 
     /**
-     * Proxy method to access protected constructors from sibling classes.
+     * Proxy method to access BigInteger's protected constructor from sibling classes.
      *
      * @internal
-     *
-     * @param mixed ...$args The arguments to the constructor.
-     *
-     * @return static
-     *
      * @psalm-pure
-     * @psalm-suppress TooManyArguments
-     * @psalm-suppress UnsafeInstantiation
      */
-    protected static function create(... $args) : static
+    protected function newBigInteger(string $value) : BigInteger
     {
-        return new static(... $args);
+        return new BigInteger($value);
+    }
+
+    /**
+     * Proxy method to access BigDecimal's protected constructor from sibling classes.
+     *
+     * @internal
+     * @psalm-pure
+     */
+    protected function newBigDecimal(string $value, int $scale = 0) : BigDecimal
+    {
+        return new BigDecimal($value, $scale);
+    }
+
+    /**
+     * Proxy method to access BigRational's protected constructor from sibling classes.
+     *
+     * @internal
+     * @psalm-pure
+     */
+    protected function newBigRational(BigInteger $numerator, BigInteger $denominator, bool $checkDenominator) : BigRational
+    {
+        return new BigRational($numerator, $denominator, $checkDenominator);
     }
 
     /**
