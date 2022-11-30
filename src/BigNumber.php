@@ -184,7 +184,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @psalm-suppress TooManyArguments
      * @psalm-suppress UnsafeInstantiation
      */
-    protected static function create(... $args) : BigNumber
+    protected static function create(... $args) : static
     {
         return new static(... $args);
     }
@@ -204,7 +204,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @psalm-suppress MoreSpecificReturnType
      * @psalm-pure
      */
-    public static function min(BigNumber|int|float|string ...$values) : BigNumber
+    public static function min(BigNumber|int|float|string ...$values) : static
     {
         $min = null;
 
@@ -238,7 +238,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @psalm-suppress MoreSpecificReturnType
      * @psalm-pure
      */
-    public static function max(BigNumber|int|float|string ...$values) : BigNumber
+    public static function max(BigNumber|int|float|string ...$values) : static
     {
         $max = null;
 
@@ -268,13 +268,11 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
      *
-     * @psalm-suppress LessSpecificReturnStatement
-     * @psalm-suppress MoreSpecificReturnType
      * @psalm-pure
      */
-    public static function sum(BigNumber|int|float|string ...$values) : BigNumber
+    public static function sum(BigNumber|int|float|string ...$values) : static
     {
-        /** @var BigNumber|null $sum */
+        /** @var static|null $sum */
         $sum = null;
 
         foreach ($values as $value) {
