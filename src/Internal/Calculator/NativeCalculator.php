@@ -19,7 +19,7 @@ class NativeCalculator extends Calculator
      * The max number of digits the platform can natively add, subtract, multiply or divide without overflow.
      * For multiplication, this represents the max sum of the lengths of both operands.
      *
-     * For addition, it is assumed that an extra digit can hold a carry (1) without overflowing.
+     * In addition, it is assumed that an extra digit can hold a carry (1) without overflowing.
      * Example: 32-bit: max number 1,999,999,999 (9 digits + carry)
      *          64-bit: max number 1,999,999,999,999,999,999 (18 digits + carry)
      */
