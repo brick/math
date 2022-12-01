@@ -585,9 +585,6 @@ final class BigDecimal extends BigNumber
         return new BigDecimal(Calculator::get()->neg($this->value), $this->scale);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compareTo(BigNumber|int|float|string $that) : int
     {
         $that = BigNumber::of($that);
@@ -605,9 +602,6 @@ final class BigDecimal extends BigNumber
         return - $that->compareTo($this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSign() : int
     {
         return ($this->value === '0') ? 0 : (($this->value[0] === '-') ? -1 : 1);
@@ -677,9 +671,6 @@ final class BigDecimal extends BigNumber
         return $this->getFractionalPart() !== \str_repeat('0', $this->scale);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigInteger() : BigInteger
     {
         $zeroScaleDecimal = $this->scale === 0 ? $this : $this->dividedBy(1, 0);
@@ -687,17 +678,11 @@ final class BigDecimal extends BigNumber
         return self::newBigInteger($zeroScaleDecimal->value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigDecimal() : BigDecimal
     {
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigRational() : BigRational
     {
         $numerator = self::newBigInteger($this->value);
@@ -706,9 +691,6 @@ final class BigDecimal extends BigNumber
         return self::newBigRational($numerator, $denominator, false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toScale(int $scale, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         if ($scale === $this->scale) {
@@ -718,25 +700,16 @@ final class BigDecimal extends BigNumber
         return $this->dividedBy(BigDecimal::one(), $scale, $roundingMode);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toInt() : int
     {
         return $this->toBigInteger()->toInt();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toFloat() : float
     {
         return (float) (string) $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __toString() : string
     {
         if ($this->scale === 0) {

@@ -46,9 +46,6 @@ class NativeCalculator extends Calculator
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function add(string $a, string $b) : string
     {
         /**
@@ -80,17 +77,11 @@ class NativeCalculator extends Calculator
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sub(string $a, string $b) : string
     {
         return $this->add($a, $this->neg($b));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mul(string $a, string $b) : string
     {
         /**
@@ -134,25 +125,16 @@ class NativeCalculator extends Calculator
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function divQ(string $a, string $b) : string
     {
         return $this->divQR($a, $b)[0];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function divR(string $a, string $b): string
     {
         return $this->divQR($a, $b)[1];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function divQR(string $a, string $b) : array
     {
         if ($a === '0') {
@@ -208,9 +190,6 @@ class NativeCalculator extends Calculator
         return [$q, $r];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function pow(string $a, int $e) : string
     {
         if ($e === 0) {
@@ -238,8 +217,6 @@ class NativeCalculator extends Calculator
 
     /**
      * Algorithm from: https://www.geeksforgeeks.org/modular-exponentiation-power-in-modular-arithmetic/
-     *
-     * {@inheritdoc}
      */
     public function modPow(string $base, string $exp, string $mod) : string
     {
@@ -274,8 +251,6 @@ class NativeCalculator extends Calculator
 
     /**
      * Adapted from https://cp-algorithms.com/num_methods/roots_newton.html
-     *
-     * {@inheritDoc}
      */
     public function sqrt(string $n) : string
     {

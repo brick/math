@@ -364,25 +364,16 @@ final class BigRational extends BigNumber
         return new BigRational($numerator, $denominator, false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compareTo(BigNumber|int|float|string $that) : int
     {
         return $this->minus($that)->getSign();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSign() : int
     {
         return $this->numerator->getSign();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigInteger() : BigInteger
     {
         $simplified = $this->simplified();
@@ -394,50 +385,32 @@ final class BigRational extends BigNumber
         return $simplified->numerator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigDecimal() : BigDecimal
     {
         return $this->numerator->toBigDecimal()->exactlyDividedBy($this->denominator);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigRational() : BigRational
     {
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toScale(int $scale, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         return $this->numerator->toBigDecimal()->dividedBy($this->denominator, $scale, $roundingMode);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toInt() : int
     {
         return $this->toBigInteger()->toInt();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toFloat() : float
     {
         $simplified = $this->simplified();
         return $simplified->numerator->toFloat() / $simplified->denominator->toFloat();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __toString() : string
     {
         $numerator   = (string) $this->numerator;

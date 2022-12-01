@@ -935,9 +935,6 @@ final class BigInteger extends BigNumber
         return $this->shiftedRight($n)->isOdd();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compareTo(BigNumber|int|float|string $that) : int
     {
         $that = BigNumber::of($that);
@@ -949,49 +946,31 @@ final class BigInteger extends BigNumber
         return - $that->compareTo($this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSign() : int
     {
         return ($this->value === '0') ? 0 : (($this->value[0] === '-') ? -1 : 1);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigInteger() : BigInteger
     {
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigDecimal() : BigDecimal
     {
         return self::newBigDecimal($this->value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigRational() : BigRational
     {
         return self::newBigRational($this, BigInteger::one(), false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toScale(int $scale, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         return $this->toBigDecimal()->toScale($scale, $roundingMode);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toInt() : int
     {
         $intValue = (int) $this->value;
@@ -1003,9 +982,6 @@ final class BigInteger extends BigNumber
         return $intValue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toFloat() : float
     {
         return (float) $this->value;
@@ -1124,9 +1100,6 @@ final class BigInteger extends BigNumber
         return \hex2bin($hex);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __toString() : string
     {
         return $this->value;
