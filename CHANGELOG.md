@@ -343,8 +343,8 @@ This release also comes with many performance improvements.
   - `getFraction()` is renamed to `fraction()`
   - `divideAndRemainder()` is renamed to `quotientAndRemainder()`
   - `dividedBy()` now takes a **mandatory** `$scale` parameter **before** the rounding mode
-  - `toBigInteger()` does not accept a `$roundingMode` parameter any more
-  - `toBigRational()` does not simplify the fraction any more; explicitly add `->simplified()` to get the previous behaviour
+  - `toBigInteger()` does not accept a `$roundingMode` parameter anymore
+  - `toBigRational()` does not simplify the fraction anymore; explicitly add `->simplified()` to get the previous behaviour
 - `BigRational`:
   - `getSign()` is renamed to `sign()`
   - `getNumerator()` is renamed to  `numerator()`
@@ -418,7 +418,7 @@ Added `BigDecimal::divideAndRemainder()`
 
 ## [0.2.0](https://github.com/brick/math/releases/tag/0.2.0) - 2015-05-22
 
-- `min()` and `max()` do not accept an `array` any more, but a variable number of parameters
+- `min()` and `max()` do not accept an `array` anymore, but a variable number of parameters
 - **minimum PHP version is now 5.6**
 - continuous integration with PHP 7
 
