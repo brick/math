@@ -12,19 +12,22 @@ require __DIR__ . '/vendor/autoload.php';
 use Brick\Math\Internal\Calculator;
 
 (new class(30) { // max digits
-    private $gmp;
-    private $bcmath;
-    private $native;
+    private Calculator\GmpCalculator $gmp;
+    private Calculator\BcMathCalculator $bcmath;
+    private Calculator\NativeCalculator $native;
 
-    private $maxDigits;
+    private int $testCounter = 0;
+    private float $lastOutputTime = 0.0;
+    private int $currentSecond = 0;
+    private int $currentSecondTestCounter = 0;
+    private int $testsPerSecond = 0;
 
-    public function __construct(int $maxDigits)
-    {
+    public function __construct(
+        private int $maxDigits,
+    ) {
         $this->gmp    = new Calculator\GmpCalculator();
         $this->bcmath = new Calculator\BcMathCalculator();
         $this->native = new Calculator\NativeCalculator();
-
-        $this->maxDigits = $maxDigits;
     }
 
     public function __invoke() : void
@@ -53,9 +56,7 @@ use Brick\Math\Internal\Calculator;
             }
 
             if ($c !== '0') {
-                $this->test("$a POW $b MOD $c", function(Calculator $calc) use($a, $b, $c) {
-                    return $calc->modPow($a, $b, $c);
-                });
+                $this->test("$a POW $b MOD $c", fn (Calculator $calc) => $calc->modPow($a, $b, $c));
             }
         }
     }
@@ -66,96 +67,63 @@ use Brick\Math\Internal\Calculator;
      */
     private function runTests(string $a, string $b) : void
     {
-        $this->test("$a + $b", function(Calculator $c) use($a, $b) {
-            return $c->add($a, $b);
-        });
-
-        $this->test("$a - $b", function(Calculator $c) use($a, $b) {
-            return $c->sub($a, $b);
-        });
-
-        $this->test("$a * $b", function(Calculator $c) use($a, $b) {
-            return $c->mul($a, $b);
-        });
+        $this->test("$a + $b", fn (Calculator $c) => $c->add($a, $b));
+        $this->test("$a - $b", fn (Calculator $c) => $c->sub($a, $b));
+        $this->test("$a * $b", fn (Calculator $c) => $c->mul($a, $b));
 
         if ($b !== '0') {
-            $this->test("$a / $b", function(Calculator $c) use($a, $b) {
-                return $c->divQR($a, $b);
-            });
-
-            $this->test("$a MOD $b", function(Calculator $c) use($a, $b) {
-                return $c->mod($a, $b);
-            });
+            $this->test("$a / $b", fn (Calculator $c) => $c->divQR($a, $b));
+            $this->test("$a MOD $b", fn (Calculator $c) => $c->mod($a, $b));
         }
 
         if ($b !== '0' && $b[0] !== '-') {
-            $this->test("INV $a MOD $b", function(Calculator $c) use($a, $b) {
-                return $c->modInverse($a, $b);
-            });
+            $this->test("INV $a MOD $b", fn (Calculator $c) => $c->modInverse($a, $b));
         }
 
-        $this->test("GCD $a, $b", function(Calculator $c) use($a, $b) {
-            return $c->gcd($a, $b);
-        });
+        $this->test("GCD $a, $b", fn (Calculator $c) => $c->gcd($a, $b));
 
         if ($a[0] !== '-') {
-            $this->test("SQRT $a", function(Calculator $c) use($a, $b) {
-                return $c->sqrt($a);
-            });
+            $this->test("SQRT $a", fn (Calculator $c) => $c->sqrt($a));
         }
 
-        $this->test("$a AND $b", function(Calculator $c) use($a, $b) {
-            return $c->and($a, $b);
-        });
-
-        $this->test("$a OR $b", function(Calculator $c) use($a, $b) {
-            return $c->or($a, $b);
-        });
-
-        $this->test("$a XOR $b", function(Calculator $c) use($a, $b) {
-            return $c->xor($a, $b);
-        });
+        $this->test("$a AND $b", fn (Calculator $c) => $c->and($a, $b));
+        $this->test("$a OR $b", fn (Calculator $c) => $c->or($a, $b));
+        $this->test("$a XOR $b", fn (Calculator $c) => $c->xor($a, $b));
     }
 
     /**
-     * @param string  $test     A string representing the test being executed.
-     * @param Closure $callback A callback function accepting a Calculator instance and returning a calculation result.
+     * @param string $test A string representing the test being executed.
+     * @param Closure(Calculator): mixed $callback A callback function accepting a Calculator instance and returning a calculation result.
      */
     private function test(string $test, Closure $callback) : void
     {
-        static $testCounter = 0;
-        static $lastOutputTime = 0.0;
-        static $currentSecond = 0;
-        static $currentSecondTestCounter = 0;
-        static $testsPerSecond = 0;
-
         $gmpResult    = $callback($this->gmp);
         $bcmathResult = $callback($this->bcmath);
         $nativeResult = $callback($this->native);
 
         if ($gmpResult !== $bcmathResult) {
-            self::failure('GMP', 'BCMath', $test);
+            $this->failure('GMP', 'BCMath', $test);
         }
 
         if ($gmpResult !== $nativeResult) {
-            self::failure('GMP', 'Native', $test);
+            $this->failure('GMP', 'Native', $test);
         }
 
-        $testCounter++;
-        $currentSecondTestCounter++;
+        $this->testCounter++;
+        $this->currentSecondTestCounter++;
 
         $time = microtime(true);
         $second = (int) $time;
 
-        if ($second !== $currentSecond) {
-            $currentSecond = $second;
-            $testsPerSecond = $currentSecondTestCounter;
-            $currentSecondTestCounter = 0;
+        if ($second !== $this->currentSecond) {
+            $this->currentSecond = $second;
+            $this->testsPerSecond = $this->currentSecondTestCounter;
+            $this->currentSecondTestCounter = 0;
         }
 
-        if ($time - $lastOutputTime >= 0.1) {
-            echo "\r", number_format($testCounter), ' (', number_format($testsPerSecond) . ' / s)';
-            $lastOutputTime = $time;
+        if ($time - $this->lastOutputTime >= 0.1) {
+            echo "\r", number_format($this->testCounter), ' (', number_format($this->testsPerSecond) . ' / s)';
+            $this->lastOutputTime = $time;
         }
     }
 
@@ -164,7 +132,7 @@ use Brick\Math\Internal\Calculator;
      * @param string $c2   The name of the second calculator.
      * @param string $test A string representing the test being executed.
      */
-    private static function failure(string $c1, string $c2, string $test) : void
+    private function failure(string $c1, string $c2, string $test) : void
     {
         echo PHP_EOL;
         echo 'FAILURE!', PHP_EOL;
