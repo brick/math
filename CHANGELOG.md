@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 💥 **Breaking changes**
 
 - Minimum PHP version is now 8.0
+- `MathException` now extends `Exception` instead of `RuntimeException`
 
 ## [0.10.2](https://github.com/brick/math/releases/tag/0.10.2) - 2022-08-11
 
