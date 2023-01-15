@@ -7,7 +7,12 @@ All notable changes to this project will be documented in this file.
 💥 **Breaking changes**
 
 - Minimum PHP version is now 8.0
+- Methods accepting a union of types are now strongly typed<sup>*</sup>
 - `MathException` now extends `Exception` instead of `RuntimeException`
+
+<sup>* You may now run into type errors if you were passing `Stringable` objects to `of()` or any of the methods
+internally calling `of()`, with `strict_types` enabled. You can fix this by casting `Stringable` objects to `string`
+first.</sup>
 
 ## [0.10.2](https://github.com/brick/math/releases/tag/0.10.2) - 2022-08-11
 
