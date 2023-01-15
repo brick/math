@@ -205,7 +205,7 @@ final class BigInteger extends BigNumber
      *
      * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
-     * @psalm-param callable(int): string $randomBytesGenerator
+     * @psalm-param (callable(int): string)|null $randomBytesGenerator
      *
      * @param int           $numBits              The number of bits.
      * @param callable|null $randomBytesGenerator A function that accepts a number of bytes as an integer, and returns a
