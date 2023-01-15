@@ -42,10 +42,6 @@ final class BigInteger extends BigNumber
     /**
      * Creates a BigInteger of the given value.
      *
-     * @param BigNumber|int|float|string $value
-     *
-     * @return BigInteger
-     *
      * @throws MathException If the value cannot be converted to a BigInteger.
      *
      * @psalm-pure
@@ -68,8 +64,6 @@ final class BigInteger extends BigNumber
      *
      * @param string $number The number to convert, in the given base.
      * @param int    $base   The base of the number, between 2 and 36.
-     *
-     * @return BigInteger
      *
      * @throws NumberFormatException     If the number is empty, or contains invalid chars for the given base.
      * @throws \InvalidArgumentException If the base is out of range.
@@ -136,8 +130,6 @@ final class BigInteger extends BigNumber
      * @param string $number   The number to parse.
      * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
      *
-     * @return BigInteger
-     *
      * @throws NumberFormatException     If the given number is empty or contains invalid chars for the given alphabet.
      * @throws \InvalidArgumentException If the alphabet does not contain at least 2 chars.
      *
@@ -181,8 +173,6 @@ final class BigInteger extends BigNumber
      * @param bool   $signed Whether to interpret as a signed number in two's-complement representation with a leading
      *                       sign bit.
      *
-     * @return BigInteger
-     *
      * @throws NumberFormatException If the string is empty.
      */
     public static function fromBytes(string $value, bool $signed = true) : BigInteger
@@ -221,8 +211,6 @@ final class BigInteger extends BigNumber
      * @param callable|null $randomBytesGenerator A function that accepts a number of bytes as an integer, and returns a
      *                                            string of random bytes of the given length. Defaults to the
      *                                            `random_bytes()` function.
-     *
-     * @return BigInteger
      *
      * @throws \InvalidArgumentException If $numBits is negative.
      */
@@ -264,8 +252,6 @@ final class BigInteger extends BigNumber
      *                                                         and returns a string of random bytes of the given length.
      *                                                         Defaults to the `random_bytes()` function.
      *
-     * @return BigInteger
-     *
      * @throws MathException If one of the parameters cannot be converted to a BigInteger,
      *                       or `$min` is greater than `$max`.
      */
@@ -299,8 +285,6 @@ final class BigInteger extends BigNumber
     /**
      * Returns a BigInteger representing zero.
      *
-     * @return BigInteger
-     *
      * @psalm-pure
      */
     public static function zero() : BigInteger
@@ -321,8 +305,6 @@ final class BigInteger extends BigNumber
     /**
      * Returns a BigInteger representing one.
      *
-     * @return BigInteger
-     *
      * @psalm-pure
      */
     public static function one() : BigInteger
@@ -342,8 +324,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns a BigInteger representing ten.
-     *
-     * @return BigInteger
      *
      * @psalm-pure
      */
@@ -382,8 +362,6 @@ final class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The number to add. Must be convertible to a BigInteger.
      *
-     * @return BigInteger The result.
-     *
      * @throws MathException If the number is not valid, or is not convertible to a BigInteger.
      */
     public function plus(BigNumber|int|float|string $that) : BigInteger
@@ -408,8 +386,6 @@ final class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The number to subtract. Must be convertible to a BigInteger.
      *
-     * @return BigInteger The result.
-     *
      * @throws MathException If the number is not valid, or is not convertible to a BigInteger.
      */
     public function minus(BigNumber|int|float|string $that) : BigInteger
@@ -429,8 +405,6 @@ final class BigInteger extends BigNumber
      * Returns the product of this number and the given one.
      *
      * @param BigNumber|int|float|string $that The multiplier. Must be convertible to a BigInteger.
-     *
-     * @return BigInteger The result.
      *
      * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigInteger.
      */
@@ -457,8 +431,6 @@ final class BigInteger extends BigNumber
      * @param BigNumber|int|float|string $that         The divisor. Must be convertible to a BigInteger.
      * @param int                        $roundingMode An optional rounding mode.
      *
-     * @return BigInteger The result.
-     *
      * @throws MathException If the divisor is not a valid number, is not convertible to a BigInteger, is zero,
      *                       or RoundingMode::UNNECESSARY is used and the remainder is not zero.
      */
@@ -481,10 +453,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns this number exponentiated to the given value.
-     *
-     * @param int $exponent The exponent.
-     *
-     * @return BigInteger The result.
      *
      * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      */
@@ -514,8 +482,6 @@ final class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
-     * @return BigInteger
-     *
      * @throws DivisionByZeroException If the divisor is zero.
      */
     public function quotient(BigNumber|int|float|string $that) : BigInteger
@@ -541,8 +507,6 @@ final class BigInteger extends BigNumber
      * The remainder, when non-zero, has the same sign as the dividend.
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
-     *
-     * @return BigInteger
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
@@ -598,8 +562,6 @@ final class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
-     * @return BigInteger
-     *
      * @throws DivisionByZeroException If the divisor is zero.
      */
     public function mod(BigNumber|int|float|string $that) : BigInteger
@@ -617,10 +579,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the modular multiplicative inverse of this BigInteger modulo $m.
-     *
-     * @param BigInteger $m
-     *
-     * @return BigInteger
      *
      * @throws DivisionByZeroException If $m is zero.
      * @throws NegativeNumberException If $m is negative.
@@ -658,8 +616,6 @@ final class BigInteger extends BigNumber
      * @param BigNumber|int|float|string $exp The exponent. Must be positive or zero.
      * @param BigNumber|int|float|string $mod The modulus. Must be strictly positive.
      *
-     * @return BigInteger
-     *
      * @throws NegativeNumberException If any of the operands is negative.
      * @throws DivisionByZeroException If the modulus is zero.
      */
@@ -687,8 +643,6 @@ final class BigInteger extends BigNumber
      * The GCD is always positive, unless both operands are zero, in which case it is zero.
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
-     *
-     * @return BigInteger
      */
     public function gcd(BigNumber|int|float|string $that) : BigInteger
     {
@@ -712,8 +666,6 @@ final class BigInteger extends BigNumber
      *
      * The result is the largest x such that x² ≤ n.
      *
-     * @return BigInteger
-     *
      * @throws NegativeNumberException If this number is negative.
      */
     public function sqrt() : BigInteger
@@ -729,8 +681,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the absolute value of this number.
-     *
-     * @return BigInteger
      */
     public function abs() : BigInteger
     {
@@ -739,8 +689,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the inverse of this number.
-     *
-     * @return BigInteger
      */
     public function negated() : BigInteger
     {
@@ -753,8 +701,6 @@ final class BigInteger extends BigNumber
      * This method returns a negative BigInteger if and only if both operands are negative.
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
-     *
-     * @return BigInteger
      */
     public function and(BigNumber|int|float|string $that) : BigInteger
     {
@@ -769,8 +715,6 @@ final class BigInteger extends BigNumber
      * This method returns a negative BigInteger if and only if either of the operands is negative.
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
-     *
-     * @return BigInteger
      */
     public function or(BigNumber|int|float|string $that) : BigInteger
     {
@@ -785,8 +729,6 @@ final class BigInteger extends BigNumber
      * This method returns a negative BigInteger if and only if exactly one of the operands is negative.
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
-     *
-     * @return BigInteger
      */
     public function xor(BigNumber|int|float|string $that) : BigInteger
     {
@@ -797,8 +739,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the bitwise-not of this BigInteger.
-     *
-     * @return BigInteger
      */
     public function not() : BigInteger
     {
@@ -807,10 +747,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the integer left shifted by a given number of bits.
-     *
-     * @param int $distance The distance to shift.
-     *
-     * @return BigInteger
      */
     public function shiftedLeft(int $distance) : BigInteger
     {
@@ -827,10 +763,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the integer right shifted by a given number of bits.
-     *
-     * @param int $distance The distance to shift.
-     *
-     * @return BigInteger
      */
     public function shiftedRight(int $distance) : BigInteger
     {
@@ -856,8 +788,6 @@ final class BigInteger extends BigNumber
      *
      * For positive BigIntegers, this is equivalent to the number of bits in the ordinary binary representation.
      * Computes (ceil(log2(this < 0 ? -this : this+1))).
-     *
-     * @return int
      */
     public function getBitLength() : int
     {
@@ -876,8 +806,6 @@ final class BigInteger extends BigNumber
      * Returns the index of the rightmost (lowest-order) one bit in this BigInteger.
      *
      * Returns -1 if this BigInteger contains no one bits.
-     *
-     * @return int
      */
     public function getLowestSetBit() : int
     {
@@ -897,8 +825,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns whether this number is even.
-     *
-     * @return bool
      */
     public function isEven() : bool
     {
@@ -907,8 +833,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns whether this number is odd.
-     *
-     * @return bool
      */
     public function isOdd() : bool
     {
@@ -921,8 +845,6 @@ final class BigInteger extends BigNumber
      * Computes ((this & (1<<n)) != 0).
      *
      * @param int $n The bit to test, 0-based.
-     *
-     * @return bool
      *
      * @throws \InvalidArgumentException If the bit to test is negative.
      */
@@ -992,10 +914,6 @@ final class BigInteger extends BigNumber
      *
      * The output will always be lowercase for bases greater than 10.
      *
-     * @param int $base
-     *
-     * @return string
-     *
      * @throws \InvalidArgumentException If the base is out of range.
      */
     public function toBase(int $base) : string
@@ -1018,8 +936,6 @@ final class BigInteger extends BigNumber
      * a NegativeNumberException will be thrown when attempting to call this method on a negative number.
      *
      * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
-     *
-     * @return string
      *
      * @throws NegativeNumberException   If this number is negative.
      * @throws \InvalidArgumentException If the given alphabet does not contain at least 2 chars.
@@ -1054,8 +970,6 @@ final class BigInteger extends BigNumber
      * This representation is compatible with the `fromBytes()` factory method, as long as the `$signed` flags match.
      *
      * @param bool $signed Whether to output a signed number in two's-complement representation with a leading sign bit.
-     *
-     * @return string
      *
      * @throws NegativeNumberException If $signed is false, and the number is negative.
      */
@@ -1125,8 +1039,6 @@ final class BigInteger extends BigNumber
      *
      * @param array{value: string} $data
      *
-     * @return void
-     *
      * @throws \LogicException
      */
     public function __unserialize(array $data): void
@@ -1142,8 +1054,6 @@ final class BigInteger extends BigNumber
      * This method is required by interface Serializable and SHOULD NOT be accessed directly.
      *
      * @internal
-     *
-     * @return string
      */
     public function serialize() : string
     {
@@ -1155,10 +1065,6 @@ final class BigInteger extends BigNumber
      *
      * @internal
      * @psalm-suppress RedundantPropertyInitializationCheck
-     *
-     * @param string $value
-     *
-     * @return void
      *
      * @throws \LogicException
      */

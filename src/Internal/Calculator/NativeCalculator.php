@@ -26,8 +26,6 @@ class NativeCalculator extends Calculator
     private int $maxDigits;
 
     /**
-     * Class constructor.
-     *
      * @codeCoverageIgnore
      */
     public function __construct()
@@ -279,11 +277,6 @@ class NativeCalculator extends Calculator
 
     /**
      * Performs the addition of two non-signed large integers.
-     *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
-     *
-     * @return string
      */
     private function doAdd(string $a, string $b) : string
     {
@@ -336,11 +329,6 @@ class NativeCalculator extends Calculator
 
     /**
      * Performs the subtraction of two non-signed large integers.
-     *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
-     *
-     * @return string
      */
     private function doSub(string $a, string $b) : string
     {
@@ -418,11 +406,6 @@ class NativeCalculator extends Calculator
 
     /**
      * Performs the multiplication of two non-signed large integers.
-     *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
-     *
-     * @return string
      */
     private function doMul(string $a, string $b) : string
     {
@@ -495,9 +478,6 @@ class NativeCalculator extends Calculator
     /**
      * Performs the division of two non-signed large integers.
      *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
-     *
      * @return string[] The quotient and remainder.
      */
     private function doDiv(string $a, string $b) : array
@@ -556,9 +536,6 @@ class NativeCalculator extends Calculator
     /**
      * Compares two non-signed large numbers.
      *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
-     *
      * @return int [-1, 0, 1]
      */
     private function doCmp(string $a, string $b) : int
@@ -579,9 +556,6 @@ class NativeCalculator extends Calculator
      * Pads the left of one of the given numbers with zeros if necessary to make both numbers the same length.
      *
      * The numbers must only consist of digits, without leading minus sign.
-     *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
      *
      * @return array{string, string, int}
      */

@@ -48,10 +48,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * - strings containing a `.` character or using an exponential notation are returned as BigDecimal
      * - strings containing only digits with an optional leading `+` or `-` sign are returned as BigInteger
      *
-     * @param BigNumber|int|float|string $value
-     *
-     * @return BigNumber
-     *
      * @throws NumberFormatException   If the format of the number is not valid.
      * @throws DivisionByZeroException If the value represents a rational number with a denominator of zero.
      *
@@ -152,10 +148,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @see https://github.com/brick/math/pull/20
      *
-     * @param float $float
-     *
-     * @return string
-     *
      * @psalm-pure
      * @psalm-suppress ImpureFunctionCall
      */
@@ -210,8 +202,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
      *                                              to an instance of the class this method is called on.
      *
-     * @return static The minimum value.
-     *
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
      *
@@ -243,8 +233,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
      *                                              to an instance of the class this method is called on.
-     *
-     * @return static The maximum value.
      *
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
@@ -278,8 +266,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @param BigNumber|int|float|string ...$values The numbers to add. All the numbers need to be convertible
      *                                              to an instance of the class this method is called on.
      *
-     * @return static The sum.
-     *
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
      *
@@ -311,11 +297,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *       depending on their ability to perform the operation. This will also require a version bump because we're
      *       potentially breaking custom BigNumber implementations (if any...)
      *
-     * @param BigNumber $a
-     * @param BigNumber $b
-     *
-     * @return BigNumber
-     *
      * @psalm-pure
      */
     private static function add(BigNumber $a, BigNumber $b) : BigNumber
@@ -346,8 +327,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @param string $number The number, validated as a non-empty string of digits with optional leading sign.
      *
-     * @return string
-     *
      * @psalm-pure
      */
     private static function cleanUp(string $number) : string
@@ -373,10 +352,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is equal to the given one.
-     *
-     * @param BigNumber|int|float|string $that
-     *
-     * @return bool
      */
     public function isEqualTo(BigNumber|int|float|string $that) : bool
     {
@@ -385,10 +360,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is strictly lower than the given one.
-     *
-     * @param BigNumber|int|float|string $that
-     *
-     * @return bool
      */
     public function isLessThan(BigNumber|int|float|string $that) : bool
     {
@@ -397,10 +368,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is lower than or equal to the given one.
-     *
-     * @param BigNumber|int|float|string $that
-     *
-     * @return bool
      */
     public function isLessThanOrEqualTo(BigNumber|int|float|string $that) : bool
     {
@@ -409,10 +376,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is strictly greater than the given one.
-     *
-     * @param BigNumber|int|float|string $that
-     *
-     * @return bool
      */
     public function isGreaterThan(BigNumber|int|float|string $that) : bool
     {
@@ -421,10 +384,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is greater than or equal to the given one.
-     *
-     * @param BigNumber|int|float|string $that
-     *
-     * @return bool
      */
     public function isGreaterThanOrEqualTo(BigNumber|int|float|string $that) : bool
     {
@@ -433,8 +392,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number equals zero.
-     *
-     * @return bool
      */
     public function isZero() : bool
     {
@@ -443,8 +400,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is strictly negative.
-     *
-     * @return bool
      */
     public function isNegative() : bool
     {
@@ -453,8 +408,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is negative or zero.
-     *
-     * @return bool
      */
     public function isNegativeOrZero() : bool
     {
@@ -463,8 +416,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is strictly positive.
-     *
-     * @return bool
      */
     public function isPositive() : bool
     {
@@ -473,8 +424,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is positive or zero.
-     *
-     * @return bool
      */
     public function isPositiveOrZero() : bool
     {
@@ -491,8 +440,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Compares this number to the given one.
      *
-     * @param BigNumber|int|float|string $that
-     *
      * @return int [-1,0,1] If `$this` is lower than, equal to, or greater than `$that`.
      *
      * @throws MathException If the number is not valid.
@@ -502,8 +449,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Converts this number to a BigInteger.
      *
-     * @return BigInteger The converted number.
-     *
      * @throws RoundingNecessaryException If this number cannot be converted to a BigInteger without rounding.
      */
     abstract public function toBigInteger() : BigInteger;
@@ -511,16 +456,12 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Converts this number to a BigDecimal.
      *
-     * @return BigDecimal The converted number.
-     *
      * @throws RoundingNecessaryException If this number cannot be converted to a BigDecimal without rounding.
      */
     abstract public function toBigDecimal() : BigDecimal;
 
     /**
      * Converts this number to a BigRational.
-     *
-     * @return BigRational The converted number.
      */
     abstract public function toBigRational() : BigRational;
 
@@ -529,8 +470,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @param int $scale        The scale of the resulting `BigDecimal`.
      * @param int $roundingMode A `RoundingMode` constant.
-     *
-     * @return BigDecimal
      *
      * @throws RoundingNecessaryException If this number cannot be converted to the given scale without rounding.
      *                                    This only applies when RoundingMode::UNNECESSARY is used.
@@ -542,8 +481,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * If this number cannot be converted to a native integer without losing precision, an exception is thrown.
      * Note that the acceptable range for an integer depends on the platform and differs for 32-bit and 64-bit.
-     *
-     * @return int The converted value.
      *
      * @throws MathException If this number cannot be exactly converted to a native integer.
      */
@@ -557,8 +494,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * If the number is greater than the largest representable floating point number, positive infinity is returned.
      * If the number is less than the smallest representable floating point number, negative infinity is returned.
-     *
-     * @return float The converted value.
      */
     abstract public function toFloat() : float;
 
@@ -567,8 +502,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * The output of this method can be parsed by the `of()` factory method;
      * this will yield an object equal to this one, without any information loss.
-     *
-     * @return string
      */
     abstract public function __toString() : string;
 

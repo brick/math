@@ -43,8 +43,6 @@ abstract class Calculator
      * An instance is typically set only in unit tests: the autodetect is usually the best option.
      *
      * @param Calculator|null $calculator The calculator instance, or NULL to revert to autodetect.
-     *
-     * @return void
      */
     final public static function set(?Calculator $calculator) : void
     {
@@ -55,8 +53,6 @@ abstract class Calculator
      * Returns the Calculator instance to use.
      *
      * If none has been explicitly set, the fastest available implementation will be returned.
-     *
-     * @return Calculator
      *
      * @psalm-pure
      * @psalm-suppress ImpureStaticProperty
@@ -75,8 +71,6 @@ abstract class Calculator
      * Returns the fastest available Calculator implementation.
      *
      * @codeCoverageIgnore
-     *
-     * @return Calculator
      */
     private static function detect() : Calculator
     {
@@ -94,9 +88,6 @@ abstract class Calculator
     /**
      * Extracts the sign & digits of the operands.
      *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
-     *
      * @return array{bool, bool, string, string} Whether $a and $b are negative, followed by their digits.
      */
     final protected function init(string $a, string $b) : array
@@ -112,10 +103,6 @@ abstract class Calculator
 
     /**
      * Returns the absolute value of a number.
-     *
-     * @param string $n The number.
-     *
-     * @return string The absolute value.
      */
     final public function abs(string $n) : string
     {
@@ -124,10 +111,6 @@ abstract class Calculator
 
     /**
      * Negates a number.
-     *
-     * @param string $n The number.
-     *
-     * @return string The negated value.
      */
     final public function neg(string $n) : string
     {
@@ -144,9 +127,6 @@ abstract class Calculator
 
     /**
      * Compares two numbers.
-     *
-     * @param string $a The first number.
-     * @param string $b The second number.
      *
      * @return int [-1, 0, 1] If the first number is less than, equal to, or greater than the second number.
      */
@@ -178,31 +158,16 @@ abstract class Calculator
 
     /**
      * Adds two numbers.
-     *
-     * @param string $a The augend.
-     * @param string $b The addend.
-     *
-     * @return string The sum.
      */
     abstract public function add(string $a, string $b) : string;
 
     /**
      * Subtracts two numbers.
-     *
-     * @param string $a The minuend.
-     * @param string $b The subtrahend.
-     *
-     * @return string The difference.
      */
     abstract public function sub(string $a, string $b) : string;
 
     /**
      * Multiplies two numbers.
-     *
-     * @param string $a The multiplicand.
-     * @param string $b The multiplier.
-     *
-     * @return string The product.
      */
     abstract public function mul(string $a, string $b) : string;
 
@@ -247,10 +212,7 @@ abstract class Calculator
     abstract public function pow(string $a, int $e) : string;
 
     /**
-     * @param string $a
      * @param string $b The modulus; must not be zero.
-     *
-     * @return string
      */
     public function mod(string $a, string $b) : string
     {
@@ -264,10 +226,7 @@ abstract class Calculator
      *
      * This method can be overridden by the concrete implementation if the underlying library has built-in support.
      *
-     * @param string $x
      * @param string $m The modulus; must not be negative or zero.
-     *
-     * @return string|null
      */
     public function modInverse(string $x, string $m) : ?string
     {
@@ -296,8 +255,6 @@ abstract class Calculator
      * @param string $base The base number; must be positive or zero.
      * @param string $exp  The exponent; must be positive or zero.
      * @param string $mod  The modulus; must be strictly positive.
-     *
-     * @return string The power.
      */
     abstract public function modPow(string $base, string $exp, string $mod) : string;
 
@@ -306,9 +263,6 @@ abstract class Calculator
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for GCD calculations.
-     *
-     * @param string $a The first number.
-     * @param string $b The second number.
      *
      * @return string The GCD, always positive, or zero if both arguments are zero.
      */
@@ -347,10 +301,6 @@ abstract class Calculator
      *
      * The result is the largest x such that x² ≤ n.
      * The input MUST NOT be negative.
-     *
-     * @param string $n The number.
-     *
-     * @return string The square root.
      */
     abstract public function sqrt(string $n) : string;
 
@@ -482,8 +432,6 @@ abstract class Calculator
      * @param string $b            The divisor, must not be zero.
      * @param int    $roundingMode The rounding mode.
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException  If the rounding mode is invalid.
      * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided but rounding is necessary.
      *
@@ -565,11 +513,6 @@ abstract class Calculator
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for bitwise operations.
-     *
-     * @param string $a
-     * @param string $b
-     *
-     * @return string
      */
     public function and(string $a, string $b) : string
     {
@@ -581,11 +524,6 @@ abstract class Calculator
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for bitwise operations.
-     *
-     * @param string $a
-     * @param string $b
-     *
-     * @return string
      */
     public function or(string $a, string $b) : string
     {
@@ -597,11 +535,6 @@ abstract class Calculator
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for bitwise operations.
-     *
-     * @param string $a
-     * @param string $b
-     *
-     * @return string
      */
     public function xor(string $a, string $b) : string
     {
@@ -614,8 +547,6 @@ abstract class Calculator
      * @param 'and'|'or'|'xor' $operator The operator to use.
      * @param string           $a        The left operand.
      * @param string           $b        The right operand.
-     *
-     * @return string
      */
     private function bitwise(string $operator, string $a, string $b) : string
     {
@@ -673,8 +604,6 @@ abstract class Calculator
 
     /**
      * @param string $number A positive, binary number.
-     *
-     * @return string
      */
     private function twosComplement(string $number) : string
     {
@@ -704,8 +633,6 @@ abstract class Calculator
      * Converts a decimal number to a binary string.
      *
      * @param string $number The number to convert, positive or zero, only digits.
-     *
-     * @return string
      */
     private function toBinary(string $number) : string
     {
@@ -723,8 +650,6 @@ abstract class Calculator
      * Returns the positive decimal representation of a binary number.
      *
      * @param string $bytes The bytes representing the number.
-     *
-     * @return string
      */
     private function toDecimal(string $bytes) : string
     {

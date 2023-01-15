@@ -57,10 +57,6 @@ final class BigRational extends BigNumber
     /**
      * Creates a BigRational of the given value.
      *
-     * @param BigNumber|int|float|string $value
-     *
-     * @return BigRational
-     *
      * @throws MathException If the value cannot be converted to a BigRational.
      *
      * @psalm-pure
@@ -78,8 +74,6 @@ final class BigRational extends BigNumber
      *
      * @param BigNumber|int|float|string $numerator   The numerator. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string $denominator The denominator. Must be convertible to a BigInteger.
-     *
-     * @return BigRational
      *
      * @throws NumberFormatException      If an argument does not represent a valid number.
      * @throws RoundingNecessaryException If an argument represents a non-integer number.
@@ -99,8 +93,6 @@ final class BigRational extends BigNumber
 
     /**
      * Returns a BigRational representing zero.
-     *
-     * @return BigRational
      *
      * @psalm-pure
      */
@@ -122,8 +114,6 @@ final class BigRational extends BigNumber
     /**
      * Returns a BigRational representing one.
      *
-     * @return BigRational
-     *
      * @psalm-pure
      */
     public static function one() : BigRational
@@ -144,8 +134,6 @@ final class BigRational extends BigNumber
     /**
      * Returns a BigRational representing ten.
      *
-     * @return BigRational
-     *
      * @psalm-pure
      */
     public static function ten() : BigRational
@@ -163,17 +151,11 @@ final class BigRational extends BigNumber
         return $ten;
     }
 
-    /**
-     * @return BigInteger
-     */
     public function getNumerator() : BigInteger
     {
         return $this->numerator;
     }
 
-    /**
-     * @return BigInteger
-     */
     public function getDenominator() : BigInteger
     {
         return $this->denominator;
@@ -181,8 +163,6 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the quotient of the division of the numerator by the denominator.
-     *
-     * @return BigInteger
      */
     public function quotient() : BigInteger
     {
@@ -191,8 +171,6 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the remainder of the division of the numerator by the denominator.
-     *
-     * @return BigInteger
      */
     public function remainder() : BigInteger
     {
@@ -214,8 +192,6 @@ final class BigRational extends BigNumber
      *
      * @param BigNumber|int|float|string $that The number to add.
      *
-     * @return BigRational The result.
-     *
      * @throws MathException If the number is not valid.
      */
     public function plus(BigNumber|int|float|string $that) : BigRational
@@ -233,8 +209,6 @@ final class BigRational extends BigNumber
      * Returns the difference of this number and the given one.
      *
      * @param BigNumber|int|float|string $that The number to subtract.
-     *
-     * @return BigRational The result.
      *
      * @throws MathException If the number is not valid.
      */
@@ -254,8 +228,6 @@ final class BigRational extends BigNumber
      *
      * @param BigNumber|int|float|string $that The multiplier.
      *
-     * @return BigRational The result.
-     *
      * @throws MathException If the multiplier is not a valid number.
      */
     public function multipliedBy(BigNumber|int|float|string $that) : BigRational
@@ -273,8 +245,6 @@ final class BigRational extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor.
      *
-     * @return BigRational The result.
-     *
      * @throws MathException If the divisor is not a valid number, or is zero.
      */
     public function dividedBy(BigNumber|int|float|string $that) : BigRational
@@ -289,10 +259,6 @@ final class BigRational extends BigNumber
 
     /**
      * Returns this number exponentiated to the given value.
-     *
-     * @param int $exponent The exponent.
-     *
-     * @return BigRational The result.
      *
      * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      */
@@ -320,8 +286,6 @@ final class BigRational extends BigNumber
      *
      * The reciprocal has the numerator and denominator swapped.
      *
-     * @return BigRational
-     *
      * @throws DivisionByZeroException If the numerator is zero.
      */
     public function reciprocal() : BigRational
@@ -331,8 +295,6 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the absolute value of this BigRational.
-     *
-     * @return BigRational
      */
     public function abs() : BigRational
     {
@@ -341,8 +303,6 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the negated value of this BigRational.
-     *
-     * @return BigRational
      */
     public function negated() : BigRational
     {
@@ -351,8 +311,6 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the simplified value of this BigRational.
-     *
-     * @return BigRational
      */
     public function simplified() : BigRational
     {
@@ -443,8 +401,6 @@ final class BigRational extends BigNumber
      *
      * @param array{numerator: BigInteger, denominator: BigInteger} $data
      *
-     * @return void
-     *
      * @throws \LogicException
      */
     public function __unserialize(array $data): void
@@ -461,8 +417,6 @@ final class BigRational extends BigNumber
      * This method is required by interface Serializable and SHOULD NOT be accessed directly.
      *
      * @internal
-     *
-     * @return string
      */
     public function serialize() : string
     {
@@ -474,10 +428,6 @@ final class BigRational extends BigNumber
      *
      * @internal
      * @psalm-suppress RedundantPropertyInitializationCheck
-     *
-     * @param string $value
-     *
-     * @return void
      *
      * @throws \LogicException
      */
