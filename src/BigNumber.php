@@ -25,7 +25,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             '(?:' .
                 '(?:' .
                     '(?<integral>[0-9]+)?' .
-                    '(?<point>\.)?' .
+                    '(?<point>[\.,])?' .
                     '(?<fractional>[0-9]+)?' .
                     '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
                 ')|(?:' .
