@@ -63,7 +63,9 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             return new BigInteger((string) $value);
         }
 
-        $value = \is_float($value) ? self::floatToString($value) : $value;
+        if (is_float($value)) {
+            $value = (string) $value;
+        }
 
         $throw = static function() use ($value) : void {
             throw new NumberFormatException(\sprintf(
@@ -141,26 +143,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         $integral = self::cleanUp(($sign ?? '') . $integral);
 
         return new BigInteger($integral);
-    }
-
-    /**
-     * Safely converts float to string, avoiding locale-dependent issues.
-     *
-     * @see https://github.com/brick/math/pull/20
-     *
-     * @psalm-pure
-     * @psalm-suppress ImpureFunctionCall
-     */
-    private static function floatToString(float $float) : string
-    {
-        $currentLocale = \setlocale(LC_NUMERIC, '0');
-        \setlocale(LC_NUMERIC, 'C');
-
-        $result = (string) $float;
-
-        \setlocale(LC_NUMERIC, $currentLocale);
-
-        return $result;
     }
 
     /**
