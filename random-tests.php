@@ -132,7 +132,7 @@ use Brick\Math\Internal\Calculator;
      * @param string $c2   The name of the second calculator.
      * @param string $test A string representing the test being executed.
      */
-    private function failure(string $c1, string $c2, string $test) : void
+    private function failure(string $c1, string $c2, string $test) : never
     {
         echo PHP_EOL;
         echo 'FAILURE!', PHP_EOL;
