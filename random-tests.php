@@ -12,9 +12,9 @@ require __DIR__ . '/vendor/autoload.php';
 use Brick\Math\Internal\Calculator;
 
 (new class(30) { // max digits
-    private Calculator\GmpCalculator $gmp;
-    private Calculator\BcMathCalculator $bcmath;
-    private Calculator\NativeCalculator $native;
+    private readonly Calculator\GmpCalculator $gmp;
+    private readonly Calculator\BcMathCalculator $bcmath;
+    private readonly Calculator\NativeCalculator $native;
 
     private int $testCounter = 0;
     private float $lastOutputTime = 0.0;
@@ -23,7 +23,7 @@ use Brick\Math\Internal\Calculator;
     private int $testsPerSecond = 0;
 
     public function __construct(
-        private int $maxDigits,
+        private readonly int $maxDigits,
     ) {
         $this->gmp    = new Calculator\GmpCalculator();
         $this->bcmath = new Calculator\BcMathCalculator();
