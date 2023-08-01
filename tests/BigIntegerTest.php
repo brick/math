@@ -381,7 +381,7 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testGcdMultiple(array $values, string $expectedGCD): void
     {
-        $values = array_map(fn (string $value) => BigInteger::of($value), $values);
+        $values = array_map(BigInteger::of(...), $values);
         $actualGCD = BigInteger::gcdMultiple(...$values);
 
         self::assertSame($expectedGCD, (string) $actualGCD);
