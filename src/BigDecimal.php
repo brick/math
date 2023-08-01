@@ -223,12 +223,12 @@ final class BigDecimal extends BigNumber
      *
      * @param BigNumber|int|float|string $that         The divisor.
      * @param int|null                   $scale        The desired scale, or null to use the scale of this number.
-     * @param int                        $roundingMode An optional rounding mode.
+     * @param RoundingMode               $roundingMode An optional rounding mode, defaults to UNNECESSARY.
      *
      * @throws \InvalidArgumentException If the scale or rounding mode is invalid.
      * @throws MathException             If the number is invalid, is zero, or rounding was necessary.
      */
-    public function dividedBy(BigNumber|int|float|string $that, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
+    public function dividedBy(BigNumber|int|float|string $that, ?int $scale = null, RoundingMode $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -631,7 +631,7 @@ final class BigDecimal extends BigNumber
         return self::newBigRational($numerator, $denominator, false);
     }
 
-    public function toScale(int $scale, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
+    public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         if ($scale === $this->scale) {
             return $this;

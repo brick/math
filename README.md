@@ -51,7 +51,7 @@ This library provides the following public classes in the `Brick\Math` namespace
 - [BigInteger](https://github.com/brick/math/blob/0.12.0/src/BigInteger.php): represents an arbitrary-precision integer number.
 - [BigDecimal](https://github.com/brick/math/blob/0.12.0/src/BigDecimal.php): represents an arbitrary-precision decimal number.
 - [BigRational](https://github.com/brick/math/blob/0.12.0/src/BigRational.php): represents an arbitrary-precision rational number (fraction).
-- [RoundingMode](https://github.com/brick/math/blob/0.12.0/src/RoundingMode.php): holds constants for the rounding modes.
+- [RoundingMode](https://github.com/brick/math/blob/0.12.0/src/RoundingMode.php): enum representing all available rounding modes.
 
 And the following exceptions in the `Brick\Math\Exception` namespace:
 

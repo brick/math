@@ -726,14 +726,14 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerDividedBy
      *
-     * @param string   $a             The base number.
-     * @param string   $b             The number to divide.
-     * @param int|null $scale         The desired scale of the result.
-     * @param int      $roundingMode  The rounding mode.
-     * @param string   $unscaledValue The expected unscaled value of the result.
-     * @param int      $expectedScale The expected scale of the result.
+     * @param string       $a             The base number.
+     * @param string       $b             The number to divide.
+     * @param int|null     $scale         The desired scale of the result.
+     * @param RoundingMode $roundingMode  The rounding mode.
+     * @param string       $unscaledValue The expected unscaled value of the result.
+     * @param int          $expectedScale The expected scale of the result.
      */
-    public function testDividedBy(string $a, string $b, ?int $scale, int $roundingMode, string $unscaledValue, int $expectedScale) : void
+    public function testDividedBy(string $a, string $b, ?int $scale, RoundingMode $roundingMode, string $unscaledValue, int $expectedScale) : void
     {
         $decimal = BigDecimal::of($a)->dividedBy($b, $scale, $roundingMode);
         self::assertBigDecimalInternalValues($unscaledValue, $expectedScale, $decimal);
@@ -875,22 +875,16 @@ class BigDecimalTest extends AbstractTestCase
         BigDecimal::of(1)->dividedBy(2, -1);
     }
 
-    public function testDividedByWithInvalidRoundingModeThrowsException() : void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        BigDecimal::of(1)->dividedBy(2, 0, -1);
-    }
-
     /**
      * @dataProvider providerRoundingMode
      *
-     * @param int         $roundingMode The rounding mode.
-     * @param string      $number       The number to round.
-     * @param string|null $two          The expected rounding to a scale of two, or null if an exception is expected.
-     * @param string|null $one          The expected rounding to a scale of one, or null if an exception is expected.
-     * @param string|null $zero         The expected rounding to a scale of zero, or null if an exception is expected.
+     * @param RoundingMode $roundingMode The rounding mode.
+     * @param string       $number       The number to round.
+     * @param string|null  $two          The expected rounding to a scale of two, or null if an exception is expected.
+     * @param string|null  $one          The expected rounding to a scale of one, or null if an exception is expected.
+     * @param string|null  $zero         The expected rounding to a scale of zero, or null if an exception is expected.
      */
-    public function testRoundingMode(int $roundingMode, string $number, ?string $two, ?string $one, ?string $zero) : void
+    public function testRoundingMode(RoundingMode $roundingMode, string $number, ?string $two, ?string $one, ?string $zero) : void
     {
         $number = BigDecimal::of($number);
 
@@ -899,14 +893,14 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @param int         $roundingMode The rounding mode.
-     * @param BigDecimal  $number       The number to round.
-     * @param string      $divisor      The divisor.
-     * @param string|null $two          The expected rounding to a scale of two, or null if an exception is expected.
-     * @param string|null $one          The expected rounding to a scale of one, or null if an exception is expected.
-     * @param string|null $zero         The expected rounding to a scale of zero, or null if an exception is expected.
+     * @param RoundingMode $roundingMode The rounding mode.
+     * @param BigDecimal   $number       The number to round.
+     * @param string       $divisor      The divisor.
+     * @param string|null  $two          The expected rounding to a scale of two, or null if an exception is expected.
+     * @param string|null  $one          The expected rounding to a scale of one, or null if an exception is expected.
+     * @param string|null  $zero         The expected rounding to a scale of zero, or null if an exception is expected.
      */
-    private function doTestRoundingMode(int $roundingMode, BigDecimal $number, string $divisor, ?string $two, ?string $one, ?string $zero) : void
+    private function doTestRoundingMode(RoundingMode $roundingMode, BigDecimal $number, string $divisor, ?string $two, ?string $one, ?string $zero) : void
     {
         foreach ([$zero, $one, $two] as $scale => $expected) {
             if ($expected === null) {
@@ -1799,13 +1793,13 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @dataProvider providerToScale
      *
-     * @param string $number        The number to scale.
-     * @param int    $toScale       The scale to apply.
-     * @param int    $roundingMode  The rounding mode to apply.
-     * @param string $unscaledValue The expected unscaled value of the result.
-     * @param int    $scale         The expected scale of the result.
+     * @param string       $number        The number to scale.
+     * @param int          $toScale       The scale to apply.
+     * @param RoundingMode $roundingMode  The rounding mode to apply.
+     * @param string       $unscaledValue The expected unscaled value of the result.
+     * @param int          $scale         The expected scale of the result.
      */
-    public function testToScale(string $number, int $toScale, int $roundingMode, string $unscaledValue, int $scale) : void
+    public function testToScale(string $number, int $toScale, RoundingMode $roundingMode, string $unscaledValue, int $scale) : void
     {
         $decimal = BigDecimal::of($number)->toScale($toScale, $roundingMode);
         self::assertBigDecimalInternalValues($unscaledValue, $scale, $decimal);

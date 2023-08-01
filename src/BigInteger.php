@@ -429,12 +429,12 @@ final class BigInteger extends BigNumber
      * Returns the result of the division of this number by the given one.
      *
      * @param BigNumber|int|float|string $that         The divisor. Must be convertible to a BigInteger.
-     * @param int                        $roundingMode An optional rounding mode.
+     * @param RoundingMode               $roundingMode An optional rounding mode, defaults to UNNECESSARY.
      *
      * @throws MathException If the divisor is not a valid number, is not convertible to a BigInteger, is zero,
      *                       or RoundingMode::UNNECESSARY is used and the remainder is not zero.
      */
-    public function dividedBy(BigNumber|int|float|string $that, int $roundingMode = RoundingMode::UNNECESSARY) : BigInteger
+    public function dividedBy(BigNumber|int|float|string $that, RoundingMode $roundingMode = RoundingMode::UNNECESSARY) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -888,7 +888,7 @@ final class BigInteger extends BigNumber
         return self::newBigRational($this, BigInteger::one(), false);
     }
 
-    public function toScale(int $scale, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
+    public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         return $this->toBigDecimal()->toScale($scale, $roundingMode);
     }

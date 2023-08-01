@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 💥 **Breaking changes**
 
 - Minimum PHP version is now 8.1
+- `RoundingMode` is now an `enum`; if you're type-hinting rounding modes, you need to type-hint against `RoundingMode` instead of `int` now
 
 ## [0.11.0](https://github.com/brick/math/releases/tag/0.11.0) - 2023-01-16
 

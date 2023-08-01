@@ -810,13 +810,8 @@ class BigRationalTest extends AbstractTestCase
 
     /**
      * @dataProvider providerToScale
-     *
-     * @param string $number
-     * @param int    $scale
-     * @param int    $roundingMode
-     * @param string $expected
      */
-    public function testToScale(string $number, int $scale, int $roundingMode, string $expected) : void
+    public function testToScale(string $number, int $scale, RoundingMode $roundingMode, string $expected) : void
     {
         $number = BigRational::of($number);
 

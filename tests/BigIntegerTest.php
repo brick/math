@@ -660,22 +660,16 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testDividedByWithInvalidRoundingModeThrowsException() : void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        BigInteger::of(1)->dividedBy(2, -1);
-    }
-
     /**
      * @dataProvider providerDividedByWithRoundingMode
      *
-     * @param int         $roundingMode The rounding mode.
-     * @param string      $number       The number to round.
-     * @param string|null $ten          The expected rounding divided by 10, or null if an exception is expected.
-     * @param string|null $hundred      The expected rounding divided by 100 or null if an exception is expected.
-     * @param string|null $thousand     The expected rounding divided by 1000, or null if an exception is expected.
+     * @param RoundingMode $roundingMode The rounding mode.
+     * @param string       $number       The number to round.
+     * @param string|null  $ten          The expected rounding divided by 10, or null if an exception is expected.
+     * @param string|null  $hundred      The expected rounding divided by 100 or null if an exception is expected.
+     * @param string|null  $thousand     The expected rounding divided by 1000, or null if an exception is expected.
      */
-    public function testDividedByWithRoundingMode(int $roundingMode, string $number, ?string $ten, ?string $hundred, ?string $thousand) : void
+    public function testDividedByWithRoundingMode(RoundingMode $roundingMode, string $number, ?string $ten, ?string $hundred, ?string $thousand) : void
     {
         $number = BigInteger::of($number);
 
@@ -684,14 +678,14 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param int         $roundingMode The rounding mode.
-     * @param BigInteger  $number       The number to round.
-     * @param string      $divisor      The divisor.
-     * @param string|null $ten          The expected rounding to a scale of two, or null if an exception is expected.
-     * @param string|null $hundred      The expected rounding to a scale of one, or null if an exception is expected.
-     * @param string|null $thousand     The expected rounding to a scale of zero, or null if an exception is expected.
+     * @param RoundingMode $roundingMode The rounding mode.
+     * @param BigInteger   $number       The number to round.
+     * @param string       $divisor      The divisor.
+     * @param string|null  $ten          The expected rounding to a scale of two, or null if an exception is expected.
+     * @param string|null  $hundred      The expected rounding to a scale of one, or null if an exception is expected.
+     * @param string|null  $thousand     The expected rounding to a scale of zero, or null if an exception is expected.
      */
-    private function doTestDividedByWithRoundingMode(int $roundingMode, BigInteger $number, string $divisor, ?string $ten, ?string $hundred, ?string $thousand) : void
+    private function doTestDividedByWithRoundingMode(RoundingMode $roundingMode, BigInteger $number, string $divisor, ?string $ten, ?string $hundred, ?string $thousand) : void
     {
         foreach ([$ten, $hundred, $thousand] as $expected) {
             $divisor .= '0';

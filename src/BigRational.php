@@ -353,7 +353,7 @@ final class BigRational extends BigNumber
         return $this;
     }
 
-    public function toScale(int $scale, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
+    public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         return $this->numerator->toBigDecimal()->dividedBy($this->denominator, $scale, $roundingMode);
     }
