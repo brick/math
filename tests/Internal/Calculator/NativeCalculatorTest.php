@@ -21,7 +21,7 @@ class NativeCalculatorTest extends AbstractTestCase
         self::assertSame($expectedValue, $nativeCalculator->add($a, $b));
     }
 
-    public function providerAdd() : array
+    public static function providerAdd() : array
     {
         return [
             ['0', '1234567891234567889999999', '1234567891234567889999999'],
@@ -43,7 +43,7 @@ class NativeCalculatorTest extends AbstractTestCase
         self::assertSame($expectedValue, $nativeCalculator->mul($a, $b));
     }
 
-    public function providerMul() : array
+    public static function providerMul() : array
     {
         return [
             ['0', '0', '0'],
@@ -70,7 +70,7 @@ class NativeCalculatorTest extends AbstractTestCase
         self::assertSame($expectedValue, $nativeCalculator->pow($a, $b));
     }
 
-    public function providerPow() : array
+    public static function providerPow() : array
     {
         return [
             ['123456789012345678901234567890', 0, '1'],

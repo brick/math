@@ -32,7 +32,7 @@ class BigNumberTest extends AbstractTestCase
         self::assertSame($expectedSum, (string) $sum);
     }
 
-    public function providerSum() : array
+    public static function providerSum() : array
     {
         return [
             [[-1], BigInteger::class, '-1'],

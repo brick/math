@@ -29,7 +29,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($value));
     }
 
-    public function providerOf() : array
+    public static function providerOf() : array
     {
         return [
             [0, '0', 0],
@@ -206,7 +206,7 @@ class BigDecimalTest extends AbstractTestCase
         setlocale(LC_NUMERIC, $originalLocale);
     }
 
-    public function providerOfFloatInDifferentLocales() : array
+    public static function providerOfFloatInDifferentLocales() : array
     {
         return [
             ['C'],
@@ -231,7 +231,7 @@ class BigDecimalTest extends AbstractTestCase
         BigDecimal::of($value);
     }
 
-    public function providerOfInvalidValueThrowsException() : array
+    public static function providerOfInvalidValueThrowsException() : array
     {
         return [
             [''],
@@ -282,7 +282,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues($expectedUnscaledValue, $scale, $number);
     }
 
-    public function providerOfUnscaledValue() : array
+    public static function providerOfUnscaledValue() : array
     {
         return [
             [123456789, 0, '123456789'],
@@ -347,7 +347,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalEquals($min, BigDecimal::min(... $values));
     }
 
-    public function providerMin() : array
+    public static function providerMin() : array
     {
         return [
             [[0, 1, -1], '-1'],
@@ -388,7 +388,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalEquals($max, BigDecimal::max(... $values));
     }
 
-    public function providerMax() : array
+    public static function providerMax() : array
     {
         return [
             [[0, 0.9, -1.00], '0.9'],
@@ -433,7 +433,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalEquals($sum, BigDecimal::sum(... $values));
     }
 
-    public function providerSum() : array
+    public static function providerSum() : array
     {
         return [
             [[0, 0.9, -1.00], '-0.1'],
@@ -480,7 +480,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($a)->plus($b));
     }
 
-    public function providerPlus() : array
+    public static function providerPlus() : array
     {
         return [
             ['123',    '999',    '1122',   0],
@@ -556,7 +556,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($a)->minus($b));
     }
 
-    public function providerMinus() : array
+    public static function providerMinus() : array
     {
         return [
             ['123',    '999',    '-876',   0],
@@ -625,7 +625,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($a)->multipliedBy($b));
     }
 
-    public function providerMultipliedBy() : array
+    public static function providerMultipliedBy() : array
     {
         return [
             ['123',    '999',    '122877',     0],
@@ -739,7 +739,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues($unscaledValue, $expectedScale, $decimal);
     }
 
-    public function providerDividedBy() : array
+    public static function providerDividedBy() : array
     {
         return [
             [ '7',  '0.2', 0, RoundingMode::UNNECESSARY,  '35', 0],
@@ -774,7 +774,7 @@ class BigDecimalTest extends AbstractTestCase
         BigDecimal::of(1)->dividedBy($zero, 0);
     }
 
-    public function providerDividedByByZeroThrowsException() : array
+    public static function providerDividedByByZeroThrowsException() : array
     {
         return [
             [0],
@@ -807,7 +807,7 @@ class BigDecimalTest extends AbstractTestCase
         }
     }
 
-    public function providerExactlyDividedBy() : array
+    public static function providerExactlyDividedBy() : array
     {
         return [
             [1, 1, '1'],
@@ -860,7 +860,7 @@ class BigDecimalTest extends AbstractTestCase
         BigDecimal::of($a)->dividedBy($b, $scale);
     }
 
-    public function providerDividedByWithRoundingNecessaryThrowsException() : array
+    public static function providerDividedByWithRoundingNecessaryThrowsException() : array
     {
         return [
             ['1.234', '123.456', 3],
@@ -921,7 +921,7 @@ class BigDecimalTest extends AbstractTestCase
         }
     }
 
-    public function providerRoundingMode() : array
+    public static function providerRoundingMode() : array
     {
         return [
             [RoundingMode::UP,  '3.501',  '351',  '36',  '4'],
@@ -1407,7 +1407,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalEquals($remainder, $r);
     }
 
-    public function providerQuotientAndRemainder() : array
+    public static function providerQuotientAndRemainder() : array
     {
         return [
             ['1', '123', '0', '1'],
@@ -1504,7 +1504,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalEquals($sqrt, $number->sqrt($scale));
     }
 
-    public function providerSqrt() : array
+    public static function providerSqrt() : array
     {
         return [
             ['0', 0, '0'],
@@ -1728,7 +1728,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->power($exponent));
     }
 
-    public function providerPower() : array
+    public static function providerPower() : array
     {
         return [
             ['-3', 0, '1', 0],
@@ -1788,7 +1788,7 @@ class BigDecimalTest extends AbstractTestCase
         BigDecimal::of(1)->power($power);
     }
 
-    public function providerPowerWithInvalidExponentThrowsException() : array
+    public static function providerPowerWithInvalidExponentThrowsException() : array
     {
         return [
             [-1],
@@ -1797,7 +1797,7 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider toScaleProvider
+     * @dataProvider providerToScale
      *
      * @param string $number        The number to scale.
      * @param int    $toScale       The scale to apply.
@@ -1811,7 +1811,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues($unscaledValue, $scale, $decimal);
     }
 
-    public function toScaleProvider() : array
+    public static function providerToScale() : array
     {
         return [
             ['123.45', 0, RoundingMode::DOWN, '123', 0],
@@ -1833,7 +1833,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalEquals($expected, BigDecimal::of($number)->withPointMovedLeft($places));
     }
 
-    public function providerWithPointMovedLeft() : array
+    public static function providerWithPointMovedLeft() : array
     {
         return [
             ['0', -2, '0'],
@@ -1916,7 +1916,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalEquals($expected, BigDecimal::of($number)->withPointMovedRight($places));
     }
 
-    public function providerWithPointMovedRight() : array
+    public static function providerWithPointMovedRight() : array
     {
         return [
             ['0', -2, '0.00'],
@@ -1998,7 +1998,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalEquals($expected, BigDecimal::of($number)->stripTrailingZeros());
     }
 
-    public function providerStripTrailingZeros() : array
+    public static function providerStripTrailingZeros() : array
     {
         return [
             ['0', '0'],
@@ -2044,7 +2044,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->abs());
     }
 
-    public function providerAbs() : array
+    public static function providerAbs() : array
     {
         return [
             ['123', '123', 0],
@@ -2066,7 +2066,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->negated());
     }
 
-    public function providerNegated() : array
+    public static function providerNegated() : array
     {
         return [
             ['123', '-123', 0],
@@ -2148,7 +2148,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertSame($c >= 0, BigDecimal::of($a)->isGreaterThanOrEqualTo($b));
     }
 
-    public function providerCompareTo() : array
+    public static function providerCompareTo() : array
     {
         return [
             ['123', '123',  0],
@@ -2263,7 +2263,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertSame($sign >= 0, BigDecimal::of($number)->isPositiveOrZero());
     }
 
-    public function providerSign() : array
+    public static function providerSign() : array
     {
         return [
             [ 0,  0],
@@ -2307,7 +2307,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertSame($expected, BigDecimal::of($number)->getIntegralPart());
     }
 
-    public function providerGetIntegralPart() : array
+    public static function providerGetIntegralPart() : array
     {
         return [
             ['1.23', '1'],
@@ -2331,7 +2331,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertSame($expected, BigDecimal::of($number)->getFractionalPart());
     }
 
-    public function providerGetFractionalPart() : array
+    public static function providerGetFractionalPart() : array
     {
         return [
             ['1.23', '23'],
@@ -2354,7 +2354,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertSame($hasNonZeroFractionalPart, BigDecimal::of($number)->hasNonZeroFractionalPart());
     }
 
-    public function providerHasNonZeroFractionalPart() : array
+    public static function providerHasNonZeroFractionalPart() : array
     {
         return [
             ['1', false],
@@ -2377,7 +2377,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigIntegerEquals($expected, BigDecimal::of($decimal)->toBigInteger());
     }
 
-    public function providerToBigInteger() : array
+    public static function providerToBigInteger() : array
     {
         return [
             ['0', '0'],
@@ -2399,7 +2399,7 @@ class BigDecimalTest extends AbstractTestCase
         BigDecimal::of($decimal)->toBigInteger();
     }
 
-    public function providerToBigIntegerThrowsExceptionWhenRoundingNecessary() : array
+    public static function providerToBigIntegerThrowsExceptionWhenRoundingNecessary() : array
     {
         return [
             ['0.1'],
@@ -2425,7 +2425,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertBigRationalEquals($rational, BigDecimal::of($decimal)->toBigRational());
     }
 
-    public function providerToBigRational() : array
+    public static function providerToBigRational() : array
     {
         return [
             ['0', '0'],
@@ -2469,7 +2469,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertSame($number, BigDecimal::of($number . '.0')->toInt());
     }
 
-    public function providerToInt() : array
+    public static function providerToInt() : array
     {
         return [
             [PHP_INT_MIN],
@@ -2493,7 +2493,7 @@ class BigDecimalTest extends AbstractTestCase
         BigDecimal::of($number)->toInt();
     }
 
-    public function providerToIntThrowsException() : array
+    public static function providerToIntThrowsException() : array
     {
         return [
             ['-999999999999999999999999999999'],
@@ -2514,7 +2514,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertSame($float, BigDecimal::of($value)->toFloat());
     }
 
-    public function providerToFloat() : array
+    public static function providerToFloat() : array
     {
         return [
             ['0', 0.0],
@@ -2539,7 +2539,7 @@ class BigDecimalTest extends AbstractTestCase
         self::assertSame($expected, (string) BigDecimal::ofUnscaledValue($unscaledValue, $scale));
     }
 
-    public function providerToString() : array
+    public static function providerToString() : array
     {
         return [
             ['0',   0, '0'],
