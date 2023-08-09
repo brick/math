@@ -3762,7 +3762,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testDirectCallToUnserialize() : void
     {
         $this->expectException(\LogicException::class);
-        BigInteger::zero()->unserialize('123');
+        BigInteger::zero()->__unserialize([]);
     }
 
     public function testJsonSerialize() : void

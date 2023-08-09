@@ -14,7 +14,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
  *
  * @psalm-immutable
  */
-abstract class BigNumber implements \Serializable, \JsonSerializable
+abstract class BigNumber implements \JsonSerializable
 {
     /**
      * The regular expression used to parse integer, decimal and rational numbers.

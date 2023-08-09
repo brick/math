@@ -1050,31 +1050,4 @@ final class BigInteger extends BigNumber
 
         $this->value = $data['value'];
     }
-
-    /**
-     * This method is required by interface Serializable and SHOULD NOT be accessed directly.
-     *
-     * @internal
-     */
-    public function serialize() : string
-    {
-        return $this->value;
-    }
-
-    /**
-     * This method is only here to implement interface Serializable and cannot be accessed directly.
-     *
-     * @internal
-     * @psalm-suppress RedundantPropertyInitializationCheck
-     *
-     * @throws \LogicException
-     */
-    public function unserialize($value) : void
-    {
-        if (isset($this->value)) {
-            throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
-        }
-
-        $this->value = $value;
-    }
 }

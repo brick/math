@@ -694,36 +694,6 @@ final class BigDecimal extends BigNumber
     }
 
     /**
-     * This method is required by interface Serializable and SHOULD NOT be accessed directly.
-     *
-     * @internal
-     */
-    public function serialize() : string
-    {
-        return $this->value . ':' . $this->scale;
-    }
-
-    /**
-     * This method is only here to implement interface Serializable and cannot be accessed directly.
-     *
-     * @internal
-     * @psalm-suppress RedundantPropertyInitializationCheck
-     *
-     * @throws \LogicException
-     */
-    public function unserialize($value) : void
-    {
-        if (isset($this->value)) {
-            throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
-        }
-
-        [$value, $scale] = \explode(':', $value);
-
-        $this->value = $value;
-        $this->scale = (int) $scale;
-    }
-
-    /**
      * Puts the internal values of the given decimal numbers on the same scale.
      *
      * @return array{string, string} The scaled integer values of $x and $y.

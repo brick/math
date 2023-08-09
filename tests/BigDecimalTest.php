@@ -2585,6 +2585,6 @@ class BigDecimalTest extends AbstractTestCase
     public function testDirectCallToUnserialize() : void
     {
         $this->expectException(\LogicException::class);
-        BigDecimal::zero()->unserialize('123:0');
+        BigDecimal::zero()->__unserialize([]);
     }
 }

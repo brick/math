@@ -412,34 +412,4 @@ final class BigRational extends BigNumber
         $this->numerator = $data['numerator'];
         $this->denominator = $data['denominator'];
     }
-
-    /**
-     * This method is required by interface Serializable and SHOULD NOT be accessed directly.
-     *
-     * @internal
-     */
-    public function serialize() : string
-    {
-        return $this->numerator . '/' . $this->denominator;
-    }
-
-    /**
-     * This method is only here to implement interface Serializable and cannot be accessed directly.
-     *
-     * @internal
-     * @psalm-suppress RedundantPropertyInitializationCheck
-     *
-     * @throws \LogicException
-     */
-    public function unserialize($value) : void
-    {
-        if (isset($this->numerator)) {
-            throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
-        }
-
-        [$numerator, $denominator] = \explode('/', $value);
-
-        $this->numerator   = BigInteger::of($numerator);
-        $this->denominator = BigInteger::of($denominator);
-    }
 }

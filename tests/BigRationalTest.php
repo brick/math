@@ -983,6 +983,6 @@ class BigRationalTest extends AbstractTestCase
     public function testDirectCallToUnserialize() : void
     {
         $this->expectException(\LogicException::class);
-        BigRational::nd(1, 2)->unserialize('123/456');
+        BigRational::nd(1, 2)->__unserialize([]);
     }
 }
