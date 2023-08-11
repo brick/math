@@ -42,6 +42,18 @@ jobs:
           - GMP
           - BCMath
           - Native
+        deps:
+          - "highest"
+        include:
+          - php-version: "8.1"
+            calculator: GMP
+            deps: "lowest"
+          - php-version: "8.1"
+            calculator: BCMath
+            deps: "lowest"
+          - php-version: "8.1"
+            calculator: Native
+            deps: "lowest"
 
     steps:
       - name: Checkout
@@ -55,6 +67,8 @@ jobs:
 
       - name: Install composer dependencies
         uses: "ramsey/composer-install@v1"
+        with:
+          dependency-versions: ${{ matrix.deps }}
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit
