@@ -8,6 +8,7 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
+use Brick\Math\Exception\NonNumericValueException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Internal\Calculator;
 
@@ -1075,5 +1076,10 @@ final class BigInteger extends BigNumber
         }
 
         $this->value = $value;
+    }
+
+    public function toNumericString(): string
+    {
+        return $this->toBigDecimal()->toNumericString();
     }
 }

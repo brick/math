@@ -7,6 +7,7 @@ namespace Brick\Math;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
+use Brick\Math\Exception\NonNumericValueException;
 use Brick\Math\Internal\Calculator;
 
 /**
@@ -779,6 +780,17 @@ final class BigDecimal extends BigNumber
 
         if ($negative) {
             $value = '-' . $value;
+        }
+
+        return $value;
+    }
+
+    public function toNumericString(): string
+    {
+        $value = (string)$this;
+
+        if (! is_numeric($value)) {
+            throw new \LogicException(sprintf('Casting big decimal to a string did not result in a numeric string, instead got "%s"', $value));
         }
 
         return $value;

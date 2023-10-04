@@ -2593,4 +2593,17 @@ class BigDecimalTest extends AbstractTestCase
         $this->expectException(\LogicException::class);
         BigDecimal::zero()->unserialize('123:0');
     }
+
+    public function testUnableToMakeNumeric(): void
+    {
+        $decimal = BigDecimal::of('3.5');
+
+        $reflectedDecimal = new \ReflectionClass($decimal);
+        $internalValue = $reflectedDecimal->getProperty('value');
+        $internalValue->setAccessible(true);
+        $internalValue->setValue($decimal, 'foo');
+
+        $this->expectException(\LogicException::class);
+        $decimal->toNumericString();
+    }
 }

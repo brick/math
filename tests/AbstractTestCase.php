@@ -24,6 +24,7 @@ abstract class AbstractTestCase extends TestCase
     final protected static function assertBigIntegerEquals(string $expected, BigInteger $actual) : void
     {
         self::assertSame($expected, (string) $actual);
+        self::assertSame($expected, $actual->toNumericString());
     }
 
     /**
@@ -35,6 +36,7 @@ abstract class AbstractTestCase extends TestCase
     final protected static function assertBigDecimalEquals(string $expected, BigDecimal $actual) : void
     {
         self::assertSame($expected, (string) $actual);
+        self::assertSame($expected, $actual->toNumericString());
     }
 
     /**

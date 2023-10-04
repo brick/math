@@ -480,6 +480,13 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     abstract public function toFloat() : float;
 
     /**
+     * @return numeric-string
+     *
+     * @throws RoundingNecessaryException
+     */
+    abstract public function toNumericString(): string;
+
+    /**
      * Returns a string representation of this number.
      *
      * The output of this method can be parsed by the `of()` factory method;

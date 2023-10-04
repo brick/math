@@ -442,4 +442,9 @@ final class BigRational extends BigNumber
         $this->numerator   = BigInteger::of($numerator);
         $this->denominator = BigInteger::of($denominator);
     }
+
+    public function toNumericString(): string
+    {
+        return $this->toBigDecimal()->toNumericString();
+    }
 }
