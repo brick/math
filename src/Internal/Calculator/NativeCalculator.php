@@ -161,10 +161,8 @@ class NativeCalculator extends Calculator
             if (is_int($nb)) {
                 // the only division that may overflow is PHP_INT_MIN / -1,
                 // which cannot happen here as we've already handled a divisor of -1 above.
+                $q = intdiv($na, $nb);
                 $r = $na % $nb;
-                $q = ($na - $r) / $nb;
-
-                assert(is_int($q));
 
                 return [
                     (string) $q,
