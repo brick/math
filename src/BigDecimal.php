@@ -324,7 +324,7 @@ final class BigDecimal extends BigNumber
     }
 
     /**
-     * Returns the quotient of the division of this number by this given one.
+     * Returns the quotient of the division of this number by the given one.
      *
      * The quotient has a scale of `0`.
      *
@@ -349,7 +349,7 @@ final class BigDecimal extends BigNumber
     }
 
     /**
-     * Returns the remainder of the division of this number by this given one.
+     * Returns the remainder of the division of this number by the given one.
      *
      * The remainder has a scale of `max($this->scale, $that->scale)`.
      *
