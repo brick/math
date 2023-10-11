@@ -571,27 +571,17 @@ abstract class Calculator
             $bBin = $this->twosComplement($bBin);
         }
 
-        switch ($operator) {
-            case 'and':
-                $value = $aBin & $bBin;
-                $negative = ($aNeg and $bNeg);
-                break;
+        $value = match ($operator) {
+            'and' => $aBin & $bBin,
+            'or' => $aBin | $bBin,
+            'xor' => $aBin ^ $bBin,
+        };
 
-            case 'or':
-                $value = $aBin | $bBin;
-                $negative = ($aNeg or $bNeg);
-                break;
-
-            case 'xor':
-                $value = $aBin ^ $bBin;
-                $negative = ($aNeg xor $bNeg);
-                break;
-
-            // @codeCoverageIgnoreStart
-            default:
-                throw new \InvalidArgumentException('Invalid bitwise operator.');
-            // @codeCoverageIgnoreEnd
-        }
+        $negative = match ($operator) {
+            'and' => $aNeg and $bNeg,
+            'or' => $aNeg or $bNeg,
+            'xor' => $aNeg xor $bNeg,
+        };
 
         if ($negative) {
             $value = $this->twosComplement($value);

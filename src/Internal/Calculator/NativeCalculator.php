@@ -30,18 +30,11 @@ class NativeCalculator extends Calculator
      */
     public function __construct()
     {
-        switch (PHP_INT_SIZE) {
-            case 4:
-                $this->maxDigits = 9;
-                break;
-
-            case 8:
-                $this->maxDigits = 18;
-                break;
-
-            default:
-                throw new \RuntimeException('The platform is not 32-bit or 64-bit as expected.');
-        }
+        $this->maxDigits = match (PHP_INT_SIZE) {
+            4 => 9,
+            8 => 18,
+            default => throw new \RuntimeException('The platform is not 32-bit or 64-bit as expected.')
+        };
     }
 
     public function add(string $a, string $b) : string
