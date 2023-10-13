@@ -5,12 +5,17 @@
     "keywords": [
         "Brick",
         "Math",
+        "Mathematics",
         "Arbitrary-precision",
         "Arithmetic",
         "BigInteger",
         "BigDecimal",
         "BigRational",
-        "Bignum"
+        "BigNumber",
+        "Bignum",
+        "Decimal",
+        "Rational",
+        "Integer"
     ],
     "license": "MIT",
     "require": {
