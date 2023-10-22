@@ -25,7 +25,7 @@ abstract class Calculator
     /**
      * The maximum exponent value allowed for the pow() method.
      */
-    public const MAX_POWER = 1000000;
+    public const MAX_POWER = 1_000_000;
 
     /**
      * The alphabet for converting from and to base 2 to 36, lowercase.
