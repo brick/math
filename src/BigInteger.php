@@ -531,6 +531,8 @@ final class BigInteger extends BigNumber
      *
      * @return BigInteger[] An array containing the quotient and the remainder.
      *
+     * @psalm-return array{BigInteger, BigInteger}
+     *
      * @throws DivisionByZeroException If the divisor is zero.
      */
     public function quotientAndRemainder(BigNumber|int|float|string $that) : array

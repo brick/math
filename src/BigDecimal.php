@@ -380,6 +380,8 @@ final class BigDecimal extends BigNumber
      *
      * @return BigDecimal[] An array containing the quotient and the remainder.
      *
+     * @psalm-return array{BigDecimal, BigDecimal}
+     *
      * @throws MathException If the divisor is not a valid decimal number, or is zero.
      */
     public function quotientAndRemainder(BigNumber|int|float|string $that) : array
