@@ -55,15 +55,11 @@ final class BigRational extends BigNumber
     }
 
     /**
-     * Creates a BigRational of the given value.
-     *
-     * @throws MathException If the value cannot be converted to a BigRational.
-     *
      * @psalm-pure
      */
-    public static function of(BigNumber|int|float|string $value) : BigRational
+    protected static function from(BigNumber $number): static
     {
-        return parent::of($value)->toBigRational();
+        return $number->toBigRational();
     }
 
     /**

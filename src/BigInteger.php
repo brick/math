@@ -40,15 +40,11 @@ final class BigInteger extends BigNumber
     }
 
     /**
-     * Creates a BigInteger of the given value.
-     *
-     * @throws MathException If the value cannot be converted to a BigInteger.
-     *
      * @psalm-pure
      */
-    public static function of(BigNumber|int|float|string $value) : BigInteger
+    protected static function from(BigNumber $number): static
     {
-        return parent::of($value)->toBigInteger();
+        return $number->toBigInteger();
     }
 
     /**

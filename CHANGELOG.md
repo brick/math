@@ -9,6 +9,9 @@ All notable changes to this project will be documented in this file.
 - Minimum PHP version is now 8.1
 - `RoundingMode` is now an `enum`; if you're type-hinting rounding modes, you need to type-hint against `RoundingMode` instead of `int` now
 - `BigNumber` classes do not implement the `Serializable` interface anymore (they use the [new custom object serialization mechanism](https://wiki.php.net/rfc/custom_object_serialization))
+- The following breaking changes only affect you if you're creating your own `BigNumber` subclasses:
+  - the return type of `BigNumber::of()` is now `static`
+  - `BigNumber` has a new abstract method `from()`
 
 ## [0.11.0](https://github.com/brick/math/releases/tag/0.11.0) - 2023-01-16
 

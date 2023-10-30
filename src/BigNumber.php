@@ -53,7 +53,24 @@ abstract class BigNumber implements \JsonSerializable
      *
      * @psalm-pure
      */
-    public static function of(BigNumber|int|float|string $value) : BigNumber
+    public static function of(BigNumber|int|float|string $value) : static
+    {
+        $value = self::_of($value);
+
+        if (static::class === BigNumber::class) {
+            // https://github.com/vimeo/psalm/issues/10309
+            assert($value instanceof static);
+
+            return $value;
+        }
+
+        return static::from($value);
+    }
+
+    /**
+     * @psalm-pure
+     */
+    private static function _of(BigNumber|int|float|string $value) : BigNumber
     {
         if ($value instanceof BigNumber) {
             return $value;
@@ -146,6 +163,15 @@ abstract class BigNumber implements \JsonSerializable
     }
 
     /**
+     * Overridden by subclasses to convert a BigNumber to an instance of the subclass.
+     *
+     * @throws MathException If the value cannot be converted.
+     *
+     * @psalm-pure
+     */
+    abstract protected static function from(BigNumber $number): static;
+
+    /**
      * Proxy method to access BigInteger's protected constructor from sibling classes.
      *
      * @internal
@@ -187,8 +213,6 @@ abstract class BigNumber implements \JsonSerializable
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
      *
-     * @psalm-suppress LessSpecificReturnStatement
-     * @psalm-suppress MoreSpecificReturnType
      * @psalm-pure
      */
     public static function min(BigNumber|int|float|string ...$values) : static
@@ -219,8 +243,6 @@ abstract class BigNumber implements \JsonSerializable
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
      *
-     * @psalm-suppress LessSpecificReturnStatement
-     * @psalm-suppress MoreSpecificReturnType
      * @psalm-pure
      */
     public static function max(BigNumber|int|float|string ...$values) : static
