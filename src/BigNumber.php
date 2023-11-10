@@ -146,7 +146,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         }
     }
 
-    protected static function throwException($value) {
+    protected static function throwException(string $value) : NumberFormatException {
         throw new NumberFormatException(\sprintf(
             'The given value "%s" does not represent a valid number.',
             $value
