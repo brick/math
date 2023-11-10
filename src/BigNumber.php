@@ -146,7 +146,11 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         }
     }
 
-    protected static function throwException(string $value) : NumberFormatException {
+    /**
+     * Throws a NumberFormatException for the given value.
+     * @psalm-pure
+     */
+    protected static function throwException(string $value) : void {
         throw new NumberFormatException(\sprintf(
             'The given value "%s" does not represent a valid number.',
             $value
