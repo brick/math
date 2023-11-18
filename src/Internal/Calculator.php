@@ -128,7 +128,9 @@ abstract class Calculator
     /**
      * Compares two numbers.
      *
-     * @return int [-1, 0, 1] If the first number is less than, equal to, or greater than the second number.
+     * @psalm-return -1|0|1
+     *
+     * @return int -1 if the first number is less than, 0 if equal to, 1 if greater than the second number.
      */
     final public function cmp(string $a, string $b) : int
     {

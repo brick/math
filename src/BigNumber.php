@@ -415,6 +415,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Returns the sign of this number.
      *
+     * @psalm-return -1|0|1
+     *
      * @return int -1 if the number is negative, 0 if zero, 1 if positive.
      */
     abstract public function getSign() : int;
@@ -422,7 +424,9 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     /**
      * Compares this number to the given one.
      *
-     * @return int [-1,0,1] If `$this` is lower than, equal to, or greater than `$that`.
+     * @psalm-return -1|0|1
+     *
+     * @return int -1 if `$this` is lower than, 0 if equal to, 1 if greater than `$that`.
      *
      * @throws MathException If the number is not valid.
      */
