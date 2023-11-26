@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## UNRELEASED (0.12.0)
+## [0.12.0](https://github.com/brick/math/releases/tag/0.12.0) - 2023-11-26
 
 💥 **Breaking changes**
 
