@@ -22,10 +22,10 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     private const PARSE_REGEXP_NUMERICAL =
         '/^' .
             '(?<sign>[\-\+])?' .
-                '(?<integral>[0-9]+)?' .
-                '(?<point>\.)?' .
-                '(?<fractional>[0-9]+)?' .
-                '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
+            '(?<integral>[0-9]+)?' .
+            '(?<point>\.)?' .
+            '(?<fractional>[0-9]+)?' .
+            '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
         '$/';
 
     /**
@@ -33,10 +33,10 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      */
     private const PARSE_REGEXP_RATIONAL =
         '/^' .
-        '(?<sign>[\-\+])?' .
-                '(?<numerator>[0-9]+)' .
-                '\/?' .
-                '(?<denominator>[0-9]+)' .
+            '(?<sign>[\-\+])?' .
+            '(?<numerator>[0-9]+)' .
+            '\/?' .
+            '(?<denominator>[0-9]+)' .
         '$/';
     /**
      * Creates a BigNumber of the given value.
@@ -82,12 +82,8 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             assert($numerator !== null);
             assert($denominator !== null);
 
-            if ($sign !== null) {
-                $numerator = $sign . $numerator;
-            }
-
-            $numerator   = self::cleanUp($numerator);
-            $denominator = self::cleanUp($denominator);
+            $numerator   = self::cleanUp($sign, $numerator);
+            $denominator = self::cleanUp(null, $denominator);
 
             if ($denominator === '0') {
                 throw DivisionByZeroException::denominatorMustNotBeZero();
@@ -126,7 +122,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
                     throw new NumberFormatException('Exponent too large.');
                 }
 
-                $unscaledValue = self::leanCleanUp(($sign ?? ''), $integral . $fractional);
+                $unscaledValue = self::cleanUp(($sign ?? ''), $integral . $fractional);
 
                 $scale = \strlen($fractional) - $exponent;
 
@@ -140,7 +136,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
                 return new BigDecimal($unscaledValue, $scale);
             }
 
-            $integral = self::leanCleanUp(($sign ?? ''), $integral);
+            $integral = self::cleanUp(($sign ?? ''), $integral);
 
             return new BigInteger($integral);
         }
@@ -150,7 +146,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * Throws a NumberFormatException for the given value.
      * @psalm-pure
      */
-    protected static function throwException(string $value) : void {
+    private static function throwException(string $value) : void {
         throw new NumberFormatException(\sprintf(
             'The given value "%s" does not represent a valid number.',
             $value
@@ -317,38 +313,13 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
     }
 
     /**
-     * Removes optional leading zeros and + sign from the given number.
-     *
-     * @param string $number The number, validated as a non-empty string of digits with optional leading sign.
-     *
-     * @psalm-pure
-     */
-    private static function cleanUp(string $number) : string
-    {
-        $firstChar = $number[0];
-
-        if ($firstChar === '+' || $firstChar === '-') {
-            $number = \substr($number, 1);
-        }
-
-        $number = \ltrim($number, '0');
-
-        if ($number === '') {
-            return '0';
-        }
-
-        return $firstChar === '-' ? '-' . $number : $number;
-    }
-
-    /**
      * Removes optional leading zeros and applies sign if needed(- for negatives).
      *
-     * @param string $number The number, validated as a non-empty string of digits
-     * @param string $sign   The sign,  + or -
-     *
+     * @param string|null $sign The sign,  '+' or '-', optional.
+     * @param string $number The number, validated as a non-empty string of digits.
      * @psalm-pure
      */
-    private static function leanCleanUp(string $sign, string $number) : string
+    private static function cleanUp(string|null $sign, string $number) : string
     {
         $number = \ltrim($number, '0');
 
