@@ -128,7 +128,9 @@ abstract class Calculator
     /**
      * Compares two numbers.
      *
-     * @return int [-1, 0, 1] If the first number is less than, equal to, or greater than the second number.
+     * @psalm-return -1|0|1
+     *
+     * @return int -1 if the first number is less than, 0 if equal to, 1 if greater than the second number.
      */
     final public function cmp(string $a, string $b) : int
     {
@@ -428,16 +430,16 @@ abstract class Calculator
      *
      * Rounding is performed when the remainder of the division is not zero.
      *
-     * @param string $a            The dividend.
-     * @param string $b            The divisor, must not be zero.
-     * @param int    $roundingMode The rounding mode.
+     * @param string       $a            The dividend.
+     * @param string       $b            The divisor, must not be zero.
+     * @param RoundingMode $roundingMode The rounding mode.
      *
      * @throws \InvalidArgumentException  If the rounding mode is invalid.
      * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided but rounding is necessary.
      *
      * @psalm-suppress ImpureFunctionCall
      */
-    final public function divRound(string $a, string $b, int $roundingMode) : string
+    final public function divRound(string $a, string $b, RoundingMode $roundingMode) : string
     {
         [$quotient, $remainder] = $this->divQR($a, $b);
 

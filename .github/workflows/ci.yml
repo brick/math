@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
 
+env:
+  PSALM_PHP_VERSION: "8.2"
+  COVERAGE_PHP_VERSION: "8.2"
+
 jobs:
   psalm:
     name: Psalm
@@ -16,7 +20,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.1"
+          php-version: ${{ env.PSALM_PHP_VERSION }}
 
       - name: Install composer dependencies
         uses: "ramsey/composer-install@v1"
@@ -31,7 +35,6 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - "8.0"
           - "8.1"
           - "8.2"
           - "8.3"
@@ -39,6 +42,18 @@ jobs:
           - GMP
           - BCMath
           - Native
+        deps:
+          - "highest"
+        include:
+          - php-version: "8.1"
+            calculator: GMP
+            deps: "lowest"
+          - php-version: "8.1"
+            calculator: BCMath
+            deps: "lowest"
+          - php-version: "8.1"
+            calculator: Native
+            deps: "lowest"
 
     steps:
       - name: Checkout
@@ -52,12 +67,14 @@ jobs:
 
       - name: Install composer dependencies
         uses: "ramsey/composer-install@v1"
+        with:
+          dependency-versions: ${{ matrix.deps }}
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit
         env:
           CALCULATOR: ${{ matrix.calculator }}
-        if: ${{ matrix.php-version != '8.0' }}
+        if: ${{ matrix.php-version != env.COVERAGE_PHP_VERSION }}
 
       - name: Run PHPUnit with coverage
         run: |
@@ -65,7 +82,7 @@ jobs:
           vendor/bin/phpunit --coverage-clover build/logs/clover.xml
         env:
           CALCULATOR: ${{ matrix.calculator }}
-        if: ${{ matrix.php-version == '8.0' }}
+        if: ${{ matrix.php-version == env.COVERAGE_PHP_VERSION }}
 
       - name: Run PHPUnit with bcscale()
         run: vendor/bin/phpunit
@@ -78,4 +95,4 @@ jobs:
         run: vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: ${{ matrix.php-version == '8.0' }}
+        if: ${{ matrix.php-version == env.COVERAGE_PHP_VERSION }}

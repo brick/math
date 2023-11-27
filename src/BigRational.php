@@ -21,12 +21,12 @@ final class BigRational extends BigNumber
     /**
      * The numerator.
      */
-    private BigInteger $numerator;
+    private readonly BigInteger $numerator;
 
     /**
      * The denominator. Always strictly positive.
      */
-    private BigInteger $denominator;
+    private readonly BigInteger $denominator;
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.
@@ -55,15 +55,11 @@ final class BigRational extends BigNumber
     }
 
     /**
-     * Creates a BigRational of the given value.
-     *
-     * @throws MathException If the value cannot be converted to a BigRational.
-     *
      * @psalm-pure
      */
-    public static function of(BigNumber|int|float|string $value) : BigRational
+    protected static function from(BigNumber $number): static
     {
-        return parent::of($value)->toBigRational();
+        return $number->toBigRational();
     }
 
     /**
@@ -181,6 +177,8 @@ final class BigRational extends BigNumber
      * Returns the quotient and remainder of the division of the numerator by the denominator.
      *
      * @return BigInteger[]
+     *
+     * @psalm-return array{BigInteger, BigInteger}
      */
     public function quotientAndRemainder() : array
     {
@@ -353,7 +351,7 @@ final class BigRational extends BigNumber
         return $this;
     }
 
-    public function toScale(int $scale, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
+    public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         return $this->numerator->toBigDecimal()->dividedBy($this->denominator, $scale, $roundingMode);
     }
@@ -411,35 +409,5 @@ final class BigRational extends BigNumber
 
         $this->numerator = $data['numerator'];
         $this->denominator = $data['denominator'];
-    }
-
-    /**
-     * This method is required by interface Serializable and SHOULD NOT be accessed directly.
-     *
-     * @internal
-     */
-    public function serialize() : string
-    {
-        return $this->numerator . '/' . $this->denominator;
-    }
-
-    /**
-     * This method is only here to implement interface Serializable and cannot be accessed directly.
-     *
-     * @internal
-     * @psalm-suppress RedundantPropertyInitializationCheck
-     *
-     * @throws \LogicException
-     */
-    public function unserialize($value) : void
-    {
-        if (isset($this->numerator)) {
-            throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
-        }
-
-        [$numerator, $denominator] = \explode('/', $value);
-
-        $this->numerator   = BigInteger::of($numerator);
-        $this->denominator = BigInteger::of($denominator);
     }
 }

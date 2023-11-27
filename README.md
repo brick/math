@@ -20,9 +20,9 @@ composer require brick/math
 
 ### Requirements
 
-This library requires PHP 8.0 or later.
+This library requires PHP 8.1 or later.
 
-For PHP 7.4 compatibility, you can use version `0.10`. For PHP 7.1, 7.2 & 7.3, you can use version `0.9`. Note that [these PHP versions are EOL](http://php.net/supported-versions.php) and not supported anymore. If you're still using one of these PHP versions, you should consider upgrading as soon as possible.
+For PHP 8.0 compatibility, you can use version `0.12`. For PHP 7.4, you can use version `0.10`. For PHP 7.1, 7.2 & 7.3, you can use version `0.9`. Note that [these PHP versions are EOL](http://php.net/supported-versions.php) and not supported anymore. If you're still using one of these PHP versions, you should consider upgrading as soon as possible.
 
 Although the library can work seamlessly on any PHP installation, it is highly recommended that you install the
 [GMP](http://php.net/manual/en/book.gmp.php) or [BCMath](http://php.net/manual/en/book.bc.php) extension
@@ -38,7 +38,7 @@ existing code, etc.), `y` is incremented.
 
 **When a breaking change is introduced, a new `0.x` version cycle is always started.**
 
-It is therefore safe to lock your project to a given release cycle, such as `^0.11`.
+It is therefore safe to lock your project to a given release cycle, such as `^0.12`.
 
 If you need to upgrade to a newer release cycle, check the [release history](https://github.com/brick/math/releases)
 for a list of changes introduced by each further `0.x.0` version.
@@ -47,20 +47,20 @@ for a list of changes introduced by each further `0.x.0` version.
 
 This library provides the following public classes in the `Brick\Math` namespace:
 
-- [BigNumber](https://github.com/brick/math/blob/0.11.0/src/BigNumber.php): base class for `BigInteger`, `BigDecimal` and `BigRational`
-- [BigInteger](https://github.com/brick/math/blob/0.11.0/src/BigInteger.php): represents an arbitrary-precision integer number.
-- [BigDecimal](https://github.com/brick/math/blob/0.11.0/src/BigDecimal.php): represents an arbitrary-precision decimal number.
-- [BigRational](https://github.com/brick/math/blob/0.11.0/src/BigRational.php): represents an arbitrary-precision rational number (fraction).
-- [RoundingMode](https://github.com/brick/math/blob/0.11.0/src/RoundingMode.php): holds constants for the rounding modes.
+- [BigNumber](https://github.com/brick/math/blob/0.12.0/src/BigNumber.php): base class for `BigInteger`, `BigDecimal` and `BigRational`
+- [BigInteger](https://github.com/brick/math/blob/0.12.0/src/BigInteger.php): represents an arbitrary-precision integer number.
+- [BigDecimal](https://github.com/brick/math/blob/0.12.0/src/BigDecimal.php): represents an arbitrary-precision decimal number.
+- [BigRational](https://github.com/brick/math/blob/0.12.0/src/BigRational.php): represents an arbitrary-precision rational number (fraction).
+- [RoundingMode](https://github.com/brick/math/blob/0.12.0/src/RoundingMode.php): enum representing all available rounding modes.
 
 And the following exceptions in the `Brick\Math\Exception` namespace:
 
-- [MathException](https://github.com/brick/math/blob/0.11.0/src/Exception/MathException.php): base class for all exceptions
-- [DivisionByZeroException](https://github.com/brick/math/blob/0.11.0/src/Exception/DivisionByZeroException.php): thrown when a division by zero occurs
-- [IntegerOverflowException](https://github.com/brick/math/blob/0.11.0/src/Exception/IntegerOverflowException.php): thrown when attempting to convert a too large `BigInteger` to `int`
-- [NumberFormatException](https://github.com/brick/math/blob/0.11.0/src/Exception/NumberFormatException.php): thrown when parsing a number string in an invalid format
-- [RoundingNecessaryException](https://github.com/brick/math/blob/0.11.0/src/Exception/RoundingNecessaryException.php): thrown when the result of the operation cannot be represented without explicit rounding
-- [NegativeNumberException](https://github.com/brick/math/blob/0.11.0/src/Exception/NegativeNumberException.php): thrown when attempting to calculate the square root of a negative number
+- [MathException](https://github.com/brick/math/blob/0.12.0/src/Exception/MathException.php): base class for all exceptions
+- [DivisionByZeroException](https://github.com/brick/math/blob/0.12.0/src/Exception/DivisionByZeroException.php): thrown when a division by zero occurs
+- [IntegerOverflowException](https://github.com/brick/math/blob/0.12.0/src/Exception/IntegerOverflowException.php): thrown when attempting to convert a too large `BigInteger` to `int`
+- [NumberFormatException](https://github.com/brick/math/blob/0.12.0/src/Exception/NumberFormatException.php): thrown when parsing a number string in an invalid format
+- [RoundingNecessaryException](https://github.com/brick/math/blob/0.12.0/src/Exception/RoundingNecessaryException.php): thrown when the result of the operation cannot be represented without explicit rounding
+- [NegativeNumberException](https://github.com/brick/math/blob/0.12.0/src/Exception/NegativeNumberException.php): thrown when attempting to calculate the square root of a negative number
 
 ### Overview
 
@@ -88,7 +88,7 @@ BigRational::of('2/3');
 BigRational::of('1.1'); // 11/10
 ```
 
-Note that all `of()` methods accept all of the representations above, *as long as it can be safely converted to
+Note that all `of()` methods accept all the representations above, *as long as it can be safely converted to
 the current type*:
 
 ```php
@@ -174,7 +174,7 @@ echo BigInteger::of(999)->dividedBy(3); // 333
 echo BigInteger::of(1000)->dividedBy(3); // RoundingNecessaryException
 ```
 
-You can pass an optional [rounding mode](https://github.com/brick/math/blob/0.11.0/src/RoundingMode.php) to round the result, if necessary:
+You can pass an optional [rounding mode](https://github.com/brick/math/blob/0.12.0/src/RoundingMode.php) to round the result, if necessary:
 
 ```php
 echo BigInteger::of(1000)->dividedBy(3, RoundingMode::DOWN); // 333
@@ -197,7 +197,7 @@ You can even get both at the same time:
 ##### BigDecimal
 
 Dividing a `BigDecimal` always requires a scale to be specified. If the exact result of the division does not fit in
-the given scale, a [rounding mode](https://github.com/brick/math/blob/0.11.0/src/RoundingMode.php) must be provided.
+the given scale, a [rounding mode](https://github.com/brick/math/blob/0.12.0/src/RoundingMode.php) must be provided.
 
 ```php
 echo BigDecimal::of(1)->dividedBy('8', 3); // 0.125

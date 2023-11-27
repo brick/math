@@ -23,14 +23,14 @@ final class BigDecimal extends BigNumber
      * No leading zero must be present.
      * No leading minus sign must be present if the value is 0.
      */
-    private string $value;
+    private readonly string $value;
 
     /**
      * The scale (number of digits after the decimal point) of this decimal number.
      *
      * This must be zero or more.
      */
-    private int $scale;
+    private readonly int $scale;
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.
@@ -45,15 +45,11 @@ final class BigDecimal extends BigNumber
     }
 
     /**
-     * Creates a BigDecimal of the given value.
-     *
-     * @throws MathException If the value cannot be converted to a BigDecimal.
-     *
      * @psalm-pure
      */
-    public static function of(BigNumber|int|float|string $value) : BigDecimal
+    protected static function from(BigNumber $number): static
     {
-        return parent::of($value)->toBigDecimal();
+        return $number->toBigDecimal();
     }
 
     /**
@@ -223,12 +219,12 @@ final class BigDecimal extends BigNumber
      *
      * @param BigNumber|int|float|string $that         The divisor.
      * @param int|null                   $scale        The desired scale, or null to use the scale of this number.
-     * @param int                        $roundingMode An optional rounding mode.
+     * @param RoundingMode               $roundingMode An optional rounding mode, defaults to UNNECESSARY.
      *
      * @throws \InvalidArgumentException If the scale or rounding mode is invalid.
      * @throws MathException             If the number is invalid, is zero, or rounding was necessary.
      */
-    public function dividedBy(BigNumber|int|float|string $that, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
+    public function dividedBy(BigNumber|int|float|string $that, ?int $scale = null, RoundingMode $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -383,6 +379,8 @@ final class BigDecimal extends BigNumber
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
      *
      * @return BigDecimal[] An array containing the quotient and the remainder.
+     *
+     * @psalm-return array{BigDecimal, BigDecimal}
      *
      * @throws MathException If the divisor is not a valid decimal number, or is zero.
      */
@@ -631,7 +629,7 @@ final class BigDecimal extends BigNumber
         return self::newBigRational($numerator, $denominator, false);
     }
 
-    public function toScale(int $scale, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
+    public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         if ($scale === $this->scale) {
             return $this;
@@ -691,36 +689,6 @@ final class BigDecimal extends BigNumber
 
         $this->value = $data['value'];
         $this->scale = $data['scale'];
-    }
-
-    /**
-     * This method is required by interface Serializable and SHOULD NOT be accessed directly.
-     *
-     * @internal
-     */
-    public function serialize() : string
-    {
-        return $this->value . ':' . $this->scale;
-    }
-
-    /**
-     * This method is only here to implement interface Serializable and cannot be accessed directly.
-     *
-     * @internal
-     * @psalm-suppress RedundantPropertyInitializationCheck
-     *
-     * @throws \LogicException
-     */
-    public function unserialize($value) : void
-    {
-        if (isset($this->value)) {
-            throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
-        }
-
-        [$value, $scale] = \explode(':', $value);
-
-        $this->value = $value;
-        $this->scale = (int) $scale;
     }
 
     /**

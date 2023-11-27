@@ -21,11 +21,5 @@
                 <file name="src/Internal/Calculator/BcMathCalculator.php" />
             </errorLevel>
         </ArgumentTypeCoercion>
-
-        <ImpureByReferenceAssignment>
-            <errorLevel type="suppress">
-                <file name="src/Internal/Calculator.php" />
-            </errorLevel>
-        </ImpureByReferenceAssignment>
     </issueHandlers>
 </psalm>

@@ -23,7 +23,7 @@ class NativeCalculator extends Calculator
      * Example: 32-bit: max number 1,999,999,999 (9 digits + carry)
      *          64-bit: max number 1,999,999,999,999,999,999 (18 digits + carry)
      */
-    private int $maxDigits;
+    private readonly int $maxDigits;
 
     /**
      * @codeCoverageIgnore
@@ -527,7 +527,7 @@ class NativeCalculator extends Calculator
     /**
      * Compares two non-signed large numbers.
      *
-     * @return int [-1, 0, 1]
+     * @psalm-return -1|0|1
      */
     private function doCmp(string $a, string $b) : int
     {
@@ -540,7 +540,7 @@ class NativeCalculator extends Calculator
             return $cmp;
         }
 
-        return \strcmp($a, $b) <=> 0; // enforce [-1, 0, 1]
+        return \strcmp($a, $b) <=> 0; // enforce -1|0|1
     }
 
     /**
