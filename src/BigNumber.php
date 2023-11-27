@@ -89,7 +89,7 @@ abstract class BigNumber implements \JsonSerializable
         if (str_contains($value, '/')) {
             // Rational number
             if (\preg_match(self::PARSE_REGEXP_RATIONAL, $value, $matches, PREG_UNMATCHED_AS_NULL) !== 1) {
-                self::throwException($value);
+                throw NumberFormatException::invalidFormat($value);
             }
 
             $sign        = $matches['sign'];
@@ -114,7 +114,7 @@ abstract class BigNumber implements \JsonSerializable
         } else {
             // Integer or decimal number
             if (\preg_match(self::PARSE_REGEXP_NUMERICAL, $value, $matches, PREG_UNMATCHED_AS_NULL) !== 1) {
-                self::throwException($value);
+                throw NumberFormatException::invalidFormat($value);
             }
 
             $sign = $matches['sign'];
@@ -124,7 +124,7 @@ abstract class BigNumber implements \JsonSerializable
             $exponent = $matches['exponent'];
 
             if ($integral === null && $fractional === null) {
-                self::throwException($value);
+                throw NumberFormatException::invalidFormat($value);
             }
 
             if ($integral === null) {
@@ -157,17 +157,6 @@ abstract class BigNumber implements \JsonSerializable
 
             return new BigInteger($integral);
         }
-    }
-
-    /**
-     * Throws a NumberFormatException for the given value.
-     * @psalm-pure
-     */
-    private static function throwException(string $value) : never {
-        throw new NumberFormatException(\sprintf(
-            'The given value "%s" does not represent a valid number.',
-            $value
-        ));
     }
 
     /**
