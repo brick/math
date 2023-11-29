@@ -38,6 +38,7 @@ abstract class BigNumber implements \JsonSerializable
             '\/?' .
             '(?<denominator>[0-9]+)' .
         '$/';
+
     /**
      * Creates a BigNumber of the given value.
      *
@@ -139,7 +140,7 @@ abstract class BigNumber implements \JsonSerializable
                     throw new NumberFormatException('Exponent too large.');
                 }
 
-                $unscaledValue = self::cleanUp(($sign ?? ''), $integral . $fractional);
+                $unscaledValue = self::cleanUp($sign, $integral . $fractional);
 
                 $scale = \strlen($fractional) - $exponent;
 
@@ -153,7 +154,7 @@ abstract class BigNumber implements \JsonSerializable
                 return new BigDecimal($unscaledValue, $scale);
             }
 
-            $integral = self::cleanUp(($sign ?? ''), $integral);
+            $integral = self::cleanUp($sign, $integral);
 
             return new BigInteger($integral);
         }
@@ -324,10 +325,11 @@ abstract class BigNumber implements \JsonSerializable
     }
 
     /**
-     * Removes optional leading zeros and applies sign if needed(- for negatives).
+     * Removes optional leading zeros and applies sign.
      *
-     * @param string|null $sign The sign,  '+' or '-', optional.
-     * @param string $number The number, validated as a non-empty string of digits.
+     * @param string|null $sign   The sign, '+' or '-', optional. Null is allowed for convenience and treated as '+'.
+     * @param string      $number The number, validated as a non-empty string of digits.
+     *
      * @psalm-pure
      */
     private static function cleanUp(string|null $sign, string $number) : string
