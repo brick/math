@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.12.1](https://github.com/brick/math/releases/tag/0.12.1) - 2023-11-29
+
+⚡️ **Performance improvements**
+
+- `BigNumber::of()` is now faster, thanks to [@SebastienDug](https://github.com/SebastienDug) in [#77](https://github.com/brick/math/pull/77).
+
 ## [0.12.0](https://github.com/brick/math/releases/tag/0.12.0) - 2023-11-26
 
 💥 **Breaking changes**
