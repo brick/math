@@ -17,25 +17,27 @@ use Brick\Math\Exception\RoundingNecessaryException;
 abstract class BigNumber implements \JsonSerializable
 {
     /**
-     * The regular expression used to parse integer, decimal and rational numbers.
+     * The regular expression used to parse integer or decimal numbers.
      */
-    private const PARSE_REGEXP =
+    private const PARSE_REGEXP_NUMERICAL =
         '/^' .
             '(?<sign>[\-\+])?' .
-            '(?:' .
-                '(?:' .
-                    '(?<integral>[0-9]+)?' .
-                    '(?<point>\.)?' .
-                    '(?<fractional>[0-9]+)?' .
-                    '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
-                ')|(?:' .
-                    '(?<numerator>[0-9]+)' .
-                    '\/?' .
-                    '(?<denominator>[0-9]+)' .
-                ')' .
-            ')' .
+            '(?<integral>[0-9]+)?' .
+            '(?<point>\.)?' .
+            '(?<fractional>[0-9]+)?' .
+            '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
         '$/';
 
+    /**
+     * The regular expression used to parse rational numbers.
+     */
+    private const PARSE_REGEXP_RATIONAL =
+        '/^' .
+            '(?<sign>[\-\+])?' .
+            '(?<numerator>[0-9]+)' .
+            '\/?' .
+            '(?<denominator>[0-9]+)' .
+        '$/';
     /**
      * Creates a BigNumber of the given value.
      *
@@ -84,32 +86,21 @@ abstract class BigNumber implements \JsonSerializable
             $value = (string) $value;
         }
 
-        $throw = static function() use ($value) : never {
-            throw new NumberFormatException(\sprintf(
-                'The given value "%s" does not represent a valid number.',
-                $value
-            ));
-        };
-
-        if (\preg_match(self::PARSE_REGEXP, $value, $matches) !== 1) {
-            $throw();
-        }
-
-        $getMatch = static fn(string $value): ?string => (($matches[$value] ?? '') !== '') ? $matches[$value] : null;
-
-        $sign        = $getMatch('sign');
-        $numerator   = $getMatch('numerator');
-        $denominator = $getMatch('denominator');
-
-        if ($numerator !== null) {
-            assert($denominator !== null);
-
-            if ($sign !== null) {
-                $numerator = $sign . $numerator;
+        if (str_contains($value, '/')) {
+            // Rational number
+            if (\preg_match(self::PARSE_REGEXP_RATIONAL, $value, $matches, PREG_UNMATCHED_AS_NULL) !== 1) {
+                self::throwException($value);
             }
 
-            $numerator   = self::cleanUp($numerator);
-            $denominator = self::cleanUp($denominator);
+            $sign        = $matches['sign'];
+            $numerator   = $matches['numerator'];
+            $denominator = $matches['denominator'];
+
+            assert($numerator !== null);
+            assert($denominator !== null);
+
+            $numerator   = self::cleanUp($sign, $numerator);
+            $denominator = self::cleanUp(null, $denominator);
 
             if ($denominator === '0') {
                 throw DivisionByZeroException::denominatorMustNotBeZero();
@@ -120,46 +111,63 @@ abstract class BigNumber implements \JsonSerializable
                 new BigInteger($denominator),
                 false
             );
-        }
-
-        $point      = $getMatch('point');
-        $integral   = $getMatch('integral');
-        $fractional = $getMatch('fractional');
-        $exponent   = $getMatch('exponent');
-
-        if ($integral === null && $fractional === null) {
-            $throw();
-        }
-
-        if ($integral === null) {
-            $integral = '0';
-        }
-
-        if ($point !== null || $exponent !== null) {
-            $fractional = ($fractional ?? '');
-            $exponent = ($exponent !== null) ? (int) $exponent : 0;
-
-            if ($exponent === PHP_INT_MIN || $exponent === PHP_INT_MAX) {
-                throw new NumberFormatException('Exponent too large.');
+        } else {
+            // Integer or decimal number
+            if (\preg_match(self::PARSE_REGEXP_NUMERICAL, $value, $matches, PREG_UNMATCHED_AS_NULL) !== 1) {
+                self::throwException($value);
             }
 
-            $unscaledValue = self::cleanUp(($sign ?? ''). $integral . $fractional);
+            $sign = $matches['sign'];
+            $point = $matches['point'];
+            $integral = $matches['integral'];
+            $fractional = $matches['fractional'];
+            $exponent = $matches['exponent'];
 
-            $scale = \strlen($fractional) - $exponent;
+            if ($integral === null && $fractional === null) {
+                self::throwException($value);
+            }
 
-            if ($scale < 0) {
-                if ($unscaledValue !== '0') {
-                    $unscaledValue .= \str_repeat('0', - $scale);
+            if ($integral === null) {
+                $integral = '0';
+            }
+
+            if ($point !== null || $exponent !== null) {
+                $fractional = ($fractional ?? '');
+                $exponent = ($exponent !== null) ? (int)$exponent : 0;
+
+                if ($exponent === PHP_INT_MIN || $exponent === PHP_INT_MAX) {
+                    throw new NumberFormatException('Exponent too large.');
                 }
-                $scale = 0;
+
+                $unscaledValue = self::cleanUp(($sign ?? ''), $integral . $fractional);
+
+                $scale = \strlen($fractional) - $exponent;
+
+                if ($scale < 0) {
+                    if ($unscaledValue !== '0') {
+                        $unscaledValue .= \str_repeat('0', -$scale);
+                    }
+                    $scale = 0;
+                }
+
+                return new BigDecimal($unscaledValue, $scale);
             }
 
-            return new BigDecimal($unscaledValue, $scale);
+            $integral = self::cleanUp(($sign ?? ''), $integral);
+
+            return new BigInteger($integral);
         }
+    }
 
-        $integral = self::cleanUp(($sign ?? '') . $integral);
-
-        return new BigInteger($integral);
+    /**
+     * Throws a NumberFormatException for the given value.
+     * @psalm-pure
+     */
+    private static function throwException(string $value) : never {
+        throw new NumberFormatException(\sprintf(
+            'The given value "%s" does not represent a valid number.',
+            $value
+        ));
     }
 
     /**
@@ -327,31 +335,21 @@ abstract class BigNumber implements \JsonSerializable
     }
 
     /**
-     * Removes optional leading zeros and + sign from the given number.
+     * Removes optional leading zeros and applies sign if needed(- for negatives).
      *
-     * @param string $number The number, validated as a non-empty string of digits with optional leading sign.
-     *
+     * @param string|null $sign The sign,  '+' or '-', optional.
+     * @param string $number The number, validated as a non-empty string of digits.
      * @psalm-pure
      */
-    private static function cleanUp(string $number) : string
+    private static function cleanUp(string|null $sign, string $number) : string
     {
-        $firstChar = $number[0];
-
-        if ($firstChar === '+' || $firstChar === '-') {
-            $number = \substr($number, 1);
-        }
-
         $number = \ltrim($number, '0');
 
         if ($number === '') {
             return '0';
         }
 
-        if ($firstChar === '-') {
-            return '-' . $number;
-        }
-
-        return $number;
+        return $sign === '-' ? '-' . $number : $number;
     }
 
     /**
