@@ -51,8 +51,9 @@ abstract class BigNumber implements \JsonSerializable
      * - strings containing a `.` character or using an exponential notation are returned as BigDecimal
      * - strings containing only digits with an optional leading `+` or `-` sign are returned as BigInteger
      *
-     * @throws NumberFormatException   If the format of the number is not valid.
+     * @throws NumberFormatException If the format of the number is not valid.
      * @throws DivisionByZeroException If the value represents a rational number with a denominator of zero.
+     * @throws RoundingNecessaryException If the value cannot be converted to an instance of the subclass without rounding.
      *
      * @psalm-pure
      */
@@ -71,6 +72,9 @@ abstract class BigNumber implements \JsonSerializable
     }
 
     /**
+     * @throws NumberFormatException If the format of the number is not valid.
+     * @throws DivisionByZeroException If the value represents a rational number with a denominator of zero.
+     *
      * @psalm-pure
      */
     private static function _of(BigNumber|int|float|string $value) : BigNumber
@@ -163,7 +167,7 @@ abstract class BigNumber implements \JsonSerializable
     /**
      * Overridden by subclasses to convert a BigNumber to an instance of the subclass.
      *
-     * @throws MathException If the value cannot be converted.
+     * @throws RoundingNecessaryException If the value cannot be converted.
      *
      * @psalm-pure
      */

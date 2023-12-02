@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## UNRELEASED (0.12.2)
+
+👌 **Improvements**
+
+- Add missing `RoundingNecessaryException` to the `@throws` annotation of `BigNumber::of()`
+
 ## [0.12.1](https://github.com/brick/math/releases/tag/0.12.1) - 2023-11-29
 
 ⚡️ **Performance improvements**
