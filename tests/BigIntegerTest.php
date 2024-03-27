@@ -13,8 +13,8 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\RoundingMode;
-
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Unit tests for class BigInteger.
@@ -22,11 +22,10 @@ use Generator;
 class BigIntegerTest extends AbstractTestCase
 {
     /**
-     * @dataProvider providerOf
-     *
      * @param string|number $value    The value to convert to a BigInteger.
      * @param string        $expected The expected string value of the result.
      */
+    #[DataProvider('providerOf')]
     public function testOf($value, string $expected) : void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($value));
@@ -112,10 +111,9 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerOfInvalidFormatThrowsException
-     *
      * @param string|number $value
      */
+    #[DataProvider('providerOfInvalidFormatThrowsException')]
     public function testOfInvalidFormatThrowsException($value) : void
     {
         $this->expectException(NumberFormatException::class);
@@ -141,10 +139,9 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerOfNonConvertibleValueThrowsException
-     *
      * @param float|string $value
      */
+    #[DataProvider('providerOfNonConvertibleValueThrowsException')]
     public function testOfNonConvertibleValueThrowsException($value) : void
     {
         $this->expectException(RoundingNecessaryException::class);
@@ -161,12 +158,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerFromBase
-     *
      * @param string $number   The number to create.
      * @param int    $base     The base of the number.
      * @param string $expected The expected result in base 10.
      */
+    #[DataProvider('providerFromBase')]
     public function testFromBase(string $number, int $base, string $expected) : void
     {
         self::assertBigIntegerEquals($expected, BigInteger::fromBase($number, $base));
@@ -280,9 +276,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerFromBaseWithInvalidValue
-     */
+    #[DataProvider('providerFromBaseWithInvalidValue')]
     public function testFromBaseWithInvalidValue(string $value, int $base) : void
     {
         $this->expectException(NumberFormatException::class);
@@ -336,9 +330,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerFromBaseWithInvalidBase
-     */
+    #[DataProvider('providerFromBaseWithInvalidBase')]
     public function testFromBaseWithInvalidBase(int $base) : void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -376,9 +368,8 @@ class BigIntegerTest extends AbstractTestCase
 
     /**
      * @param string[] $values
-     *
-     * @dataProvider providerGcdMultiple
      */
+    #[DataProvider('providerGcdMultiple')]
     public function testGcdMultiple(array $values, string $expectedGCD): void
     {
         $values = array_map(BigInteger::of(...), $values);
@@ -415,11 +406,10 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerMin
-     *
      * @param array  $values The values to compare.
      * @param string $min    The expected minimum value.
      */
+    #[DataProvider('providerMin')]
     public function testMin(array $values, string $min) : void
     {
         self::assertBigIntegerEquals($min, BigInteger::min(... $values));
@@ -451,11 +441,10 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerMax
-     *
      * @param array  $values The values to compare.
      * @param string $max    The expected maximum value.
      */
+    #[DataProvider('providerMax')]
     public function testMax(array $values, string $max) : void
     {
         self::assertBigIntegerEquals($max, BigInteger::max(... $values));
@@ -488,11 +477,10 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerSum
-     *
      * @param array  $values The values to add.
      * @param string $sum    The expected sum.
      */
+    #[DataProvider('providerSum')]
     public function testSum(array $values, string $sum) : void
     {
         self::assertBigIntegerEquals($sum, BigInteger::sum(... $values));
@@ -526,12 +514,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerPlus
-     *
      * @param string $a The base number.
      * @param string $b The number to add.
      * @param string $r The expected result.
      */
+    #[DataProvider('providerPlus')]
     public function testPlus(string $a, string $b, string $r) : void
     {
         self::assertBigIntegerEquals($r, BigInteger::of($a)->plus($b));
@@ -555,12 +542,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerMinus
-     *
      * @param string $a The base number.
      * @param string $b The number to subtract.
      * @param string $r The expected result.
      */
+    #[DataProvider('providerMinus')]
     public function testMinus(string $a, string $b, string $r) : void
     {
         self::assertBigIntegerEquals($r, BigInteger::of($a)->minus($b));
@@ -582,12 +568,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerMultipliedBy
-     *
      * @param string     $a The base number.
      * @param string|int $b The number to multiply.
      * @param string     $r The expected result.
      */
+    #[DataProvider('providerMultipliedBy')]
     public function testMultipliedBy(string $a, $b, string $r) : void
     {
         self::assertBigIntegerEquals($r, BigInteger::of($a)->multipliedBy($b));
@@ -616,12 +601,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerDividedBy
-     *
      * @param string           $number   The base number.
      * @param string|int|float $divisor  The divisor.
      * @param string           $expected The expected result, or a class name if an exception is expected.
      */
+    #[DataProvider('providerDividedBy')]
     public function testDividedBy(string $number, $divisor, string $expected) : void
     {
         $number = BigInteger::of($number);
@@ -661,14 +645,13 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerDividedByWithRoundingMode
-     *
      * @param RoundingMode $roundingMode The rounding mode.
      * @param string       $number       The number to round.
      * @param string|null  $ten          The expected rounding divided by 10, or null if an exception is expected.
      * @param string|null  $hundred      The expected rounding divided by 100 or null if an exception is expected.
      * @param string|null  $thousand     The expected rounding divided by 1000, or null if an exception is expected.
      */
+    #[DataProvider('providerDividedByWithRoundingMode')]
     public function testDividedByWithRoundingMode(RoundingMode $roundingMode, string $number, ?string $ten, ?string $hundred, ?string $thousand) : void
     {
         $number = BigInteger::of($number);
@@ -1168,12 +1151,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerQuotientAndRemainder
-     *
      * @param string $dividend The dividend.
      * @param string $divisor  The divisor.
      * @param string $quotient The expected quotient.
      */
+    #[DataProvider('providerQuotientAndRemainder')]
     public function testQuotient(string $dividend, string $divisor, string $quotient) : void
     {
         self::assertBigIntegerEquals($quotient, BigInteger::of($dividend)->quotient($divisor));
@@ -1186,13 +1168,12 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerQuotientAndRemainder
-     *
      * @param string $dividend  The dividend.
      * @param string $divisor   The divisor.
      * @param string $quotient  The expected quotient (ignored for this test).
      * @param string $remainder The expected remainder.
      */
+    #[DataProvider('providerQuotientAndRemainder')]
     public function testRemainder(string $dividend, string $divisor, string $quotient, string $remainder) : void
     {
         self::assertBigIntegerEquals($remainder, BigInteger::of($dividend)->remainder($divisor));
@@ -1205,13 +1186,12 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerQuotientAndRemainder
-     *
      * @param string $dividend  The dividend.
      * @param string $divisor   The divisor.
      * @param string $quotient  The expected quotient.
      * @param string $remainder The expected remainder.
      */
+    #[DataProvider('providerQuotientAndRemainder')]
     public function testQuotientAndRemainder(string $dividend, string $divisor, string $quotient, string $remainder) : void
     {
         [$q, $r] = BigInteger::of($dividend)->quotientAndRemainder($divisor);
@@ -1288,9 +1268,7 @@ class BigIntegerTest extends AbstractTestCase
         BigInteger::of(1)->quotientAndRemainder(0);
     }
 
-    /**
-     * @dataProvider providerMod
-     */
+    #[DataProvider('providerMod')]
     public function testMod(string $dividend, string $divisor, string $expected) : void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($dividend)->mod($divisor));
@@ -1385,9 +1363,7 @@ class BigIntegerTest extends AbstractTestCase
         BigInteger::of(1)->mod(0);
     }
 
-    /**
-     * @dataProvider providerModPow
-     */
+    #[DataProvider('providerModPow')]
     public function testModPow(string $base, string $exp, string $mod, string $expected) : void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($base)->modPow($exp, $mod));
@@ -1461,9 +1437,7 @@ class BigIntegerTest extends AbstractTestCase
         self::assertTrue($aliceShared->isEqualTo($bobShared));
     }
 
-    /**
-     * @dataProvider providerModPowNegativeThrowsException
-     */
+    #[DataProvider('providerModPowNegativeThrowsException')]
     public function testModPowNegativeThrowsException(int $base, int $exp, int $mod) : void
     {
         $this->expectException(NegativeNumberException::class);
@@ -1486,12 +1460,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerPower
-     *
      * @param string $number   The base number.
      * @param int    $exponent The exponent to apply.
      * @param string $expected The expected result.
      */
+    #[DataProvider('providerPower')]
     public function testPower(string $number, int $exponent, string $expected) : void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($number)->power($exponent));
@@ -1546,9 +1519,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerPowerWithInvalidExponentThrowsException
-     */
+    #[DataProvider('providerPowerWithInvalidExponentThrowsException')]
     public function testPowerWithInvalidExponentThrowsException(int $power) : void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -1564,12 +1535,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerGcd
-     *
      * @param string $a   The first number.
      * @param string $b   The second number.
      * @param string $gcd The expected GCD.
      */
+    #[DataProvider('providerGcd')]
     public function testGcd(string $a, string $b, string $gcd) : void
     {
         $a = BigInteger::of($a);
@@ -1663,9 +1633,7 @@ class BigIntegerTest extends AbstractTestCase
         }
     }
 
-    /**
-     * @dataProvider providerSqrt
-     */
+    #[DataProvider('providerSqrt')]
     public function testSqrt(string $number, string $sqrt) : void
     {
         $number = BigInteger::of($number);
@@ -2023,11 +1991,10 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerAbs
-     *
      * @param string $number   The number as a string.
      * @param string $expected The expected absolute result.
      */
+    #[DataProvider('providerAbs')]
     public function testAbs(string $number, string $expected) : void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($number)->abs());
@@ -2043,11 +2010,10 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerNegated
-     *
      * @param string $number   The number to negate as a string.
      * @param string $expected The expected negated result.
      */
+    #[DataProvider('providerNegated')]
     public function testNegated(string $number, string $expected) : void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($number)->negated());
@@ -2063,12 +2029,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerOr
-     *
      * @param string $a The base number as a string.
      * @param string $b The second operand as a string.
      * @param string $c The expected result.
      */
+    #[DataProvider('providerOr')]
     public function testOr(string $a, string $b, string $c) : void
     {
         self::assertBigIntegerEquals($c, BigInteger::of($a)->or($b));
@@ -2135,12 +2100,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerAnd
-     *
      * @param string $a The base number as a string.
      * @param string $b The second operand as a string.
      * @param string $c The expected result.
      */
+    #[DataProvider('providerAnd')]
     public function testAnd(string $a, string $b, string $c) : void
     {
         self::assertBigIntegerEquals($c, BigInteger::of($a)->and($b));
@@ -2212,12 +2176,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerXor
-     *
      * @param string $a The base number as a string.
      * @param string $b The second operand as a string.
      * @param string $c The expected result.
      */
+    #[DataProvider('providerXor')]
     public function testXor(string $a, string $b, string $c) : void
     {
         self::assertBigIntegerEquals($c, BigInteger::of($a)->xor($b));
@@ -2285,9 +2248,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerNot
-     */
+    #[DataProvider('providerNot')]
     public function testNot(string $number, string $expected) : void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($number)->not());
@@ -2319,24 +2280,22 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerShiftedLeft
-     *
      * @param string $a The base number as a string.
      * @param int    $b The distance to shift.
      * @param string $c The expected shifted result.
      */
+    #[DataProvider('providerShiftedLeft')]
     public function testShiftedLeft(string $a, int $b, string $c) : void
     {
         self::assertBigIntegerEquals($c, BigInteger::of($a)->shiftedLeft($b));
     }
 
     /**
-     * @dataProvider providerShiftedLeft
-     *
      * @param string $a The base number as a string.
      * @param int    $b The distance to shift, negated.
      * @param string $c The expected shifted result.
      */
+    #[DataProvider('providerShiftedLeft')]
     public function testShiftedRight(string $a, int $b, string $c) : void
     {
         self::assertBigIntegerEquals($c, BigInteger::of($a)->shiftedRight(- $b));
@@ -2488,11 +2447,10 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerGetBitLength
-     *
      * @param string $number    The number to test.
      * @param int    $bitLength The expected bit length.
      */
+    #[DataProvider('providerGetBitLength')]
     public function testGetBitLength(string $number, int $bitLength) : void
     {
         self::assertSame($bitLength, BigInteger::of($number)->getBitLength());
@@ -2565,11 +2523,10 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerGetLowestSetBit
-     *
      * @param string $number       The number to test.
      * @param int    $lowestSetBit The expected lowest set bit.
      */
+    #[DataProvider('providerGetLowestSetBit')]
     public function testGetLowestSetBit(string $number, int $lowestSetBit) : void
     {
         self::assertSame($lowestSetBit, BigInteger::of($number)->getLowestSetBit());
@@ -2611,22 +2568,20 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerIsOdd
-     *
      * @param string $number The number to test.
      * @param bool   $isOdd  Whether the number is even.
      */
+    #[DataProvider('providerIsOdd')]
     public function testIsEven(string $number, bool $isOdd) : void
     {
         self::assertSame(! $isOdd, BigInteger::of($number)->isEven());
     }
 
     /**
-     * @dataProvider providerIsOdd
-     *
      * @param string $number The number to test.
      * @param bool   $isOdd  Whether the number is even.
      */
+    #[DataProvider('providerIsOdd')]
     public function testIsOdd(string $number, bool $isOdd) : void
     {
         self::assertSame($isOdd, BigInteger::of($number)->isOdd());
@@ -2654,12 +2609,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerTestBit
-     *
      * @param BigInteger $number   The number in base 2.
      * @param int        $n        The bit to test.
      * @param bool       $expected The expected result.
      */
+    #[DataProvider('providerTestBit')]
     public function testTestBit(BigInteger $number, int $n, bool $expected) : void
     {
         self::assertSame($expected, $number->testBit($n));
@@ -2726,9 +2680,7 @@ class BigIntegerTest extends AbstractTestCase
         $number->testBit(-1);
     }
 
-    /**
-     * @dataProvider providerModInverse
-     */
+    #[DataProvider('providerModInverse')]
     public function testModInverse(string $x, string $m, string $expectedResult) : void
     {
         $x = BigInteger::of($x);
@@ -2757,9 +2709,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerModInverseThrows
-     */
+    #[DataProvider('providerModInverseThrows')]
     public function testModInverseThrows(string $x, string $m, string $expectedException) : void
     {
         $x = BigInteger::of($x);
@@ -2784,72 +2734,66 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerCompareTo
-     *
      * @param string $a The base number as a string.
      * @param string $b The number to compare to as a string.
      * @param int    $c The expected comparison result.
      */
+    #[DataProvider('providerCompareTo')]
     public function testCompareTo(string $a, string $b, int $c) : void
     {
         self::assertSame($c, BigInteger::of($a)->compareTo($b));
     }
 
     /**
-     * @dataProvider providerCompareTo
-     *
      * @param string $a The base number as a string.
      * @param string $b The number to compare to as a string.
      * @param int    $c The comparison result.
      */
+    #[DataProvider('providerCompareTo')]
     public function testIsEqualTo(string $a, string $b, int $c) : void
     {
         self::assertSame($c === 0, BigInteger::of($a)->isEqualTo($b));
     }
 
     /**
-     * @dataProvider providerCompareTo
-     *
      * @param string $a The base number as a string.
      * @param string $b The number to compare to as a string.
      * @param int    $c The comparison result.
      */
+    #[DataProvider('providerCompareTo')]
     public function testIsLessThan(string $a, string $b, int $c) : void
     {
         self::assertSame($c < 0, BigInteger::of($a)->isLessThan($b));
     }
 
     /**
-     * @dataProvider providerCompareTo
-     *
      * @param string $a The base number as a string.
      * @param string $b The number to compare to as a string.
      * @param int    $c The comparison result.
      */
+    #[DataProvider('providerCompareTo')]
     public function testIsLessThanOrEqualTo(string $a, string $b, int $c) : void
     {
         self::assertSame($c <= 0, BigInteger::of($a)->isLessThanOrEqualTo($b));
     }
 
     /**
-     * @dataProvider providerCompareTo
-     *
      * @param string $a The base number as a string.
      * @param string $b The number to compare to as a string.
      * @param int    $c The comparison result.
      */
+    #[DataProvider('providerCompareTo')]
     public function testIsGreaterThan(string $a, string $b, int $c) : void
     {
         self::assertSame($c > 0, BigInteger::of($a)->isGreaterThan($b));
     }
 
     /**
-     * @dataProvider providerCompareTo
-     *
      * @param string $a The base number as a string.
      * @param string $b The number to compare to as a string.
      * @param int    $c The comparison result.
      */
+    #[DataProvider('providerCompareTo')]
     public function testIsGreaterThanOrEqualTo(string $a, string $b, int $c) : void
     {
         self::assertSame($c >= 0, BigInteger::of($a)->isGreaterThanOrEqualTo($b));
@@ -2899,66 +2843,60 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerSign
-     *
      * @param int|string $number The number to test.
      * @param int        $sign   The sign of the number.
      */
+    #[DataProvider('providerSign')]
     public function testGetSign($number, int $sign) : void
     {
         self::assertSame($sign, BigInteger::of($number)->getSign());
     }
 
     /**
-     * @dataProvider providerSign
-     *
      * @param int|string $number The number to test.
      * @param int        $sign   The sign of the number.
      */
+    #[DataProvider('providerSign')]
     public function testIsZero($number, int $sign) : void
     {
         self::assertSame($sign === 0, BigInteger::of($number)->isZero());
     }
 
     /**
-     * @dataProvider providerSign
-     *
      * @param int|string $number The number to test.
      * @param int        $sign   The sign of the number.
      */
+    #[DataProvider('providerSign')]
     public function testIsNegative($number, int $sign) : void
     {
         self::assertSame($sign < 0, BigInteger::of($number)->isNegative());
     }
 
     /**
-     * @dataProvider providerSign
-     *
      * @param int|string $number The number to test.
      * @param int        $sign   The sign of the number.
      */
+    #[DataProvider('providerSign')]
     public function testIsNegativeOrZero($number, int $sign) : void
     {
         self::assertSame($sign <= 0, BigInteger::of($number)->isNegativeOrZero());
     }
 
     /**
-     * @dataProvider providerSign
-     *
      * @param int|string $number The number to test.
      * @param int        $sign   The sign of the number.
      */
+    #[DataProvider('providerSign')]
     public function testIsPositive($number, int $sign) : void
     {
         self::assertSame($sign > 0, BigInteger::of($number)->isPositive());
     }
 
     /**
-     * @dataProvider providerSign
-     *
      * @param int|string $number The number to test.
      * @param int        $sign   The sign of the number.
      */
+    #[DataProvider('providerSign')]
     public function testIsPositiveOrZero($number, int $sign) : void
     {
         self::assertSame($sign >= 0, BigInteger::of($number)->isPositiveOrZero());
@@ -2981,12 +2919,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerToScale
-     *
      * @param string $number
      * @param int    $scale
      * @param string $expected
      */
+    #[DataProvider('providerToScale')]
     public function testToScale(string $number, int $scale, string $expected) : void
     {
         self::assertBigDecimalEquals($expected, BigInteger::of($number)->toScale($scale));
@@ -3001,9 +2938,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerToInt
-     */
+    #[DataProvider('providerToInt')]
     public function testToInt(int $number) : void
     {
         self::assertSame($number, BigInteger::of((string) $number)->toInt());
@@ -3035,11 +2970,10 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerToFloat
-     *
      * @param string $value The big integer value.
      * @param float  $float The expected float value.
      */
+    #[DataProvider('providerToFloat')]
     public function testToFloat(string $value, float $float) : void
     {
         self::assertSame($float, BigInteger::of($value)->toFloat());
@@ -3059,12 +2993,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider providerToBase
-     *
      * @param string $number   The number to convert, in base 10.
      * @param int    $base     The base to convert the number to.
      * @param string $expected The expected result.
      */
+    #[DataProvider('providerToBase')]
     public function testToBase(string $number, int $base, string $expected) : void
     {
         self::assertSame($expected, BigInteger::of($number)->toBase($base));
@@ -3161,9 +3094,7 @@ class BigIntegerTest extends AbstractTestCase
         }
     }
 
-    /**
-     * @dataProvider providerToInvalidBaseThrowsException
-     */
+    #[DataProvider('providerToInvalidBaseThrowsException')]
     public function testToInvalidBaseThrowsException(int $base) : void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3181,9 +3112,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerFromArbitraryBase
-     */
+    #[DataProvider('providerFromArbitraryBase')]
     public function testFromArbitraryBase(string $base10, string $alphabet, string $baseN) : void
     {
         $number = BigInteger::fromArbitraryBase($baseN, $alphabet);
@@ -3202,9 +3131,7 @@ class BigIntegerTest extends AbstractTestCase
         }
     }
 
-    /**
-     * @dataProvider providerArbitraryBase
-     */
+    #[DataProvider('providerArbitraryBase')]
     public function testToArbitraryBase(string $base10, string $alphabet, string $baseN) : void
     {
         $base10 = BigInteger::of($base10);
@@ -3288,9 +3215,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerArbitraryBaseWithInvalidAlphabet
-     */
+    #[DataProvider('providerArbitraryBaseWithInvalidAlphabet')]
     public function testFromArbitraryBaseWithInvalidAlphabet(string $alphabet) : void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3299,9 +3224,7 @@ class BigIntegerTest extends AbstractTestCase
         BigInteger::fromArbitraryBase('0', $alphabet);
     }
 
-    /**
-     * @dataProvider providerFromArbitraryBaseWithInvalidNumber
-     */
+    #[DataProvider('providerFromArbitraryBaseWithInvalidNumber')]
     public function testFromArbitraryBaseWithInvalidNumber(string $number, string $alphabet, string $expectedMessage) : void
     {
         $this->expectException(NumberFormatException::class);
@@ -3326,9 +3249,7 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerArbitraryBaseWithInvalidAlphabet
-     */
+    #[DataProvider('providerArbitraryBaseWithInvalidAlphabet')]
     public function testToArbitraryBaseWithInvalidAlphabet(string $alphabet) : void
     {
         $number = BigInteger::of(123);
@@ -3357,9 +3278,7 @@ class BigIntegerTest extends AbstractTestCase
         $number->toArbitraryBase('01');
     }
 
-    /**
-     * @dataProvider providerFromBytes
-     */
+    #[DataProvider('providerFromBytes')]
     public function testFromBytes(string $byteStringHex, bool $signed, string $expectedNumber) : void
     {
         $number = BigInteger::fromBytes(hex2bin($byteStringHex), $signed);
@@ -3383,9 +3302,7 @@ class BigIntegerTest extends AbstractTestCase
         BigInteger::fromBytes('');
     }
 
-    /**
-     * @dataProvider providerToBytes
-     */
+    #[DataProvider('providerToBytes')]
     public function testToBytes(string $number, bool $signed, string $expectedByteStringHex) : void
     {
         $byteString = BigInteger::of($number)->toBytes($signed);
@@ -3587,9 +3504,7 @@ class BigIntegerTest extends AbstractTestCase
         $number->toBytes(false);
     }
 
-    /**
-     * @dataProvider providerRandomBits
-     */
+    #[DataProvider('providerRandomBits')]
     public function testRandomBits(int $numBits, string $randomBytesHex, string $expectedNumber) : void
     {
         $randomBytesGenerator = function(int $numBytes) use ($randomBytesHex) : string {
@@ -3656,9 +3571,7 @@ class BigIntegerTest extends AbstractTestCase
         self::assertBigIntegerEquals('0', $random);
     }
 
-    /**
-     * @dataProvider providerRandomRange
-     */
+    #[DataProvider('providerRandomRange')]
     public function testRandomRange(string $min, string $max, array $randomBytesHex, string $expectedNumber) : void
     {
         $randomBytesCounter = 0;

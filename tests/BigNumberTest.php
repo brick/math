@@ -8,6 +8,7 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\BigRational;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Unit tests for class BigNumber.
@@ -18,12 +19,11 @@ use Brick\Math\BigRational;
 class BigNumberTest extends AbstractTestCase
 {
     /**
-     * @dataProvider providerSum
-     *
      * @param array  $values        The values to add.
      * @param string $expectedClass The expected class name.
      * @param string $expectedSum   The expected sum.
      */
+    #[DataProvider('providerSum')]
     public function testSum(array $values, string $expectedClass, string $expectedSum) : void
     {
         $sum = BigNumber::sum(...$values);
