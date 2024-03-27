@@ -22,11 +22,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 class BigIntegerTest extends AbstractTestCase
 {
     /**
-     * @param string|number $value    The value to convert to a BigInteger.
-     * @param string        $expected The expected string value of the result.
+     * @param int|float|string $value    The value to convert to a BigInteger.
+     * @param string           $expected The expected string value of the result.
      */
     #[DataProvider('providerOf')]
-    public function testOf($value, string $expected) : void
+    public function testOf(int|float|string $value, string $expected) : void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($value));
     }
@@ -110,11 +110,8 @@ class BigIntegerTest extends AbstractTestCase
         self::assertSame($decimal, BigInteger::of($decimal));
     }
 
-    /**
-     * @param string|number $value
-     */
     #[DataProvider('providerOfInvalidFormatThrowsException')]
-    public function testOfInvalidFormatThrowsException($value) : void
+    public function testOfInvalidFormatThrowsException(int|float|string $value) : void
     {
         $this->expectException(NumberFormatException::class);
         BigInteger::of($value);
@@ -138,11 +135,8 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @param float|string $value
-     */
     #[DataProvider('providerOfNonConvertibleValueThrowsException')]
-    public function testOfNonConvertibleValueThrowsException($value) : void
+    public function testOfNonConvertibleValueThrowsException(float|string $value) : void
     {
         $this->expectException(RoundingNecessaryException::class);
         BigInteger::of($value);
@@ -568,12 +562,12 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param string     $a The base number.
-     * @param string|int $b The number to multiply.
-     * @param string     $r The expected result.
+     * @param string           $a The base number.
+     * @param int|float|string $b The number to multiply.
+     * @param string           $r The expected result.
      */
     #[DataProvider('providerMultipliedBy')]
-    public function testMultipliedBy(string $a, $b, string $r) : void
+    public function testMultipliedBy(string $a, int|float|string $b, string $r) : void
     {
         self::assertBigIntegerEquals($r, BigInteger::of($a)->multipliedBy($b));
     }
@@ -602,11 +596,11 @@ class BigIntegerTest extends AbstractTestCase
 
     /**
      * @param string           $number   The base number.
-     * @param string|int|float $divisor  The divisor.
+     * @param int|float|string $divisor  The divisor.
      * @param string           $expected The expected result, or a class name if an exception is expected.
      */
     #[DataProvider('providerDividedBy')]
-    public function testDividedBy(string $number, $divisor, string $expected) : void
+    public function testDividedBy(string $number, int|float|string $divisor, string $expected) : void
     {
         $number = BigInteger::of($number);
 
@@ -2847,7 +2841,7 @@ class BigIntegerTest extends AbstractTestCase
      * @param int        $sign   The sign of the number.
      */
     #[DataProvider('providerSign')]
-    public function testGetSign($number, int $sign) : void
+    public function testGetSign(int|string $number, int $sign) : void
     {
         self::assertSame($sign, BigInteger::of($number)->getSign());
     }
@@ -2857,7 +2851,7 @@ class BigIntegerTest extends AbstractTestCase
      * @param int        $sign   The sign of the number.
      */
     #[DataProvider('providerSign')]
-    public function testIsZero($number, int $sign) : void
+    public function testIsZero(int|string $number, int $sign) : void
     {
         self::assertSame($sign === 0, BigInteger::of($number)->isZero());
     }
@@ -2867,7 +2861,7 @@ class BigIntegerTest extends AbstractTestCase
      * @param int        $sign   The sign of the number.
      */
     #[DataProvider('providerSign')]
-    public function testIsNegative($number, int $sign) : void
+    public function testIsNegative(int|string $number, int $sign) : void
     {
         self::assertSame($sign < 0, BigInteger::of($number)->isNegative());
     }
@@ -2877,7 +2871,7 @@ class BigIntegerTest extends AbstractTestCase
      * @param int        $sign   The sign of the number.
      */
     #[DataProvider('providerSign')]
-    public function testIsNegativeOrZero($number, int $sign) : void
+    public function testIsNegativeOrZero(int|string $number, int $sign) : void
     {
         self::assertSame($sign <= 0, BigInteger::of($number)->isNegativeOrZero());
     }
@@ -2887,7 +2881,7 @@ class BigIntegerTest extends AbstractTestCase
      * @param int        $sign   The sign of the number.
      */
     #[DataProvider('providerSign')]
-    public function testIsPositive($number, int $sign) : void
+    public function testIsPositive(int|string $number, int $sign) : void
     {
         self::assertSame($sign > 0, BigInteger::of($number)->isPositive());
     }
@@ -2897,7 +2891,7 @@ class BigIntegerTest extends AbstractTestCase
      * @param int        $sign   The sign of the number.
      */
     #[DataProvider('providerSign')]
-    public function testIsPositiveOrZero($number, int $sign) : void
+    public function testIsPositiveOrZero(int|string $number, int $sign) : void
     {
         self::assertSame($sign >= 0, BigInteger::of($number)->isPositiveOrZero());
     }
