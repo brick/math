@@ -11,6 +11,7 @@ use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
+use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -2003,9 +2004,9 @@ class BigDecimalTest extends AbstractTestCase
      * @param int    $scale         The expected scale of the absolute result.
      */
     #[DataProvider('providerAbs')]
-    public function testAbs(string $number, string $unscaledValue, int $scale) : void
+    public function testAbs(string $number, string $unscaledValue, int $scale, bool|Closure $callback = true) : void
     {
-        self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->abs());
+        self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->abs($callback));
     }
 
     public static function providerAbs() : array
@@ -2014,7 +2015,19 @@ class BigDecimalTest extends AbstractTestCase
             ['123', '123', 0],
             ['-123', '123', 0],
             ['123.456', '123456', 3],
-            ['-123.456', '123456', 3]
+            ['-123.456', '123456', 3],
+            ['123', '123', 0, fn() => true],
+            ['-123', '123', 0, fn() => true],
+            ['123.456', '123456', 3, fn() => true],
+            ['-123.456', '123456', 3, fn() => true],
+            ['123', '123', 0, false],
+            ['-123', '-123', 0, false],
+            ['123.456', '123456', 3, false],
+            ['-123.456', '-123456', 3, false],
+            ['123', '123', 0, fn () => false],
+            ['-123', '-123', 0, fn () => false],
+            ['123.456', '123456', 3, fn () => false],
+            ['-123.456', '-123456', 3, fn () => false],
         ];
     }
 
@@ -2024,9 +2037,9 @@ class BigDecimalTest extends AbstractTestCase
      * @param int    $scale         The expected scale of the result.
      */
     #[DataProvider('providerNegated')]
-    public function testNegated(string $number, string $unscaledValue, int $scale) : void
+    public function testNegated(string $number, string $unscaledValue, int $scale, bool|Closure $callback = true) : void
     {
-        self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->negated());
+        self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($number)->negated($callback));
     }
 
     public static function providerNegated() : array
@@ -2035,7 +2048,19 @@ class BigDecimalTest extends AbstractTestCase
             ['123', '-123', 0],
             ['-123', '123', 0],
             ['123.456', '-123456', 3],
-            ['-123.456', '123456', 3]
+            ['-123.456', '123456', 3],
+            ['123', '-123', 0, fn () => true],
+            ['-123', '123', 0, fn () => true],
+            ['123.456', '-123456', 3, fn () => true],
+            ['-123.456', '123456', 3, fn () => true],
+            ['123', '123', 0, false],
+            ['-123', '-123', 0, false],
+            ['123.456', '123456', 3, false],
+            ['-123.456', '-123456', 3, false],
+            ['123', '123', 0, fn () => false],
+            ['-123', '-123', 0, fn () => false],
+            ['123.456', '123456', 3, fn () => false],
+            ['-123.456', '-123456', 3, fn () => false],
         ];
     }
 
