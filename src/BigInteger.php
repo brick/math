@@ -681,6 +681,8 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the absolute value of this number.
+     *
+     * @param bool|Closure $cb A boolean or callback that will be evaluated to determine if the absolute value should be returned. Receives $this as an argument.
      */
     public function abs(bool|Closure $abs = true) : BigInteger
     {
@@ -693,6 +695,8 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the inverse of this number.
+     *
+     * @param bool|Closure $cb A boolean or callback that will be evaluated to determine if the negated value should be returned. Receives $this as an argument.
      */
     public function negated(bool|Closure $negated = true) : BigInteger
     {

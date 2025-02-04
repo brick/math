@@ -295,7 +295,7 @@ final class BigRational extends BigNumber
     /**
      * Returns the absolute value of this BigRational.
      *
-     * @param bool|Closure $cb A callback that will be called with the BigRational as argument.
+     * @param bool|Closure $cb A boolean or callback that will be evaluated to determine if the absolute value should be returned. Receives $this as an argument.
      */
     public function abs(bool|Closure $abs = true) : BigRational
     {
@@ -308,6 +308,8 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the negated value of this BigRational.
+     *
+     * @param bool|Closure $cb A boolean or callback that will be evaluated to determine if the negated value should be returned. Receives $this as an argument.
      */
     public function negated(bool|Closure $negated = true) : BigRational
     {
