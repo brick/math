@@ -380,10 +380,10 @@ final class BigRational extends BigNumber
         return $simplified->numerator->toFloat() / $simplified->denominator->toFloat();
     }
 
-    /** @psalm-suppress ImpureFunctionCall */
     protected function resolveOptionalCallback(bool|Closure $cb) : bool
     {
         if ($cb instanceof Closure) {
+            /** @psalm-suppress ImpureFunctionCall */
             return (bool) $cb($this);
         }
 

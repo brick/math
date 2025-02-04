@@ -1026,10 +1026,10 @@ final class BigInteger extends BigNumber
         return \hex2bin($hex);
     }
 
-    /** @psalm-suppress ImpureFunctionCall */
     protected function resolveOptionalCallback(bool|Closure $cb) : bool
     {
         if ($cb instanceof Closure) {
+            /** @psalm-suppress ImpureFunctionCall */
             return (bool) $cb($this);
         }
 

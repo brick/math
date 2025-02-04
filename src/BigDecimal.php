@@ -661,10 +661,10 @@ final class BigDecimal extends BigNumber
         return (float) (string) $this;
     }
 
-    /** @psalm-suppress ImpureFunctionCall */
     protected function resolveOptionalCallback(bool|Closure $cb) : bool
     {
         if ($cb instanceof Closure) {
+            /** @psalm-suppress ImpureFunctionCall */
             return (bool) $cb($this);
         }
 
