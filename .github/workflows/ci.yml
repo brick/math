@@ -5,8 +5,8 @@ on:
   pull_request:
 
 env:
-  PSALM_PHP_VERSION: "8.3"
-  COVERAGE_PHP_VERSION: "8.3"
+  PSALM_PHP_VERSION: "8.4"
+  COVERAGE_PHP_VERSION: "8.4"
 
 jobs:
   psalm:
@@ -39,6 +39,7 @@ jobs:
           - "8.1"
           - "8.2"
           - "8.3"
+          - "8.4"
         calculator:
           - GMP
           - BCMath
