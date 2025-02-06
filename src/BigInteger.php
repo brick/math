@@ -10,6 +10,7 @@ use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Internal\Calculator;
+use Closure;
 
 /**
  * An arbitrary-size integer.
@@ -680,18 +681,30 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the absolute value of this number.
+     *
+     * @param bool|Closure $abs A boolean or callback that will be evaluated to determine if the absolute value should be returned. Receives $this as an argument.
      */
-    public function abs() : BigInteger
+    public function abs(bool|Closure $abs = true) : BigInteger
     {
-        return $this->isNegative() ? $this->negated() : $this;
+        if ($this->resolveOptionalCallback($abs)) {
+            return $this->isNegative() ? $this->negated() : $this;
+        }
+
+        return $this;
     }
 
     /**
      * Returns the inverse of this number.
+     *
+     * @param bool|Closure $negated A boolean or callback that will be evaluated to determine if the negated value should be returned. Receives $this as an argument.
      */
-    public function negated() : BigInteger
+    public function negated(bool|Closure $negated = true) : BigInteger
     {
-        return new BigInteger(Calculator::get()->neg($this->value));
+        if ($this->resolveOptionalCallback($negated)) {
+            return new BigInteger(Calculator::get()->neg($this->value));
+        }
+
+        return $this;
     }
 
     /**
@@ -1011,6 +1024,16 @@ final class BigInteger extends BigNumber
         }
 
         return \hex2bin($hex);
+    }
+
+    protected function resolveOptionalCallback(bool|Closure $cb) : bool
+    {
+        if ($cb instanceof Closure) {
+            /** @psalm-suppress ImpureFunctionCall */
+            return (bool) $cb($this);
+        }
+
+        return $cb;
     }
 
     public function __toString() : string

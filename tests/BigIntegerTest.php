@@ -13,6 +13,7 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\RoundingMode;
+use Closure;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -1989,9 +1990,9 @@ class BigIntegerTest extends AbstractTestCase
      * @param string $expected The expected absolute result.
      */
     #[DataProvider('providerAbs')]
-    public function testAbs(string $number, string $expected) : void
+    public function testAbs(string $number, string $expected, bool|Closure $callback = true) : void
     {
-        self::assertBigIntegerEquals($expected, BigInteger::of($number)->abs());
+        self::assertBigIntegerEquals($expected, BigInteger::of($number)->abs($callback));
     }
 
     public static function providerAbs() : array
@@ -2000,6 +2001,15 @@ class BigIntegerTest extends AbstractTestCase
             ['0', '0'],
             ['123456789012345678901234567890', '123456789012345678901234567890'],
             ['-123456789012345678901234567890', '123456789012345678901234567890'],
+            ['0', '0', fn () => true],
+            ['123456789012345678901234567890', '123456789012345678901234567890', fn () => true],
+            ['-123456789012345678901234567890', '123456789012345678901234567890', fn () => true],
+            ['0', '0', false],
+            ['123456789012345678901234567890', '123456789012345678901234567890', false],
+            ['-123456789012345678901234567890', '-123456789012345678901234567890', false],
+            ['0', '0', fn () => false],
+            ['123456789012345678901234567890', '123456789012345678901234567890', fn () => false],
+            ['-123456789012345678901234567890', '-123456789012345678901234567890', fn () => false],
         ];
     }
 
@@ -2008,9 +2018,9 @@ class BigIntegerTest extends AbstractTestCase
      * @param string $expected The expected negated result.
      */
     #[DataProvider('providerNegated')]
-    public function testNegated(string $number, string $expected) : void
+    public function testNegated(string $number, string $expected, bool|Closure $callback = true) : void
     {
-        self::assertBigIntegerEquals($expected, BigInteger::of($number)->negated());
+        self::assertBigIntegerEquals($expected, BigInteger::of($number)->negated($callback));
     }
 
     public static function providerNegated() : array
@@ -2019,6 +2029,15 @@ class BigIntegerTest extends AbstractTestCase
             ['0', '0'],
             ['123456789012345678901234567890', '-123456789012345678901234567890'],
             ['-123456789012345678901234567890', '123456789012345678901234567890'],
+            ['0', '0', fn () => true],
+            ['123456789012345678901234567890', '-123456789012345678901234567890', fn () => true],
+            ['-123456789012345678901234567890', '123456789012345678901234567890', fn () => true],
+            ['0', '0', false],
+            ['123456789012345678901234567890', '123456789012345678901234567890', false],
+            ['-123456789012345678901234567890', '-123456789012345678901234567890', false],
+            ['0', '0', fn () => false],
+            ['123456789012345678901234567890', '123456789012345678901234567890', fn () => false],
+            ['-123456789012345678901234567890', '-123456789012345678901234567890', fn () => false],
         ];
     }
 

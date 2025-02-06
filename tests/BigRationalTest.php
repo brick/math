@@ -12,6 +12,7 @@ use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
+use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -433,9 +434,9 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected The expected absolute number.
      */
     #[DataProvider('providerAbs')]
-    public function testAbs(string $rational, string $expected) : void
+    public function testAbs(string $rational, string $expected, bool|Closure $callback = true) : void
     {
-        self::assertBigRationalEquals($expected, BigRational::of($rational)->abs());
+        self::assertBigRationalEquals($expected, BigRational::of($rational)->abs($callback));
     }
 
     public static function providerAbs() : array
@@ -447,6 +448,24 @@ class BigRationalTest extends AbstractTestCase
             ['123/456', '123/456'],
             ['-234/567', '234/567'],
             ['-489798742123504998877665/387590928349859112233445', '489798742123504998877665/387590928349859112233445'],
+            ['0', '0', fn () => true],
+            ['1', '1', fn () => true],
+            ['-1', '1', fn () => true],
+            ['123/456', '123/456', fn () => true],
+            ['-234/567', '234/567', fn () => true],
+            ['-489798742123504998877665/387590928349859112233445', '489798742123504998877665/387590928349859112233445', fn () => true],
+            ['0', '0', false],
+            ['1', '1', false],
+            ['-1', '-1', false],
+            ['123/456', '123/456', false],
+            ['-234/567', '-234/567', false],
+            ['-489798742123504998877665/387590928349859112233445', '-489798742123504998877665/387590928349859112233445', false],
+            ['0', '0', fn () => false],
+            ['1', '1', fn () => false],
+            ['-1', '-1', fn () => false],
+            ['123/456', '123/456', fn () => false],
+            ['-234/567', '-234/567', fn () => false],
+            ['-489798742123504998877665/387590928349859112233445', '-489798742123504998877665/387590928349859112233445', fn () => false],
         ];
     }
 
@@ -455,9 +474,9 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected The expected negated number.
      */
     #[DataProvider('providerNegated')]
-    public function testNegated(string $rational, string $expected) : void
+    public function testNegated(string $rational, string $expected, bool|Closure $callback = true) : void
     {
-        self::assertBigRationalEquals($expected, BigRational::of($rational)->negated());
+        self::assertBigRationalEquals($expected, BigRational::of($rational)->negated($callback));
     }
 
     public static function providerNegated() : array
@@ -470,6 +489,27 @@ class BigRationalTest extends AbstractTestCase
             ['-234/567', '234/567'],
             ['-489798742123504998877665/387590928349859112233445', '489798742123504998877665/387590928349859112233445'],
             ['489798742123504998877665/387590928349859112233445', '-489798742123504998877665/387590928349859112233445'],
+            ['0', '0', fn () => true],
+            ['1', '-1', fn () => true],
+            ['-1', '1', fn () => true],
+            ['123/456', '-123/456', fn () => true],
+            ['-234/567', '234/567', fn () => true],
+            ['-489798742123504998877665/387590928349859112233445', '489798742123504998877665/387590928349859112233445', fn () => true],
+            ['489798742123504998877665/387590928349859112233445', '-489798742123504998877665/387590928349859112233445', fn () => true],
+            ['0', '0', false],
+            ['1', '1', false],
+            ['-1', '-1', false],
+            ['123/456', '123/456', false],
+            ['-234/567', '-234/567', false],
+            ['-489798742123504998877665/387590928349859112233445', '-489798742123504998877665/387590928349859112233445', false],
+            ['489798742123504998877665/387590928349859112233445', '489798742123504998877665/387590928349859112233445', false],
+            ['0', '0', fn () => false],
+            ['1', '1', fn () => false],
+            ['-1', '-1', fn () => false],
+            ['123/456', '123/456', fn () => false],
+            ['-234/567', '-234/567', fn () => false],
+            ['-489798742123504998877665/387590928349859112233445', '-489798742123504998877665/387590928349859112233445', fn () => false],
+            ['489798742123504998877665/387590928349859112233445', '489798742123504998877665/387590928349859112233445', fn () => false],
         ];
     }
 

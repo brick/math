@@ -8,6 +8,7 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Internal\Calculator;
+use Closure;
 
 /**
  * Immutable, arbitrary-precision signed decimal numbers.
@@ -521,18 +522,30 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the absolute value of this number.
+     *
+     * @param bool|Closure $abs A boolean or callback that will be evaluated to determine if the absolute value should be returned. Receives $this as an argument.
      */
-    public function abs() : BigDecimal
+    public function abs(bool|Closure $abs = true) : BigDecimal
     {
-        return $this->isNegative() ? $this->negated() : $this;
+        if ($this->resolveOptionalCallback($abs)) {
+            return $this->isNegative() ? $this->negated() : $this;
+        }
+
+        return $this;
     }
 
     /**
      * Returns the negated value of this number.
+     *
+     * @param bool|Closure $negated A boolean or callback that will be evaluated to determine if the negated value should be returned. Receives $this as an argument.
      */
-    public function negated() : BigDecimal
+    public function negated(bool|Closure $negated = true) : BigDecimal
     {
-        return new BigDecimal(Calculator::get()->neg($this->value), $this->scale);
+        if ($this->resolveOptionalCallback($negated)) {
+            return new BigDecimal(Calculator::get()->neg($this->value), $this->scale);
+        }
+
+        return $this;
     }
 
     public function compareTo(BigNumber|int|float|string $that) : int
@@ -646,6 +659,16 @@ final class BigDecimal extends BigNumber
     public function toFloat() : float
     {
         return (float) (string) $this;
+    }
+
+    protected function resolveOptionalCallback(bool|Closure $cb) : bool
+    {
+        if ($cb instanceof Closure) {
+            /** @psalm-suppress ImpureFunctionCall */
+            return (bool) $cb($this);
+        }
+
+        return $cb;
     }
 
     public function __toString() : string

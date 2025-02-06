@@ -8,6 +8,7 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Closure;
 
 /**
  * An arbitrarily large rational number.
@@ -293,18 +294,30 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the absolute value of this BigRational.
+     *
+     * @param bool|Closure $abs A boolean or callback that will be evaluated to determine if the absolute value should be returned. Receives $this as an argument.
      */
-    public function abs() : BigRational
+    public function abs(bool|Closure $abs = true) : BigRational
     {
-        return new BigRational($this->numerator->abs(), $this->denominator, false);
+        if ($this->resolveOptionalCallback($abs)) {
+            return new BigRational($this->numerator->abs(), $this->denominator, false);
+        }
+
+        return $this;
     }
 
     /**
      * Returns the negated value of this BigRational.
+     *
+     * @param bool|Closure $negated A boolean or callback that will be evaluated to determine if the negated value should be returned. Receives $this as an argument.
      */
-    public function negated() : BigRational
+    public function negated(bool|Closure $negated = true) : BigRational
     {
-        return new BigRational($this->numerator->negated(), $this->denominator, false);
+        if ($this->resolveOptionalCallback($negated)) {
+            return new BigRational($this->numerator->negated(), $this->denominator, false);
+        }
+
+        return $this;
     }
 
     /**
@@ -365,6 +378,16 @@ final class BigRational extends BigNumber
     {
         $simplified = $this->simplified();
         return $simplified->numerator->toFloat() / $simplified->denominator->toFloat();
+    }
+
+    protected function resolveOptionalCallback(bool|Closure $cb) : bool
+    {
+        if ($cb instanceof Closure) {
+            /** @psalm-suppress ImpureFunctionCall */
+            return (bool) $cb($this);
+        }
+
+        return $cb;
     }
 
     public function __toString() : string
