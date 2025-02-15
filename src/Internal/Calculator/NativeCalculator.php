@@ -492,9 +492,9 @@ class NativeCalculator extends Calculator
         $nb = $b * 1; // cast to number
         // performance optimization in cases where the remainder will never cause int overflow
         if (is_int(($nb - 1) * 10 + 9)) {
-            $r = (int) \substr($a, 0, $z);
+            $r = (int) \substr($a, 0, $z - 1);
 
-            for ($i = $z; $i < $x; $i++) {
+            for ($i = $z - 1; $i < $x; $i++) {
                 $n = $r * 10 + (int) $a[$i];
                 $q .= (int) ($n / $nb);
                 $r = $n % $nb;
