@@ -496,6 +496,7 @@ class NativeCalculator extends Calculator
 
             for ($i = $z - 1; $i < $x; $i++) {
                 $n = $r * 10 + (int) $a[$i];
+                /** @psalm-var int $nb */
                 $q .= intdiv($n, $nb);
                 $r = $n % $nb;
             }
