@@ -488,6 +488,22 @@ class NativeCalculator extends Calculator
         $r = $a; // remainder
         $z = $y; // focus length, always $y or $y+1
 
+        /** @psalm-var numeric-string $b */
+        $nb = $b * 1; // cast to number
+        // performance optimization in cases where the remainder will never cause int overflow
+        if (is_int(($nb - 1) * 10 + 9)) {
+            $r = (int) \substr($a, 0, $z - 1);
+
+            for ($i = $z - 1; $i < $x; $i++) {
+                $n = $r * 10 + (int) $a[$i];
+                /** @psalm-var int $nb */
+                $q .= \intdiv($n, $nb);
+                $r = $n % $nb;
+            }
+
+            return [\ltrim($q, '0') ?: '0', (string) $r];
+        }
+
         for (;;) {
             $focus = \substr($a, 0, $z);
 
