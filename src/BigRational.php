@@ -8,6 +8,7 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Override;
 
 /**
  * An arbitrarily large rational number.
@@ -57,6 +58,7 @@ final class BigRational extends BigNumber
     /**
      * @psalm-pure
      */
+    #[Override]
     protected static function from(BigNumber $number): static
     {
         return $number->toBigRational();
@@ -320,16 +322,19 @@ final class BigRational extends BigNumber
         return new BigRational($numerator, $denominator, false);
     }
 
+    #[Override]
     public function compareTo(BigNumber|int|float|string $that) : int
     {
         return $this->minus($that)->getSign();
     }
 
+    #[Override]
     public function getSign() : int
     {
         return $this->numerator->getSign();
     }
 
+    #[Override]
     public function toBigInteger() : BigInteger
     {
         $simplified = $this->simplified();
@@ -341,32 +346,38 @@ final class BigRational extends BigNumber
         return $simplified->numerator;
     }
 
+    #[Override]
     public function toBigDecimal() : BigDecimal
     {
         return $this->numerator->toBigDecimal()->exactlyDividedBy($this->denominator);
     }
 
+    #[Override]
     public function toBigRational() : BigRational
     {
         return $this;
     }
 
+    #[Override]
     public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         return $this->numerator->toBigDecimal()->dividedBy($this->denominator, $scale, $roundingMode);
     }
 
+    #[Override]
     public function toInt() : int
     {
         return $this->toBigInteger()->toInt();
     }
 
+    #[Override]
     public function toFloat() : float
     {
         $simplified = $this->simplified();
         return $simplified->numerator->toFloat() / $simplified->denominator->toFloat();
     }
 
+    #[Override]
     public function __toString() : string
     {
         $numerator   = (string) $this->numerator;

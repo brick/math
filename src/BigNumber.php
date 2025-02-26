@@ -8,6 +8,7 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Override;
 
 /**
  * Common interface for arbitrary-precision rational numbers.
@@ -506,6 +507,7 @@ abstract class BigNumber implements \JsonSerializable
      */
     abstract public function __toString() : string;
 
+    #[Override]
     final public function jsonSerialize() : string
     {
         return $this->__toString();

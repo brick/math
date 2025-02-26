@@ -10,6 +10,7 @@ use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Internal\Calculator;
+use Override;
 
 /**
  * An arbitrary-size integer.
@@ -42,6 +43,7 @@ final class BigInteger extends BigNumber
     /**
      * @psalm-pure
      */
+    #[Override]
     protected static function from(BigNumber $number): static
     {
         return $number->toBigInteger();
@@ -856,6 +858,7 @@ final class BigInteger extends BigNumber
         return $this->shiftedRight($n)->isOdd();
     }
 
+    #[Override]
     public function compareTo(BigNumber|int|float|string $that) : int
     {
         $that = BigNumber::of($that);
@@ -867,31 +870,37 @@ final class BigInteger extends BigNumber
         return - $that->compareTo($this);
     }
 
+    #[Override]
     public function getSign() : int
     {
         return ($this->value === '0') ? 0 : (($this->value[0] === '-') ? -1 : 1);
     }
 
+    #[Override]
     public function toBigInteger() : BigInteger
     {
         return $this;
     }
 
+    #[Override]
     public function toBigDecimal() : BigDecimal
     {
         return self::newBigDecimal($this->value);
     }
 
+    #[Override]
     public function toBigRational() : BigRational
     {
         return self::newBigRational($this, BigInteger::one(), false);
     }
 
+    #[Override]
     public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         return $this->toBigDecimal()->toScale($scale, $roundingMode);
     }
 
+    #[Override]
     public function toInt() : int
     {
         $intValue = (int) $this->value;
@@ -903,6 +912,7 @@ final class BigInteger extends BigNumber
         return $intValue;
     }
 
+    #[Override]
     public function toFloat() : float
     {
         return (float) $this->value;
@@ -1013,6 +1023,7 @@ final class BigInteger extends BigNumber
         return \hex2bin($hex);
     }
 
+    #[Override]
     public function __toString() : string
     {
         return $this->value;
