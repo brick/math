@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## UNRELEASED (0.12.2)
+## [0.12.2](https://github.com/brick/math/releases/tag/0.12.2) - 2025-02-26
+
+⚡️ **Performance improvements**
+
+- Division in `NativeCalculator` is now faster for small divisors, thanks to [@Izumi-kun](https://github.com/Izumi-kun) in [#87](https://github.com/brick/math/pull/87).
 
 👌 **Improvements**
 
