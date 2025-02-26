@@ -387,7 +387,7 @@ final class BigRational extends BigNumber
             return $numerator;
         }
 
-        return $this->numerator . '/' . $this->denominator;
+        return $numerator . '/' . $denominator;
     }
 
     /**
