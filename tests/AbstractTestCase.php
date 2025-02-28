@@ -57,8 +57,8 @@ abstract class AbstractTestCase extends TestCase
      */
     final protected static function assertBigDecimalInternalValues(string $unscaledValue, int $scale, BigDecimal $actual) : void
     {
-        self::assertSame($unscaledValue, (string) $actual->getUnscaledValue());
-        self::assertSame($scale, $actual->getScale());
+        self::assertSame($unscaledValue, (string) $actual->getUnscaledValue(), 'Unscaled value mismatch');
+        self::assertSame($scale, $actual->getScale(), 'Scale mismatch');
     }
 
     /**
@@ -70,8 +70,8 @@ abstract class AbstractTestCase extends TestCase
      */
     final protected static function assertBigRationalInternalValues(string $numerator, string $denominator, BigRational $actual) : void
     {
-        self::assertSame($numerator, (string) $actual->getNumerator());
-        self::assertSame($denominator, (string) $actual->getDenominator());
+        self::assertSame($numerator, (string) $actual->getNumerator(), 'Numerator mismatch');
+        self::assertSame($denominator, (string) $actual->getDenominator(), 'Denominator mismatch');
     }
 
     /**
