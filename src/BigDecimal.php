@@ -60,19 +60,23 @@ final class BigDecimal extends BigNumber
      * Example: `(12345, 3)` will result in the BigDecimal `12.345`.
      *
      * @param BigNumber|int|float|string $value The unscaled value. Must be convertible to a BigInteger.
-     * @param int                        $scale The scale of the number, positive or zero.
-     *
-     * @throws \InvalidArgumentException If the scale is negative.
+     * @param int                        $scale The scale of the number. If negative, the scale will be set to zero
+     *                                          and the unscaled value will be adjusted accordingly.
      *
      * @psalm-pure
      */
     public static function ofUnscaledValue(BigNumber|int|float|string $value, int $scale = 0) : BigDecimal
     {
+        $value = (string) BigInteger::of($value);
+
         if ($scale < 0) {
-            throw new \InvalidArgumentException('The scale cannot be negative.');
+            if ($value !== '0') {
+                $value .= \str_repeat('0', -$scale);
+            }
+            $scale = 0;
         }
 
-        return new BigDecimal((string) BigInteger::of($value), $scale);
+        return new BigDecimal($value, $scale);
     }
 
     /**

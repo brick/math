@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## UNRELEASED (0.13.0)
+
+💥 **Breaking changes**
+
+- `BigDecimal::ofUnscaledValue()` no longer throws an exception if the scale is negative
+
+✨ **New features**
+
+- `BigDecimal::ofUnscaledValue()` allows a negative scale (and converts the values to create a zero scale number)
+
 ## [0.12.3](https://github.com/brick/math/releases/tag/0.12.3) - 2025-02-28
 
 ✨ **New features**
