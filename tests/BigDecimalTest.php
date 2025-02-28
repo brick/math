@@ -2247,6 +2247,39 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
+    #[DataProvider('providerGetPrecision')]
+    public function testGetPrecision(string $number, int $precision) : void
+    {
+        self::assertSame($precision, BigDecimal::of($number)->getPrecision());
+        self::assertSame($precision, BigDecimal::of($number)->negated()->getPrecision());
+    }
+
+    public static function providerGetPrecision() : array
+    {
+        return [
+            ['0', 0],
+            ['0.0', 0],
+            ['0.00', 0],
+            ['1', 1],
+            ['12', 2],
+            ['123', 3],
+            ['1.2', 2],
+            ['1.23', 3],
+            ['1.230', 4],
+            ['123.456', 6],
+            ['0.123', 3],
+            ['0.1230', 4],
+            ['0.0123', 3],
+            ['0.01230', 4],
+            ['0.00123', 3],
+            ['0.001230', 4],
+            ['0.0012300', 5],
+            ['1234567890.12345678901234567890123456789012345678901234567890', 60],
+            ['0.0000000000000000000000000000000000000000000000000000000000012345', 5],
+            ['0.00000000000000000000000000000000000000000000000000000000000123450', 6],
+        ];
+    }
+
     /**
      * @param string $number   The number to test.
      * @param string $expected The expected integral value.

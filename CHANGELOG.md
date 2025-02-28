@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## UNRELEASED (0.12.3)
+
+✨ **New features**
+
+- `BigDecimal::getPrecision()` Returns the number of significant digits in a decimal number
+
 ## [0.12.2](https://github.com/brick/math/releases/tag/0.12.2) - 2025-02-26
 
 ⚡️ **Performance improvements**

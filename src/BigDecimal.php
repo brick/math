@@ -572,6 +572,33 @@ final class BigDecimal extends BigNumber
     }
 
     /**
+     * Returns the number of significant digits in the number.
+     *
+     * This is the number of digits to both sides of the decimal point, stripped of leading zeros.
+     * The sign has no impact on the result.
+     *
+     * Examples:
+     *   0 => 0
+     *   0.0 => 0
+     *   123 => 3
+     *   123.456 => 6
+     *   0.00123 => 3
+     *   0.0012300 => 5
+     */
+    public function getPrecision(): int
+    {
+        $value = $this->value;
+
+        if ($value === '0') {
+            return 0;
+        }
+
+        $length = \strlen($value);
+
+        return ($value[0] === '-') ? $length - 1 : $length;
+    }
+
+    /**
      * Returns a string representing the integral part of this decimal number.
      *
      * Example: `-123.456` => `-123`.
