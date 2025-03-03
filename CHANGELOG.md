@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 💥 **Breaking changes**
 
 - `BigDecimal::ofUnscaledValue()` no longer throws an exception if the scale is negative
+- `MathException` now extends `RuntimeException` instead of `Exception`; this reverts the change introduced in version `0.11.0` (#82)
 
 ✨ **New features**
 
