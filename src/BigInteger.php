@@ -1023,9 +1023,13 @@ final class BigInteger extends BigNumber
         return \hex2bin($hex);
     }
 
+    /**
+     * @return numeric-string
+     */
     #[Override]
     public function __toString() : string
     {
+        /** @var numeric-string */
         return $this->value;
     }
 
