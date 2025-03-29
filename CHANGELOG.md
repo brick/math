@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.13.1](https://github.com/brick/math/releases/tag/0.13.1) - 2025-03-29
+
+✨ **Improvements**
+
+- `__toString()` methods of `BigInteger` and `BigDecimal` are now type-hinted as returning `numeric-string` instead of `string` (#90 by @vudaltsov)
+
 ## [0.13.0](https://github.com/brick/math/releases/tag/0.13.0) - 2025-03-03
 
 💥 **Breaking changes**
