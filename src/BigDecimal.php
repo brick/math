@@ -689,15 +689,20 @@ final class BigDecimal extends BigNumber
         return (float) (string) $this;
     }
 
+    /**
+     * @return numeric-string
+     */
     #[Override]
     public function __toString() : string
     {
         if ($this->scale === 0) {
+            /** @var numeric-string */
             return $this->value;
         }
 
         $value = $this->getUnscaledValueWithLeadingZeros();
 
+        /** @var numeric-string */
         return \substr($value, 0, -$this->scale) . '.' . \substr($value, -$this->scale);
     }
 
