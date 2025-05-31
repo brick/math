@@ -46,9 +46,10 @@ class BigDecimalTest extends AbstractTestCase
      * @param string           $unscaledValue The expected unscaled value.
      * @param int              $scale         The expected scale.
      */
-    public function testOfNullableWithValidInputBehavesLikeOf(mixed $value, string $expected): void
+    #[DataProvider('providerOf')]
+    public function testOfNullableWithValidInputBehavesLikeOf(int|float|string $value, string $unscaledValue, int $scale) : void
     {
-        $this->assertBigDecimalIs($expected, BigDecimal::ofNullable($value));
+        self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($value));
     }
 
     public function testOfNullableWithNullInput(): void
