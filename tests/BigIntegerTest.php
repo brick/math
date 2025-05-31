@@ -35,6 +35,7 @@ class BigIntegerTest extends AbstractTestCase
      * @param int|float|string $value    The value to convert to a BigInteger.
      * @param string           $expected The expected string value of the result.
      */
+    #[DataProvider('providerOf')]
     public function testOfNullableWithValidInputBehavesLikeOf(mixed $value, string $expected): void
     {
         self::assertBigIntegerEquals($expected, BigInteger::ofNullable($value));
