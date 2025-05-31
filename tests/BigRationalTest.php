@@ -71,6 +71,22 @@ class BigRationalTest extends AbstractTestCase
         self::assertBigRationalInternalValues($numerator, $denominator, $rational);
     }
 
+    /**
+     * @param string $numerator   The expected numerator.
+     * @param string $denominator The expected denominator.
+     * @param string $string      The string to parse.
+     */
+    public function testOfNullableWithValidInputBehavesLikeOf(mixed $value, string $expected): void
+    {
+        $rational = BigRational::ofNullable($string);
+        self::assertBigRationalInternalValues($numerator, $denominator, $rational);
+    }
+
+    public function testOfNullableWithNullInput(): void
+    {
+        $this->assertNull(BigRational::ofNullable(null));
+    }
+
     public static function providerOf(): array
     {
         return [

@@ -97,6 +97,34 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
         return static::from($value);
     }
+    /**
+     * Creates a BigNumber of the given value, or returns null if the input is null.
+     *
+     * 
+     * The concrete return type is dependent on the given value, with the following rules:
+     *
+     * - BigNumber instances are returned as is
+     * - null values are returned as is
+     * - integer numbers are returned as BigInteger
+     * - floating point numbers are converted to a string then parsed as such\
+     * - strings containing a `/` character are returned as BigRational
+     * - strings containing a `.` character or using an exponential notation are returned as BigDecimal
+     * - strings containing only digits with an optional leading `+` or `-` sign are returned as BigInteger
+     *
+     * @param BigNumber|int|float|string|null $value The value to convert.
+     *
+     * @return static|null A BigNumber instance (of the called class type), or null if the input was null.
+     * 
+     * @throws NumberFormatException If the format of the number is not valid.
+     * @throws DivisionByZeroException If the value represents a rational number with a denominator of zero.
+     * @throws RoundingNecessaryException If the value cannot be converted to an instance of the subclass without rounding.
+     */
+    public static function ofNullable(BigNumber|int|float|string|null $value): ?static
+    {
+        if (is_null($value)) return null;
+        
+        return static::of($value);
+    }
 
     /**
      * Returns the minimum of the given values.
