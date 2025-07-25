@@ -451,6 +451,29 @@ final class BigInteger extends BigNumber
     }
 
     /**
+     * Limits (clamps) this number between the given minimum and maximum values.
+     *
+     * If the number is lower than $min, returns a copy of $min.
+     * If the number is greater than $max, returns a copy of $max.
+     * Otherwise, returns this number unchanged.
+     *
+     * @param BigNumber|int|float|string $min The minimum. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $max The maximum. Must be convertible to a BigInteger.
+     *
+     * @throws MathException If min/max are not convertible to a BigInteger.
+     */
+    public function clamp(BigNumber|int|float|string $min, BigNumber|int|float|string $max) : BigInteger
+    {
+        if ($this->isLessThan($min)) {
+            return BigInteger::of($min);
+        } elseif ($this->isGreaterThan($max)) {
+            return BigInteger::of($max);
+        }
+        return $this;
+    }
+
+
+    /**
      * Returns this number exponentiated to the given value.
      *
      * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
