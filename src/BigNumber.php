@@ -333,7 +333,7 @@ abstract class BigNumber implements \JsonSerializable
      * Removes optional leading zeros and applies sign.
      *
      * @param string|null $sign   The sign, '+' or '-', optional. Null is allowed for convenience and treated as '+'.
-     * @param string      $number The number, validated as a non-empty string of digits.
+     * @param string      $number The number, validated as a string of digits.
      *
      * @psalm-pure
      */
