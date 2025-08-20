@@ -434,7 +434,6 @@ abstract class Calculator
      * @param string       $b            The divisor, must not be zero.
      * @param RoundingMode $roundingMode The rounding mode.
      *
-     * @throws \InvalidArgumentException  If the rounding mode is invalid.
      * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided but rounding is necessary.
      *
      * @psalm-suppress ImpureFunctionCall
@@ -498,9 +497,6 @@ abstract class Calculator
                 $lastDigitIsEven = ($lastDigit % 2 === 0);
                 $increment = $lastDigitIsEven ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
                 break;
-
-            default:
-                throw new \InvalidArgumentException('Invalid rounding mode.');
         }
 
         if ($increment) {
