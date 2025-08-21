@@ -138,7 +138,7 @@ abstract class BigNumber implements \JsonSerializable
             }
 
             if ($point !== null || $exponent !== null) {
-                $fractional = ($fractional ?? '');
+                $fractional ??= '';
                 $exponent = ($exponent !== null) ? (int)$exponent : 0;
 
                 if ($exponent === PHP_INT_MIN || $exponent === PHP_INT_MAX) {
