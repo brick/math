@@ -17,10 +17,8 @@ use Brick\Math\RoundingMode;
  * All methods must return strings respecting this format, unless specified otherwise.
  *
  * @internal
- *
- * @psalm-immutable
  */
-abstract class Calculator
+abstract readonly class Calculator
 {
     /**
      * The maximum exponent value allowed for the pow() method.

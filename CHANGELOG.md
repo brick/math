@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 💥 **Breaking changes**
 
 - Minimum PHP version is now 8.2
+- `BigNumber` classes are now `readonly`
 
 ## [0.13.1](https://github.com/brick/math/releases/tag/0.13.1) - 2025-03-29
 

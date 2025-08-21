@@ -14,20 +14,18 @@ use Override;
  * An arbitrarily large rational number.
  *
  * This class is immutable.
- *
- * @psalm-immutable
  */
-final class BigRational extends BigNumber
+final readonly class BigRational extends BigNumber
 {
     /**
      * The numerator.
      */
-    private readonly BigInteger $numerator;
+    private BigInteger $numerator;
 
     /**
      * The denominator. Always strictly positive.
      */
-    private readonly BigInteger $denominator;
+    private BigInteger $denominator;
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.

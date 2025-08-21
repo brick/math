@@ -11,10 +11,8 @@ use Override;
  * Calculator implementation using only native PHP code.
  *
  * @internal
- *
- * @psalm-immutable
  */
-class NativeCalculator extends Calculator
+final readonly class NativeCalculator extends Calculator
 {
     /**
      * The max number of digits the platform can natively add, subtract, multiply or divide without overflow.
@@ -24,7 +22,7 @@ class NativeCalculator extends Calculator
      * Example: 32-bit: max number 1,999,999,999 (9 digits + carry)
      *          64-bit: max number 1,999,999,999,999,999,999 (18 digits + carry)
      */
-    private readonly int $maxDigits;
+    private int $maxDigits;
 
     /**
      * @codeCoverageIgnore

@@ -12,10 +12,8 @@ use Override;
 
 /**
  * Common interface for arbitrary-precision rational numbers.
- *
- * @psalm-immutable
  */
-abstract class BigNumber implements \JsonSerializable, \Stringable
+abstract readonly class BigNumber implements \JsonSerializable, \Stringable
 {
     /**
      * The regular expression used to parse integer or decimal numbers.

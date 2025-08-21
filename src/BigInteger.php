@@ -18,10 +18,8 @@ use Override;
  *
  * All methods accepting a number as a parameter accept either a BigInteger instance,
  * an integer, or a string representing an arbitrary size integer.
- *
- * @psalm-immutable
  */
-final class BigInteger extends BigNumber
+final readonly class BigInteger extends BigNumber
 {
     /**
      * The value, as a string of digits with optional leading minus sign.
@@ -29,7 +27,7 @@ final class BigInteger extends BigNumber
      * No leading zeros must be present.
      * No leading minus sign must be present if the number is zero.
      */
-    private readonly string $value;
+    private string $value;
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.

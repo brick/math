@@ -11,10 +11,8 @@ use Override;
  * Calculator implementation built around the GMP library.
  *
  * @internal
- *
- * @psalm-immutable
  */
-class GmpCalculator extends Calculator
+final readonly class GmpCalculator extends Calculator
 {
     #[Override]
     public function add(string $a, string $b) : string
