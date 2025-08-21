@@ -15,7 +15,7 @@ use Override;
  *
  * @psalm-immutable
  */
-abstract class BigNumber implements \JsonSerializable
+abstract class BigNumber implements \JsonSerializable, \Stringable
 {
     /**
      * The regular expression used to parse integer or decimal numbers.
