@@ -8,6 +8,7 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Internal\Calculator;
+use Brick\Math\Internal\CalculatorRegistry;
 use Override;
 
 /**
@@ -162,7 +163,7 @@ final class BigDecimal extends BigNumber
 
         [$a, $b] = $this->scaleValues($this, $that);
 
-        $value = Calculator::get()->add($a, $b);
+        $value = CalculatorRegistry::get()->add($a, $b);
         $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
 
         return new BigDecimal($value, $scale);
@@ -187,7 +188,7 @@ final class BigDecimal extends BigNumber
 
         [$a, $b] = $this->scaleValues($this, $that);
 
-        $value = Calculator::get()->sub($a, $b);
+        $value = CalculatorRegistry::get()->sub($a, $b);
         $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
 
         return new BigDecimal($value, $scale);
@@ -214,7 +215,7 @@ final class BigDecimal extends BigNumber
             return $that;
         }
 
-        $value = Calculator::get()->mul($this->value, $that->value);
+        $value = CalculatorRegistry::get()->mul($this->value, $that->value);
         $scale = $this->scale + $that->scale;
 
         return new BigDecimal($value, $scale);
@@ -251,7 +252,7 @@ final class BigDecimal extends BigNumber
         $p = $this->valueWithMinScale($that->scale + $scale);
         $q = $that->valueWithMinScale($this->scale - $scale);
 
-        $result = Calculator::get()->divRound($p, $q, $roundingMode);
+        $result = CalculatorRegistry::get()->divRound($p, $q, $roundingMode);
 
         return new BigDecimal($result, $scale);
     }
@@ -279,7 +280,7 @@ final class BigDecimal extends BigNumber
         $d = \rtrim($b, '0');
         $scale = \strlen($b) - \strlen($d);
 
-        $calculator = Calculator::get();
+        $calculator = CalculatorRegistry::get();
 
         foreach ([5, 2] as $prime) {
             for (;;) {
@@ -344,7 +345,7 @@ final class BigDecimal extends BigNumber
             ));
         }
 
-        return new BigDecimal(Calculator::get()->pow($this->value, $exponent), $this->scale * $exponent);
+        return new BigDecimal(CalculatorRegistry::get()->pow($this->value, $exponent), $this->scale * $exponent);
     }
 
     /**
@@ -367,7 +368,7 @@ final class BigDecimal extends BigNumber
         $p = $this->valueWithMinScale($that->scale);
         $q = $that->valueWithMinScale($this->scale);
 
-        $quotient = Calculator::get()->divQ($p, $q);
+        $quotient = CalculatorRegistry::get()->divQ($p, $q);
 
         return new BigDecimal($quotient, 0);
     }
@@ -392,7 +393,7 @@ final class BigDecimal extends BigNumber
         $p = $this->valueWithMinScale($that->scale);
         $q = $that->valueWithMinScale($this->scale);
 
-        $remainder = Calculator::get()->divR($p, $q);
+        $remainder = CalculatorRegistry::get()->divR($p, $q);
 
         $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
 
@@ -423,7 +424,7 @@ final class BigDecimal extends BigNumber
         $p = $this->valueWithMinScale($that->scale);
         $q = $that->valueWithMinScale($this->scale);
 
-        [$quotient, $remainder] = Calculator::get()->divQR($p, $q);
+        [$quotient, $remainder] = CalculatorRegistry::get()->divQR($p, $q);
 
         $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
 
@@ -469,7 +470,7 @@ final class BigDecimal extends BigNumber
             $value = \substr($value, 0, $addDigits);
         }
 
-        $value = Calculator::get()->sqrt($value);
+        $value = CalculatorRegistry::get()->sqrt($value);
 
         return new BigDecimal($value, $scale);
     }
@@ -560,7 +561,7 @@ final class BigDecimal extends BigNumber
      */
     public function negated() : BigDecimal
     {
-        return new BigDecimal(Calculator::get()->neg($this->value), $this->scale);
+        return new BigDecimal(CalculatorRegistry::get()->neg($this->value), $this->scale);
     }
 
     #[Override]
@@ -575,7 +576,7 @@ final class BigDecimal extends BigNumber
         if ($that instanceof BigDecimal) {
             [$a, $b] = $this->scaleValues($this, $that);
 
-            return Calculator::get()->cmp($a, $b);
+            return CalculatorRegistry::get()->cmp($a, $b);
         }
 
         return - $that->compareTo($this);

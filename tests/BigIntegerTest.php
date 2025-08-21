@@ -12,6 +12,7 @@ use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
+use Brick\Math\Internal\CalculatorRegistry;
 use Brick\Math\RoundingMode;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -1388,7 +1389,7 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testModPowCrypto() : void
     {
-        if (Calculator::get() instanceof Calculator\NativeCalculator) {
+        if (CalculatorRegistry::get() instanceof Calculator\NativeCalculator) {
             if (getenv('CI') === 'true') {
                 $this->markTestSkipped('This test is currently too slow for the CI.');
             }

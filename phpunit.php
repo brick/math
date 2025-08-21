@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Brick\Math\Internal\Calculator;
+use Brick\Math\Internal\CalculatorRegistry;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -38,7 +39,7 @@ function getCalculatorImplementation(): Calculator
     return $calculator;
 }
 
-Calculator::set(getCalculatorImplementation());
+CalculatorRegistry::set(getCalculatorImplementation());
 
 $scale = \getenv('BCMATH_DEFAULT_SCALE');
 

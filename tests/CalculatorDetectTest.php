@@ -6,6 +6,7 @@ namespace Brick\Math\Tests;
 
 use Brick\Math\Internal\Calculator;
 
+use Brick\Math\Internal\CalculatorRegistry;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -15,11 +16,11 @@ class CalculatorDetectTest extends TestCase
 {
     public function testGetWithNoCalculatorSetDetectsCalculator() : void
     {
-        $currentCalculator = Calculator::get();
+        $currentCalculator = CalculatorRegistry::get();
 
-        Calculator::set(null);
-        self::assertInstanceOf(Calculator::class, Calculator::get());
+        CalculatorRegistry::set(null);
+        self::assertInstanceOf(Calculator::class, CalculatorRegistry::get());
 
-        Calculator::set($currentCalculator);
+        CalculatorRegistry::set($currentCalculator);
     }
 }

@@ -10,6 +10,7 @@ use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Internal\Calculator;
+use Brick\Math\Internal\CalculatorRegistry;
 use Override;
 
 /**
@@ -115,7 +116,7 @@ final class BigInteger extends BigNumber
             return new BigInteger($sign . $number);
         }
 
-        $result = Calculator::get()->fromBase($number, $base);
+        $result = CalculatorRegistry::get()->fromBase($number, $base);
 
         return new BigInteger($sign . $result);
     }
@@ -151,7 +152,7 @@ final class BigInteger extends BigNumber
             throw NumberFormatException::charNotInAlphabet($matches[0]);
         }
 
-        $number = Calculator::get()->fromArbitraryBase($number, $alphabet, $base);
+        $number = CalculatorRegistry::get()->fromArbitraryBase($number, $alphabet, $base);
 
         return new BigInteger($number);
     }
@@ -375,7 +376,7 @@ final class BigInteger extends BigNumber
             return $that;
         }
 
-        $value = Calculator::get()->add($this->value, $that->value);
+        $value = CalculatorRegistry::get()->add($this->value, $that->value);
 
         return new BigInteger($value);
     }
@@ -395,7 +396,7 @@ final class BigInteger extends BigNumber
             return $this;
         }
 
-        $value = Calculator::get()->sub($this->value, $that->value);
+        $value = CalculatorRegistry::get()->sub($this->value, $that->value);
 
         return new BigInteger($value);
     }
@@ -419,7 +420,7 @@ final class BigInteger extends BigNumber
             return $that;
         }
 
-        $value = Calculator::get()->mul($this->value, $that->value);
+        $value = CalculatorRegistry::get()->mul($this->value, $that->value);
 
         return new BigInteger($value);
     }
@@ -445,7 +446,7 @@ final class BigInteger extends BigNumber
             throw DivisionByZeroException::divisionByZero();
         }
 
-        $result = Calculator::get()->divRound($this->value, $that->value, $roundingMode);
+        $result = CalculatorRegistry::get()->divRound($this->value, $that->value, $roundingMode);
 
         return new BigInteger($result);
     }
@@ -496,7 +497,7 @@ final class BigInteger extends BigNumber
             ));
         }
 
-        return new BigInteger(Calculator::get()->pow($this->value, $exponent));
+        return new BigInteger(CalculatorRegistry::get()->pow($this->value, $exponent));
     }
 
     /**
@@ -518,7 +519,7 @@ final class BigInteger extends BigNumber
             throw DivisionByZeroException::divisionByZero();
         }
 
-        $quotient = Calculator::get()->divQ($this->value, $that->value);
+        $quotient = CalculatorRegistry::get()->divQ($this->value, $that->value);
 
         return new BigInteger($quotient);
     }
@@ -544,7 +545,7 @@ final class BigInteger extends BigNumber
             throw DivisionByZeroException::divisionByZero();
         }
 
-        $remainder = Calculator::get()->divR($this->value, $that->value);
+        $remainder = CalculatorRegistry::get()->divR($this->value, $that->value);
 
         return new BigInteger($remainder);
     }
@@ -568,7 +569,7 @@ final class BigInteger extends BigNumber
             throw DivisionByZeroException::divisionByZero();
         }
 
-        [$quotient, $remainder] = Calculator::get()->divQR($this->value, $that->value);
+        [$quotient, $remainder] = CalculatorRegistry::get()->divQR($this->value, $that->value);
 
         return [
             new BigInteger($quotient),
@@ -596,7 +597,7 @@ final class BigInteger extends BigNumber
             throw DivisionByZeroException::modulusMustNotBeZero();
         }
 
-        $value = Calculator::get()->mod($this->value, $that->value);
+        $value = CalculatorRegistry::get()->mod($this->value, $that->value);
 
         return new BigInteger($value);
     }
@@ -623,7 +624,7 @@ final class BigInteger extends BigNumber
             return BigInteger::zero();
         }
 
-        $value = Calculator::get()->modInverse($this->value, $m->value);
+        $value = CalculatorRegistry::get()->modInverse($this->value, $m->value);
 
         if ($value === null) {
             throw new MathException('Unable to compute the modInverse for the given modulus.');
@@ -656,7 +657,7 @@ final class BigInteger extends BigNumber
             throw DivisionByZeroException::modulusMustNotBeZero();
         }
 
-        $result = Calculator::get()->modPow($this->value, $exp->value, $mod->value);
+        $result = CalculatorRegistry::get()->modPow($this->value, $exp->value, $mod->value);
 
         return new BigInteger($result);
     }
@@ -680,7 +681,7 @@ final class BigInteger extends BigNumber
             return $that;
         }
 
-        $value = Calculator::get()->gcd($this->value, $that->value);
+        $value = CalculatorRegistry::get()->gcd($this->value, $that->value);
 
         return new BigInteger($value);
     }
@@ -698,7 +699,7 @@ final class BigInteger extends BigNumber
             throw new NegativeNumberException('Cannot calculate the square root of a negative number.');
         }
 
-        $value = Calculator::get()->sqrt($this->value);
+        $value = CalculatorRegistry::get()->sqrt($this->value);
 
         return new BigInteger($value);
     }
@@ -716,7 +717,7 @@ final class BigInteger extends BigNumber
      */
     public function negated() : BigInteger
     {
-        return new BigInteger(Calculator::get()->neg($this->value));
+        return new BigInteger(CalculatorRegistry::get()->neg($this->value));
     }
 
     /**
@@ -730,7 +731,7 @@ final class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        return new BigInteger(Calculator::get()->and($this->value, $that->value));
+        return new BigInteger(CalculatorRegistry::get()->and($this->value, $that->value));
     }
 
     /**
@@ -744,7 +745,7 @@ final class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        return new BigInteger(Calculator::get()->or($this->value, $that->value));
+        return new BigInteger(CalculatorRegistry::get()->or($this->value, $that->value));
     }
 
     /**
@@ -758,7 +759,7 @@ final class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        return new BigInteger(Calculator::get()->xor($this->value, $that->value));
+        return new BigInteger(CalculatorRegistry::get()->xor($this->value, $that->value));
     }
 
     /**
@@ -887,7 +888,7 @@ final class BigInteger extends BigNumber
         $that = BigNumber::of($that);
 
         if ($that instanceof BigInteger) {
-            return Calculator::get()->cmp($this->value, $that->value);
+            return CalculatorRegistry::get()->cmp($this->value, $that->value);
         }
 
         return - $that->compareTo($this);
@@ -958,7 +959,7 @@ final class BigInteger extends BigNumber
             throw new \InvalidArgumentException(\sprintf('Base %d is out of range [2, 36]', $base));
         }
 
-        return Calculator::get()->toBase($this->value, $base);
+        return CalculatorRegistry::get()->toBase($this->value, $base);
     }
 
     /**
@@ -984,7 +985,7 @@ final class BigInteger extends BigNumber
             throw new NegativeNumberException(__FUNCTION__ . '() does not support negative numbers.');
         }
 
-        return Calculator::get()->toArbitraryBase($this->value, $alphabet, $base);
+        return CalculatorRegistry::get()->toArbitraryBase($this->value, $alphabet, $base);
     }
 
     /**
