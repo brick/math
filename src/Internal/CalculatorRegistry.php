@@ -38,22 +38,24 @@ final class CalculatorRegistry
      * Note: even though this method is not technically pure, it is considered pure when used in a normal context, when
      * only relying on autodetect.
      *
-     * @psalm-pure
-     * @psalm-suppress ImpureStaticProperty
+     * @pure
      */
     final public static function get() : Calculator
     {
+        /** @phpstan-ignore impure.staticPropertyAccess */
         if (self::$instance === null) {
+            /** @phpstan-ignore impure.propertyAssign */
             self::$instance = self::detect();
         }
 
+        /** @phpstan-ignore impure.staticPropertyAccess */
         return self::$instance;
     }
 
     /**
      * Returns the fastest available Calculator implementation.
      *
-     * @psalm-pure
+     * @pure
      * @codeCoverageIgnore
      */
     private static function detect() : Calculator

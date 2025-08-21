@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Brick\Math\Internal\Calculator;
 
 use Brick\Math\Internal\Calculator;
+use GMP;
 use Override;
 
 /**
@@ -49,6 +50,10 @@ final readonly class GmpCalculator extends Calculator
     {
         [$q, $r] = \gmp_div_qr($a, $b);
 
+        /**
+         * @var GMP $q
+         * @var GMP $r
+         */
         return [
             \gmp_strval($q),
             \gmp_strval($r)

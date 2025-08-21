@@ -10,7 +10,7 @@ namespace Brick\Math\Exception;
 final class DivisionByZeroException extends MathException
 {
     /**
-     * @psalm-pure
+     * @pure
      */
     public static function divisionByZero() : DivisionByZeroException
     {
@@ -18,7 +18,7 @@ final class DivisionByZeroException extends MathException
     }
 
     /**
-     * @psalm-pure
+     * @pure
      */
     public static function modulusMustNotBeZero() : DivisionByZeroException
     {
@@ -26,7 +26,7 @@ final class DivisionByZeroException extends MathException
     }
 
     /**
-     * @psalm-pure
+     * @pure
      */
     public static function denominatorMustNotBeZero() : DivisionByZeroException
     {

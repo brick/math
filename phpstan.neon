@@ -1,0 +1,14 @@
+parameters:
+    level: 10
+    checkUninitializedProperties: true
+    paths:
+        - src
+    ignoreErrors:
+        - '~Impure call to function array_shift\(\) in pure method~'
+        - '~Possibly impure call to function assert\(\) in pure method~'
+        - '~Possibly impure call to function hex2bin\(\) in pure method~'
+        - '~Possibly impure call to function preg_match\(\) in pure method~'
+        - '~Impure static variable in pure method Brick\\Math\\Big(Integer|Decimal|Rational)::(zero|one|ten)\(\)~'
+        -
+            message: '~Parameter #\d \$\S+ of function bc\S+ expects numeric-string, string given~'
+            path: src/Internal/Calculator/BcMathCalculator.php

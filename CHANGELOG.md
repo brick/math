@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## UNRELEASED (0.14.0)
 
+✨ **Improvements**
+
+- All pure methods in `BigNumber` classes are now marked as `@pure` for better static analysis
+
 💥 **Breaking changes**
 
 - Minimum PHP version is now 8.2

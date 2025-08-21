@@ -5,12 +5,12 @@ on:
   pull_request:
 
 env:
-  PSALM_PHP_VERSION: "8.4"
+  PHPSTAN_PHP_VERSION: "8.4"
   COVERAGE_PHP_VERSION: "8.4"
 
 jobs:
-  psalm:
-    name: Psalm
+  phpstan:
+    name: PHPStan
     runs-on: ubuntu-latest
 
     steps:
@@ -20,13 +20,13 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ env.PSALM_PHP_VERSION }}
+          php-version: ${{ env.PHPSTAN_PHP_VERSION }}
 
       - name: Install composer dependencies
         uses: ramsey/composer-install@v3
 
-      - name: Run Psalm
-        run: vendor/bin/psalm --show-info=false --find-unused-psalm-suppress --no-progress
+      - name: Run PHPStan
+        run: vendor/bin/phpstan --no-progress
 
   phpunit:
     name: PHPUnit

@@ -9,6 +9,9 @@ namespace Brick\Math\Exception;
  */
 final class NumberFormatException extends MathException
 {
+    /**
+     * @pure
+     */
     public static function invalidFormat(string $value) : self
     {
         return new self(\sprintf(
@@ -20,7 +23,7 @@ final class NumberFormatException extends MathException
     /**
      * @param string $char The failing character.
      *
-     * @psalm-pure
+     * @pure
      */
     public static function charNotInAlphabet(string $char) : self
     {

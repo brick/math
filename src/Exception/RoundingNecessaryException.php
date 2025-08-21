@@ -10,7 +10,7 @@ namespace Brick\Math\Exception;
 final class RoundingNecessaryException extends MathException
 {
     /**
-     * @psalm-pure
+     * @pure
      */
     public static function roundingNecessary() : RoundingNecessaryException
     {
