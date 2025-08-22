@@ -268,8 +268,14 @@ abstract readonly class BigNumber implements \JsonSerializable, \Stringable
     /**
      * Returns the sum of the given values.
      *
-     * @param BigNumber|int|float|string ...$values The numbers to add. All the numbers need to be convertible
-     *                                              to an instance of the class this method is called on.
+     * When called on BigNumber, sum() accepts any supported type and returns a result whose type is the widest among
+     * the given values (BigInteger < BigDecimal < BigRational).
+     *
+     * When called on BigInteger, BigDecimal, or BigRational, sum() requires that all values can be converted to that
+     * specific subclass, and returns a result of the same type.
+     *
+     * @param BigNumber|int|float|string ...$values The values to add. All values must be convertible to the class on
+     *                                              which this method is called.
      *
      * @throws \InvalidArgumentException If no values are given.
      * @throws MathException             If an argument is not valid.
@@ -278,29 +284,25 @@ abstract readonly class BigNumber implements \JsonSerializable, \Stringable
      */
     final public static function sum(BigNumber|int|float|string ...$values) : static
     {
-        /** @var static|null $sum */
-        $sum = null;
+        $first = array_shift($values);
 
-        foreach ($values as $value) {
-            $value = static::of($value);
-
-            $sum = $sum === null ? $value : self::add($sum, $value);
-        }
-
-        if ($sum === null) {
+        if ($first === null) {
             throw new \InvalidArgumentException(__METHOD__ . '() expects at least one value.');
         }
+
+        $sum = static::of($first);
+
+        foreach ($values as $value) {
+            $sum = self::add($sum, static::of($value));
+        }
+
+        assert($sum instanceof static);
 
         return $sum;
     }
 
     /**
      * Adds two BigNumber instances in the correct order to avoid a RoundingNecessaryException.
-     *
-     * @todo This could be better resolved by creating an abstract protected method in BigNumber, and leaving to
-     *       concrete classes the responsibility to perform the addition themselves or delegate it to the given number,
-     *       depending on their ability to perform the operation. This will also require a version bump because we're
-     *       potentially breaking custom BigNumber implementations (if any...)
      *
      * @pure
      */
