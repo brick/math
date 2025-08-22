@@ -11,7 +11,12 @@ use Brick\Math\Exception\RoundingNecessaryException;
 use Override;
 
 /**
- * Common interface for arbitrary-precision rational numbers.
+ * Base class for arbitrary-precision numbers.
+ *
+ * This class is sealed: it is part of the public API but should not be subclassed in userland.
+ * Protected methods may change in any version.
+ *
+ * @phpstan-sealed BigInteger|BigDecimal|BigRational
  */
 abstract readonly class BigNumber implements \JsonSerializable, \Stringable
 {
@@ -323,8 +328,6 @@ abstract readonly class BigNumber implements \JsonSerializable, \Stringable
         if ($b instanceof BigDecimal) {
             return $b->plus($a);
         }
-
-        /** @var BigInteger $a */
 
         return $a->plus($b);
     }
