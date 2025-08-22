@@ -41,7 +41,8 @@ abstract readonly class BigNumber implements \JsonSerializable, \Stringable
     /**
      * Creates a BigNumber of the given value.
      *
-     * The concrete return type is dependent on the given value, with the following rules:
+     * When of() is called on BigNumber, the concrete return type is dependent on the given value, with the following
+     * rules:
      *
      * - BigNumber instances are returned as is
      * - integer numbers are returned as BigInteger
@@ -49,6 +50,9 @@ abstract readonly class BigNumber implements \JsonSerializable, \Stringable
      * - strings containing a `/` character are returned as BigRational
      * - strings containing a `.` character or using an exponential notation are returned as BigDecimal
      * - strings containing only digits with an optional leading `+` or `-` sign are returned as BigInteger
+     *
+     * When of() is called on BigInteger, BigDecimal, or BigRational, the resulting number is converted to an instance
+     * of the subclass when possible; otherwise a RoundingNecessaryException exception is thrown.
      *
      * @throws NumberFormatException If the format of the number is not valid.
      * @throws DivisionByZeroException If the value represents a rational number with a denominator of zero.
