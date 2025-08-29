@@ -14,13 +14,13 @@ use PHPUnit\Framework\Attributes\DataProvider;
 class NativeCalculatorTest extends AbstractTestCase
 {
     #[DataProvider('providerAdd')]
-    public function testAdd(string $a, string $b, string $expectedValue) : void
+    public function testAdd(string $a, string $b, string $expectedValue): void
     {
         $nativeCalculator = new NativeCalculator();
         self::assertSame($expectedValue, $nativeCalculator->add($a, $b));
     }
 
-    public static function providerAdd() : array
+    public static function providerAdd(): array
     {
         return [
             ['0', '1234567891234567889999999', '1234567891234567889999999'],
@@ -34,13 +34,13 @@ class NativeCalculatorTest extends AbstractTestCase
     }
 
     #[DataProvider('providerMul')]
-    public function testMul(string $a, string $b, string $expectedValue) : void
+    public function testMul(string $a, string $b, string $expectedValue): void
     {
         $nativeCalculator = new NativeCalculator();
         self::assertSame($expectedValue, $nativeCalculator->mul($a, $b));
     }
 
-    public static function providerMul() : array
+    public static function providerMul(): array
     {
         return [
             ['0', '0', '0'],
@@ -59,13 +59,13 @@ class NativeCalculatorTest extends AbstractTestCase
     }
 
     #[DataProvider('providerPow')]
-    public function testPow(string $a, int $b, string $expectedValue) : void
+    public function testPow(string $a, int $b, string $expectedValue): void
     {
         $nativeCalculator = new NativeCalculator();
         self::assertSame($expectedValue, $nativeCalculator->pow($a, $b));
     }
 
-    public static function providerPow() : array
+    public static function providerPow(): array
     {
         return [
             ['123456789012345678901234567890', 0, '1'],

@@ -26,7 +26,7 @@ class BigNumberTest extends AbstractTestCase
      * @param string                           $expectedSum   The expected sum.
      */
     #[DataProvider('providerSum')]
-    public function testSum(string $callingClass, array $values, string $expectedClass, string $expectedSum) : void
+    public function testSum(string $callingClass, array $values, string $expectedClass, string $expectedSum): void
     {
         $sum = $callingClass::sum(...$values);
 
@@ -34,7 +34,7 @@ class BigNumberTest extends AbstractTestCase
         self::assertSame($expectedSum, (string) $sum);
     }
 
-    public static function providerSum() : array
+    public static function providerSum(): array
     {
         return [
             [BigNumber::class, [-1], BigInteger::class, '-1'],
@@ -54,22 +54,22 @@ class BigNumberTest extends AbstractTestCase
             [BigNumber::class, ['-1/9'], BigRational::class, '-1/9'],
             [BigNumber::class, ['-1/9', 123], BigRational::class, '1106/9'],
             [BigNumber::class, ['-1/9', 123, '8349.3771'], BigRational::class, '762503939/90000'],
-            [BigNumber::class, ['-1/9', '8349.3771', 123], BigRational::class, '762503939/90000']
+            [BigNumber::class, ['-1/9', '8349.3771', 123], BigRational::class, '762503939/90000'],
         ];
     }
 
     /**
-     * @param class-string<BigNumber>          $callingClass  The BigNumber class to call sum() on.
-     * @param list<BigNumber|int|float|string> $values        The values to add.
+     * @param class-string<BigNumber>          $callingClass The BigNumber class to call sum() on.
+     * @param list<BigNumber|int|float|string> $values       The values to add.
      */
     #[DataProvider('providerSumThrowsRoundingNecessaryException')]
-    public function testSumThrowsRoundingNecessaryException(string $callingClass, array $values) : void
+    public function testSumThrowsRoundingNecessaryException(string $callingClass, array $values): void
     {
         $this->expectException(RoundingNecessaryException::class);
         $callingClass::sum(...$values);
     }
 
-    public static function providerSumThrowsRoundingNecessaryException() : array
+    public static function providerSumThrowsRoundingNecessaryException(): array
     {
         return [
             [BigInteger::class, [1, '1.5']],

@@ -12,7 +12,17 @@ use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
+use Generator;
+use InvalidArgumentException;
+use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
+
+use function serialize;
+use function unserialize;
+
+use const INF;
+use const PHP_INT_MAX;
+use const PHP_INT_MIN;
 
 /**
  * Unit tests for class BigRational.
@@ -26,13 +36,13 @@ class BigRationalTest extends AbstractTestCase
      * @param int|string $d           The input denominator.
      */
     #[DataProvider('providerNd')]
-    public function testNd(string $numerator, string $denominator, int|string $n, int|string $d) : void
+    public function testNd(string $numerator, string $denominator, int|string $n, int|string $d): void
     {
         $rational = BigRational::nd($n, $d);
         self::assertBigRationalInternalValues($numerator, $denominator, $rational);
     }
 
-    public static function providerNd() : array
+    public static function providerNd(): array
     {
         return [
             ['7', '1', '7', 1],
@@ -43,7 +53,7 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    public function testNdWithZeroDenominator() : void
+    public function testNdWithZeroDenominator(): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigRational::nd(1, 0);
@@ -55,13 +65,13 @@ class BigRationalTest extends AbstractTestCase
      * @param string $string      The string to parse.
      */
     #[DataProvider('providerOf')]
-    public function testOf(string $numerator, string $denominator, string $string) : void
+    public function testOf(string $numerator, string $denominator, string $string): void
     {
         $rational = BigRational::of($string);
         self::assertBigRationalInternalValues($numerator, $denominator, $rational);
     }
 
-    public static function providerOf() : array
+    public static function providerOf(): array
     {
         return [
             ['123', '456', '123/456'],
@@ -76,7 +86,7 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    public function testOfWithZeroDenominator() : void
+    public function testOfWithZeroDenominator(): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigRational::of('2/0');
@@ -86,13 +96,13 @@ class BigRationalTest extends AbstractTestCase
      * @param string $string An invalid string representation.
      */
     #[DataProvider('providerOfInvalidString')]
-    public function testOfInvalidString(string $string) : void
+    public function testOfInvalidString(string $string): void
     {
         $this->expectException(NumberFormatException::class);
         BigRational::of($string);
     }
 
-    public static function providerOfInvalidString() : array
+    public static function providerOfInvalidString(): array
     {
         return [
             ['123/-456'],
@@ -107,25 +117,25 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    public function testZero() : void
+    public function testZero(): void
     {
         self::assertBigRationalInternalValues('0', '1', BigRational::zero());
         self::assertSame(BigRational::zero(), BigRational::zero());
     }
 
-    public function testOne() : void
+    public function testOne(): void
     {
         self::assertBigRationalInternalValues('1', '1', BigRational::one());
         self::assertSame(BigRational::one(), BigRational::one());
     }
 
-    public function testTen() : void
+    public function testTen(): void
     {
         self::assertBigRationalInternalValues('10', '1', BigRational::ten());
         self::assertSame(BigRational::ten(), BigRational::ten());
     }
 
-    public function testAccessors() : void
+    public function testAccessors(): void
     {
         $rational = BigRational::nd(123456789, 987654321);
 
@@ -138,12 +148,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string $min    The expected minimum value, in rational form.
      */
     #[DataProvider('providerMin')]
-    public function testMin(array $values, string $min) : void
+    public function testMin(array $values, string $min): void
     {
-        self::assertBigRationalEquals($min, BigRational::min(... $values));
+        self::assertBigRationalEquals($min, BigRational::min(...$values));
     }
 
-    public static function providerMin() : array
+    public static function providerMin(): array
     {
         return [
             [['1/2', '1/4', '1/3'], '1/4'],
@@ -153,9 +163,9 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    public function testMinOfZeroValuesThrowsException() : void
+    public function testMinOfZeroValuesThrowsException(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         BigRational::min();
     }
 
@@ -164,12 +174,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string $max    The expected maximum value, in rational form.
      */
     #[DataProvider('providerMax')]
-    public function testMax(array $values, string $max) : void
+    public function testMax(array $values, string $max): void
     {
-        self::assertBigRationalEquals($max, BigRational::max(... $values));
+        self::assertBigRationalEquals($max, BigRational::max(...$values));
     }
 
-    public static function providerMax() : array
+    public static function providerMax(): array
     {
         return [
             [['-5532146515641651651321321064580/32453', '-1/2', '-1/99'], '-1/99'],
@@ -182,9 +192,9 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    public function testMaxOfZeroValuesThrowsException() : void
+    public function testMaxOfZeroValuesThrowsException(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         BigRational::max();
     }
 
@@ -193,12 +203,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string $sum    The expected sum, in rational form.
      */
     #[DataProvider('providerSum')]
-    public function testSum(array $values, string $sum) : void
+    public function testSum(array $values, string $sum): void
     {
-        self::assertBigRationalEquals($sum, BigRational::sum(... $values));
+        self::assertBigRationalEquals($sum, BigRational::sum(...$values));
     }
 
-    public static function providerSum() : array
+    public static function providerSum(): array
     {
         return [
             [['-5532146515641651651321321064580/32453', '-1/2', '-1/99'], '-1095365010097047026961621574064593/6425694'],
@@ -211,9 +221,9 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    public function testSumOfZeroValuesThrowsException() : void
+    public function testSumOfZeroValuesThrowsException(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         BigRational::sum();
     }
 
@@ -223,7 +233,7 @@ class BigRationalTest extends AbstractTestCase
      * @param string     $remainder The expected remainder.
      */
     #[DataProvider('providerQuotientAndRemainder')]
-    public function testQuotientAndRemainder(int|string $rational, string $quotient, string $remainder) : void
+    public function testQuotientAndRemainder(int|string $rational, string $quotient, string $remainder): void
     {
         $rational = BigRational::of($rational);
 
@@ -236,7 +246,7 @@ class BigRationalTest extends AbstractTestCase
         self::assertBigIntegerEquals($remainder, $quotientAndRemainder[1]);
     }
 
-    public static function providerQuotientAndRemainder() : array
+    public static function providerQuotientAndRemainder(): array
     {
         return [
             ['1000/3', '333', '1'],
@@ -252,12 +262,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string               $expected The expected rational number result.
      */
     #[DataProvider('providerPlus')]
-    public function testPlus(string $rational, BigNumber|int|string $plus, string $expected) : void
+    public function testPlus(string $rational, BigNumber|int|string $plus, string $expected): void
     {
         self::assertBigRationalEquals($expected, BigRational::of($rational)->plus($plus));
     }
 
-    public static function providerPlus() : array
+    public static function providerPlus(): array
     {
         return [
             ['123/456', 1, '579/456'],
@@ -276,12 +286,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected The expected rational number result.
      */
     #[DataProvider('providerMinus')]
-    public function testMinus(string $rational, string $minus, string $expected) : void
+    public function testMinus(string $rational, string $minus, string $expected): void
     {
         self::assertBigRationalEquals($expected, BigRational::of($rational)->minus($minus));
     }
 
-    public static function providerMinus() : array
+    public static function providerMinus(): array
     {
         return [
             ['123/456', '1', '-333/456'],
@@ -298,12 +308,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected The expected rational number result.
      */
     #[DataProvider('providerMultipliedBy')]
-    public function testMultipliedBy(string $rational, string $minus, string $expected) : void
+    public function testMultipliedBy(string $rational, string $minus, string $expected): void
     {
         self::assertBigRationalEquals($expected, BigRational::of($rational)->multipliedBy($minus));
     }
 
-    public static function providerMultipliedBy() : array
+    public static function providerMultipliedBy(): array
     {
         return [
             ['123/456', '1', '123/456'],
@@ -322,12 +332,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected The expected rational number result.
      */
     #[DataProvider('providerDividedBy')]
-    public function testDividedBy(string $rational, string $minus, string $expected) : void
+    public function testDividedBy(string $rational, string $minus, string $expected): void
     {
         self::assertBigRationalEquals($expected, BigRational::of($rational)->dividedBy($minus));
     }
 
-    public static function providerDividedBy() : array
+    public static function providerDividedBy(): array
     {
         return [
             ['123/456', '1', '123/456'],
@@ -346,12 +356,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected The expected result.
      */
     #[DataProvider('providerPower')]
-    public function testPower(string $number, int $exponent, string $expected) : void
+    public function testPower(string $number, int $exponent, string $expected): void
     {
         self::assertBigRationalEquals($expected, BigRational::of($number)->power($exponent));
     }
 
-    public static function providerPower() : array
+    public static function providerPower(): array
     {
         return [
             ['-3',   0, '1'],
@@ -393,10 +403,10 @@ class BigRationalTest extends AbstractTestCase
             ['-2/3', 100, '1267650600228229401496703205376/515377520732011331036461129765621272702107522001'],
 
             ['-123/33', 25, '-17685925284953355608333258649989090388842388168292443/91801229324973413645775482048441660193'],
-            [ '123/33', 26, '2175368810049262739824990813948658117827613744699970489/3029440567724122650310590907598574786369'],
+            ['123/33', 26, '2175368810049262739824990813948658117827613744699970489/3029440567724122650310590907598574786369'],
 
             ['-123456789/2', 8, '53965948844821664748141453212125737955899777414752273389058576481/256'],
-            ['9876543210/3', 7, '9167159269868350921847491739460569765344716959834325922131706410000000/2187']
+            ['9876543210/3', 7, '9167159269868350921847491739460569765344716959834325922131706410000000/2187'],
         ];
     }
 
@@ -405,12 +415,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected The expected reciprocal.
      */
     #[DataProvider('providerReciprocal')]
-    public function testReciprocal(string $rational, string $expected) : void
+    public function testReciprocal(string $rational, string $expected): void
     {
         self::assertBigRationalEquals($expected, BigRational::of($rational)->reciprocal());
     }
 
-    public static function providerReciprocal() : array
+    public static function providerReciprocal(): array
     {
         return [
             ['1', '1'],
@@ -422,7 +432,7 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    public function testReciprocalOfZeroThrowsException() : void
+    public function testReciprocalOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
         BigRational::nd(0, 2)->reciprocal();
@@ -433,12 +443,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected The expected absolute number.
      */
     #[DataProvider('providerAbs')]
-    public function testAbs(string $rational, string $expected) : void
+    public function testAbs(string $rational, string $expected): void
     {
         self::assertBigRationalEquals($expected, BigRational::of($rational)->abs());
     }
 
-    public static function providerAbs() : array
+    public static function providerAbs(): array
     {
         return [
             ['0', '0'],
@@ -455,12 +465,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected The expected negated number.
      */
     #[DataProvider('providerNegated')]
-    public function testNegated(string $rational, string $expected) : void
+    public function testNegated(string $rational, string $expected): void
     {
         self::assertBigRationalEquals($expected, BigRational::of($rational)->negated());
     }
 
-    public static function providerNegated() : array
+    public static function providerNegated(): array
     {
         return [
             ['0', '0'],
@@ -478,12 +488,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected The expected negated number.
      */
     #[DataProvider('providerSimplified')]
-    public function testSimplified(string $rational, string $expected) : void
+    public function testSimplified(string $rational, string $expected): void
     {
         self::assertBigRationalEquals($expected, BigRational::of($rational)->simplified());
     }
 
-    public static function providerSimplified() : array
+    public static function providerSimplified(): array
     {
         return [
             ['0', '0'],
@@ -508,7 +518,7 @@ class BigRationalTest extends AbstractTestCase
      * @param int        $cmp The comparison value.
      */
     #[DataProvider('providerCompareTo')]
-    public function testCompareTo(string $a, int|string $b, int $cmp) : void
+    public function testCompareTo(string $a, int|string $b, int $cmp): void
     {
         self::assertSame($cmp, BigRational::of($a)->compareTo($b));
     }
@@ -519,7 +529,7 @@ class BigRationalTest extends AbstractTestCase
      * @param int        $cmp The comparison value.
      */
     #[DataProvider('providerCompareTo')]
-    public function testIsEqualTo(string $a, int|string $b, int $cmp) : void
+    public function testIsEqualTo(string $a, int|string $b, int $cmp): void
     {
         self::assertSame($cmp === 0, BigRational::of($a)->isEqualTo($b));
     }
@@ -530,7 +540,7 @@ class BigRationalTest extends AbstractTestCase
      * @param int        $cmp The comparison value.
      */
     #[DataProvider('providerCompareTo')]
-    public function testIsLessThan(string $a, int|string $b, int $cmp) : void
+    public function testIsLessThan(string $a, int|string $b, int $cmp): void
     {
         self::assertSame($cmp < 0, BigRational::of($a)->isLessThan($b));
     }
@@ -541,7 +551,7 @@ class BigRationalTest extends AbstractTestCase
      * @param int        $cmp The comparison value.
      */
     #[DataProvider('providerCompareTo')]
-    public function testIsLessThanOrEqualTo(string $a, int|string $b, int $cmp) : void
+    public function testIsLessThanOrEqualTo(string $a, int|string $b, int $cmp): void
     {
         self::assertSame($cmp <= 0, BigRational::of($a)->isLessThanOrEqualTo($b));
     }
@@ -552,7 +562,7 @@ class BigRationalTest extends AbstractTestCase
      * @param int        $cmp The comparison value.
      */
     #[DataProvider('providerCompareTo')]
-    public function testIsGreaterThan(string $a, int|string $b, int $cmp) : void
+    public function testIsGreaterThan(string $a, int|string $b, int $cmp): void
     {
         self::assertSame($cmp > 0, BigRational::of($a)->isGreaterThan($b));
     }
@@ -563,12 +573,12 @@ class BigRationalTest extends AbstractTestCase
      * @param int        $cmp The comparison value.
      */
     #[DataProvider('providerCompareTo')]
-    public function testIsGreaterThanOrEqualTo(string $a, int|string $b, int $cmp) : void
+    public function testIsGreaterThanOrEqualTo(string $a, int|string $b, int $cmp): void
     {
         self::assertSame($cmp >= 0, BigRational::of($a)->isGreaterThanOrEqualTo($b));
     }
 
-    public static function providerCompareTo() : array
+    public static function providerCompareTo(): array
     {
         return [
             ['-1', '1/2', -1],
@@ -604,7 +614,7 @@ class BigRationalTest extends AbstractTestCase
      * @param int    $sign   The sign of the number.
      */
     #[DataProvider('providerSign')]
-    public function testGetSign(string $number, int $sign) : void
+    public function testGetSign(string $number, int $sign): void
     {
         self::assertSame($sign, BigRational::of($number)->getSign());
     }
@@ -614,7 +624,7 @@ class BigRationalTest extends AbstractTestCase
      * @param int    $sign   The sign of the number.
      */
     #[DataProvider('providerSign')]
-    public function testIsZero(string $number, int $sign) : void
+    public function testIsZero(string $number, int $sign): void
     {
         self::assertSame($sign === 0, BigRational::of($number)->isZero());
     }
@@ -624,7 +634,7 @@ class BigRationalTest extends AbstractTestCase
      * @param int    $sign   The sign of the number.
      */
     #[DataProvider('providerSign')]
-    public function testIsNegative(string $number, int $sign) : void
+    public function testIsNegative(string $number, int $sign): void
     {
         self::assertSame($sign < 0, BigRational::of($number)->isNegative());
     }
@@ -634,7 +644,7 @@ class BigRationalTest extends AbstractTestCase
      * @param int    $sign   The sign of the number.
      */
     #[DataProvider('providerSign')]
-    public function testIsNegativeOrZero(string $number, int $sign) : void
+    public function testIsNegativeOrZero(string $number, int $sign): void
     {
         self::assertSame($sign <= 0, BigRational::of($number)->isNegativeOrZero());
     }
@@ -644,7 +654,7 @@ class BigRationalTest extends AbstractTestCase
      * @param int    $sign   The sign of the number.
      */
     #[DataProvider('providerSign')]
-    public function testIsPositive(string $number, int $sign) : void
+    public function testIsPositive(string $number, int $sign): void
     {
         self::assertSame($sign > 0, BigRational::of($number)->isPositive());
     }
@@ -654,12 +664,12 @@ class BigRationalTest extends AbstractTestCase
      * @param int    $sign   The sign of the number.
      */
     #[DataProvider('providerSign')]
-    public function testIsPositiveOrZero(string $number, int $sign) : void
+    public function testIsPositiveOrZero(string $number, int $sign): void
     {
         self::assertSame($sign >= 0, BigRational::of($number)->isPositiveOrZero());
     }
 
-    public static function providerSign() : array
+    public static function providerSign(): array
     {
         return [
             ['0', 0],
@@ -678,7 +688,7 @@ class BigRationalTest extends AbstractTestCase
      * @param string|null $expected The expected decimal number, or null if an exception is expected.
      */
     #[DataProvider('providerToBigDecimal')]
-    public function testToBigDecimal(string $number, ?string $expected) : void
+    public function testToBigDecimal(string $number, ?string $expected): void
     {
         if ($expected === null) {
             $this->expectException(RoundingNecessaryException::class);
@@ -691,7 +701,7 @@ class BigRationalTest extends AbstractTestCase
         }
     }
 
-    public static function providerToBigDecimal() : \Generator
+    public static function providerToBigDecimal(): Generator
     {
         $tests = [
             ['1', '1'],
@@ -782,7 +792,7 @@ class BigRationalTest extends AbstractTestCase
     }
 
     #[DataProvider('providerToScale')]
-    public function testToScale(string $number, int $scale, RoundingMode $roundingMode, string $expected) : void
+    public function testToScale(string $number, int $scale, RoundingMode $roundingMode, string $expected): void
     {
         $number = BigRational::of($number);
 
@@ -797,7 +807,7 @@ class BigRationalTest extends AbstractTestCase
         }
     }
 
-    public static function providerToScale() : array
+    public static function providerToScale(): array
     {
         return [
             ['1/8', 3, RoundingMode::UNNECESSARY, '0.125'],
@@ -815,12 +825,12 @@ class BigRationalTest extends AbstractTestCase
      * @param int        $integer  The expected integer value.
      */
     #[DataProvider('providerToInt')]
-    public function testToInt(int|string $rational, int $integer) : void
+    public function testToInt(int|string $rational, int $integer): void
     {
         self::assertSame($integer, BigRational::of($rational)->toInt());
     }
 
-    public static function providerToInt() : array
+    public static function providerToInt(): array
     {
         return [
             [PHP_INT_MAX, PHP_INT_MAX],
@@ -840,13 +850,13 @@ class BigRationalTest extends AbstractTestCase
      * @param string $number A valid rational number that cannot safely be converted to a native integer.
      */
     #[DataProvider('providerToIntThrowsException')]
-    public function testToIntThrowsException(string $number) : void
+    public function testToIntThrowsException(string $number): void
     {
         $this->expectException(MathException::class);
         BigRational::of($number)->toInt();
     }
 
-    public static function providerToIntThrowsException() : array
+    public static function providerToIntThrowsException(): array
     {
         return [
             ['-999999999999999999999999999999'],
@@ -856,7 +866,7 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    public function testIdentityOperationResultsInDifferentToFloatValueWithoutSimplification() : void
+    public function testIdentityOperationResultsInDifferentToFloatValueWithoutSimplification(): void
     {
         $expectedValue = 11.46;
         $conversionFactor = BigRational::of('0.45359237');
@@ -878,7 +888,7 @@ class BigRationalTest extends AbstractTestCase
         );
     }
 
-    public function testToFloatConversionPerformsSimplificationToPreventOverflow() : void
+    public function testToFloatConversionPerformsSimplificationToPreventOverflow(): void
     {
         $int = BigInteger::of('1e4000');
         $val = BigRational::nd($int, $int);
@@ -893,12 +903,12 @@ class BigRationalTest extends AbstractTestCase
      * @param float  $float The expected float value.
      */
     #[DataProvider('providerToFloat')]
-    public function testToFloat(string $value, float $float) : void
+    public function testToFloat(string $value, float $float): void
     {
         self::assertSame($float, BigRational::of($value)->toFloat());
     }
 
-    public static function providerToFloat() : array
+    public static function providerToFloat(): array
     {
         return [
             ['0', 0.0],
@@ -917,12 +927,12 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected    The expected string output.
      */
     #[DataProvider('providerToString')]
-    public function testToString(string $numerator, string $denominator, string $expected) : void
+    public function testToString(string $numerator, string $denominator, string $expected): void
     {
         self::assertBigRationalEquals($expected, BigRational::nd($numerator, $denominator));
     }
 
-    public static function providerToString() : array
+    public static function providerToString(): array
     {
         return [
             ['-1', '1', '-1'],
@@ -937,19 +947,19 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    public function testSerialize() : void
+    public function testSerialize(): void
     {
-        $numerator   = '-1234567890987654321012345678909876543210123456789';
+        $numerator = '-1234567890987654321012345678909876543210123456789';
         $denominator = '347827348278374374263874681238374983729873401984091287439827467286';
 
         $rational = BigRational::nd($numerator, $denominator);
 
-        self::assertBigRationalInternalValues($numerator, $denominator, \unserialize(\serialize($rational)));
+        self::assertBigRationalInternalValues($numerator, $denominator, unserialize(serialize($rational)));
     }
 
-    public function testDirectCallToUnserialize() : void
+    public function testDirectCallToUnserialize(): void
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         BigRational::nd(1, 2)->__unserialize([]);
     }
 }
