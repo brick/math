@@ -1,0 +1,10 @@
+{
+    "require": {
+        "brick/coding-standard": "dev-main"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

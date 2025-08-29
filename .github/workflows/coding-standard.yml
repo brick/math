@@ -1,0 +1,12 @@
+name: Coding Standard
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  coding-standard:
+    name: Coding Standard
+    uses: brick/coding-standard/.github/workflows/coding-standard.yml@main
+    with:
+        php-version: "8.2"
