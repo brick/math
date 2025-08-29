@@ -1748,6 +1748,28 @@ class BigDecimalTest extends AbstractTestCase
         $number->sqrt(-1);
     }
 
+    #[DataProvider('providerClamp')]
+    public function testClamp(string $number, string $min, string $max, string $expected)
+    {
+        self::assertBigDecimalEquals($expected, BigDecimal::of($number)->clamp($min, $max));
+    }
+
+    public static function providerClamp() : array
+    {
+        return [
+            ["1.00", "0.50", "1.50", "1.00"],
+            ["0.25", "0.50", "1.50", "0.50"],
+            ["2.00", "0.50", "1.50", "1.50"],
+            ["0.50", "0.50", "1.50", "0.50"],
+            ["1.50", "0.50", "1.50", "1.50"],
+            ["0.00", "0.50", "1.50", "0.50"],
+            ["1.00", "0.50", "1.50", "1.00"],
+            ["0.25", "0.00", "0.50", "0.25"],
+            ["-1.00", "0.50", "1.50", "0.50"],
+            ["-1.00", "-1.50", "-0.50", "-1.00"],
+        ];
+    }
+
     /**
      * @param string  $number        The base number.
      * @param int     $exponent      The exponent to apply.

@@ -1456,6 +1456,28 @@ class BigIntegerTest extends AbstractTestCase
         BigInteger::of(1)->modPow(1, 0);
     }
 
+    #[DataProvider('providerClamp')]
+    public function testClamp(string $number, string $min, string $max, string $expected)
+    {
+        self::assertBigIntegerEquals($expected, BigInteger::of($number)->clamp($min, $max));
+    }
+
+    public static function providerClamp() : array
+    {
+        return [
+            ["100", "50", "150", "100"],
+            ["25", "50", "150", "50"],
+            ["200", "50", "150", "150"],
+            ["50", "50", "150", "50"],
+            ["150", "50", "150", "150"],
+            ["0", "50", "150", "50"],
+            ["100", "50", "150", "100"],
+            ["25", "0", "50", "25"],
+            ["-100", "50", "150", "50"],
+            ["-100", "-150", "-50", "-100"]
+        ];
+    }
+
     /**
      * @param string $number   The base number.
      * @param int    $exponent The exponent to apply.
