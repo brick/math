@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## UNRELEASED (0.14.0)
 
+✨ **New features**
+
+- New methods: `BigInteger::clamp()` and `BigDecimal::clamp()` (#96 by @JesterIruka)
+
 ✨ **Improvements**
 
 - All pure methods in `BigNumber` classes are now marked as `@pure` for better static analysis
