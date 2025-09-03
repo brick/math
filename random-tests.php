@@ -13,7 +13,19 @@ use Brick\Math\Internal\Calculator;
 
 use const PHP_EOL;
 
-(new class(30) { // max digits
+if ($argc !== 2) {
+    echo 'Usage: php random-tests.php <max number of digits>', PHP_EOL;
+    exit(1);
+}
+
+$maxDigits = (int) $argv[1];
+
+if ($maxDigits < 1) {
+    echo 'Max digits must be > 1', PHP_EOL;
+    exit(1);
+}
+
+(new class($maxDigits) {
     private readonly Calculator\GmpCalculator $gmp;
 
     private readonly Calculator\BcMathCalculator $bcmath;
@@ -146,7 +158,7 @@ use const PHP_EOL;
         echo 'FAILURE!', PHP_EOL;
         echo $c1, ' vs ', $c2, PHP_EOL;
         echo $test, PHP_EOL;
-        die;
+        exit(1);
     }
 
     private function generateRandomNumber(): string
