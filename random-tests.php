@@ -11,8 +11,6 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Brick\Math\Internal\Calculator;
 
-use const PHP_EOL;
-
 if ($argc !== 2) {
     echo 'Usage: php random-tests.php <max number of digits>', PHP_EOL;
     exit(1);
