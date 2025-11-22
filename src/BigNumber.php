@@ -15,6 +15,7 @@ use Stringable;
 
 use function array_shift;
 use function assert;
+use function filter_var;
 use function is_float;
 use function is_int;
 use function ltrim;
@@ -22,9 +23,10 @@ use function preg_match;
 use function str_contains;
 use function str_repeat;
 use function strlen;
+use function substr;
 
-use const PHP_INT_MAX;
-use const PHP_INT_MIN;
+use const FILTER_VALIDATE_INT;
+
 use const PREG_UNMATCHED_AS_NULL;
 
 /**
@@ -503,9 +505,26 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
             if ($point !== null || $exponent !== null) {
                 $fractional ??= '';
-                $exponent = ($exponent !== null) ? (int) $exponent : 0;
 
-                if ($exponent === PHP_INT_MIN || $exponent === PHP_INT_MAX) {
+                if ($exponent !== null) {
+                    if ($exponent[0] === '-') {
+                        $exponent = ltrim(substr($exponent, 1), '0') ?: '0';
+                        $exponent = filter_var($exponent, FILTER_VALIDATE_INT);
+                        if ($exponent !== false) {
+                            $exponent = -$exponent;
+                        }
+                    } else {
+                        if ($exponent[0] === '+') {
+                            $exponent = substr($exponent, 1);
+                        }
+                        $exponent = ltrim($exponent, '0') ?: '0';
+                        $exponent = filter_var($exponent, FILTER_VALIDATE_INT);
+                    }
+                } else {
+                    $exponent = 0;
+                }
+
+                if ($exponent === false) {
                     throw new NumberFormatException('Exponent too large.');
                 }
 
