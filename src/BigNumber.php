@@ -18,6 +18,7 @@ use function assert;
 use function filter_var;
 use function is_float;
 use function is_int;
+use function is_nan;
 use function ltrim;
 use function preg_match;
 use function str_contains;
@@ -458,7 +459,11 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
         }
 
         if (is_float($value)) {
-            $value = (string) $value;
+            if (is_nan($value)) {
+                $value = 'NAN';
+            } else {
+                $value = (string) $value;
+            }
         }
 
         if (str_contains($value, '/')) {

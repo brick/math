@@ -18,6 +18,7 @@ use Override;
 use function assert;
 use function bin2hex;
 use function chr;
+use function filter_var;
 use function hex2bin;
 use function in_array;
 use function intdiv;
@@ -31,6 +32,8 @@ use function str_repeat;
 use function strlen;
 use function strtolower;
 use function substr;
+
+use const FILTER_VALIDATE_INT;
 
 /**
  * An arbitrary-size integer.
@@ -979,9 +982,9 @@ final readonly class BigInteger extends BigNumber
     #[Override]
     public function toInt(): int
     {
-        $intValue = (int) $this->value;
+        $intValue = filter_var($this->value, FILTER_VALIDATE_INT);
 
-        if ($this->value !== (string) $intValue) {
+        if ($intValue === false) {
             throw IntegerOverflowException::toIntOverflow($this);
         }
 
