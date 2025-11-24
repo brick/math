@@ -49,7 +49,7 @@ class BigDecimalTest extends AbstractTestCase
     #[DataProvider('providerOf')]
     public function testOfNullableWithValidInputBehavesLikeOf(int|float|string $value, string $unscaledValue, int $scale): void
     {
-        self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::of($value));
+        self::assertBigDecimalInternalValues($unscaledValue, $scale, BigDecimal::ofNullable($value));
     }
 
     public function testOfNullableWithNullInput(): void
