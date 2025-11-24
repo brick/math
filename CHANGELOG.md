@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.14.1](https://github.com/brick/math/releases/tag/0.14.1) - 2025-11-24
+
+✨ **New features**
+
+- New method: `BigNumber::ofNullable()` (#94 by @mrkh995)
+
+✨ **Compatibility fixes**
+
+- Fixed warnings on PHP 8.5 (#101 and #102 by @julien-boudry)
+
 ## [0.14.0](https://github.com/brick/math/releases/tag/0.14.0) - 2025-08-29
 
 ✨ **New features**
