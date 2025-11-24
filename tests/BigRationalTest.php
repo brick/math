@@ -77,7 +77,7 @@ class BigRationalTest extends AbstractTestCase
      * @param string $string      The string to parse.
      */
     #[DataProvider('providerOf')]
-    public function testOfNullableWithValidInputBehavesLikeOf(string $numerator, string $denominator, string $string) : void
+    public function testOfNullableWithValidInputBehavesLikeOf(string $numerator, string $denominator, string $string): void
     {
         $rational = BigRational::ofNullable($string);
         self::assertBigRationalInternalValues($numerator, $denominator, $rational);
@@ -85,7 +85,7 @@ class BigRationalTest extends AbstractTestCase
 
     public function testOfNullableWithNullInput(): void
     {
-        $this->assertNull(BigRational::ofNullable(null));
+        self::assertNull(BigRational::ofNullable(null));
     }
 
     public static function providerOf(): array

@@ -62,7 +62,7 @@ class BigIntegerTest extends AbstractTestCase
 
     public function testOfNullableWithNullInput(): void
     {
-        $this->assertNull(BigInteger::ofNullable(null));
+        self::assertNull(BigInteger::ofNullable(null));
     }
 
     public static function providerOf(): array
