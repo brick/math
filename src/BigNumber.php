@@ -19,6 +19,7 @@ use function filter_var;
 use function is_float;
 use function is_int;
 use function is_nan;
+use function is_null;
 use function ltrim;
 use function preg_match;
 use function str_contains;
@@ -96,6 +97,26 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
         }
 
         return static::from($value);
+    }
+
+    /**
+     * Creates a BigNumber of the given value, or returns null if the input is null.
+     *
+     * Behaves like of() for non-null values.
+     *
+     * @see BigNumber::of()
+     *
+     * @throws NumberFormatException      If the format of the number is not valid.
+     * @throws DivisionByZeroException    If the value represents a rational number with a denominator of zero.
+     * @throws RoundingNecessaryException If the value cannot be converted to an instance of the subclass without rounding.
+     */
+    public static function ofNullable(BigNumber|int|float|string|null $value): ?static
+    {
+        if (is_null($value)) {
+            return null;
+        }
+
+        return static::of($value);
     }
 
     /**
