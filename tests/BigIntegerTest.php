@@ -1402,12 +1402,6 @@ class BigIntegerTest extends AbstractTestCase
      */
     public function testModPowCrypto(): void
     {
-        if (CalculatorRegistry::get() instanceof Calculator\NativeCalculator) {
-            if (getenv('CI') === 'true') {
-                self::markTestSkipped('This test is currently too slow for the CI.');
-            }
-        }
-
         $prime = BigInteger::fromBase(
             'FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD1' .
             '29024E088A67CC74020BBEA63B139B22514A08798E3404DD' .
