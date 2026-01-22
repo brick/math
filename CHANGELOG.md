@@ -4,9 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## UNRELEASED (0.14.2)
 
+🗑️ **Deprecations**
+
+- Method `BigRational::nd()` is deprecated, use `ofFraction()` instead
+
 ✨ **New features**
 
 - New method: `BigRational::clamp()`
+- New method: `BigRational::ofFraction()` (replaces `nd()`)
 
 👌 **Improvements**
 
@@ -531,4 +536,3 @@ Added `BigDecimal::divideAndRemainder()`
 ## [0.1.0](https://github.com/brick/math/releases/tag/0.1.0) - 2014-08-31
 
 First beta release.
-
