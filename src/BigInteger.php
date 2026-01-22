@@ -694,28 +694,28 @@ final readonly class BigInteger extends BigNumber
      *
      * This operation only works on positive numbers.
      *
-     * @param BigNumber|int|float|string $exp The exponent. Must be positive or zero.
-     * @param BigNumber|int|float|string $mod The modulus. Must be strictly positive.
+     * @param BigNumber|int|float|string $exponent The exponent. Must be positive or zero.
+     * @param BigNumber|int|float|string $modulus  The modulus. Must be strictly positive.
      *
      * @throws NegativeNumberException If any of the operands is negative.
      * @throws DivisionByZeroException If the modulus is zero.
      *
      * @pure
      */
-    public function modPow(BigNumber|int|float|string $exp, BigNumber|int|float|string $mod): BigInteger
+    public function modPow(BigNumber|int|float|string $exponent, BigNumber|int|float|string $modulus): BigInteger
     {
-        $exp = BigInteger::of($exp);
-        $mod = BigInteger::of($mod);
+        $exponent = BigInteger::of($exponent);
+        $modulus = BigInteger::of($modulus);
 
-        if ($this->isNegative() || $exp->isNegative() || $mod->isNegative()) {
+        if ($this->isNegative() || $exponent->isNegative() || $modulus->isNegative()) {
             throw new NegativeNumberException('The operands cannot be negative.');
         }
 
-        if ($mod->isZero()) {
+        if ($modulus->isZero()) {
             throw DivisionByZeroException::modulusMustNotBeZero();
         }
 
-        $result = CalculatorRegistry::get()->modPow($this->value, $exp->value, $mod->value);
+        $result = CalculatorRegistry::get()->modPow($this->value, $exponent->value, $modulus->value);
 
         return new BigInteger($result);
     }
