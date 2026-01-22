@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Brick\Math\Tests;
 
 use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\MathException;
@@ -2722,12 +2723,9 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     #[DataProvider('providerModInverse')]
-    public function testModInverse(string $x, string $m, string $expectedResult): void
+    public function testModInverse(string $x, BigNumber|int|float|string $m, string $expectedResult): void
     {
-        $x = BigInteger::of($x);
-        $m = BigInteger::of($m);
-
-        self::assertSame($expectedResult, (string) $x->modInverse($m));
+        self::assertSame($expectedResult, (string) BigInteger::of($x)->modInverse($m));
     }
 
     public static function providerModInverse(): array
@@ -2747,6 +2745,9 @@ class BigIntegerTest extends AbstractTestCase
             ['590295810358705600000', '137', '128'],
             ['18506109802501380149367860917982816833935316655779336003703143134999470532428', '115792089237316195423570985008687907853269984665640564039457584007908834671663', '95929095851002583825372225918533539673793386278360575987103577151530201707061'],
             ['-18506109802501380149367860917982816833935316655779336003703143134999470532428', '115792089237316195423570985008687907853269984665640564039457584007908834671663', '19862993386313611598198759090154368179476598387279988052354006856378632964602'],
+            ['3', 7, '5'],
+            ['3', 11.0, '4'],
+            ['3', BigInteger::of(17), '6'],
         ];
     }
 
