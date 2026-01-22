@@ -368,14 +368,14 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * Converts this number to a BigDecimal with the given scale, using rounding if necessary.
      *
      * @param int          $scale        The scale of the resulting `BigDecimal`.
-     * @param RoundingMode $roundingMode An optional rounding mode, defaults to UNNECESSARY.
+     * @param RoundingMode $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws RoundingNecessaryException If this number cannot be converted to the given scale without rounding.
-     *                                    This only applies when RoundingMode::UNNECESSARY is used.
+     *                                    This only applies when RoundingMode::Unnecessary is used.
      *
      * @pure
      */
-    abstract public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::UNNECESSARY): BigDecimal;
+    abstract public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal;
 
     /**
      * Returns the exact value of this number as a native integer.

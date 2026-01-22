@@ -443,14 +443,14 @@ final readonly class BigInteger extends BigNumber
      * Returns the result of the division of this number by the given one.
      *
      * @param BigNumber|int|float|string $that         The divisor. Must be convertible to a BigInteger.
-     * @param RoundingMode               $roundingMode An optional rounding mode, defaults to UNNECESSARY.
+     * @param RoundingMode               $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws MathException If the divisor is not a valid number, is not convertible to a BigInteger, is zero,
-     *                       or RoundingMode::UNNECESSARY is used and the remainder is not zero.
+     *                       or RoundingMode::Unnecessary is used and the remainder is not zero.
      *
      * @pure
      */
-    public function dividedBy(BigNumber|int|float|string $that, RoundingMode $roundingMode = RoundingMode::UNNECESSARY): BigInteger
+    public function dividedBy(BigNumber|int|float|string $that, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -857,7 +857,7 @@ final readonly class BigInteger extends BigNumber
             return $this->quotient($operand);
         }
 
-        return $this->dividedBy($operand, RoundingMode::UP);
+        return $this->dividedBy($operand, RoundingMode::Up);
     }
 
     /**
@@ -981,7 +981,7 @@ final readonly class BigInteger extends BigNumber
     }
 
     #[Override]
-    public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::UNNECESSARY): BigDecimal
+    public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
     {
         return $this->toBigDecimal()->toScale($scale, $roundingMode);
     }

@@ -177,8 +177,8 @@ echo BigInteger::of(1000)->dividedBy(3); // RoundingNecessaryException
 You can pass an optional [rounding mode](https://github.com/brick/math/blob/0.14.0/src/RoundingMode.php) to round the result, if necessary:
 
 ```php
-echo BigInteger::of(1000)->dividedBy(3, RoundingMode::DOWN); // 333
-echo BigInteger::of(1000)->dividedBy(3, RoundingMode::UP); // 334
+echo BigInteger::of(1000)->dividedBy(3, RoundingMode::Down); // 333
+echo BigInteger::of(1000)->dividedBy(3, RoundingMode::Up); // 334
 ```
 
 If you're into quotients and remainders, there are methods for this, too:
@@ -202,8 +202,8 @@ the given scale, a [rounding mode](https://github.com/brick/math/blob/0.14.0/src
 ```php
 echo BigDecimal::of(1)->dividedBy('8', 3); // 0.125
 echo BigDecimal::of(1)->dividedBy('8', 2); // RoundingNecessaryException
-echo BigDecimal::of(1)->dividedBy('8', 2, RoundingMode::HALF_DOWN); // 0.12
-echo BigDecimal::of(1)->dividedBy('8', 2, RoundingMode::HALF_UP); // 0.13
+echo BigDecimal::of(1)->dividedBy('8', 2, RoundingMode::HalfDown); // 0.12
+echo BigDecimal::of(1)->dividedBy('8', 2, RoundingMode::HalfUp); // 0.13
 ```
 
 If you know that the division yields a finite number of decimals places, you can use `exactlyDividedBy()`, which will

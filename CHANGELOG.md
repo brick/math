@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Method `BigRational::quotient()` is deprecated, use `getIntegralPart()` instead
 - Method `BigRational::remainder()` is deprecated, use `$number->getNumerator()->remainder($number->getDenominator())` instead
 - Method `BigRational::quotientAndRemainder()` is deprecated, use `$number->getNumerator()->quotientAndRemainder($number->getDenominator())` instead
+- Accessing `RoundingMode` enum cases through upper snake case (e.g. `HALF_UP`) is deprecated, use the pascal case version (e.g. `HalfUp`) instead
 
 ✨ **New features**
 
