@@ -626,6 +626,8 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the modular multiplicative inverse of this BigInteger modulo $m.
      *
+     * @param BigNumber|int|float|string $m The modulus. Must be convertible to a BigInteger.
+     *
      * @throws DivisionByZeroException If $m is zero.
      * @throws NegativeNumberException If $m is negative.
      * @throws MathException           If this BigInteger has no multiplicative inverse mod m (that is, this BigInteger
@@ -633,8 +635,10 @@ final readonly class BigInteger extends BigNumber
      *
      * @pure
      */
-    public function modInverse(BigInteger $m): BigInteger
+    public function modInverse(BigNumber|int|float|string $m): BigInteger
     {
+        $m = BigInteger::of($m);
+
         if ($m->value === '0') {
             throw DivisionByZeroException::modulusMustNotBeZero();
         }
