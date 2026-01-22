@@ -3697,6 +3697,41 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
+     * @param string $number         The decimal number to test.
+     * @param string $integralPart   The expected integral part.
+     * @param string $fractionalPart The expected fractional part.
+     */
+    #[DataProvider('providerGetIntegralPartAndFractionalPart')]
+    public function testGetIntegralPartAndFractionalPart(string $number, string $integralPart, string $fractionalPart): void
+    {
+        $decimal = BigDecimal::of($number);
+
+        self::assertBigIntegerEquals($integralPart, $decimal->getIntegralPart());
+        self::assertBigDecimalEquals($fractionalPart, $decimal->getFractionalPart());
+        self::assertTrue($decimal->isEqualTo($decimal->getFractionalPart()->plus($decimal->getIntegralPart())));
+    }
+
+    public static function providerGetIntegralPartAndFractionalPart(): array
+    {
+        return [
+            ['0', '0', '0'],
+            ['0.1', '0', '0.1'],
+            ['1', '1', '0'],
+            ['1.0', '1', '0.0'],
+            ['1.99', '1', '0.99'],
+            ['-1', '-1', '0'],
+            ['-1.0', '-1', '0.0'],
+            ['-1.99', '-1', '-0.99'],
+            ['123.456', '123', '0.456'],
+            ['-123.456', '-123', '-0.456'],
+            ['0.001', '0', '0.001'],
+            ['-0.001', '0', '-0.001'],
+            ['999999999999999999999999999999.999999999999999999999999999999', '999999999999999999999999999999', '0.999999999999999999999999999999'],
+            ['-999999999999999999999999999999.999999999999999999999999999999', '-999999999999999999999999999999', '-0.999999999999999999999999999999'],
+        ];
+    }
+
+    /**
      * @param string $decimal  The number to convert.
      * @param string $expected The expected value.
      */
