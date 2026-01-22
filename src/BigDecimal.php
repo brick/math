@@ -712,6 +712,59 @@ final readonly class BigDecimal extends BigNumber
         return substr($value, -$this->scale) !== str_repeat('0', $this->scale);
     }
 
+    /**
+     * Returns the integral part of this decimal number.
+     *
+     * Examples:
+     *
+     * - `123.456` returns `123`
+     * - `-123.456` returns `-123`
+     * - `0.123` returns `0`
+     * - `-0.123` returns `0`
+     *
+     * The following identity holds: `$d->isEqualTo($d->getFractionalPart()->plus($d->getIntegralPart()))`.
+     *
+     * @pure
+     */
+    public function getIntegralPart(): BigInteger
+    {
+        if ($this->scale === 0) {
+            return self::newBigInteger($this->value);
+        }
+
+        $value = DecimalHelper::padUnscaledValue($this->value, $this->scale);
+        $integerPart = substr($value, 0, -$this->scale);
+
+        if ($integerPart === '-0') {
+            $integerPart = '0';
+        }
+
+        return self::newBigInteger($integerPart);
+    }
+
+    /**
+     * Returns the fractional part of this decimal number.
+     *
+     * Examples:
+     *
+     * - `123.456` returns `0.456`
+     * - `-123.456` returns `-0.456`
+     * - `123` returns `0`
+     * - `-123` returns `0`
+     *
+     * The following identity holds: `$d->isEqualTo($d->getFractionalPart()->plus($d->getIntegralPart()))`.
+     *
+     * @pure
+     */
+    public function getFractionalPart(): BigDecimal
+    {
+        if ($this->scale === 0) {
+            return BigDecimal::zero();
+        }
+
+        return $this->minus($this->getIntegralPart());
+    }
+
     #[Override]
     public function toBigInteger(): BigInteger
     {

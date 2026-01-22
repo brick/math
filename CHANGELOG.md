@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## UNRELEASED (0.16.0)
+
+✨ **New features**
+
+- New method: `BigDecimal::getIntegralPart()` returns the integral part as `BigInteger` (this method existed with a different signature in version 0.14, and was removed in 0.15)
+- New method: `BigDecimal::getFractionalPart()` returns the fractional part as `BigDecimal` (this method existed with a different signature and meaning in version 0.14, and was removed in 0.15)
+
 ## [0.15.0](https://github.com/brick/math/releases/tag/0.15.0) - 2026-02-20
 
 💥 **Breaking changes**
