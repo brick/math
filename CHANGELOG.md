@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 👌 **Improvements**
 
 - `BigInteger::modInverse()` now accepts `BigNumber|int|float|string` instead of just `BigInteger`
+- `BigInteger::gcdMultiple()` now accepts `BigNumber|int|float|string` instead of just `BigInteger`
 
 ## [0.14.1](https://github.com/brick/math/releases/tag/0.14.1) - 2025-11-24
 

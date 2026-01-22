@@ -345,14 +345,17 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
+     * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string ...$n The subsequent numbers. Must be convertible to BigInteger.
+     *
      * @pure
      */
-    public static function gcdMultiple(BigInteger $a, BigInteger ...$n): BigInteger
+    public static function gcdMultiple(BigNumber|int|float|string $a, BigNumber|int|float|string ...$n): BigInteger
     {
-        $result = $a;
+        $result = BigInteger::of($a);
 
         foreach ($n as $next) {
-            $result = $result->gcd($next);
+            $result = $result->gcd(BigInteger::of($next));
 
             if ($result->isEqualTo(1)) {
                 return $result;
