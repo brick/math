@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 The following breaking changes only affect you if you're using named arguments:
 
 - `BigInteger::modInverse()` now uses `$modulus` as the parameter name
+- `BigInteger::modPow()` now uses `$exponent` and `$modulus` as parameter names
 
 ## [0.14.8](https://github.com/brick/math/releases/tag/0.14.8) - 2026-02-10
 

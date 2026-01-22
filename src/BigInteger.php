@@ -740,8 +740,8 @@ final readonly class BigInteger extends BigNumber
      *
      * This operation requires a non-negative exponent and a strictly positive modulus.
      *
-     * @param BigNumber|int|float|string $exp The exponent. Must be convertible to a BigInteger.
-     * @param BigNumber|int|float|string $mod The modulus. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $exponent The exponent. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $modulus  The modulus. Must be convertible to a BigInteger.
      *
      * @throws MathException           If the exponent or modulus is not valid, or is not convertible to a BigInteger.
      * @throws NegativeNumberException If the exponent or modulus is negative.
@@ -749,24 +749,24 @@ final readonly class BigInteger extends BigNumber
      *
      * @pure
      */
-    public function modPow(BigNumber|int|float|string $exp, BigNumber|int|float|string $mod): BigInteger
+    public function modPow(BigNumber|int|float|string $exponent, BigNumber|int|float|string $modulus): BigInteger
     {
-        $exp = BigInteger::of($exp);
-        $mod = BigInteger::of($mod);
+        $exponent = BigInteger::of($exponent);
+        $modulus = BigInteger::of($modulus);
 
-        if ($exp->isNegative()) {
+        if ($exponent->isNegative()) {
             throw new NegativeNumberException('The exponent cannot be negative.');
         }
 
-        if ($mod->isNegative()) {
+        if ($modulus->isNegative()) {
             throw new NegativeNumberException('The modulus cannot be negative.');
         }
 
-        if ($mod->isZero()) {
+        if ($modulus->isZero()) {
             throw DivisionByZeroException::modulusMustNotBeZero();
         }
 
-        $result = CalculatorRegistry::get()->modPow($this->value, $exp->value, $mod->value);
+        $result = CalculatorRegistry::get()->modPow($this->value, $exponent->value, $modulus->value);
 
         return new BigInteger($result);
     }
