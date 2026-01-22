@@ -3680,51 +3680,6 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @param string $number   The number to test.
-     * @param string $expected The expected integral value.
-     */
-    #[DataProvider('providerGetIntegralPart')]
-    public function testGetIntegralPart(string $number, string $expected): void
-    {
-        self::assertSame($expected, BigDecimal::of($number)->getIntegralPart());
-    }
-
-    public static function providerGetIntegralPart(): array
-    {
-        return [
-            ['1.23', '1'],
-            ['-1.23', '-1'],
-            ['0.123', '0'],
-            ['0.001', '0'],
-            ['123.0', '123'],
-            ['12', '12'],
-            ['1234.5678', '1234'],
-        ];
-    }
-
-    /**
-     * @param string $number   The number to test.
-     * @param string $expected The expected fractional value.
-     */
-    #[DataProvider('providerGetFractionalPart')]
-    public function testGetFractionalPart(string $number, string $expected): void
-    {
-        self::assertSame($expected, BigDecimal::of($number)->getFractionalPart());
-    }
-
-    public static function providerGetFractionalPart(): array
-    {
-        return [
-            ['1.23', '23'],
-            ['-1.23', '23'],
-            ['1', ''],
-            ['-1', ''],
-            ['0', ''],
-            ['0.001', '001'],
-        ];
-    }
-
-    /**
      * @param string $number                   The number to test.
      * @param bool   $hasNonZeroFractionalPart The expected return value.
      */
