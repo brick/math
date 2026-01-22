@@ -5,8 +5,6 @@ declare(strict_types=1);
 use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
 
-use const PHP_EOL;
-
 require __DIR__ . '/vendor/autoload.php';
 
 function getCalculatorImplementation(): Calculator
