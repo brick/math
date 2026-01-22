@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## UNRELEASED (0.15.0)
+
+💥 **Breaking changes**
+
+- deprecated method `BigRational::nd()` has been removed, use `ofFraction()` instead
+
 ## UNRELEASED (0.14.2)
 
 🗑️ **Deprecations**

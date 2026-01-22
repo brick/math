@@ -42,13 +42,6 @@ class BigRationalTest extends AbstractTestCase
         self::assertBigRationalInternalValues($numerator, $denominator, $rational);
     }
 
-    #[DataProvider('providerOfFraction')]
-    public function testNd(string $numerator, string $denominator, int|string $n, int|string $d): void
-    {
-        $rational = BigRational::nd($n, $d);
-        self::assertBigRationalInternalValues($numerator, $denominator, $rational);
-    }
-
     public static function providerOfFraction(): array
     {
         return [
