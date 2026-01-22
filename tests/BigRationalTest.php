@@ -286,6 +286,99 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
+     * @param int|string $rational     The rational number to test.
+     * @param string     $integralPart The expected integral part.
+     */
+    #[DataProvider('providerGetIntegralPart')]
+    public function testGetIntegralPart(int|string $rational, string $integralPart): void
+    {
+        self::assertBigIntegerEquals($integralPart, BigRational::of($rational)->getIntegralPart());
+    }
+
+    public static function providerGetIntegralPart(): array
+    {
+        return [
+            ['7/3', '2'],
+            ['-7/3', '-2'],
+            ['3/4', '0'],
+            ['-3/4', '0'],
+            ['22/7', '3'],
+            ['-22/7', '-3'],
+            ['1000/3', '333'],
+            ['-1000/3', '-333'],
+            ['895/400', '2'],
+            ['-2.5', '-2'],
+            [-2, '-2'],
+            ['0', '0'],
+            ['1', '1'],
+            ['-1', '-1'],
+            ['123456789012345678901234567890/7', '17636684144620811271604938270'],
+        ];
+    }
+
+    /**
+     * @param int|string $rational       The rational number to test.
+     * @param string     $fractionalPart The expected fractional part.
+     */
+    #[DataProvider('providerGetFractionalPart')]
+    public function testGetFractionalPart(int|string $rational, string $fractionalPart): void
+    {
+        self::assertBigRationalEquals($fractionalPart, BigRational::of($rational)->getFractionalPart());
+    }
+
+    public static function providerGetFractionalPart(): array
+    {
+        return [
+            ['7/3', '1/3'],
+            ['-7/3', '-1/3'],
+            ['3/4', '3/4'],
+            ['-3/4', '-3/4'],
+            ['22/7', '1/7'],
+            ['-22/7', '-1/7'],
+            ['1000/3', '1/3'],
+            ['-1000/3', '-1/3'],
+            ['895/400', '95/400'],
+            ['-2.5', '-5/10'],
+            ['-5/2', '-1/2'],
+            [-2, '0'],
+            ['0', '0'],
+            ['1', '0'],
+            ['-1', '0'],
+            ['123456789012345678901234567890/7', '0/7'],
+        ];
+    }
+
+    /**
+     * Tests that the identity $r == $r->getIntegralPart() + $r->getFractionalPart() holds.
+     *
+     * @param int|string $rational The rational number to test.
+     */
+    #[DataProvider('providerIntegralFractionalIdentity')]
+    public function testIntegralFractionalIdentity(int|string $rational): void
+    {
+        $r = BigRational::of($rational);
+        $reconstructed = $r->getFractionalPart()->plus($r->getIntegralPart());
+        self::assertTrue($r->isEqualTo($reconstructed));
+    }
+
+    public static function providerIntegralFractionalIdentity(): array
+    {
+        return [
+            ['7/3'],
+            ['-7/3'],
+            ['3/4'],
+            ['-3/4'],
+            ['22/7'],
+            ['-22/7'],
+            ['0'],
+            ['1'],
+            ['-1'],
+            ['1000000000000000000000/3'],
+            ['-999999999999999999999/7'],
+        ];
+    }
+
+    /**
      * @param string               $rational The rational number to test.
      * @param BigNumber|int|string $plus     The number to add.
      * @param string               $expected The expected rational number result.

@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.
 
 - New method: `BigRational::clamp()`
 - New method: `BigRational::ofFraction()` (replaces `nd()`)
+- New method: `BigRational::getIntegralPart()` (replaces `quotient()`)
+- New method: `BigRational::getFractionalPart()`
 
 👌 **Improvements**
 
