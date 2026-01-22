@@ -213,6 +213,40 @@ final readonly class BigRational extends BigNumber
     }
 
     /**
+     * Returns the integral part of this rational number.
+     *
+     * Examples:
+     *
+     * - `7/3` returns `2` (since 7/3 = 2 + 1/3)
+     * - `-7/3` returns `-2` (since -7/3 = -2 + (-1/3))
+     *
+     * The following identity holds: `$r->isEqualTo($r->getFractionalPart()->plus($r->getIntegralPart()))`.
+     *
+     * @pure
+     */
+    public function getIntegralPart(): BigInteger
+    {
+        return $this->quotient();
+    }
+
+    /**
+     * Returns the fractional part of this rational number.
+     *
+     * Examples:
+     *
+     * - `7/3` returns `1/3` (since 7/3 = 2 + 1/3)
+     * - `-7/3` returns `-1/3` (since -7/3 = -2 + (-1/3))
+     *
+     * The following identity holds: `$r->isEqualTo($r->getFractionalPart()->plus($r->getIntegralPart()))`.
+     *
+     * @pure
+     */
+    public function getFractionalPart(): BigRational
+    {
+        return new BigRational($this->remainder(), $this->denominator, false);
+    }
+
+    /**
      * Returns the sum of this number and the given one.
      *
      * @param BigNumber|int|float|string $that The number to add.

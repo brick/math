@@ -297,6 +297,47 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
+     * @param string $rational       The rational number to test.
+     * @param string $integralPart   The expected integral part.
+     * @param string $fractionalPart The expected fractional part.
+     */
+    #[DataProvider('providerGetIntegralAndFractionalPart')]
+    public function testGetIntegralAndFractionalPart(string $rational, string $integralPart, string $fractionalPart): void
+    {
+        $r = BigRational::of($rational);
+
+        self::assertBigIntegerEquals($integralPart, $r->getIntegralPart());
+        self::assertBigRationalEquals($fractionalPart, $r->getFractionalPart());
+
+        self::assertTrue($r->isEqualTo($r->getFractionalPart()->plus($r->getIntegralPart())));
+    }
+
+    public static function providerGetIntegralAndFractionalPart(): array
+    {
+        return [
+            ['7/3', '2', '1/3'],
+            ['-7/3', '-2', '-1/3'],
+            ['3/4', '0', '3/4'],
+            ['-3/4', '0', '-3/4'],
+            ['22/7', '3', '1/7'],
+            ['-22/7', '-3', '-1/7'],
+            ['1000/3', '333', '1/3'],
+            ['-1000/3', '-333', '-1/3'],
+            ['895/400', '2', '95/400'],
+            ['-2.5', '-2', '-5/10'],
+            ['-5/2', '-2', '-1/2'],
+            ['0', '0', '0'],
+            ['1', '1', '0'],
+            ['-1', '-1', '0'],
+            ['123456789012345678901234567889/7', '17636684144620811271604938269', '6/7'],
+            ['123456789012345678901234567890/7', '17636684144620811271604938270', '0/7'],
+            ['123456789012345678901234567891/7', '17636684144620811271604938270', '1/7'],
+            ['1000000000000000000000/3', '333333333333333333333', '1/3'],
+            ['-999999999999999999999/7', '-142857142857142857142', '-5/7'],
+        ];
+    }
+
+    /**
      * @param string               $rational The rational number to test.
      * @param BigNumber|int|string $plus     The number to add.
      * @param string               $expected The expected rational number result.
