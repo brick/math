@@ -427,6 +427,32 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
+    #[DataProvider('providerClamp')]
+    public function testClamp(string $number, BigNumber|int|float|string $min, BigNumber|int|float|string $max, string $expected): void
+    {
+        self::assertBigRationalEquals($expected, BigRational::of($number)->clamp($min, $max));
+    }
+
+    public static function providerClamp(): array
+    {
+        return [
+            ['1/2', '1/4', '3/4', '1/2'],   // within range
+            ['1/8', '1/4', '3/4', '1/4'],   // below min
+            ['7/8', '1/4', '3/4', '3/4'],   // above max
+            ['1/4', '1/4', '3/4', '1/4'],   // equals min
+            ['3/4', '1/4', '3/4', '3/4'],   // equals max
+            ['-1/2', '-3/4', '-1/4', '-1/2'],  // negative range, within
+            ['-1', '-3/4', '-1/4', '-3/4'],    // negative range, below min
+            ['-1/8', '-3/4', '-1/4', '-1/4'],  // negative range, above max
+            ['-3/4', '-3/4', '-1/4', '-3/4'],  // negative range, equals min
+            ['-1/4', '-3/4', '-1/4', '-1/4'],  // negative range, equals max
+            ['0', '-1/2', '1/2', '0'],         // zero within range
+            ['2/3', 0, 1, '2/3'],              // int min/max
+            ['3/2', 0.5, 1.0, '1'],            // float min/max
+            ['5/4', BigRational::of('1/2'), BigRational::of('1'), '1'],  // BigRational min/max
+        ];
+    }
+
     /**
      * @param string $rational The rational number to test.
      * @param string $expected The expected reciprocal.

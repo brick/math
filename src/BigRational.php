@@ -286,6 +286,29 @@ final readonly class BigRational extends BigNumber
     }
 
     /**
+     * Limits (clamps) this number between the given minimum and maximum values.
+     *
+     * If the number is lower than $min, returns a copy of $min.
+     * If the number is greater than $max, returns a copy of $max.
+     * Otherwise, returns this number unchanged.
+     *
+     * @param BigNumber|int|float|string $min The minimum. Must be convertible to a BigRational.
+     * @param BigNumber|int|float|string $max The maximum. Must be convertible to a BigRational.
+     *
+     * @throws MathException If min/max are not convertible to a BigRational.
+     */
+    public function clamp(BigNumber|int|float|string $min, BigNumber|int|float|string $max): BigRational
+    {
+        if ($this->isLessThan($min)) {
+            return BigRational::of($min);
+        } elseif ($this->isGreaterThan($max)) {
+            return BigRational::of($max);
+        }
+
+        return $this;
+    }
+
+    /**
      * Returns the reciprocal of this BigRational.
      *
      * The reciprocal has the numerator and denominator swapped.
