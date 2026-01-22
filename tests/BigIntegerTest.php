@@ -20,7 +20,6 @@ use InvalidArgumentException;
 use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-use function array_map;
 use function bin2hex;
 use function count;
 use function getenv;
@@ -392,13 +391,9 @@ class BigIntegerTest extends AbstractTestCase
         self::assertSame(BigInteger::ten(), BigInteger::ten());
     }
 
-    /**
-     * @param string[] $values
-     */
     #[DataProvider('providerGcdMultiple')]
     public function testGcdMultiple(array $values, string $expectedGCD): void
     {
-        $values = array_map(BigInteger::of(...), $values);
         $actualGCD = BigInteger::gcdMultiple(...$values);
 
         self::assertSame($expectedGCD, (string) $actualGCD);
@@ -429,6 +424,9 @@ class BigIntegerTest extends AbstractTestCase
         yield [['28', '56', '77784', '4'], '4'];
         yield [['28', '56', '77784', '14'], '14'];
         yield [['28', '56', '77784', '14', '4'], '2'];
+
+        // mixed types
+        yield [[12, 14.0, '18', BigInteger::of(20)], '2'];
     }
 
     /**
