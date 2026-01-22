@@ -33,13 +33,6 @@ use const PHP_INT_MIN;
  */
 class BigRationalTest extends AbstractTestCase
 {
-    #[DataProvider('providerOfFraction')]
-    public function testNd(string $numerator, string $denominator, int|string $n, int|string $d): void
-    {
-        $rational = BigRational::nd($n, $d);
-        self::assertBigRationalInternalValues($numerator, $denominator, $rational);
-    }
-
     /**
      * @param string     $numerator   The expected numerator.
      * @param string     $denominator The expected denominator.
@@ -62,17 +55,6 @@ class BigRationalTest extends AbstractTestCase
             ['9', '15', '-9', -15],
             ['-98765432109876543210', '12345678901234567890', '-98765432109876543210', '12345678901234567890'],
         ];
-    }
-
-    public function testNdWithZeroDenominator(): void
-    {
-        $this->expectException(DivisionByZeroException::class);
-        BigRational::nd(1, 0);
-    }
-
-    public function testNdWithNegativeDenominator(): void
-    {
-        self::assertBigRationalInternalValues('-1', '2', BigRational::nd(1, -2));
     }
 
     public function testOfFractionWithZeroDenominator(): void
