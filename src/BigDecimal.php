@@ -741,54 +741,6 @@ final readonly class BigDecimal extends BigNumber
     }
 
     /**
-     * Returns a string representing the integral part of this decimal number.
-     *
-     * Example: `-123.456` => `-123`.
-     *
-     * @deprecated Will be removed in 0.15 and re-introduced as returning BigInteger in 0.16.
-     */
-    public function getIntegralPart(): string
-    {
-        trigger_error(
-            'BigDecimal::getIntegralPart() is deprecated and will be removed in 0.15. It will be re-introduced as returning BigInteger in 0.16.',
-            E_USER_DEPRECATED,
-        );
-
-        if ($this->scale === 0) {
-            return $this->value;
-        }
-
-        $value = $this->getUnscaledValueWithLeadingZeros();
-
-        return substr($value, 0, -$this->scale);
-    }
-
-    /**
-     * Returns a string representing the fractional part of this decimal number.
-     *
-     * If the scale is zero, an empty string is returned.
-     *
-     * Examples: `-123.456` => '456', `123` => ''.
-     *
-     * @deprecated Will be removed in 0.15 and re-introduced as returning BigDecimal with a different meaning in 0.16.
-     */
-    public function getFractionalPart(): string
-    {
-        trigger_error(
-            'BigDecimal::getFractionalPart() is deprecated and will be removed in 0.15. It will be re-introduced as returning BigDecimal with a different meaning in 0.16.',
-            E_USER_DEPRECATED,
-        );
-
-        if ($this->scale === 0) {
-            return '';
-        }
-
-        $value = $this->getUnscaledValueWithLeadingZeros();
-
-        return substr($value, -$this->scale);
-    }
-
-    /**
      * Returns whether this decimal number has a non-zero fractional part.
      *
      * @pure
