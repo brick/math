@@ -917,13 +917,13 @@ class BigRationalTest extends AbstractTestCase
     public static function providerToScale(): array
     {
         return [
-            ['1/8', 3, RoundingMode::UNNECESSARY, '0.125'],
-            ['1/16', 3, RoundingMode::UNNECESSARY, RoundingNecessaryException::class],
-            ['1/16', 3, RoundingMode::HALF_DOWN, '0.062'],
-            ['1/16', 3, RoundingMode::HALF_UP, '0.063'],
-            ['1/9', 30, RoundingMode::DOWN, '0.111111111111111111111111111111'],
-            ['1/9', 30, RoundingMode::UP, '0.111111111111111111111111111112'],
-            ['1/9', 100, RoundingMode::UNNECESSARY, RoundingNecessaryException::class],
+            ['1/8', 3, RoundingMode::Unnecessary, '0.125'],
+            ['1/16', 3, RoundingMode::Unnecessary, RoundingNecessaryException::class],
+            ['1/16', 3, RoundingMode::HalfDown, '0.062'],
+            ['1/16', 3, RoundingMode::HalfUp, '0.063'],
+            ['1/9', 30, RoundingMode::Down, '0.111111111111111111111111111111'],
+            ['1/9', 30, RoundingMode::Up, '0.111111111111111111111111111112'],
+            ['1/9', 100, RoundingMode::Unnecessary, RoundingNecessaryException::class],
         ];
     }
 

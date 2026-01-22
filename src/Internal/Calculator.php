@@ -394,7 +394,7 @@ abstract readonly class Calculator
      * @param string       $b            The divisor, must not be zero.
      * @param RoundingMode $roundingMode The rounding mode.
      *
-     * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided but rounding is necessary.
+     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is provided but rounding is necessary.
      *
      * @pure
      */
@@ -415,52 +415,52 @@ abstract readonly class Calculator
         $increment = false;
 
         switch ($roundingMode) {
-            case RoundingMode::UNNECESSARY:
+            case RoundingMode::Unnecessary:
                 if ($hasDiscardedFraction) {
                     throw RoundingNecessaryException::roundingNecessary();
                 }
 
                 break;
 
-            case RoundingMode::UP:
+            case RoundingMode::Up:
                 $increment = $hasDiscardedFraction;
 
                 break;
 
-            case RoundingMode::DOWN:
+            case RoundingMode::Down:
                 break;
 
-            case RoundingMode::CEILING:
+            case RoundingMode::Ceiling:
                 $increment = $hasDiscardedFraction && $isPositiveOrZero;
 
                 break;
 
-            case RoundingMode::FLOOR:
+            case RoundingMode::Floor:
                 $increment = $hasDiscardedFraction && ! $isPositiveOrZero;
 
                 break;
 
-            case RoundingMode::HALF_UP:
+            case RoundingMode::HalfUp:
                 $increment = $discardedFractionSign() >= 0;
 
                 break;
 
-            case RoundingMode::HALF_DOWN:
+            case RoundingMode::HalfDown:
                 $increment = $discardedFractionSign() > 0;
 
                 break;
 
-            case RoundingMode::HALF_CEILING:
+            case RoundingMode::HalfCeiling:
                 $increment = $isPositiveOrZero ? $discardedFractionSign() >= 0 : $discardedFractionSign() > 0;
 
                 break;
 
-            case RoundingMode::HALF_FLOOR:
+            case RoundingMode::HalfFloor:
                 $increment = $isPositiveOrZero ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
 
                 break;
 
-            case RoundingMode::HALF_EVEN:
+            case RoundingMode::HalfEven:
                 $lastDigit = (int) $quotient[-1];
                 $lastDigitIsEven = ($lastDigit % 2 === 0);
                 $increment = $lastDigitIsEven ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
