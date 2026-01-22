@@ -698,35 +698,35 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
-     * Returns the modular multiplicative inverse of this BigInteger modulo $m.
+     * Returns the modular multiplicative inverse of this BigInteger modulo $modulus.
      *
-     * @param BigNumber|int|float|string $m The modulus. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $modulus The modulus. Must be convertible to a BigInteger.
      *
      * @throws MathException           If the modulus is not valid, or is not convertible to a BigInteger.
-     * @throws DivisionByZeroException If $m is zero.
-     * @throws NegativeNumberException If $m is negative.
+     * @throws DivisionByZeroException If the modulus is zero.
+     * @throws NegativeNumberException If the modulus is negative.
      * @throws MathException           If this BigInteger has no multiplicative inverse mod m (that is, this BigInteger
      *                                 is not relatively prime to m).
      *
      * @pure
      */
-    public function modInverse(BigNumber|int|float|string $m): BigInteger
+    public function modInverse(BigNumber|int|float|string $modulus): BigInteger
     {
-        $m = BigInteger::of($m);
+        $modulus = BigInteger::of($modulus);
 
-        if ($m->value === '0') {
+        if ($modulus->value === '0') {
             throw DivisionByZeroException::modulusMustNotBeZero();
         }
 
-        if ($m->isNegative()) {
+        if ($modulus->isNegative()) {
             throw new NegativeNumberException('Modulus must not be negative.');
         }
 
-        if ($m->value === '1') {
+        if ($modulus->value === '1') {
             return BigInteger::zero();
         }
 
-        $value = CalculatorRegistry::get()->modInverse($this->value, $m->value);
+        $value = CalculatorRegistry::get()->modInverse($this->value, $modulus->value);
 
         if ($value === null) {
             throw new MathException('Unable to compute the modInverse for the given modulus.');
