@@ -13,9 +13,6 @@ use LogicException;
 use Override;
 
 use function substr;
-use function trigger_error;
-
-use const E_USER_DEPRECATED;
 
 /**
  * An arbitrarily large rational number.
@@ -152,53 +149,6 @@ final readonly class BigRational extends BigNumber
     public function getDenominator(): BigInteger
     {
         return $this->denominator;
-    }
-
-    /**
-     * Returns the quotient of the division of the numerator by the denominator.
-     *
-     * @deprecated Will be removed in 0.15. Use getIntegralPart() instead.
-     */
-    public function quotient(): BigInteger
-    {
-        trigger_error(
-            'BigRational::quotient() is deprecated and will be removed in 0.15. Use getIntegralPart() instead.',
-            E_USER_DEPRECATED,
-        );
-
-        return $this->numerator->quotient($this->denominator);
-    }
-
-    /**
-     * Returns the remainder of the division of the numerator by the denominator.
-     *
-     * @deprecated Will be removed in 0.15. Use `$number->getNumerator()->remainder($number->getDenominator())` instead.
-     */
-    public function remainder(): BigInteger
-    {
-        trigger_error(
-            'BigRational::remainder() is deprecated and will be removed in 0.15. Use `$number->getNumerator()->remainder($number->getDenominator())` instead.',
-            E_USER_DEPRECATED,
-        );
-
-        return $this->numerator->remainder($this->denominator);
-    }
-
-    /**
-     * Returns the quotient and remainder of the division of the numerator by the denominator.
-     *
-     * @deprecated Will be removed in 0.15. Use `$number->getNumerator()->quotientAndRemainder($number->getDenominator())` instead.
-     *
-     * @return array{BigInteger, BigInteger}
-     */
-    public function quotientAndRemainder(): array
-    {
-        trigger_error(
-            'BigRational::quotientAndRemainder() is deprecated and will be removed in 0.15. Use `$number->getNumerator()->quotientAndRemainder($number->getDenominator())` instead.',
-            E_USER_DEPRECATED,
-        );
-
-        return $this->numerator->quotientAndRemainder($this->denominator);
     }
 
     /**
