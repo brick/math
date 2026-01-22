@@ -576,17 +576,17 @@ final readonly class BigDecimal extends BigNumber
      *
      * @pure
      */
-    public function withPointMovedLeft(int $n): BigDecimal
+    public function withPointMovedLeft(int $places): BigDecimal
     {
-        if ($n === 0) {
+        if ($places === 0) {
             return $this;
         }
 
-        if ($n < 0) {
-            return $this->withPointMovedRight(-$n);
+        if ($places < 0) {
+            return $this->withPointMovedRight(-$places);
         }
 
-        return new BigDecimal($this->value, $this->scale + $n);
+        return new BigDecimal($this->value, $this->scale + $places);
     }
 
     /**
@@ -594,18 +594,18 @@ final readonly class BigDecimal extends BigNumber
      *
      * @pure
      */
-    public function withPointMovedRight(int $n): BigDecimal
+    public function withPointMovedRight(int $places): BigDecimal
     {
-        if ($n === 0) {
+        if ($places === 0) {
             return $this;
         }
 
-        if ($n < 0) {
-            return $this->withPointMovedLeft(-$n);
+        if ($places < 0) {
+            return $this->withPointMovedLeft(-$places);
         }
 
         $value = $this->value;
-        $scale = $this->scale - $n;
+        $scale = $this->scale - $places;
 
         if ($scale < 0) {
             if ($value !== '0') {
