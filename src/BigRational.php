@@ -12,6 +12,10 @@ use InvalidArgumentException;
 use LogicException;
 use Override;
 
+use function trigger_error;
+
+use const E_USER_DEPRECATED;
+
 /**
  * An arbitrarily large rational number.
  *
@@ -63,6 +67,33 @@ final readonly class BigRational extends BigNumber
      * If the denominator is negative, the signs of both the numerator and the denominator
      * will be inverted to ensure that the denominator is always positive.
      *
+     * @deprecated Use ofFraction() instead.
+     *
+     * @param BigNumber|int|float|string $numerator   The numerator. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $denominator The denominator. Must be convertible to a BigInteger.
+     *
+     * @throws NumberFormatException      If an argument does not represent a valid number.
+     * @throws RoundingNecessaryException If an argument represents a non-integer number.
+     * @throws DivisionByZeroException    If the denominator is zero.
+     */
+    public static function nd(
+        BigNumber|int|float|string $numerator,
+        BigNumber|int|float|string $denominator,
+    ): BigRational {
+        trigger_error(
+            'The BigRational::nd() method is deprecated, use BigRational::ofFraction() instead.',
+            E_USER_DEPRECATED,
+        );
+
+        return self::ofFraction($numerator, $denominator);
+    }
+
+    /**
+     * Creates a BigRational out of a numerator and a denominator.
+     *
+     * If the denominator is negative, the signs of both the numerator and the denominator
+     * will be inverted to ensure that the denominator is always positive.
+     *
      * @param BigNumber|int|float|string $numerator   The numerator. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string $denominator The denominator. Must be convertible to a BigInteger.
      *
@@ -72,7 +103,7 @@ final readonly class BigRational extends BigNumber
      *
      * @pure
      */
-    public static function nd(
+    public static function ofFraction(
         BigNumber|int|float|string $numerator,
         BigNumber|int|float|string $denominator,
     ): BigRational {
