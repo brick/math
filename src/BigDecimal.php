@@ -19,7 +19,9 @@ use function str_pad;
 use function str_repeat;
 use function strlen;
 use function substr;
+use function trigger_error;
 
+use const E_USER_DEPRECATED;
 use const STR_PAD_LEFT;
 
 /**
@@ -660,10 +662,15 @@ final readonly class BigDecimal extends BigNumber
      *
      * Example: `-123.456` => `-123`.
      *
-     * @pure
+     * @deprecated Will be removed in 0.15 and re-introduced as returning BigInteger in 0.16.
      */
     public function getIntegralPart(): string
     {
+        trigger_error(
+            'BigDecimal::getIntegralPart() is deprecated and will be removed in 0.15. It will be re-introduced as returning BigInteger in 0.16.',
+            E_USER_DEPRECATED,
+        );
+
         if ($this->scale === 0) {
             return $this->value;
         }
@@ -680,10 +687,15 @@ final readonly class BigDecimal extends BigNumber
      *
      * Examples: `-123.456` => '456', `123` => ''.
      *
-     * @pure
+     * @deprecated Will be removed in 0.15 and re-introduced as returning BigDecimal with a different meaning in 0.16.
      */
     public function getFractionalPart(): string
     {
+        trigger_error(
+            'BigDecimal::getFractionalPart() is deprecated and will be removed in 0.15. It will be re-introduced as returning BigDecimal with a different meaning in 0.16.',
+            E_USER_DEPRECATED,
+        );
+
         if ($this->scale === 0) {
             return '';
         }
@@ -700,7 +712,13 @@ final readonly class BigDecimal extends BigNumber
      */
     public function hasNonZeroFractionalPart(): bool
     {
-        return $this->getFractionalPart() !== str_repeat('0', $this->scale);
+        if ($this->scale === 0) {
+            return false;
+        }
+
+        $value = $this->getUnscaledValueWithLeadingZeros();
+
+        return substr($value, -$this->scale) !== str_repeat('0', $this->scale);
     }
 
     #[Override]

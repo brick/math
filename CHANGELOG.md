@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 🗑️ **Deprecations**
 
+- Method `BigDecimal::getIntegralPart()` is deprecated (will be removed in 0.15, and re-introduced as returning `BigInteger` in 0.16)
+- Method `BigDecimal::getFractionalPart()` is deprecated (will be removed in 0.15, and re-introduced as returning `BigDecimal` with a different meaning in 0.16)
 - Method `BigRational::nd()` is deprecated, use `ofFraction()` instead
 
 ✨ **New features**
