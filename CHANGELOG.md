@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - deprecated method `BigRational::quotient()` has been removed, use `getIntegralPart()` instead
 - deprecated method `BigRational::remainder()` has been removed, use `$number->getNumerator()->remainder($number->getDenominator())` instead
 - deprecated method `BigRational::quotientAndRemainder()` has been removed, use `$number->getNumerator()->quotientAndRemainder($number->getDenominator())` instead
+- deprecated `RoundingMode` upper snake case constants (e.g. `HALF_UP`) have been removed, use the pascal case version (e.g. `HalfUp`) instead
 
 The following breaking changes only affect you if you're using named arguments:
 
