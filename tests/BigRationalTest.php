@@ -601,35 +601,6 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @param string $rational The rational number to test.
-     * @param string $expected The expected negated number.
-     */
-    #[DataProvider('providerSimplified')]
-    public function testSimplified(string $rational, string $expected): void
-    {
-        self::assertBigRationalEquals($expected, BigRational::of($rational)->simplified());
-    }
-
-    public static function providerSimplified(): array
-    {
-        return [
-            ['0', '0'],
-            ['1', '1'],
-            ['-1', '-1'],
-            ['0/123456', '0'],
-            ['-0/123456', '0'],
-            ['-1/123456', '-1/123456'],
-            ['4/6', '2/3'],
-            ['-4/6', '-2/3'],
-            ['123/456', '41/152'],
-            ['-234/567', '-26/63'],
-            ['489798742123504998877665/387590928349859112233445', '32653249474900333258511/25839395223323940815563'],
-            ['-395651984391591565172038784/445108482440540510818543632', '-8/9'],
-            ['1.125', '9/8'],
-        ];
-    }
-
-    /**
      * @param string     $a   The first number to compare.
      * @param int|string $b   The second number to compare.
      * @param int        $cmp The comparison value.
