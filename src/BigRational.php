@@ -12,10 +12,6 @@ use InvalidArgumentException;
 use LogicException;
 use Override;
 
-use function trigger_error;
-
-use const E_USER_DEPRECATED;
-
 /**
  * An arbitrarily large rational number.
  *
@@ -352,21 +348,6 @@ final readonly class BigRational extends BigNumber
     public function negated(): BigRational
     {
         return new BigRational($this->numerator->negated(), $this->denominator, false, false);
-    }
-
-    /**
-     * Returns the simplified value of this BigRational.
-     *
-     * @deprecated Since 0.15, this is a no-op. BigRational numbers are always in their simplest form.
-     */
-    public function simplified(): BigRational
-    {
-        trigger_error(
-            'BigRational::simplified() is a no-op since 0.15, and will be removed in 0.16. BigRational numbers are now always simplified to lowest terms.',
-            E_USER_DEPRECATED,
-        );
-
-        return $this;
     }
 
     #[Override]
