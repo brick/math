@@ -23,9 +23,7 @@ use function str_pad;
 use function str_repeat;
 use function strlen;
 use function substr;
-use function trigger_error;
 
-use const E_USER_DEPRECATED;
 use const STR_PAD_LEFT;
 
 /**
@@ -683,21 +681,6 @@ final readonly class BigDecimal extends BigNumber
         $length = strlen($this->value);
 
         return ($this->value[0] === '-') ? $length - 1 : $length;
-    }
-
-    /**
-     * Returns whether this decimal number has a non-zero fractional part.
-     *
-     * @deprecated Will be removed in 0.17. Use `! $number->getFractionalPart()->isZero()` instead.
-     */
-    public function hasNonZeroFractionalPart(): bool
-    {
-        trigger_error(
-            'BigDecimal::hasNonZeroFractionalPart() is deprecated and will be removed in 0.17. Use `! $number->getFractionalPart()->isZero()` instead.',
-            E_USER_DEPRECATED,
-        );
-
-        return ! $this->getFractionalPart()->isZero();
     }
 
     /**
