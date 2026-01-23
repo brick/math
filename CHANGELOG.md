@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## UNRELEASED (0.16.0)
 
+💥 **Breaking changes**
+
+- Deprecated method `BigRational::simplified()` has been removed, as it is now a no-op
+
 ✨ **New features**
 
 - New method: `BigDecimal::getIntegralPart()` returns the integral part as `BigInteger` (this method existed with a different signature in version 0.14, and was removed in 0.15)
