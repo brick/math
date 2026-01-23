@@ -394,8 +394,8 @@ class BigIntegerTest extends AbstractTestCase
     #[DataProvider('providerGcdAll')]
     public function testGcdAll(array $values, string $expectedGCD): void
     {
-        self::assertSame($expectedGCD, BigInteger::gcdAll(...$values)->toString());
-        self::assertSame($expectedGCD, BigInteger::gcdMultiple(...$values)->toString());
+        self::assertBigIntegerEquals($expectedGCD, BigInteger::gcdAll(...$values));
+        self::assertBigIntegerEquals($expectedGCD, BigInteger::gcdMultiple(...$values));
     }
 
     public static function providerGcdAll(): Generator
@@ -2729,7 +2729,7 @@ class BigIntegerTest extends AbstractTestCase
     #[DataProvider('providerModInverse')]
     public function testModInverse(string $x, BigNumber|int|float|string $m, string $expectedResult): void
     {
-        self::assertSame($expectedResult, BigInteger::of($x)->modInverse($m)->toString());
+        self::assertBigIntegerEquals($expectedResult, BigInteger::of($x)->modInverse($m));
     }
 
     public static function providerModInverse(): array
@@ -3323,7 +3323,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testFromBytes(string $byteStringHex, bool $signed, string $expectedNumber): void
     {
         $number = BigInteger::fromBytes(hex2bin($byteStringHex), $signed);
-        self::assertSame($expectedNumber, $number->toString());
+        self::assertBigIntegerEquals($expectedNumber, $number);
     }
 
     public static function providerFromBytes(): Generator
