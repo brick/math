@@ -31,7 +31,7 @@ class BigNumberTest extends AbstractTestCase
         $sum = $callingClass::sum(...$values);
 
         self::assertInstanceOf($expectedClass, $sum);
-        self::assertSame($expectedSum, (string) $sum);
+        self::assertSame($expectedSum, $sum->toString());
     }
 
     public static function providerSum(): array

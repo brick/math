@@ -1157,7 +1157,9 @@ class BigRationalTest extends AbstractTestCase
     #[DataProvider('providerToString')]
     public function testToString(string $numerator, string $denominator, string $expected): void
     {
-        self::assertBigRationalEquals($expected, BigRational::ofFraction($numerator, $denominator));
+        $bigRational = BigRational::ofFraction($numerator, $denominator);
+        self::assertSame($expected, $bigRational->toString());
+        self::assertSame($expected, (string) $bigRational);
     }
 
     public static function providerToString(): array

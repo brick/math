@@ -458,21 +458,29 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      */
     abstract public function toFloat(): float;
 
-    #[Override]
-    final public function jsonSerialize(): string
-    {
-        return $this->__toString();
-    }
-
     /**
      * Returns a string representation of this number.
      *
-     * The output of this method can be parsed by the `of()` factory method;
-     * this will yield an object equal to this one, without any information loss.
+     * The output of this method can be parsed by the `of()` factory method; this will yield an object equal to this
+     * one, but possibly of a different type if instantiated through `BigNumber::of()`.
      *
      * @pure
      */
-    abstract public function __toString(): string;
+    abstract public function toString(): string;
+
+    #[Override]
+    final public function jsonSerialize(): string
+    {
+        return $this->toString();
+    }
+
+    /**
+     * @pure
+     */
+    final public function __toString(): string
+    {
+        return $this->toString();
+    }
 
     /**
      * Overridden by subclasses to convert a BigNumber to an instance of the subclass.

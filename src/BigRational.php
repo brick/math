@@ -477,13 +477,26 @@ final readonly class BigRational extends BigNumber
         // decimal places (not significant digits), we subtract the estimated order of magnitude so that large results
         // use fewer decimal places and small results use more (to look past leading zeros). Clamped to [0, 350] as
         // doubles range from e-324 to e308 (350 ≈ 324 + 20 significant digits + margin).
-        $magnitude = strlen((string) $simplified->numerator->abs()) - strlen((string) $simplified->denominator);
+        $magnitude = strlen($simplified->numerator->abs()->toString()) - strlen($simplified->denominator->toString());
         $scale = min(350, max(0, 20 - $magnitude));
 
         return $simplified->numerator
             ->toBigDecimal()
             ->dividedBy($simplified->denominator, $scale, RoundingMode::HalfEven)
             ->toFloat();
+    }
+
+    #[Override]
+    public function toString(): string
+    {
+        $numerator = $this->numerator->toString();
+        $denominator = $this->denominator->toString();
+
+        if ($denominator === '1') {
+            return $numerator;
+        }
+
+        return $numerator . '/' . $denominator;
     }
 
     /**
@@ -514,7 +527,7 @@ final readonly class BigRational extends BigNumber
         $integral = $numerator->quotient($denominator);
         $remainder = $numerator->remainder($denominator);
 
-        $integralString = (string) $integral;
+        $integralString = $integral->toString();
 
         if ($remainder->isZero()) {
             return $sign . $integralString;
@@ -525,7 +538,7 @@ final readonly class BigRational extends BigNumber
         $index = 0;
 
         while (! $remainder->isZero()) {
-            $remainderString = (string) $remainder;
+            $remainderString = $remainder->toString();
 
             if (isset($remainderPositions[$remainderString])) {
                 $repeatIndex = $remainderPositions[$remainderString];
@@ -538,25 +551,12 @@ final readonly class BigRational extends BigNumber
             $remainderPositions[$remainderString] = $index;
             $remainder = $remainder->multipliedBy(10);
 
-            $digits .= (string) $remainder->quotient($denominator);
+            $digits .= $remainder->quotient($denominator)->toString();
             $remainder = $remainder->remainder($denominator);
             $index++;
         }
 
         return $sign . $integralString . '.' . $digits;
-    }
-
-    #[Override]
-    public function __toString(): string
-    {
-        $numerator = (string) $this->numerator;
-        $denominator = (string) $this->denominator;
-
-        if ($denominator === '1') {
-            return $numerator;
-        }
-
-        return $numerator . '/' . $denominator;
     }
 
     /**

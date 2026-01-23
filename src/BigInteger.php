@@ -1282,7 +1282,7 @@ final readonly class BigInteger extends BigNumber
      * @return numeric-string
      */
     #[Override]
-    public function __toString(): string
+    public function toString(): string
     {
         /** @var numeric-string */
         return $this->value;

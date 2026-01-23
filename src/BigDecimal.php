@@ -85,7 +85,7 @@ final readonly class BigDecimal extends BigNumber
      */
     public static function ofUnscaledValue(BigNumber|int|float|string $value, int $scale = 0): BigDecimal
     {
-        $value = (string) BigInteger::of($value);
+        $value = BigInteger::of($value)->toString();
 
         if ($scale < 0) {
             if ($value !== '0') {
@@ -842,14 +842,14 @@ final readonly class BigDecimal extends BigNumber
     #[Override]
     public function toFloat(): float
     {
-        return (float) (string) $this;
+        return (float) $this->toString();
     }
 
     /**
      * @return numeric-string
      */
     #[Override]
-    public function __toString(): string
+    public function toString(): string
     {
         if ($this->scale === 0) {
             /** @var numeric-string */
