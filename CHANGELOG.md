@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file.
 - New method: `BigDecimal::getIntegralPart()` returns the integral part as `BigInteger` (this method existed with a different signature in version 0.14, and was removed in 0.15)
 - New method: `BigDecimal::getFractionalPart()` returns the fractional part as `BigDecimal` (this method existed with a different signature and meaning in version 0.14, and was removed in 0.15)
 
+🗑️ **Deprecations**
+
+- Method `BigDecimal::hasNonZeroFractionalPart()` is deprecated, use `->getFractionalPart()->isZero()` instead
+
 ## UNRELEASED (0.15.0)
 
 💥 **Breaking changes**
@@ -62,6 +66,7 @@ The following breaking changes only affect you if you're using named arguments:
 - Method `BigDecimal::exactlyDividedBy()` is deprecated, use `dividedByExact()` instead
 - Method `BigDecimal::getIntegralPart()` is deprecated (will be removed in 0.15, and re-introduced as returning `BigInteger` in 0.16)
 - Method `BigDecimal::getFractionalPart()` is deprecated (will be removed in 0.15, and re-introduced as returning `BigDecimal` with a different meaning in 0.16)
+- Method `BigDecimal::hasNonZeroFractionalPart()` is deprecated and will be removed in 0.16
 - Method `BigRational::nd()` is deprecated, use `ofFraction()` instead
 - Method `BigRational::quotient()` is deprecated, use `getIntegralPart()` instead
 - Method `BigRational::remainder()` is deprecated, use `$number->getNumerator()->remainder($number->getDenominator())` instead
