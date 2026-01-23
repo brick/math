@@ -50,7 +50,7 @@ This library provides the following public classes in the `Brick\Math` namespace
 - [BigNumber](https://github.com/brick/math/blob/0.14.0/src/BigNumber.php): base class for `BigInteger`, `BigDecimal` and `BigRational`
 - [BigInteger](https://github.com/brick/math/blob/0.14.0/src/BigInteger.php): represents an arbitrary-precision integer number.
 - [BigDecimal](https://github.com/brick/math/blob/0.14.0/src/BigDecimal.php): represents an arbitrary-precision decimal number.
-- [BigRational](https://github.com/brick/math/blob/0.14.0/src/BigRational.php): represents an arbitrary-precision rational number (fraction).
+- [BigRational](https://github.com/brick/math/blob/0.14.0/src/BigRational.php): represents an arbitrary-precision rational number (fraction), always reduced to lowest terms.
 - [RoundingMode](https://github.com/brick/math/blob/0.14.0/src/RoundingMode.php): enum representing all available rounding modes.
 
 And the following exceptions in the `Brick\Math\Exception` namespace:
@@ -85,7 +85,6 @@ BigDecimal::of(1.2);
 BigDecimal::of('9.99999999999999999999999999999999999999999999');
 
 BigRational::of('2/3');
-BigRational::of('1.1'); // 11/10
 ```
 
 Note that all `of()` methods accept all the representations above, *as long as it can be safely converted to
@@ -97,6 +96,9 @@ BigInteger::of('1.01'); // RoundingNecessaryException
 
 BigDecimal::of('1/8'); // 0.125
 BigDecimal::of('1/3'); // RoundingNecessaryException
+
+BigRational::of('1.1'); // 11/10
+BigRational::of('1.15'); // 23/20 (reduced to lowest terms)
 ```
 
 Note about native integers: instantiating from an `int` is safe *as long as you don't exceed the maximum
@@ -220,8 +222,8 @@ echo BigDecimal::of(1)->dividedByExact(11); // RoundingNecessaryException
 The result of the division of a `BigRational` can always be represented exactly:
 
 ```php
-echo BigRational::of('123/456')->dividedBy('7'); // 123/3192
-echo BigRational::of('123/456')->dividedBy('9/8'); // 984/4104
+echo BigRational::of('13/99')->dividedBy('7'); // 13/693
+echo BigRational::of('13/99')->dividedBy('9/8'); // 104/891
 ```
 
 #### Bitwise operations
