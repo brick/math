@@ -21,6 +21,9 @@ use function rtrim;
 use function str_repeat;
 use function strlen;
 use function substr;
+use function trigger_error;
+
+use const E_USER_DEPRECATED;
 
 /**
  * An arbitrarily large decimal number.
@@ -699,17 +702,16 @@ final readonly class BigDecimal extends BigNumber
     /**
      * Returns whether this decimal number has a non-zero fractional part.
      *
-     * @pure
+     * @deprecated Will be removed in 0.17. Use `! $number->getFractionalPart()->isZero()` instead.
      */
     public function hasNonZeroFractionalPart(): bool
     {
-        if ($this->scale === 0) {
-            return false;
-        }
+        trigger_error(
+            'BigDecimal::hasNonZeroFractionalPart() is deprecated and will be removed in 0.17. Use `! $number->getFractionalPart()->isZero()` instead.',
+            E_USER_DEPRECATED,
+        );
 
-        $value = DecimalHelper::padUnscaledValue($this->value, $this->scale);
-
-        return substr($value, -$this->scale) !== str_repeat('0', $this->scale);
+        return ! $this->getFractionalPart()->isZero();
     }
 
     /**
