@@ -459,9 +459,9 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    final protected function newBigRational(BigInteger $numerator, BigInteger $denominator, bool $checkDenominator): BigRational
+    final protected function newBigRational(BigInteger $numerator, BigInteger $denominator, bool $checkDenominator, bool $simplify): BigRational
     {
-        return new BigRational($numerator, $denominator, $checkDenominator);
+        return new BigRational($numerator, $denominator, $checkDenominator, $simplify);
     }
 
     /**
@@ -516,6 +516,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
                 new BigInteger($numerator),
                 new BigInteger($denominator),
                 false,
+                true,
             );
         } else {
             // Integer or decimal number
