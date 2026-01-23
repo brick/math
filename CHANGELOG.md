@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## UNRELEASED (0.17.0)
+
+💥 **Breaking changes**
+
+- Deprecated method `BigDecimal::hasNonZeroFractionalPart()` has been removed, use `! $number->getFractionalPart()->isZero()` instead
+
 ## UNRELEASED (0.16.0)
 
 💥 **Breaking changes**
