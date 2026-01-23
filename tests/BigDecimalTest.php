@@ -3682,6 +3682,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testHasNonZeroFractionalPart(string $number, bool $hasNonZeroFractionalPart): void
     {
         self::assertSame($hasNonZeroFractionalPart, BigDecimal::of($number)->hasNonZeroFractionalPart());
+        self::assertSame($hasNonZeroFractionalPart, ! BigDecimal::of($number)->getFractionalPart()->isZero());
     }
 
     public static function providerHasNonZeroFractionalPart(): array
