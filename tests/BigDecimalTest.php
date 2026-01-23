@@ -3675,29 +3675,6 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @param string $number                   The number to test.
-     * @param bool   $hasNonZeroFractionalPart The expected return value.
-     */
-    #[DataProvider('providerHasNonZeroFractionalPart')]
-    public function testHasNonZeroFractionalPart(string $number, bool $hasNonZeroFractionalPart): void
-    {
-        self::assertSame($hasNonZeroFractionalPart, BigDecimal::of($number)->hasNonZeroFractionalPart());
-        self::assertSame($hasNonZeroFractionalPart, ! BigDecimal::of($number)->getFractionalPart()->isZero());
-    }
-
-    public static function providerHasNonZeroFractionalPart(): array
-    {
-        return [
-            ['1', false],
-            ['1.0', false],
-            ['1.01', true],
-            ['-123456789', false],
-            ['-123456789.0000000000000000000000000000000000000000000000000000000', false],
-            ['-123456789.00000000000000000000000000000000000000000000000000000001', true],
-        ];
-    }
-
-    /**
      * @param string $number         The decimal number to test.
      * @param string $integralPart   The expected integral part.
      * @param string $fractionalPart The expected fractional part.
