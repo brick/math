@@ -22,7 +22,7 @@ abstract class AbstractTestCase extends TestCase
      */
     final protected static function assertBigIntegerEquals(string $expected, BigInteger $actual): void
     {
-        self::assertSame($expected, (string) $actual);
+        self::assertSame($expected, $actual->toString());
     }
 
     /**
@@ -31,7 +31,7 @@ abstract class AbstractTestCase extends TestCase
      */
     final protected static function assertBigDecimalEquals(string $expected, BigDecimal $actual): void
     {
-        self::assertSame($expected, (string) $actual);
+        self::assertSame($expected, $actual->toString());
     }
 
     /**
@@ -40,7 +40,7 @@ abstract class AbstractTestCase extends TestCase
      */
     final protected static function assertBigRationalEquals(string $expected, BigRational $actual): void
     {
-        self::assertSame($expected, (string) $actual);
+        self::assertSame($expected, $actual->toString());
     }
 
     /**
@@ -50,7 +50,7 @@ abstract class AbstractTestCase extends TestCase
      */
     final protected static function assertBigDecimalInternalValues(string $unscaledValue, int $scale, BigDecimal $actual): void
     {
-        self::assertSame($unscaledValue, (string) $actual->getUnscaledValue(), 'Unscaled value mismatch');
+        self::assertSame($unscaledValue, $actual->getUnscaledValue()->toString(), 'Unscaled value mismatch');
         self::assertSame($scale, $actual->getScale(), 'Scale mismatch');
     }
 
@@ -61,8 +61,8 @@ abstract class AbstractTestCase extends TestCase
      */
     final protected static function assertBigRationalInternalValues(string $numerator, string $denominator, BigRational $actual): void
     {
-        self::assertSame($numerator, (string) $actual->getNumerator(), 'Numerator mismatch');
-        self::assertSame($denominator, (string) $actual->getDenominator(), 'Denominator mismatch');
+        self::assertSame($numerator, $actual->getNumerator()->toString(), 'Numerator mismatch');
+        self::assertSame($denominator, $actual->getDenominator()->toString(), 'Denominator mismatch');
     }
 
     final protected static function isException(string $name): bool

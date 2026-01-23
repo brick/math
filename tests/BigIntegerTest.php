@@ -394,8 +394,8 @@ class BigIntegerTest extends AbstractTestCase
     #[DataProvider('providerGcdAll')]
     public function testGcdAll(array $values, string $expectedGCD): void
     {
-        self::assertSame($expectedGCD, (string) BigInteger::gcdAll(...$values));
-        self::assertSame($expectedGCD, (string) BigInteger::gcdMultiple(...$values));
+        self::assertSame($expectedGCD, BigInteger::gcdAll(...$values)->toString());
+        self::assertSame($expectedGCD, BigInteger::gcdMultiple(...$values)->toString());
     }
 
     public static function providerGcdAll(): Generator
@@ -2729,7 +2729,7 @@ class BigIntegerTest extends AbstractTestCase
     #[DataProvider('providerModInverse')]
     public function testModInverse(string $x, BigNumber|int|float|string $m, string $expectedResult): void
     {
-        self::assertSame($expectedResult, (string) BigInteger::of($x)->modInverse($m));
+        self::assertSame($expectedResult, BigInteger::of($x)->modInverse($m)->toString());
     }
 
     public static function providerModInverse(): array
@@ -3323,7 +3323,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testFromBytes(string $byteStringHex, bool $signed, string $expectedNumber): void
     {
         $number = BigInteger::fromBytes(hex2bin($byteStringHex), $signed);
-        self::assertSame($expectedNumber, (string) $number);
+        self::assertSame($expectedNumber, $number->toString());
     }
 
     public static function providerFromBytes(): Generator
@@ -3702,6 +3702,27 @@ class BigIntegerTest extends AbstractTestCase
         $value = '123456789123456789123456789123456789';
         $random = BigInteger::randomRange($value, $value);
         self::assertBigIntegerEquals($value, $random);
+    }
+
+    #[DataProvider('providerToString')]
+    public function testToString(int|float|string $value, string $expected): void
+    {
+        $bigInteger = BigInteger::of($value);
+        self::assertSame($expected, $bigInteger->toString());
+        self::assertSame($expected, (string) $bigInteger);
+    }
+
+    public static function providerToString(): array
+    {
+        return [
+            [-1, '-1'],
+            [0, '0'],
+            [1, '1'],
+            [1e2, '100'],
+            [-1e3, '-1000'],
+            ['7349837498278937849739739878293798239223', '7349837498278937849739739878293798239223'],
+            ['-7349837498278937849739739878293798239223', '-7349837498278937849739739878293798239223'],
+        ];
     }
 
     public function testSerialize(): void

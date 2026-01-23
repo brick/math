@@ -430,6 +430,19 @@ final readonly class BigRational extends BigNumber
         return $this->numerator->toFloat() / $this->denominator->toFloat();
     }
 
+    #[Override]
+    public function toString(): string
+    {
+        $numerator = $this->numerator->toString();
+        $denominator = $this->denominator->toString();
+
+        if ($denominator === '1') {
+            return $numerator;
+        }
+
+        return $numerator . '/' . $denominator;
+    }
+
     /**
      * Returns the decimal representation of this rational number, with repeating decimals in parentheses.
      *
@@ -454,7 +467,7 @@ final readonly class BigRational extends BigNumber
         $integral = $numerator->quotient($denominator);
         $remainder = $numerator->remainder($denominator);
 
-        $integralString = (string) $integral;
+        $integralString = $integral->toString();
 
         if ($remainder->isZero()) {
             return $sign . $integralString;
@@ -465,7 +478,7 @@ final readonly class BigRational extends BigNumber
         $index = 0;
 
         while (! $remainder->isZero()) {
-            $remainderAsString = (string) $remainder;
+            $remainderAsString = $remainder->toString();
 
             if (isset($remainderPositions[$remainderAsString])) {
                 $repeatIndex = $remainderPositions[$remainderAsString];
@@ -478,25 +491,12 @@ final readonly class BigRational extends BigNumber
             $remainderPositions[$remainderAsString] = $index;
             $remainder = $remainder->multipliedBy(10);
 
-            $digits .= (string) $remainder->quotient($denominator);
+            $digits .= $remainder->quotient($denominator)->toString();
             $remainder = $remainder->remainder($denominator);
             $index++;
         }
 
         return $sign . $integralString . '.' . $digits;
-    }
-
-    #[Override]
-    public function __toString(): string
-    {
-        $numerator = (string) $this->numerator;
-        $denominator = (string) $this->denominator;
-
-        if ($denominator === '1') {
-            return $numerator;
-        }
-
-        return $numerator . '/' . $denominator;
     }
 
     /**
