@@ -422,10 +422,10 @@ final readonly class BigRational extends BigNumber
     }
 
     #[Override]
-    public function __toString(): string
+    public function toString(): string
     {
-        $numerator = (string) $this->numerator;
-        $denominator = (string) $this->denominator;
+        $numerator = $this->numerator->toString();
+        $denominator = $this->denominator->toString();
 
         if ($denominator === '1') {
             return $numerator;
