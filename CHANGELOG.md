@@ -26,6 +26,10 @@ The following breaking changes only affect you if you're using named arguments:
 
 - Method `BigRational::simplified()` is deprecated, as it is now a no-op
 
+✨ **New features**
+
+- New method: `BigNumber::toString()` (alias of magic method `__toString()`)
+
 ## [0.14.7](https://github.com/brick/math/releases/tag/0.14.7) - 2026-02-07
 
 ✨ **New features**
