@@ -1109,7 +1109,7 @@ final readonly class BigInteger extends BigNumber
     #[Override]
     public function toBigRational(): BigRational
     {
-        return self::newBigRational($this, BigInteger::one(), false);
+        return self::newBigRational($this, BigInteger::one(), false, false);
     }
 
     #[Override]

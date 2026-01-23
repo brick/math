@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 💥 **Breaking changes**
 
+- **`BigRational` is now always simplified to lowest terms:** all operations, including `of()` and `ofFraction()`, now return a fraction in its simplest form (e.g. `2/3` instead of `4/6`)
 - deprecated method `BigDecimal::getIntegralPart()` has been removed (will be re-introduced as returning `BigInteger` in 0.16)
 - deprecated method `BigDecimal::getFractionalPart()` has been removed (will be re-introduced as returning `BigDecimal` with a different meaning in 0.16)
 - deprecated method `BigRational::nd()` has been removed, use `ofFraction()` instead
@@ -20,6 +21,10 @@ The following breaking changes only affect you if you're using named arguments:
 - `BigInteger::modPow()` now uses `$exponent` and `$modulus` as parameter names
 - `BigDecimal::withPointMovedLeft()` now uses `$places` as the parameter name
 - `BigDecimal::withPointMovedRight()` now uses `$places` as the parameter name
+
+🗑️ **Deprecations**
+
+- Method `BigRational::simplified()` is deprecated, as it is now a no-op
 
 ## [0.14.7](https://github.com/brick/math/releases/tag/0.14.7) - 2026-02-07
 
