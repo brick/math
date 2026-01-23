@@ -776,7 +776,7 @@ final readonly class BigDecimal extends BigNumber
         $numerator = self::newBigInteger($this->value);
         $denominator = self::newBigInteger('1' . str_repeat('0', $this->scale));
 
-        return self::newBigRational($numerator, $denominator, false);
+        return self::newBigRational($numerator, $denominator, false, true);
     }
 
     #[Override]
