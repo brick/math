@@ -282,9 +282,7 @@ final readonly class BigRational extends BigNumber
     public function power(int $exponent): BigRational
     {
         if ($exponent === 0) {
-            $one = BigInteger::one();
-
-            return new BigRational($one, $one, false, false);
+            return BigRational::one();
         }
 
         if ($exponent === 1) {
