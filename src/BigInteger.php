@@ -976,17 +976,17 @@ final readonly class BigInteger extends BigNumber
      *
      * @pure
      */
-    public function shiftedLeft(int $distance): BigInteger
+    public function shiftedLeft(int $bits): BigInteger
     {
-        if ($distance === 0) {
+        if ($bits === 0) {
             return $this;
         }
 
-        if ($distance < 0) {
-            return $this->shiftedRight(-$distance);
+        if ($bits < 0) {
+            return $this->shiftedRight(-$bits);
         }
 
-        return $this->multipliedBy(BigInteger::of(2)->power($distance));
+        return $this->multipliedBy(BigInteger::of(2)->power($bits));
     }
 
     /**
@@ -996,17 +996,17 @@ final readonly class BigInteger extends BigNumber
      *
      * @pure
      */
-    public function shiftedRight(int $distance): BigInteger
+    public function shiftedRight(int $bits): BigInteger
     {
-        if ($distance === 0) {
+        if ($bits === 0) {
             return $this;
         }
 
-        if ($distance < 0) {
-            return $this->shiftedLeft(-$distance);
+        if ($bits < 0) {
+            return $this->shiftedLeft(-$bits);
         }
 
-        $operand = BigInteger::of(2)->power($distance);
+        $operand = BigInteger::of(2)->power($bits);
 
         if ($this->isPositiveOrZero()) {
             return $this->quotient($operand);

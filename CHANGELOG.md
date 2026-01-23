@@ -18,6 +18,8 @@ The following breaking changes only affect you if you're using named arguments:
 
 - `BigInteger::modInverse()` now uses `$modulus` as the parameter name
 - `BigInteger::modPow()` now uses `$exponent` and `$modulus` as parameter names
+- `BigInteger::shiftedLeft()` now uses `$bits` as the parameter name
+- `BigInteger::shiftedRight()` now uses `$bits` as the parameter name
 - `BigDecimal::withPointMovedLeft()` now uses `$places` as the parameter name
 - `BigDecimal::withPointMovedRight()` now uses `$places` as the parameter name
 
