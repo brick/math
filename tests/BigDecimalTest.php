@@ -225,7 +225,7 @@ class BigDecimalTest extends AbstractTestCase
         }
 
         // Test a large enough number (thousands separator) with decimal digits (decimal separator)
-        self::assertSame('2500.5', BigDecimal::of(5001 / 2)->toString());
+        self::assertBigDecimalEquals('2500.5', BigDecimal::of(5001 / 2));
 
         // Ensure that the locale has been reset to its original value by BigNumber::of()
         self::assertSame($locale, setlocale(LC_NUMERIC, '0'));
@@ -355,7 +355,7 @@ class BigDecimalTest extends AbstractTestCase
     #[DataProvider('providerOfUnscaledValueToString')]
     public function testOfUnscaledValueToString(string $unscaledValue, int $scale, string $expected): void
     {
-        self::assertSame($expected, BigDecimal::ofUnscaledValue($unscaledValue, $scale)->toString());
+        self::assertBigDecimalEquals($expected, BigDecimal::ofUnscaledValue($unscaledValue, $scale));
     }
 
     public static function providerOfUnscaledValueToString(): array
