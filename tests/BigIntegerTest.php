@@ -396,7 +396,6 @@ class BigIntegerTest extends AbstractTestCase
     public function testGcdAll(array $values, string|int $expectedGCD): void
     {
         self::assertBigIntegerEquals((string) $expectedGCD, BigInteger::gcdAll(...$values));
-        self::assertBigIntegerEquals((string) $expectedGCD, BigInteger::gcdMultiple(...$values));
     }
 
     public static function providerGcdAll(): Generator
