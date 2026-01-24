@@ -866,6 +866,8 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the integer left shifted by a given number of bits.
      *
+     * @throws InvalidArgumentException If the shift count is too large.
+     *
      * @pure
      */
     public function shiftedLeft(int $bits): BigInteger
@@ -883,6 +885,8 @@ final readonly class BigInteger extends BigNumber
 
     /**
      * Returns the integer right shifted by a given number of bits.
+     *
+     * @throws InvalidArgumentException If the shift count is too large.
      *
      * @pure
      */
