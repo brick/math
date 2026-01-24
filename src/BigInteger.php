@@ -410,22 +410,6 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
-     * @deprecated Use gcdAll() instead.
-     *
-     * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
-     * @param BigNumber|int|float|string ...$n The subsequent numbers. Must be convertible to BigInteger.
-     */
-    public static function gcdMultiple(BigNumber|int|float|string $a, BigNumber|int|float|string ...$n): BigInteger
-    {
-        trigger_error(
-            'BigInteger::gcdMultiple() is deprecated and will be removed in version 0.15. Use gcdAll() instead.',
-            E_USER_DEPRECATED,
-        );
-
-        return self::gcdAll($a, ...$n);
-    }
-
-    /**
      * Returns the sum of this number and the given one.
      *
      * @param BigNumber|int|float|string $that The number to add. Must be convertible to a BigInteger.
