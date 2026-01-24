@@ -391,15 +391,14 @@ class BigIntegerTest extends AbstractTestCase
         self::assertSame(BigInteger::ten(), BigInteger::ten());
     }
 
-    #[DataProvider('providerGcdMultiple')]
-    public function testGcdMultiple(array $values, string $expectedGCD): void
+    #[DataProvider('providerGcdAll')]
+    public function testGcdAll(array $values, string $expectedGCD): void
     {
-        $actualGCD = BigInteger::gcdMultiple(...$values);
-
-        self::assertSame($expectedGCD, (string) $actualGCD);
+        self::assertSame($expectedGCD, (string) BigInteger::gcdAll(...$values));
+        self::assertSame($expectedGCD, (string) BigInteger::gcdMultiple(...$values));
     }
 
-    public static function providerGcdMultiple(): Generator
+    public static function providerGcdAll(): Generator
     {
         // 1 value
         foreach (['-2', '-1', '0', '1', '2'] as $value) {
