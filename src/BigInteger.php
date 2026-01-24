@@ -32,7 +32,9 @@ use function str_repeat;
 use function strlen;
 use function strtolower;
 use function substr;
+use function trigger_error;
 
+use const E_USER_DEPRECATED;
 use const FILTER_VALIDATE_INT;
 
 /**
@@ -350,7 +352,7 @@ final readonly class BigInteger extends BigNumber
      *
      * @pure
      */
-    public static function gcdMultiple(BigNumber|int|float|string $a, BigNumber|int|float|string ...$n): BigInteger
+    public static function gcdAll(BigNumber|int|float|string $a, BigNumber|int|float|string ...$n): BigInteger
     {
         $result = BigInteger::of($a);
 
@@ -363,6 +365,22 @@ final readonly class BigInteger extends BigNumber
         }
 
         return $result;
+    }
+
+    /**
+     * @deprecated Use gcdAll() instead.
+     *
+     * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string ...$n The subsequent numbers. Must be convertible to BigInteger.
+     */
+    public static function gcdMultiple(BigNumber|int|float|string $a, BigNumber|int|float|string ...$n): BigInteger
+    {
+        trigger_error(
+            'BigInteger::gcdMultiple() is deprecated and will be removed in version 0.15. Use gcdAll() instead.',
+            E_USER_DEPRECATED,
+        );
+
+        return self::gcdAll($a, ...$n);
     }
 
     /**
