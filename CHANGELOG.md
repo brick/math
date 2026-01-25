@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 💥 **Breaking changes**
 
 - **`BigRational` is now always simplified to lowest terms:** all operations, including `of()` and `ofFraction()`, now return a fraction in its simplest form (e.g. `2/3` instead of `4/6`)
+- **`BigInteger::sqrt()` and `BigDecimal::sqrt()` now default to `RoundingMode::Unnecessary`**, explicitly pass `RoundingMode::Down` to get the previous behaviour
 - deprecated method `BigInteger::gcdMultiple()` has been removed, use `gcdAll()` instead
 - deprecated method `BigDecimal::getIntegralPart()` has been removed (will be re-introduced as returning `BigInteger` in 0.16)
 - deprecated method `BigDecimal::getFractionalPart()` has been removed (will be re-introduced as returning `BigDecimal` with a different meaning in 0.16)
@@ -31,6 +32,7 @@ The following breaking changes only affect you if you're using named arguments:
 
 ✨ **New features**
 
+- `BigInteger::sqrt()` and `BigDecimal::sqrt()` now support rounding
 - New method: `BigNumber::toString()` (alias of magic method `__toString()`)
 
 ## [0.14.2](https://github.com/brick/math/releases/tag/0.14.2) - 2026-01-30
