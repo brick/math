@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 💥 **Breaking changes**
 
 - **`BigRational` is now always simplified to lowest terms:** all operations, including `of()` and `ofFraction()`, now return a fraction in its simplest form (e.g. `2/3` instead of `4/6`)
+- **`BigInteger::sqrt()` and `BigDecimal::sqrt()` now default to `RoundingMode::Unnecessary`**, explicitly pass `RoundingMode::Down` to get the previous behaviour
 - deprecated method `BigInteger::testBit()` has been removed, use `isBitSet()` instead
 - deprecated method `BigInteger::gcdMultiple()` has been removed, use `gcdAll()` instead
 - deprecated method `BigDecimal::getIntegralPart()` has been removed (will be re-introduced as returning `BigInteger` in 0.16)

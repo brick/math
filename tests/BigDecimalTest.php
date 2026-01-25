@@ -3047,15 +3047,6 @@ class BigDecimalTest extends AbstractTestCase
         $number->sqrt(-1);
     }
 
-    public function testSqrtWithoutRoundingModeTriggersDeprecation(): void
-    {
-        $this->expectUserDeprecationMessage(
-            'The default rounding mode of BigDecimal::sqrt() will change from Down to Unnecessary in version 0.15. Pass a rounding mode explicitly to avoid this breaking change.',
-        );
-
-        self::assertBigDecimalEquals('1', BigDecimal::of(2)->sqrt(0));
-    }
-
     #[DataProvider('providerClamp')]
     public function testClamp(string $number, string $min, string $max, string $expected): void
     {

@@ -21,7 +21,6 @@ use function bin2hex;
 use function chr;
 use function count_chars;
 use function filter_var;
-use function func_num_args;
 use function hex2bin;
 use function in_array;
 use function intdiv;
@@ -810,27 +809,15 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the integer square root of this number, rounded according to the given rounding mode.
      *
-     * @param RoundingMode $roundingMode The rounding mode to use, defaults to Down.
-     *                                   ⚠️ WARNING: the default rounding mode was kept as Down for backward
-     *                                   compatibility, but will change to Unnecessary in version 0.15. Pass a rounding
-     *                                   mode explicitly to avoid this upcoming breaking change.
+     * @param RoundingMode $roundingMode The rounding mode to use, defaults to Unnecessary.
      *
      * @throws NegativeNumberException    If this number is negative.
      * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used, and the number is not a perfect square.
      *
      * @pure
      */
-    public function sqrt(RoundingMode $roundingMode = RoundingMode::Down): BigInteger
+    public function sqrt(RoundingMode $roundingMode = RoundingMode::Unnecessary): BigInteger
     {
-        if (func_num_args() === 0) {
-            // @phpstan-ignore-next-line
-            trigger_error(
-                'The default rounding mode of BigInteger::sqrt() will change from Down to Unnecessary in version 0.15. ' .
-                'Pass a rounding mode explicitly to avoid this breaking change.',
-                E_USER_DEPRECATED,
-            );
-        }
-
         if ($this->value[0] === '-') {
             throw new NegativeNumberException('Cannot calculate the square root of a negative number.');
         }
