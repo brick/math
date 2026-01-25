@@ -3636,15 +3636,6 @@ class BigIntegerTest extends AbstractTestCase
         $number->sqrt();
     }
 
-    public function testSqrtWithoutRoundingModeTriggersDeprecation(): void
-    {
-        $this->expectUserDeprecationMessage(
-            'The default rounding mode of BigInteger::sqrt() will change from Down to Unnecessary in version 0.15. Pass a rounding mode explicitly to avoid this breaking change.',
-        );
-
-        self::assertBigIntegerEquals('1', BigInteger::of(2)->sqrt());
-    }
-
     /**
      * @param string $number   The number as a string.
      * @param string $expected The expected absolute result.
