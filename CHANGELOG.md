@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ✨ **New features**
 
+- `BigInteger::sqrt()` and `BigDecimal::sqrt()` now support rounding
 - `abs()` and `negated()` methods are now available on the base `BigNumber` class
 
 👌 **Improvements**

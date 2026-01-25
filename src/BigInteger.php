@@ -9,6 +9,7 @@ use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
 use InvalidArgumentException;
@@ -808,23 +809,67 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
-     * Returns the integer square root number of this number, rounded down.
+     * Returns the integer square root of this number, rounded according to the given rounding mode.
      *
-     * The result is the largest x such that x² ≤ n.
+     * @param RoundingMode $roundingMode The rounding mode to use, defaults to Down.
      *
-     * @throws NegativeNumberException If this number is negative.
+     * @throws NegativeNumberException    If this number is negative.
+     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used, and the number is not a perfect square.
      *
      * @pure
      */
-    public function sqrt(): BigInteger
+    public function sqrt(RoundingMode $roundingMode = RoundingMode::Down): BigInteger
     {
         if ($this->value[0] === '-') {
             throw new NegativeNumberException('Cannot calculate the square root of a negative number.');
         }
 
-        $value = CalculatorRegistry::get()->sqrt($this->value);
+        $calculator = CalculatorRegistry::get();
 
-        return new BigInteger($value);
+        $sqrt = $calculator->sqrt($this->value);
+
+        // For Down and Floor (equivalent for non-negative numbers), return floor sqrt
+        if ($roundingMode === RoundingMode::Down || $roundingMode === RoundingMode::Floor) {
+            return new BigInteger($sqrt);
+        }
+
+        // Check if the sqrt is exact
+        $s2 = $calculator->mul($sqrt, $sqrt);
+        $remainder = $calculator->sub($this->value, $s2);
+
+        if ($remainder === '0') {
+            // sqrt is exact
+            return new BigInteger($sqrt);
+        }
+
+        // sqrt is not exact
+        if ($roundingMode === RoundingMode::Unnecessary) {
+            throw RoundingNecessaryException::roundingNecessary();
+        }
+
+        // For Up and Ceiling (equivalent for non-negative numbers), round up
+        if ($roundingMode === RoundingMode::Up || $roundingMode === RoundingMode::Ceiling) {
+            return new BigInteger($calculator->add($sqrt, '1'));
+        }
+
+        // For Half* modes, compare our number to the midpoint of the interval [s², (s+1)²[.
+        // The midpoint is s² + s + 0.5. Comparing n >= s² + s + 0.5 with remainder = n − s²
+        // is equivalent to comparing 2*remainder >= 2*s + 1.
+        $twoRemainder = $calculator->mul($remainder, '2');
+        $threshold = $calculator->add($calculator->mul($sqrt, '2'), '1');
+        $cmp = $calculator->cmp($twoRemainder, $threshold);
+
+        // We're supposed to increment (round up) when:
+        //   - HalfUp, HalfCeiling => $cmp >= 0
+        //   - HalfDown, HalfFloor => $cmp > 0
+        //   - HalfEven => $cmp > 0 || ($cmp === 0 && $sqrt % 2 === 1)
+        // But 2*remainder is always even and 2*s + 1 is always odd, so $cmp is never zero.
+        // Therefore, all Half* modes simplify to:
+        if ($cmp > 0) {
+            $sqrt = $calculator->add($sqrt, '1');
+        }
+
+        return new BigInteger($sqrt);
     }
 
     public function negated(): static

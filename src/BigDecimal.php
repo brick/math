@@ -7,12 +7,16 @@ namespace Brick\Math;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
+use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
 use InvalidArgumentException;
 use LogicException;
 use Override;
 
+use function in_array;
+use function intdiv;
+use function max;
 use function rtrim;
 use function sprintf;
 use function str_pad;
@@ -483,14 +487,18 @@ final readonly class BigDecimal extends BigNumber
     }
 
     /**
-     * Returns the square root of this number, rounded down to the given number of decimals.
+     * Returns the square root of this number, rounded to the given scale according to the given rounding mode.
      *
-     * @throws InvalidArgumentException If the scale is negative.
-     * @throws NegativeNumberException  If this number is negative.
+     * @param int          $scale        The target scale.
+     * @param RoundingMode $roundingMode The rounding mode to use, defaults to Down.
+     *
+     * @throws InvalidArgumentException   If the scale is negative.
+     * @throws NegativeNumberException    If this number is negative.
+     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used, but rounding is necessary.
      *
      * @pure
      */
-    public function sqrt(int $scale): BigDecimal
+    public function sqrt(int $scale, RoundingMode $roundingMode = RoundingMode::Down): BigDecimal
     {
         if ($scale < 0) {
             throw new InvalidArgumentException('Scale must not be negative.');
@@ -505,24 +513,40 @@ final readonly class BigDecimal extends BigNumber
         }
 
         $value = $this->value;
-        $addDigits = 2 * $scale - $this->scale;
+        $inputScale = $this->scale;
 
-        if ($addDigits > 0) {
-            // add zeros
-            $value .= str_repeat('0', $addDigits);
-        } elseif ($addDigits < 0) {
-            // trim digits
-            if (-$addDigits >= strlen($this->value)) {
-                // requesting a scale too low, will always yield a zero result
-                return new BigDecimal('0', $scale);
-            }
-
-            $value = substr($value, 0, $addDigits);
+        if ($inputScale % 2 !== 0) {
+            $value .= '0';
+            $inputScale++;
         }
 
-        $value = CalculatorRegistry::get()->sqrt($value);
+        $calculator = CalculatorRegistry::get();
 
-        return new BigDecimal($value, $scale);
+        // Keep one extra digit for rounding.
+        $intermediateScale = max($scale, intdiv($inputScale, 2)) + 1;
+        $value .= str_repeat('0', 2 * $intermediateScale - $inputScale);
+
+        $sqrt = $calculator->sqrt($value);
+        $isExact = $calculator->mul($sqrt, $sqrt) === $value;
+
+        if (! $isExact) {
+            if ($roundingMode === RoundingMode::Unnecessary) {
+                throw RoundingNecessaryException::roundingNecessary();
+            }
+
+            // Non-perfect-square sqrt is irrational, so the true value is strictly above this sqrt floor.
+            // Add one at the intermediate scale to guarantee Up/Ceiling round up at the target scale.
+            if (in_array($roundingMode, [RoundingMode::Up, RoundingMode::Ceiling], true)) {
+                $sqrt = $calculator->add($sqrt, '1');
+            }
+
+            // Irrational sqrt cannot land exactly on a midpoint; treat tie-to-down modes as HalfUp.
+            elseif (in_array($roundingMode, [RoundingMode::HalfDown, RoundingMode::HalfEven, RoundingMode::HalfFloor], true)) {
+                $roundingMode = RoundingMode::HalfUp;
+            }
+        }
+
+        return (new BigDecimal($sqrt, $intermediateScale))->toScale($scale, $roundingMode);
     }
 
     /**
