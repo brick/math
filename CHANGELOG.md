@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - **`BigRational` is now always simplified to lowest terms:** all operations, including `of()` and `ofFraction()`, now return a fraction in its simplest form (e.g. `2/3` instead of `4/6`)
 - **`BigInteger::sqrt()` and `BigDecimal::sqrt()` now default to `RoundingMode::Unnecessary`**, explicitly pass `RoundingMode::Down` to get the previous behaviour
 - deprecated method `BigInteger::gcdMultiple()` has been removed, use `gcdAll()` instead
+- deprecated method `BigDecimal::exactlyDividedBy()` has been removed, use `dividedByExact()` instead
 - deprecated method `BigDecimal::getIntegralPart()` has been removed (will be re-introduced as returning `BigInteger` in 0.16)
 - deprecated method `BigDecimal::getFractionalPart()` has been removed (will be re-introduced as returning `BigDecimal` with a different meaning in 0.16)
 - deprecated method `BigRational::nd()` has been removed, use `ofFraction()` instead
