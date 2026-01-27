@@ -6,13 +6,13 @@ namespace Brick\Math\Tests;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
 use Generator;
-use InvalidArgumentException;
 use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
 

@@ -8,12 +8,12 @@ use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\BigRational;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
 use Generator;
-use InvalidArgumentException;
 use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
 
