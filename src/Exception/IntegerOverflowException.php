@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Brick\Math\Exception;
 
 use Brick\Math\BigInteger;
+use RuntimeException;
 
 use function sprintf;
 
@@ -14,7 +15,7 @@ use const PHP_INT_MIN;
 /**
  * Exception thrown when an integer overflow occurs.
  */
-final class IntegerOverflowException extends MathException
+final class IntegerOverflowException extends RuntimeException implements MathException
 {
     /**
      * @pure

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Brick\Math;
 
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\RoundingNecessaryException;
-use InvalidArgumentException;
 use LogicException;
 use Override;
 

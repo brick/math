@@ -6,13 +6,14 @@ namespace Brick\Math;
 
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
+use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
+use Brick\Math\Exception\NoInverseException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
-use InvalidArgumentException;
 use LogicException;
 use Override;
 
@@ -285,7 +286,7 @@ final readonly class BigInteger extends BigNumber
         $max = BigInteger::of($max);
 
         if ($min->isGreaterThan($max)) {
-            throw new MathException('$min must be less than or equal to $max.');
+            throw new InvalidArgumentException('$min must be less than or equal to $max.');
         }
 
         if ($min->isEqualTo($max)) {
@@ -688,7 +689,7 @@ final readonly class BigInteger extends BigNumber
      * @throws MathException           If the modulus is not valid, or is not convertible to a BigInteger.
      * @throws DivisionByZeroException If the modulus is zero.
      * @throws NegativeNumberException If the modulus is negative.
-     * @throws MathException           If this BigInteger has no multiplicative inverse mod m (that is, this BigInteger
+     * @throws NoInverseException      If this BigInteger has no multiplicative inverse mod m (that is, this BigInteger
      *                                 is not relatively prime to m).
      *
      * @pure
@@ -712,7 +713,7 @@ final readonly class BigInteger extends BigNumber
         $value = CalculatorRegistry::get()->modInverse($this->value, $modulus->value);
 
         if ($value === null) {
-            throw new MathException('Unable to compute the modInverse for the given modulus.');
+            throw NoInverseException::noModularInverse();
         }
 
         return new BigInteger($value);

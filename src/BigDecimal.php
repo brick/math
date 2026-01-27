@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Brick\Math;
 
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
-use InvalidArgumentException;
 use LogicException;
 use Override;
 

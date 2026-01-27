@@ -53,14 +53,7 @@ This library provides the following public classes in the `Brick\Math` namespace
 - [BigRational](https://github.com/brick/math/blob/0.14.8/src/BigRational.php): represents an arbitrary-precision rational number (fraction), always reduced to lowest terms.
 - [RoundingMode](https://github.com/brick/math/blob/0.14.8/src/RoundingMode.php): enum representing all available rounding modes.
 
-And the following exceptions in the `Brick\Math\Exception` namespace:
-
-- [MathException](https://github.com/brick/math/blob/0.14.8/src/Exception/MathException.php): base class for all exceptions
-- [DivisionByZeroException](https://github.com/brick/math/blob/0.14.8/src/Exception/DivisionByZeroException.php): thrown when a division by zero occurs
-- [IntegerOverflowException](https://github.com/brick/math/blob/0.14.8/src/Exception/IntegerOverflowException.php): thrown when attempting to convert a too large `BigInteger` to `int`
-- [NumberFormatException](https://github.com/brick/math/blob/0.14.8/src/Exception/NumberFormatException.php): thrown when parsing a number string in an invalid format
-- [RoundingNecessaryException](https://github.com/brick/math/blob/0.14.8/src/Exception/RoundingNecessaryException.php): thrown when the result of the operation cannot be represented without explicit rounding
-- [NegativeNumberException](https://github.com/brick/math/blob/0.14.8/src/Exception/NegativeNumberException.php): thrown when attempting to calculate the square root of a negative number
+And [exceptions](#exceptions) in the `Brick\Math\Exception` namespace.
 
 ### Overview
 
@@ -238,6 +231,32 @@ and bit shifting:
 
 - `shiftedLeft()`
 - `shiftedRight()`
+
+#### Exceptions
+
+All exceptions thrown by this library implement the `MathException` interface.
+This means that you can safely catch all exceptions thrown by this library using a single catch clause:
+
+```php
+use Brick\Math\BigDecimal;
+use Brick\Math\Exception\MathException;
+
+try {
+    $number = BigInteger::of(1)->dividedBy(3);
+} catch (MathException $e) {
+    // ...
+}
+```
+
+If you need more granular control over the exceptions thrown, you can catch the specific exception classes:
+
+- `DivisionByZeroException`
+- `IntegerOverflowException`
+- `InvalidArgumentException`
+- `NegativeNumberException`
+- `NoInverseException`
+- `NumberFormatException`
+- `RoundingNecessaryException`
 
 #### Serialization
 

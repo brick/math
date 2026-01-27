@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - **`BigRational` is now always simplified to lowest terms:** all operations, including `of()` and `ofFraction()`, now return a fraction in its simplest form (e.g. `2/3` instead of `4/6`)
 - **`BigInteger::sqrt()` and `BigDecimal::sqrt()` now default to `RoundingMode::Unnecessary`**, explicitly pass `RoundingMode::Down` to get the previous behaviour
+- **`MathException` is now an interface** instead of a class
 - deprecated method `BigInteger::testBit()` has been removed, use `isBitSet()` instead
 - deprecated method `BigInteger::gcdMultiple()` has been removed, use `gcdAll()` instead
 - deprecated method `BigDecimal::exactlyDividedBy()` has been removed, use `dividedByExact()` instead
@@ -31,6 +32,11 @@ The following breaking changes only affect you if you're using named arguments:
 🗑️ **Deprecations**
 
 - Method `BigRational::simplified()` is deprecated, as it is now a no-op
+
+✨ **New features**
+
+- New exception: `InvalidArgumentException` for invalid argument errors
+- New exception: `NoInverseException` for modular inverse errors
 
 ## [0.14.8](https://github.com/brick/math/releases/tag/0.14.8) - 2026-02-10
 
@@ -137,6 +143,7 @@ The following breaking changes only affect you if you're using named arguments:
 
 👌 **Improvements**
 
+- All exceptions thrown by the library now implement a common `MathException` interface
 - `BigInteger::modInverse()` now accepts `BigNumber|int|float|string` instead of just `BigInteger`
 - `BigInteger::gcdMultiple()` now accepts `BigNumber|int|float|string` instead of just `BigInteger`
 

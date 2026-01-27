@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Brick\Math\Exception;
 
+use RuntimeException;
+
 use function dechex;
 use function ord;
 use function sprintf;
@@ -12,7 +14,7 @@ use function strtoupper;
 /**
  * Exception thrown when attempting to create a number from a string with an invalid format.
  */
-final class NumberFormatException extends MathException
+final class NumberFormatException extends RuntimeException implements MathException
 {
     /**
      * @pure
