@@ -39,6 +39,10 @@ The following breaking changes only affect you if you're using named arguments:
 - New exception: `InvalidArgumentException` for invalid argument errors
 - New exception: `NoInverseException` for modular inverse errors
 
+👌 **Improvements**
+
+- More exceptions have been documented with `@throws` annotations
+
 ## [0.14.2](https://github.com/brick/math/releases/tag/0.14.2) - 2026-01-30
 
 🗑️ **Deprecations**

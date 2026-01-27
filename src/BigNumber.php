@@ -219,6 +219,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Checks if this number is equal to the given one.
      *
+     * @throws MathException If the given number is not valid.
+     *
      * @pure
      */
     final public function isEqualTo(BigNumber|int|float|string $that): bool
@@ -228,6 +230,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
     /**
      * Checks if this number is strictly lower than the given one.
+     *
+     * @throws MathException If the given number is not valid.
      *
      * @pure
      */
@@ -239,6 +243,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Checks if this number is lower than or equal to the given one.
      *
+     * @throws MathException If the given number is not valid.
+     *
      * @pure
      */
     final public function isLessThanOrEqualTo(BigNumber|int|float|string $that): bool
@@ -249,6 +255,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Checks if this number is strictly greater than the given one.
      *
+     * @throws MathException If the given number is not valid.
+     *
      * @pure
      */
     final public function isGreaterThan(BigNumber|int|float|string $that): bool
@@ -258,6 +266,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
     /**
      * Checks if this number is greater than or equal to the given one.
+     *
+     * @throws MathException If the given number is not valid.
      *
      * @pure
      */
@@ -371,8 +381,9 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * @param int          $scale        The scale of the resulting `BigDecimal`.
      * @param RoundingMode $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
-     * @throws RoundingNecessaryException If this number cannot be converted to the given scale without rounding.
-     *                                    This only applies when RoundingMode::Unnecessary is used.
+     * @throws InvalidArgumentException   If the scale is negative.
+     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used, and this number cannot be converted to
+     *                                    the given scale without rounding.
      *
      * @pure
      */
