@@ -39,6 +39,10 @@ The following breaking changes only affect you if you're using named arguments:
 - New exception: `InvalidArgumentException` for invalid argument errors (implements `MathException`)
 - New exception: `NoInverseException` for modular inverse errors (implements `MathException`)
 
+👌 **Improvements**
+
+- More exceptions have been documented with `@throws` annotations
+
 ## UNRELEASED (0.14.2)
 
 🗑️ **Deprecations**

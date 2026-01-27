@@ -218,6 +218,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Checks if this number is equal to the given one.
      *
+     * @throws MathException If the given number is not valid.
+     *
      * @pure
      */
     final public function isEqualTo(BigNumber|int|float|string $that): bool
@@ -227,6 +229,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
     /**
      * Checks if this number is strictly lower than the given one.
+     *
+     * @throws MathException If the given number is not valid.
      *
      * @pure
      */
@@ -238,6 +242,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Checks if this number is lower than or equal to the given one.
      *
+     * @throws MathException If the given number is not valid.
+     *
      * @pure
      */
     final public function isLessThanOrEqualTo(BigNumber|int|float|string $that): bool
@@ -248,6 +254,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Checks if this number is strictly greater than the given one.
      *
+     * @throws MathException If the given number is not valid.
+     *
      * @pure
      */
     final public function isGreaterThan(BigNumber|int|float|string $that): bool
@@ -257,6 +265,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
     /**
      * Checks if this number is greater than or equal to the given one.
+     *
+     * @throws MathException If the given number is not valid.
      *
      * @pure
      */
