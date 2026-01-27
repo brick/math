@@ -272,28 +272,6 @@ final readonly class BigDecimal extends BigNumber
      * @throws MathException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero,
      *                       or the result yields an infinite number of digits.
      *
-     * @deprecated Will be removed in 0.15. Use dividedByExact() instead.
-     */
-    public function exactlyDividedBy(BigNumber|int|float|string $that): BigDecimal
-    {
-        trigger_error(
-            'BigDecimal::exactlyDividedBy() is deprecated and will be removed in 0.15. Use dividedByExact() instead.',
-            E_USER_DEPRECATED,
-        );
-
-        return $this->dividedByExact($that);
-    }
-
-    /**
-     * Returns the exact result of the division of this number by the given one.
-     *
-     * The scale of the result is automatically calculated to fit all the fraction digits.
-     *
-     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
-     *
-     * @throws MathException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero,
-     *                       or the result yields an infinite number of digits.
-     *
      * @pure
      */
     public function dividedByExact(BigNumber|int|float|string $that): BigDecimal
