@@ -866,27 +866,6 @@ class BigDecimalTest extends AbstractTestCase
      * @param string           $expected The expected result, or a class name if an exception is expected.
      */
     #[DataProvider('providerDividedByExact')]
-    public function testExactlyDividedBy(int|float|string $number, int|float|string $divisor, string $expected): void
-    {
-        $number = BigDecimal::of($number);
-
-        if (self::isException($expected)) {
-            $this->expectException($expected);
-        }
-
-        $actual = $number->exactlyDividedBy($divisor);
-
-        if (! self::isException($expected)) {
-            self::assertBigDecimalEquals($expected, $actual);
-        }
-    }
-
-    /**
-     * @param int|float|string $number   The number to divide.
-     * @param int|float|string $divisor  The divisor.
-     * @param string           $expected The expected result, or a class name if an exception is expected.
-     */
-    #[DataProvider('providerDividedByExact')]
     public function testDividedByExact(int|float|string $number, int|float|string $divisor, string $expected): void
     {
         $number = BigDecimal::of($number);
@@ -934,12 +913,6 @@ class BigDecimalTest extends AbstractTestCase
             ['123', '0', DivisionByZeroException::class],
             [-789, '0.0', DivisionByZeroException::class],
         ];
-    }
-
-    public function testExactlyDividedByZero(): void
-    {
-        $this->expectException(DivisionByZeroException::class);
-        BigDecimal::of(1)->exactlyDividedBy(0);
     }
 
     public function testDividedByExactWithZero(): void
