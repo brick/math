@@ -206,13 +206,13 @@ echo BigDecimal::of(1)->dividedBy('8', 2, RoundingMode::HalfDown); // 0.12
 echo BigDecimal::of(1)->dividedBy('8', 2, RoundingMode::HalfUp); // 0.13
 ```
 
-If you know that the division yields a finite number of decimals places, you can use `exactlyDividedBy()`, which will
+If you know that the division yields a finite number of decimals places, you can use `dividedByExact()`, which will
 automatically compute the required scale to fit the result, or throw an exception if the division yields an infinite
 repeating decimal:
 
 ```php
-echo BigDecimal::of(1)->exactlyDividedBy(256); // 0.00390625
-echo BigDecimal::of(1)->exactlyDividedBy(11); // RoundingNecessaryException
+echo BigDecimal::of(1)->dividedByExact(256); // 0.00390625
+echo BigDecimal::of(1)->dividedByExact(11); // RoundingNecessaryException
 ```
 
 ##### BigRational

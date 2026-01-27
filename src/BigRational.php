@@ -464,7 +464,7 @@ final readonly class BigRational extends BigNumber
     #[Override]
     public function toBigDecimal(): BigDecimal
     {
-        return $this->numerator->toBigDecimal()->exactlyDividedBy($this->denominator);
+        return $this->numerator->toBigDecimal()->dividedByExact($this->denominator);
     }
 
     #[Override]
