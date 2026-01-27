@@ -8,6 +8,7 @@ use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
+use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
@@ -16,7 +17,6 @@ use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
 use Brick\Math\RoundingMode;
 use Generator;
-use InvalidArgumentException;
 use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
 

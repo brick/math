@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Brick\Math\Exception;
 
+use RuntimeException;
+
 /**
  * Exception thrown when a number cannot be represented at the requested scale without rounding.
  */
-final class RoundingNecessaryException extends MathException
+final class RoundingNecessaryException extends RuntimeException implements MathException
 {
     /**
      * @pure
