@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 👌 **Improvements**
 
 - Performance optimization of `BigRational` comparison methods
+- More exceptions have been documented with `@throws` annotations
 
 ## [0.14.7](https://github.com/brick/math/releases/tag/0.14.7) - 2026-02-07
 

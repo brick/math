@@ -363,6 +363,8 @@ final readonly class BigInteger extends BigNumber
      * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string ...$n The subsequent numbers. Must be convertible to BigInteger.
      *
+     * @throws MathException If one of the parameters cannot be converted to a BigInteger.
+     *
      * @pure
      */
     public static function gcdAll(BigNumber|int|float|string $a, BigNumber|int|float|string ...$n): BigInteger
@@ -387,6 +389,8 @@ final readonly class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string ...$n The subsequent numbers. Must be convertible to BigInteger.
+     *
+     * @throws MathException If one of the parameters cannot be converted to a BigInteger.
      *
      * @pure
      */
@@ -564,6 +568,7 @@ final readonly class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
+     * @throws MathException           If the divisor is not valid, or is not convertible to a BigInteger.
      * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
@@ -599,6 +604,7 @@ final readonly class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
+     * @throws MathException           If the divisor is not valid, or is not convertible to a BigInteger.
      * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
@@ -634,6 +640,7 @@ final readonly class BigInteger extends BigNumber
      *
      * @return array{BigInteger, BigInteger} An array containing the quotient and the remainder.
      *
+     * @throws MathException           If the divisor is not valid, or is not convertible to a BigInteger.
      * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
@@ -664,6 +671,7 @@ final readonly class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
+     * @throws MathException           If the divisor is not valid, or is not convertible to a BigInteger.
      * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
@@ -735,6 +743,7 @@ final readonly class BigInteger extends BigNumber
      * @param BigNumber|int|float|string $exp The exponent. Must be positive or zero.
      * @param BigNumber|int|float|string $mod The modulus. Must be strictly positive.
      *
+     * @throws MathException           If the exponent or modulus is not valid, or not convertible to a BigInteger.
      * @throws NegativeNumberException If the exponent or modulus is negative.
      * @throws DivisionByZeroException If the modulus is zero.
      *
@@ -769,6 +778,8 @@ final readonly class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
      *
+     * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
+     *
      * @pure
      */
     public function gcd(BigNumber|int|float|string $that): BigInteger
@@ -794,6 +805,8 @@ final readonly class BigInteger extends BigNumber
      * The LCM is always positive, unless at least one operand is zero, in which case it is zero.
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     *
+     * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
      *
      * @pure
      */
@@ -899,6 +912,8 @@ final readonly class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
      *
+     * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
+     *
      * @pure
      */
     public function and(BigNumber|int|float|string $that): BigInteger
@@ -915,6 +930,8 @@ final readonly class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
      *
+     * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
+     *
      * @pure
      */
     public function or(BigNumber|int|float|string $that): BigInteger
@@ -930,6 +947,8 @@ final readonly class BigInteger extends BigNumber
      * This method returns a negative BigInteger if and only if exactly one of the operands is negative.
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     *
+     * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
      *
      * @pure
      */
@@ -953,6 +972,8 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the integer left shifted by a given number of bits.
      *
+     * @throws InvalidArgumentException If the number of bits is out of range.
+     *
      * @pure
      */
     public function shiftedLeft(int $distance): BigInteger
@@ -970,6 +991,8 @@ final readonly class BigInteger extends BigNumber
 
     /**
      * Returns the integer right shifted by a given number of bits.
+     *
+     * @throws InvalidArgumentException If the number of bits is out of range.
      *
      * @pure
      */

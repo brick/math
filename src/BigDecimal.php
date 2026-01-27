@@ -81,6 +81,8 @@ final readonly class BigDecimal extends BigNumber
      * @param int                        $scale The scale of the number. If negative, the scale will be set to zero
      *                                          and the unscaled value will be adjusted accordingly.
      *
+     * @throws MathException If the value is not valid, or is not convertible to a BigInteger.
+     *
      * @pure
      */
     public static function ofUnscaledValue(BigNumber|int|float|string $value, int $scale = 0): BigDecimal
