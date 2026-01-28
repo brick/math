@@ -333,7 +333,8 @@ final readonly class BigRational extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor.
      *
-     * @throws MathException If the divisor is not a valid number, or is zero.
+     * @throws MathException           If the divisor is not a valid number.
+     * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
      */

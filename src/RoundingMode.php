@@ -5,13 +5,8 @@ declare(strict_types=1);
 namespace Brick\Math;
 
 /**
- * Specifies a rounding behavior for numerical operations capable of discarding precision.
- *
- * Each rounding mode indicates how the least significant returned digit of a rounded result
- * is to be calculated. If fewer digits are returned than the digits needed to represent the
- * exact numerical result, the discarded digits will be referred to as the discarded fraction
- * regardless the digits' contribution to the value of the number. In other words, considered
- * as a numerical value, the discarded fraction could have an absolute value greater than one.
+ * Specifies rounding behavior by defining how discarded digits affect the returned result when an exact value cannot
+ * be represented at the requested scale.
  */
 enum RoundingMode
 {
@@ -50,7 +45,7 @@ enum RoundingMode
     /**
      * Rounds towards negative infinity.
      *
-     * If the result is positive, behave as for Down; if negative, behave as for Up.
+     * If the result is positive, behaves as for Down; if negative, behaves as for Up.
      * Note that this rounding mode never increases the calculated value.
      */
     case Floor;

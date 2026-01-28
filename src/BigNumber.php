@@ -229,7 +229,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     }
 
     /**
-     * Checks if this number is strictly lower than the given one.
+     * Checks if this number is strictly less than the given one.
      *
      * @pure
      */
@@ -239,7 +239,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     }
 
     /**
-     * Checks if this number is lower than or equal to the given one.
+     * Checks if this number is less than or equal to the given one.
      *
      * @pure
      */
@@ -420,7 +420,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Converts this number to a BigDecimal with the given scale, using rounding if necessary.
      *
-     * @param int          $scale        The scale of the resulting `BigDecimal`.
+     * @param int          $scale        The scale of the resulting `BigDecimal`. Must be non-negative.
      * @param RoundingMode $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws RoundingNecessaryException If this number cannot be converted to the given scale without rounding.

@@ -141,7 +141,10 @@ final readonly class BigInteger extends BigNumber
     /**
      * Parses a string containing an integer in an arbitrary base, using a custom alphabet.
      *
-     * Because this method accepts an alphabet with any character, including dash, it does not handle negative numbers.
+     * This method is byte-oriented: the alphabet is interpreted as a sequence of single-byte characters.
+     * Multibyte UTF-8 characters are not supported.
+     *
+     * Because this method accepts any single-byte character, including dash, it does not handle negative numbers.
      *
      * @param string $number   The number to parse.
      * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
@@ -261,7 +264,7 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
-     * Generates a pseudo-random number between `$min` and `$max`.
+     * Generates a pseudo-random number between `$min` and `$max`, inclusive.
      *
      * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
@@ -353,6 +356,10 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
+     * Returns the greatest common divisor of the given numbers.
+     *
+     * The GCD is always positive, unless all numbers are zero, in which case it is zero.
+     *
      * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string ...$n The subsequent numbers. Must be convertible to BigInteger.
      *
@@ -374,6 +381,10 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
+     * Returns the least common multiple of the given numbers.
+     *
+     * The LCM is always positive, unless one of the numbers is zero, in which case it is zero.
+     *
      * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string ...$n The subsequent numbers. Must be convertible to BigInteger.
      *
@@ -544,6 +555,13 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the quotient of the division of this number by the given one.
      *
+     * Examples:
+     *
+     * - `7` quotient `3` returns `2`
+     * - `7` quotient `-3` returns `-2`
+     * - `-7` quotient `3` returns `-2`
+     * - `-7` quotient `-3` returns `2`
+     *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @throws DivisionByZeroException If the divisor is zero.
@@ -572,6 +590,13 @@ final readonly class BigInteger extends BigNumber
      *
      * The remainder, when non-zero, has the same sign as the dividend.
      *
+     * Examples:
+     *
+     * - `7` remainder `3` returns `1`
+     * - `7` remainder `-3` returns `1`
+     * - `-7` remainder `3` returns `-1`
+     * - `-7` remainder `-3` returns `-1`
+     *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @throws DivisionByZeroException If the divisor is zero.
@@ -597,6 +622,13 @@ final readonly class BigInteger extends BigNumber
 
     /**
      * Returns the quotient and remainder of the division of this number by the given one.
+     *
+     * Examples:
+     *
+     * - `7` quotientAndRemainder `3` returns [`2`, `1`]
+     * - `7` quotientAndRemainder `-3` returns [`-2`, `1`]
+     * - `-7` quotientAndRemainder `3` returns [`-2`, `-1`]
+     * - `-7` quotientAndRemainder `-3` returns [`2`, `-1`]
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
@@ -662,6 +694,7 @@ final readonly class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $m The modulus. Must be convertible to a BigInteger.
      *
+     * @throws MathException           If the modulus is not valid, or is not convertible to a BigInteger.
      * @throws DivisionByZeroException If $m is zero.
      * @throws NegativeNumberException If $m is negative.
      * @throws MathException           If this BigInteger has no multiplicative inverse mod m (that is, this BigInteger
@@ -1128,7 +1161,10 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns a string representation of this number in an arbitrary base with a custom alphabet.
      *
-     * Because this method accepts an alphabet with any character, including dash, it does not handle negative numbers;
+     * This method is byte-oriented: the alphabet is interpreted as a sequence of single-byte characters.
+     * Multibyte UTF-8 characters are not supported.
+     *
+     * Because this method accepts any single-byte character, including dash, it does not handle negative numbers;
      * a NegativeNumberException will be thrown when attempting to call this method on a negative number.
      *
      * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
