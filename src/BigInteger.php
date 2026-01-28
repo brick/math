@@ -268,8 +268,8 @@ final readonly class BigInteger extends BigNumber
      *
      * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
-     * @param BigNumber|int|float|string   $min                  The lower bound. Must be convertible to a BigInteger.
-     * @param BigNumber|int|float|string   $max                  The upper bound. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string         $min                  The lower bound. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string         $max                  The upper bound. Must be convertible to a BigInteger.
      * @param (callable(int): string)|null $randomBytesGenerator A function that accepts a number of bytes, and returns
      *                                                           a string of random bytes of the given length. Defaults
      *                                                           to the `random_bytes()` function.
@@ -278,8 +278,8 @@ final readonly class BigInteger extends BigNumber
      *                       or `$min` is greater than `$max`.
      */
     public static function randomRange(
-        BigNumber|int|float|string $min,
-        BigNumber|int|float|string $max,
+        BigNumber|int|string $min,
+        BigNumber|int|string $max,
         ?callable $randomBytesGenerator = null,
     ): BigInteger {
         $min = BigInteger::of($min);
@@ -360,14 +360,14 @@ final readonly class BigInteger extends BigNumber
      *
      * The GCD is always positive, unless all numbers are zero, in which case it is zero.
      *
-     * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
-     * @param BigNumber|int|float|string ...$n The subsequent numbers. Must be convertible to BigInteger.
+     * @param BigNumber|int|string $a    The first number. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string ...$n The subsequent numbers. Must be convertible to BigInteger.
      *
      * @throws MathException If one of the parameters cannot be converted to a BigInteger.
      *
      * @pure
      */
-    public static function gcdAll(BigNumber|int|float|string $a, BigNumber|int|float|string ...$n): BigInteger
+    public static function gcdAll(BigNumber|int|string $a, BigNumber|int|string ...$n): BigInteger
     {
         $result = BigInteger::of($a)->abs();
 
@@ -387,12 +387,12 @@ final readonly class BigInteger extends BigNumber
      *
      * The LCM is always positive, unless one of the numbers is zero, in which case it is zero.
      *
-     * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
-     * @param BigNumber|int|float|string ...$n The subsequent numbers. Must be convertible to BigInteger.
+     * @param BigNumber|int|string $a    The first number. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string ...$n The subsequent numbers. Must be convertible to BigInteger.
      *
      * @pure
      */
-    public static function lcmAll(BigNumber|int|float|string $a, BigNumber|int|float|string ...$n): BigInteger
+    public static function lcmAll(BigNumber|int|string $a, BigNumber|int|string ...$n): BigInteger
     {
         $result = BigInteger::of($a)->abs();
 
@@ -410,13 +410,13 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the sum of this number and the given one.
      *
-     * @param BigNumber|int|float|string $that The number to add. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string $that The number to add. Must be convertible to a BigInteger.
      *
      * @throws MathException If the number is not valid, or is not convertible to a BigInteger.
      *
      * @pure
      */
-    public function plus(BigNumber|int|float|string $that): BigInteger
+    public function plus(BigNumber|int|string $that): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -436,13 +436,13 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the difference of this number and the given one.
      *
-     * @param BigNumber|int|float|string $that The number to subtract. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string $that The number to subtract. Must be convertible to a BigInteger.
      *
      * @throws MathException If the number is not valid, or is not convertible to a BigInteger.
      *
      * @pure
      */
-    public function minus(BigNumber|int|float|string $that): BigInteger
+    public function minus(BigNumber|int|string $that): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -458,13 +458,13 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the product of this number and the given one.
      *
-     * @param BigNumber|int|float|string $that The multiplier. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string $that The multiplier. Must be convertible to a BigInteger.
      *
      * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigInteger.
      *
      * @pure
      */
-    public function multipliedBy(BigNumber|int|float|string $that): BigInteger
+    public function multipliedBy(BigNumber|int|string $that): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -484,8 +484,8 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the result of the division of this number by the given one.
      *
-     * @param BigNumber|int|float|string $that         The divisor. Must be convertible to a BigInteger.
-     * @param RoundingMode               $roundingMode An optional rounding mode, defaults to Unnecessary.
+     * @param BigNumber|int|string $that         The divisor. Must be convertible to a BigInteger.
+     * @param RoundingMode         $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws MathException              If the divisor is not a valid number or is not convertible to a BigInteger.
      * @throws DivisionByZeroException    If the divisor is zero.
@@ -493,7 +493,7 @@ final readonly class BigInteger extends BigNumber
      *
      * @pure
      */
-    public function dividedBy(BigNumber|int|float|string $that, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigInteger
+    public function dividedBy(BigNumber|int|string $that, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -548,14 +548,14 @@ final readonly class BigInteger extends BigNumber
      * - `-7` quotient `3` returns `-2`
      * - `-7` quotient `-3` returns `2`
      *
-     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @throws MathException           If the divisor is not valid, or is not convertible to a BigInteger.
      * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
      */
-    public function quotient(BigNumber|int|float|string $that): BigInteger
+    public function quotient(BigNumber|int|string $that): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -584,14 +584,14 @@ final readonly class BigInteger extends BigNumber
      * - `-7` remainder `3` returns `-1`
      * - `-7` remainder `-3` returns `-1`
      *
-     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @throws MathException           If the divisor is not valid, or is not convertible to a BigInteger.
      * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
      */
-    public function remainder(BigNumber|int|float|string $that): BigInteger
+    public function remainder(BigNumber|int|string $that): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -618,7 +618,7 @@ final readonly class BigInteger extends BigNumber
      * - `-7` quotientAndRemainder `3` returns [`-2`, `-1`]
      * - `-7` quotientAndRemainder `-3` returns [`2`, `-1`]
      *
-     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @return array{BigInteger, BigInteger} An array containing the quotient and the remainder.
      *
@@ -627,7 +627,7 @@ final readonly class BigInteger extends BigNumber
      *
      * @pure
      */
-    public function quotientAndRemainder(BigNumber|int|float|string $that): array
+    public function quotientAndRemainder(BigNumber|int|string $that): array
     {
         $that = BigInteger::of($that);
 
@@ -651,14 +651,14 @@ final readonly class BigInteger extends BigNumber
      *
      * The result of the modulo operation, when non-zero, has the same sign as the divisor.
      *
-     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string $that The divisor. Must be convertible to a BigInteger.
      *
      * @throws MathException           If the divisor is not valid, or is not convertible to a BigInteger.
      * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
      */
-    public function mod(BigNumber|int|float|string $that): BigInteger
+    public function mod(BigNumber|int|string $that): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -682,7 +682,7 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the modular multiplicative inverse of this BigInteger modulo $modulus.
      *
-     * @param BigNumber|int|float|string $modulus The modulus. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string $modulus The modulus. Must be convertible to a BigInteger.
      *
      * @throws MathException           If the modulus is not valid, or is not convertible to a BigInteger.
      * @throws DivisionByZeroException If $modulus is zero.
@@ -692,7 +692,7 @@ final readonly class BigInteger extends BigNumber
      *
      * @pure
      */
-    public function modInverse(BigNumber|int|float|string $modulus): BigInteger
+    public function modInverse(BigNumber|int|string $modulus): BigInteger
     {
         $modulus = BigInteger::of($modulus);
 
@@ -722,8 +722,8 @@ final readonly class BigInteger extends BigNumber
      *
      * This operation requires a non-negative exponent and a strictly positive modulus.
      *
-     * @param BigNumber|int|float|string $exponent The exponent. Must be positive or zero.
-     * @param BigNumber|int|float|string $modulus  The modulus. Must be strictly positive.
+     * @param BigNumber|int|string $exponent The exponent. Must be positive or zero.
+     * @param BigNumber|int|string $modulus  The modulus. Must be strictly positive.
      *
      * @throws MathException           If the exponent or modulus is not valid, or not convertible to a BigInteger.
      * @throws NegativeNumberException If the exponent or modulus is negative.
@@ -731,7 +731,7 @@ final readonly class BigInteger extends BigNumber
      *
      * @pure
      */
-    public function modPow(BigNumber|int|float|string $exponent, BigNumber|int|float|string $modulus): BigInteger
+    public function modPow(BigNumber|int|string $exponent, BigNumber|int|string $modulus): BigInteger
     {
         $exponent = BigInteger::of($exponent);
         $modulus = BigInteger::of($modulus);
@@ -758,13 +758,13 @@ final readonly class BigInteger extends BigNumber
      *
      * The GCD is always positive, unless both operands are zero, in which case it is zero.
      *
-     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|string $that The operand. Must be convertible to an integer number.
      *
      * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
      *
      * @pure
      */
-    public function gcd(BigNumber|int|float|string $that): BigInteger
+    public function gcd(BigNumber|int|string $that): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -786,11 +786,11 @@ final readonly class BigInteger extends BigNumber
      *
      * The LCM is always positive, unless at least one operand is zero, in which case it is zero.
      *
-     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|string $that The operand. Must be convertible to an integer number.
      *
      * @pure
      */
-    public function lcm(BigNumber|int|float|string $that): BigInteger
+    public function lcm(BigNumber|int|string $that): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -878,13 +878,13 @@ final readonly class BigInteger extends BigNumber
      *
      * This method returns a negative BigInteger if and only if both operands are negative.
      *
-     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|string $that The operand. Must be convertible to an integer number.
      *
      * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
      *
      * @pure
      */
-    public function and(BigNumber|int|float|string $that): BigInteger
+    public function and(BigNumber|int|string $that): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -896,13 +896,13 @@ final readonly class BigInteger extends BigNumber
      *
      * This method returns a negative BigInteger if and only if either of the operands is negative.
      *
-     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|string $that The operand. Must be convertible to an integer number.
      *
      * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
      *
      * @pure
      */
-    public function or(BigNumber|int|float|string $that): BigInteger
+    public function or(BigNumber|int|string $that): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -914,13 +914,13 @@ final readonly class BigInteger extends BigNumber
      *
      * This method returns a negative BigInteger if and only if exactly one of the operands is negative.
      *
-     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|string $that The operand. Must be convertible to an integer number.
      *
      * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
      *
      * @pure
      */
-    public function xor(BigNumber|int|float|string $that): BigInteger
+    public function xor(BigNumber|int|string $that): BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -1068,7 +1068,7 @@ final readonly class BigInteger extends BigNumber
     }
 
     #[Override]
-    public function compareTo(BigNumber|int|float|string $that): int
+    public function compareTo(BigNumber|int|string $that): int
     {
         $that = BigNumber::of($that);
 

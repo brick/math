@@ -76,15 +76,15 @@ final readonly class BigDecimal extends BigNumber
      *
      * Example: `(12345, -3)` will result in the BigDecimal `12345000`.
      *
-     * @param BigNumber|int|float|string $value The unscaled value. Must be convertible to a BigInteger.
-     * @param int                        $scale The scale of the number. If negative, the scale will be set to zero
-     *                                          and the unscaled value will be adjusted accordingly.
+     * @param BigNumber|int|string $value The unscaled value. Must be convertible to a BigInteger.
+     * @param int                  $scale The scale of the number. If negative, the scale will be set to zero
+     *                                    and the unscaled value will be adjusted accordingly.
      *
      * @throws MathException If the value is not valid, or is not convertible to a BigInteger.
      *
      * @pure
      */
-    public static function ofUnscaledValue(BigNumber|int|float|string $value, int $scale = 0): BigDecimal
+    public static function ofUnscaledValue(BigNumber|int|string $value, int $scale = 0): BigDecimal
     {
         $value = BigInteger::of($value)->toString();
 
@@ -154,13 +154,13 @@ final readonly class BigDecimal extends BigNumber
      *
      * The result has a scale of `max($this->scale, $that->scale)`.
      *
-     * @param BigNumber|int|float|string $that The number to add. Must be convertible to a BigDecimal.
+     * @param BigNumber|int|string $that The number to add. Must be convertible to a BigDecimal.
      *
      * @throws MathException If the number is not valid, or is not convertible to a BigDecimal.
      *
      * @pure
      */
-    public function plus(BigNumber|int|float|string $that): BigDecimal
+    public function plus(BigNumber|int|string $that): BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -185,13 +185,13 @@ final readonly class BigDecimal extends BigNumber
      *
      * The result has a scale of `max($this->scale, $that->scale)`.
      *
-     * @param BigNumber|int|float|string $that The number to subtract. Must be convertible to a BigDecimal.
+     * @param BigNumber|int|string $that The number to subtract. Must be convertible to a BigDecimal.
      *
      * @throws MathException If the number is not valid, or is not convertible to a BigDecimal.
      *
      * @pure
      */
-    public function minus(BigNumber|int|float|string $that): BigDecimal
+    public function minus(BigNumber|int|string $that): BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -212,13 +212,13 @@ final readonly class BigDecimal extends BigNumber
      *
      * The result has a scale of `$this->scale + $that->scale`.
      *
-     * @param BigNumber|int|float|string $that The multiplier. Must be convertible to a BigDecimal.
+     * @param BigNumber|int|string $that The multiplier. Must be convertible to a BigDecimal.
      *
      * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigDecimal.
      *
      * @pure
      */
-    public function multipliedBy(BigNumber|int|float|string $that): BigDecimal
+    public function multipliedBy(BigNumber|int|string $that): BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -239,9 +239,9 @@ final readonly class BigDecimal extends BigNumber
     /**
      * Returns the result of the division of this number by the given one, at the given scale.
      *
-     * @param BigNumber|int|float|string $that         The divisor. Must be convertible to a BigDecimal.
-     * @param int|null                   $scale        The desired scale. Omitting this parameter is deprecated; it will be required in 0.15.
-     * @param RoundingMode               $roundingMode An optional rounding mode, defaults to Unnecessary.
+     * @param BigNumber|int|string $that         The divisor. Must be convertible to a BigDecimal.
+     * @param int|null             $scale        The desired scale. Omitting this parameter is deprecated; it will be required in 0.15.
+     * @param RoundingMode         $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws InvalidArgumentException   If the scale is negative.
      * @throws MathException              If the divisor is not a valid number or is not convertible to a BigDecimal.
@@ -250,7 +250,7 @@ final readonly class BigDecimal extends BigNumber
      *
      * @pure
      */
-    public function dividedBy(BigNumber|int|float|string $that, ?int $scale = null, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
+    public function dividedBy(BigNumber|int|string $that, ?int $scale = null, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -287,7 +287,7 @@ final readonly class BigDecimal extends BigNumber
      *
      * The scale of the result is automatically calculated to fit all the fraction digits.
      *
-     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
+     * @param BigNumber|int|string $that The divisor. Must be convertible to a BigDecimal.
      *
      * @throws MathException              If the divisor is not a valid number or is not convertible to a BigDecimal.
      * @throws DivisionByZeroException    If the divisor is zero.
@@ -295,7 +295,7 @@ final readonly class BigDecimal extends BigNumber
      *
      * @pure
      */
-    public function dividedByExact(BigNumber|int|float|string $that): BigDecimal
+    public function dividedByExact(BigNumber|int|string $that): BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -368,14 +368,14 @@ final readonly class BigDecimal extends BigNumber
      * - `-7.5` quotient `3` returns `-2`
      * - `-7.5` quotient `-3` returns `2`
      *
-     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
+     * @param BigNumber|int|string $that The divisor. Must be convertible to a BigDecimal.
      *
      * @throws MathException           If the divisor is not valid, or is not convertible to a BigDecimal.
      * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
      */
-    public function quotient(BigNumber|int|float|string $that): BigDecimal
+    public function quotient(BigNumber|int|string $that): BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -404,14 +404,14 @@ final readonly class BigDecimal extends BigNumber
      * - `-7.5` remainder `3` returns `-1.5`
      * - `-7.5` remainder `-3` returns `-1.5`
      *
-     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
+     * @param BigNumber|int|string $that The divisor. Must be convertible to a BigDecimal.
      *
      * @throws MathException           If the divisor is not valid, or is not convertible to a BigDecimal.
      * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
      */
-    public function remainder(BigNumber|int|float|string $that): BigDecimal
+    public function remainder(BigNumber|int|string $that): BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -441,7 +441,7 @@ final readonly class BigDecimal extends BigNumber
      * - `-7.5` quotientAndRemainder `3` returns [`-2`, `-1.5`]
      * - `-7.5` quotientAndRemainder `-3` returns [`2`, `-1.5`]
      *
-     * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
+     * @param BigNumber|int|string $that The divisor. Must be convertible to a BigDecimal.
      *
      * @return array{BigDecimal, BigDecimal} An array containing the quotient and the remainder.
      *
@@ -450,7 +450,7 @@ final readonly class BigDecimal extends BigNumber
      *
      * @pure
      */
-    public function quotientAndRemainder(BigNumber|int|float|string $that): array
+    public function quotientAndRemainder(BigNumber|int|string $that): array
     {
         $that = BigDecimal::of($that);
 
@@ -635,7 +635,7 @@ final readonly class BigDecimal extends BigNumber
     }
 
     #[Override]
-    public function compareTo(BigNumber|int|float|string $that): int
+    public function compareTo(BigNumber|int|string $that): int
     {
         $that = BigNumber::of($that);
 

@@ -82,8 +82,8 @@ final readonly class BigRational extends BigNumber
      * If the denominator is negative, the signs of both the numerator and the denominator
      * will be inverted to ensure that the denominator is always positive.
      *
-     * @param BigNumber|int|float|string $numerator   The numerator. Must be convertible to a BigInteger.
-     * @param BigNumber|int|float|string $denominator The denominator. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string $numerator   The numerator. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string $denominator The denominator. Must be convertible to a BigInteger.
      *
      * @throws NumberFormatException      If an argument does not represent a valid number.
      * @throws RoundingNecessaryException If an argument represents a non-integer number.
@@ -92,8 +92,8 @@ final readonly class BigRational extends BigNumber
      * @pure
      */
     public static function ofFraction(
-        BigNumber|int|float|string $numerator,
-        BigNumber|int|float|string $denominator,
+        BigNumber|int|string $numerator,
+        BigNumber|int|string $denominator,
     ): BigRational {
         $numerator = BigInteger::of($numerator);
         $denominator = BigInteger::of($denominator);
@@ -205,13 +205,13 @@ final readonly class BigRational extends BigNumber
     /**
      * Returns the sum of this number and the given one.
      *
-     * @param BigNumber|int|float|string $that The number to add.
+     * @param BigNumber|int|string $that The number to add.
      *
      * @throws MathException If the number is not valid.
      *
      * @pure
      */
-    public function plus(BigNumber|int|float|string $that): BigRational
+    public function plus(BigNumber|int|string $that): BigRational
     {
         $that = BigRational::of($that);
 
@@ -225,13 +225,13 @@ final readonly class BigRational extends BigNumber
     /**
      * Returns the difference of this number and the given one.
      *
-     * @param BigNumber|int|float|string $that The number to subtract.
+     * @param BigNumber|int|string $that The number to subtract.
      *
      * @throws MathException If the number is not valid.
      *
      * @pure
      */
-    public function minus(BigNumber|int|float|string $that): BigRational
+    public function minus(BigNumber|int|string $that): BigRational
     {
         $that = BigRational::of($that);
 
@@ -245,13 +245,13 @@ final readonly class BigRational extends BigNumber
     /**
      * Returns the product of this number and the given one.
      *
-     * @param BigNumber|int|float|string $that The multiplier.
+     * @param BigNumber|int|string $that The multiplier.
      *
      * @throws MathException If the multiplier is not a valid number.
      *
      * @pure
      */
-    public function multipliedBy(BigNumber|int|float|string $that): BigRational
+    public function multipliedBy(BigNumber|int|string $that): BigRational
     {
         $that = BigRational::of($that);
 
@@ -264,14 +264,14 @@ final readonly class BigRational extends BigNumber
     /**
      * Returns the result of the division of this number by the given one.
      *
-     * @param BigNumber|int|float|string $that The divisor.
+     * @param BigNumber|int|string $that The divisor.
      *
      * @throws MathException           If the divisor is not a valid number.
      * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
      */
-    public function dividedBy(BigNumber|int|float|string $that): BigRational
+    public function dividedBy(BigNumber|int|string $that): BigRational
     {
         $that = BigRational::of($that);
 
@@ -346,7 +346,7 @@ final readonly class BigRational extends BigNumber
     }
 
     #[Override]
-    public function compareTo(BigNumber|int|float|string $that): int
+    public function compareTo(BigNumber|int|string $that): int
     {
         return $this->minus($that)->getSign();
     }

@@ -65,7 +65,6 @@ All classes provide an `of()` factory method that accepts any of the following t
 
 - `BigNumber` instances
 - `int` numbers
-- `float` numbers **(deprecated; will be removed in version 0.15)**
 - `string` representations of integer, decimal and rational numbers
 
 Example:
@@ -93,24 +92,20 @@ BigRational::of('1.1'); // 11/10
 BigRational::of('1.15'); // 23/20 (reduced to lowest terms)
 ```
 
-Note about native integers: instantiating from an `int` is safe *as long as you don't exceed the maximum
-value for your platform* (`PHP_INT_MAX`), in which case it would be transparently converted to `float` by PHP without
-notice, and could result in a loss of information. In doubt, prefer instantiating from a `string`, which supports
-an unlimited numbers of digits:
-
-```php
-echo BigInteger::of(999999999999999999999); // 1000000000000000000000
-echo BigInteger::of('999999999999999999999'); // 999999999999999999999
-```
-
-Note about floating-point values: **instantiating from a `float` is deprecated and will be removed in 0.15**. Floating-
-point values are imprecise by design and could result in a loss of information. Always prefer instantiating from a
-`string`, which supports an unlimited number of digits:
-
-```php
-echo BigDecimal::of(1.99999999999999999999); // 2
-echo BigDecimal::of('1.99999999999999999999'); // 1.99999999999999999999
-```
+> [!NOTE]
+> Floating-point values are not accepted as inputs. This is intentional, as `float` values are imprecise by design and
+> could result in a loss of information. Always instantiate from a `string`, which supports an unlimited number of
+> digits:
+>
+> ```php
+> BigDecimal::of('1.9999999999999999999999999');
+> ```
+> 
+> If you need to convert a `float` to a `BigNumber` and understand the risks, cast it to a string first:
+> 
+> ```php
+> BigDecimal::of((string) $float);
+> ```
 
 #### Immutability & chaining
 
