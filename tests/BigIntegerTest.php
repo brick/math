@@ -41,18 +41,18 @@ use const PHP_INT_MIN;
 class BigIntegerTest extends AbstractTestCase
 {
     /**
-     * @param int|float|string $value    The value to convert to a BigInteger.
-     * @param string           $expected The expected string value of the result.
+     * @param int|string $value    The value to convert to a BigInteger.
+     * @param string     $expected The expected string value of the result.
      */
     #[DataProvider('providerOf')]
-    public function testOf(int|float|string $value, string $expected): void
+    public function testOf(int|string $value, string $expected): void
     {
         self::assertBigIntegerEquals($expected, BigInteger::of($value));
     }
 
     /**
-     * @param int|float|string $value    The value to convert to a BigInteger.
-     * @param string           $expected The expected string value of the result.
+     * @param int|string $value    The value to convert to a BigInteger.
+     * @param string     $expected The expected string value of the result.
      */
     #[DataProvider('providerOf')]
     public function testOfNullableWithValidInputBehavesLikeOf(mixed $value, string $expected): void
@@ -76,11 +76,6 @@ class BigIntegerTest extends AbstractTestCase
             [PHP_INT_MAX, (string) PHP_INT_MAX],
             [PHP_INT_MIN, (string) PHP_INT_MIN],
 
-            [0.0, '0'],
-            [1.0, '1'],
-            [-0.0, '0'],
-            [-1.0, '-1'],
-
             ['0.0', '0'],
             ['1.0', '1'],
             ['-1.00', '-1'],
@@ -88,8 +83,8 @@ class BigIntegerTest extends AbstractTestCase
             ['.0', '0'],
             ['.00', '0'],
 
-            [1.2e5, '120000'],
-            [-1.2e5, '-120000'],
+            ['1.2e5', '120000'],
+            ['-1.2e5', '-120000'],
 
             ['1e20', '100000000000000000000'],
             ['-3e+50', '-300000000000000000000000000000000000000000000000000'],
@@ -145,7 +140,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     #[DataProvider('providerOfInvalidFormatThrowsException')]
-    public function testOfInvalidFormatThrowsException(int|float|string $value): void
+    public function testOfInvalidFormatThrowsException(int|string $value): void
     {
         $this->expectException(NumberFormatException::class);
         BigInteger::of($value);
@@ -170,7 +165,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     #[DataProvider('providerOfNonConvertibleValueThrowsException')]
-    public function testOfNonConvertibleValueThrowsException(float|string $value): void
+    public function testOfNonConvertibleValueThrowsException(string $value): void
     {
         $this->expectException(RoundingNecessaryException::class);
         BigInteger::of($value);
@@ -179,7 +174,7 @@ class BigIntegerTest extends AbstractTestCase
     public static function providerOfNonConvertibleValueThrowsException(): array
     {
         return [
-            [1.1],
+            ['1.1'],
             ['1e-1'],
             ['7/9'],
         ];
@@ -424,7 +419,7 @@ class BigIntegerTest extends AbstractTestCase
         yield [['28', '56', '77784', '14', '4'], '2'];
 
         // mixed types
-        yield [[12, 14.0, '18', BigInteger::of(20)], '2'];
+        yield [[12, 14, '18', BigInteger::of(20)], '2'];
     }
 
     /**
@@ -459,7 +454,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testMinOfNonIntegerValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
-        BigInteger::min(1, 1.2);
+        BigInteger::min(1, '1.2');
     }
 
     /**
@@ -478,7 +473,7 @@ class BigIntegerTest extends AbstractTestCase
             [[0, 1, -1], '1'],
             [[0, '10', '5989.0'], '5989'],
             [[0, '10', '5989', '-1'], '5989'],
-            [[0, '10', '5989', '-1', 6000.0], '6000'],
+            [[0, '10', '5989', '-1', '6000'], '6000'],
             [['-1', '0'], '0'],
             [['-1', '1', '2', '27/9', '-100'], '3'],
             [['999999999999999999999999999', '1000000000000000000000000000'], '1000000000000000000000000000'],
@@ -515,7 +510,7 @@ class BigIntegerTest extends AbstractTestCase
             [[0, 1, -1], '0'],
             [[0, '10', '5989.0'], '5999'],
             [[0, '10', '5989', '-1'], '5998'],
-            [[0, '10', '5989', '-1', 6000.0], '11998'],
+            [[0, '10', '5989', '-1', '6000'], '11998'],
             [['-1', '0'], '-1'],
             [['-1', '1', '2', '27/9', '-100'], '-95'],
             [['1234567', '-1233.00', 137, '406847567975012457258945126'], '406847567975012457260178597'],
@@ -591,12 +586,12 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param string           $a The base number.
-     * @param int|float|string $b The number to multiply.
-     * @param string           $r The expected result.
+     * @param string     $a The base number.
+     * @param int|string $b The number to multiply.
+     * @param string     $r The expected result.
      */
     #[DataProvider('providerMultipliedBy')]
-    public function testMultipliedBy(string $a, int|float|string $b, string $r): void
+    public function testMultipliedBy(string $a, int|string $b, string $r): void
     {
         self::assertBigIntegerEquals($r, BigInteger::of($a)->multipliedBy($b));
     }
@@ -623,7 +618,6 @@ class BigIntegerTest extends AbstractTestCase
             ['-991230349304902390122', '0', '0'],
 
             ['1274837942798479387498237897498734984', 30, '38245138283954381624947136924962049520'],
-            ['1274837942798479387498237897498734984', 30.0, '38245138283954381624947136924962049520'],
             ['1274837942798479387498237897498734984', '30', '38245138283954381624947136924962049520'],
             ['1274837942798479387498237897498734984', '30.0', '38245138283954381624947136924962049520'],
             ['1274837942798479387498237897498734984', '90/3', '38245138283954381624947136924962049520'],
@@ -631,12 +625,12 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param string           $number   The base number.
-     * @param int|float|string $divisor  The divisor.
-     * @param string           $expected The expected result, or a class name if an exception is expected.
+     * @param string     $number   The base number.
+     * @param int|string $divisor  The divisor.
+     * @param string     $expected The expected result, or a class name if an exception is expected.
      */
     #[DataProvider('providerDividedBy')]
-    public function testDividedBy(string $number, int|float|string $divisor, string $expected): void
+    public function testDividedBy(string $number, int|string $divisor, string $expected): void
     {
         $number = BigInteger::of($number);
 
@@ -657,10 +651,9 @@ class BigIntegerTest extends AbstractTestCase
             ['123456789098765432101234567890987654321', 1, '123456789098765432101234567890987654321'],
             ['123456789098765432101234567890987654321', 2, RoundingNecessaryException::class],
             ['123456789098765432101234567890987654321', 0, DivisionByZeroException::class],
-            ['123456789098765432101234567890987654321', 0.0, DivisionByZeroException::class],
-            ['123456789098765432101234567890987654321', 0.1, RoundingNecessaryException::class],
+            ['123456789098765432101234567890987654321', '0.0', DivisionByZeroException::class],
+            ['123456789098765432101234567890987654321', '0.1', RoundingNecessaryException::class],
             ['123456789098765432101234567890987654322', 2, '61728394549382716050617283945493827161'],
-            ['123456789098765432101234567890987654322', 2.0, '61728394549382716050617283945493827161'],
             ['123456789098765432101234567890987654322', '2', '61728394549382716050617283945493827161'],
             ['123456789098765432101234567890987654322', '2.0', '61728394549382716050617283945493827161'],
             ['123456789098765432101234567890987654322', '14/7', '61728394549382716050617283945493827161'],
@@ -4190,7 +4183,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     #[DataProvider('providerModInverse')]
-    public function testModInverse(string $x, BigNumber|int|float|string $m, string $expectedResult): void
+    public function testModInverse(string $x, BigNumber|int|string $m, string $expectedResult): void
     {
         self::assertBigIntegerEquals($expectedResult, BigInteger::of($x)->modInverse($m));
     }
@@ -4213,7 +4206,7 @@ class BigIntegerTest extends AbstractTestCase
             ['18506109802501380149367860917982816833935316655779336003703143134999470532428', '115792089237316195423570985008687907853269984665640564039457584007908834671663', '95929095851002583825372225918533539673793386278360575987103577151530201707061'],
             ['-18506109802501380149367860917982816833935316655779336003703143134999470532428', '115792089237316195423570985008687907853269984665640564039457584007908834671663', '19862993386313611598198759090154368179476598387279988052354006856378632964602'],
             ['3', 7, '5'],
-            ['3', 11.0, '4'],
+            ['3', 11, '4'],
             ['3', BigInteger::of(17), '6'],
         ];
     }
@@ -5168,7 +5161,7 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     #[DataProvider('providerToString')]
-    public function testToString(int|float|string $value, string $expected): void
+    public function testToString(int|string $value, string $expected): void
     {
         $bigInteger = BigInteger::of($value);
         self::assertSame($expected, $bigInteger->toString());
@@ -5181,8 +5174,8 @@ class BigIntegerTest extends AbstractTestCase
             [-1, '-1'],
             [0, '0'],
             [1, '1'],
-            [1e2, '100'],
-            [-1e3, '-1000'],
+            ['1e2', '100'],
+            ['-1e3', '-1000'],
             ['7349837498278937849739739878293798239223', '7349837498278937849739739878293798239223'],
             ['-7349837498278937849739739878293798239223', '-7349837498278937849739739878293798239223'],
         ];
