@@ -16,9 +16,7 @@ use Stringable;
 use function array_shift;
 use function assert;
 use function filter_var;
-use function is_float;
 use function is_int;
-use function is_nan;
 use function is_null;
 use function ltrim;
 use function preg_match;
@@ -26,9 +24,7 @@ use function str_contains;
 use function str_repeat;
 use function strlen;
 use function substr;
-use function trigger_error;
 
-use const E_USER_DEPRECATED;
 use const FILTER_VALIDATE_INT;
 use const PREG_UNMATCHED_AS_NULL;
 
@@ -73,7 +69,6 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * - BigNumber instances are returned as is
      * - integer numbers are returned as BigInteger
-     * - floating point numbers are converted to a string then parsed as such (deprecated, will be removed in 0.15)
      * - strings containing a `/` character are returned as BigRational
      * - strings containing a `.` character or using an exponential notation are returned as BigDecimal
      * - strings containing only digits with an optional leading `+` or `-` sign are returned as BigInteger
@@ -87,7 +82,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    final public static function of(BigNumber|int|float|string $value): static
+    final public static function of(BigNumber|int|string $value): static
     {
         $value = self::_of($value);
 
@@ -113,7 +108,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    final public static function ofNullable(BigNumber|int|float|string|null $value): ?static
+    final public static function ofNullable(BigNumber|int|string|null $value): ?static
     {
         if (is_null($value)) {
             return null;
@@ -128,8 +123,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * If several values are equal and minimal, the first one is returned.
      * This can affect the concrete return type when calling this method on BigNumber.
      *
-     * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers must be convertible to an
-     *                                              instance of the class this method is called on.
+     * @param BigNumber|int|string ...$values The numbers to compare. All the numbers must be convertible to an
+     *                                        instance of the class this method is called on.
      *
      * @throws InvalidArgumentException If no values are given.
      * @throws MathException            If a number is not valid, or is not convertible to an instance of the class
@@ -137,7 +132,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    final public static function min(BigNumber|int|float|string ...$values): static
+    final public static function min(BigNumber|int|string ...$values): static
     {
         $min = null;
 
@@ -162,8 +157,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * If several values are equal and maximal, the first one is returned.
      * This can affect the concrete return type when calling this method on BigNumber.
      *
-     * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers must be convertible to an
-     *                                              instance of the class this method is called on.
+     * @param BigNumber|int|string ...$values The numbers to compare. All the numbers must be convertible
+     *                                        to an instance of the class this method is called on.
      *
      * @throws InvalidArgumentException If no values are given.
      * @throws MathException            If a number is not valid, or is not convertible to an instance of the class
@@ -171,7 +166,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    final public static function max(BigNumber|int|float|string ...$values): static
+    final public static function max(BigNumber|int|string ...$values): static
     {
         $max = null;
 
@@ -199,8 +194,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * When called on BigInteger, BigDecimal, or BigRational, sum() requires that all values can be converted to that
      * specific subclass, and returns a result of the same type.
      *
-     * @param BigNumber|int|float|string ...$values The numbers to add. All the numbers must be convertible to an
-     *                                              instance of the class this method is called on.
+     * @param BigNumber|int|string ...$values The numbers to add. All the numbers must be convertible to an
+     *                                        instance of the class this method is called on.
      *
      * @throws InvalidArgumentException If no values are given.
      * @throws MathException            If a number is not valid, or is not convertible to an instance of the class
@@ -208,7 +203,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    final public static function sum(BigNumber|int|float|string ...$values): static
+    final public static function sum(BigNumber|int|string ...$values): static
     {
         $first = array_shift($values);
 
@@ -234,7 +229,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    final public function isEqualTo(BigNumber|int|float|string $that): bool
+    final public function isEqualTo(BigNumber|int|string $that): bool
     {
         return $this->compareTo($that) === 0;
     }
@@ -246,7 +241,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    final public function isLessThan(BigNumber|int|float|string $that): bool
+    final public function isLessThan(BigNumber|int|string $that): bool
     {
         return $this->compareTo($that) < 0;
     }
@@ -258,7 +253,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    final public function isLessThanOrEqualTo(BigNumber|int|float|string $that): bool
+    final public function isLessThanOrEqualTo(BigNumber|int|string $that): bool
     {
         return $this->compareTo($that) <= 0;
     }
@@ -270,7 +265,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    final public function isGreaterThan(BigNumber|int|float|string $that): bool
+    final public function isGreaterThan(BigNumber|int|string $that): bool
     {
         return $this->compareTo($that) > 0;
     }
@@ -282,7 +277,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    final public function isGreaterThanOrEqualTo(BigNumber|int|float|string $that): bool
+    final public function isGreaterThanOrEqualTo(BigNumber|int|string $that): bool
     {
         return $this->compareTo($that) >= 0;
     }
@@ -376,7 +371,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    abstract public function compareTo(BigNumber|int|float|string $that): int;
+    abstract public function compareTo(BigNumber|int|string $that): int;
 
     /**
      * Limits (clamps) this number between the given minimum and maximum values.
@@ -385,15 +380,15 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * If the number is greater than $max, returns $max.
      * Otherwise, returns this number unchanged.
      *
-     * @param BigNumber|int|float|string $min The minimum. Must be convertible to an instance of the class this method is called on.
-     * @param BigNumber|int|float|string $max The maximum. Must be convertible to an instance of the class this method is called on.
+     * @param BigNumber|int|string $min The minimum. Must be convertible to an instance of the class this method is called on.
+     * @param BigNumber|int|string $max The maximum. Must be convertible to an instance of the class this method is called on.
      *
      * @throws MathException            If min/max are not convertible to an instance of the class this method is called on.
      * @throws InvalidArgumentException If min is greater than max.
      *
      * @pure
      */
-    final public function clamp(BigNumber|int|float|string $min, BigNumber|int|float|string $max): static
+    final public function clamp(BigNumber|int|string $min, BigNumber|int|string $max): static
     {
         $min = static::of($min);
         $max = static::of($max);
@@ -553,7 +548,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    private static function _of(BigNumber|int|float|string $value): BigNumber
+    private static function _of(BigNumber|int|string $value): BigNumber
     {
         if ($value instanceof BigNumber) {
             return $value;
@@ -561,21 +556,6 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
         if (is_int($value)) {
             return new BigInteger((string) $value);
-        }
-
-        if (is_float($value)) {
-            // @phpstan-ignore-next-line
-            trigger_error(
-                'Passing floats to BigNumber::of() and arithmetic methods is deprecated and will be removed in 0.15. ' .
-                'Cast the float to string explicitly to preserve the previous behaviour.',
-                E_USER_DEPRECATED,
-            );
-
-            if (is_nan($value)) {
-                $value = 'NAN';
-            } else {
-                $value = (string) $value;
-            }
         }
 
         if (str_contains($value, '/')) {

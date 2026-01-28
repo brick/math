@@ -67,10 +67,10 @@ class BigNumberTest extends AbstractTestCase
     }
 
     /**
-     * @param class-string<BigNumber>          $callingClass  The BigNumber class to call sum() on.
-     * @param list<BigNumber|int|float|string> $values        The values to add.
-     * @param string                           $expectedClass The expected class name.
-     * @param string                           $expectedSum   The expected sum.
+     * @param class-string<BigNumber>    $callingClass  The BigNumber class to call sum() on.
+     * @param list<BigNumber|int|string> $values        The values to add.
+     * @param string                     $expectedClass The expected class name.
+     * @param string                     $expectedSum   The expected sum.
      */
     #[DataProvider('providerSum')]
     public function testSum(string $callingClass, array $values, string $expectedClass, string $expectedSum): void
@@ -94,10 +94,10 @@ class BigNumberTest extends AbstractTestCase
             [BigRational::class, [-1, '99', '-0.7'], BigRational::class, '973/10'],
             [BigNumber::class, [-1, '99', '-0.7', '3/2'], BigRational::class, '494/5'],
             [BigNumber::class, [-1, '3/2'], BigRational::class, '1/2'],
-            [BigNumber::class, [-0.5], BigDecimal::class, '-0.5'],
-            [BigNumber::class, [-0.5, 1], BigDecimal::class, '0.5'],
-            [BigNumber::class, [-0.5, 1, '0.7'], BigDecimal::class, '1.2'],
-            [BigNumber::class, [-0.5, 1, '0.7', '47/7'], BigRational::class, '277/35'],
+            [BigNumber::class, ['-0.5'], BigDecimal::class, '-0.5'],
+            [BigNumber::class, ['-0.5', 1], BigDecimal::class, '0.5'],
+            [BigNumber::class, ['-0.5', 1, '0.7'], BigDecimal::class, '1.2'],
+            [BigNumber::class, ['-0.5', 1, '0.7', '47/7'], BigRational::class, '277/35'],
             [BigNumber::class, ['-1/9'], BigRational::class, '-1/9'],
             [BigNumber::class, ['-1/9', 123], BigRational::class, '1106/9'],
             [BigNumber::class, ['-1/9', 123, '8349.3771'], BigRational::class, '762503939/90000'],
@@ -106,8 +106,8 @@ class BigNumberTest extends AbstractTestCase
     }
 
     /**
-     * @param class-string<BigNumber>          $callingClass The BigNumber class to call sum() on.
-     * @param list<BigNumber|int|float|string> $values       The values to add.
+     * @param class-string<BigNumber>    $callingClass The BigNumber class to call sum() on.
+     * @param list<BigNumber|int|string> $values       The values to add.
      */
     #[DataProvider('providerSumThrowsRoundingNecessaryException')]
     public function testSumThrowsRoundingNecessaryException(string $callingClass, array $values): void

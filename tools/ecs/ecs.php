@@ -26,7 +26,7 @@ return static function (ECSConfig $ecsConfig): void {
         // Allows alignment in test providers
         DuplicateSpacesSniff::class => [$libRootPath . '/tests'],
 
-        // We want to keep BigNumber|int|float|string order
+        // We want to keep BigNumber|int|string order
         OrderedTypesFixer::class => null,
         PhpdocTypesOrderFixer::class => null,
     ]);
