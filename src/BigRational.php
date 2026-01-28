@@ -375,14 +375,22 @@ final readonly class BigRational extends BigNumber
      * @param BigNumber|int|float|string $min The minimum. Must be convertible to a BigRational.
      * @param BigNumber|int|float|string $max The maximum. Must be convertible to a BigRational.
      *
-     * @throws MathException If min/max are not convertible to a BigRational.
+     * @throws MathException            If min/max are not convertible to a BigRational.
+     * @throws InvalidArgumentException If min is greater than max.
      */
     public function clamp(BigNumber|int|float|string $min, BigNumber|int|float|string $max): BigRational
     {
+        $min = BigRational::of($min);
+        $max = BigRational::of($max);
+
+        if ($min->isGreaterThan($max)) {
+            throw new InvalidArgumentException('Minimum value must be less than or equal to maximum value.');
+        }
+
         if ($this->isLessThan($min)) {
-            return BigRational::of($min);
+            return $min;
         } elseif ($this->isGreaterThan($max)) {
-            return BigRational::of($max);
+            return $max;
         }
 
         return $this;

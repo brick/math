@@ -1802,6 +1802,13 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
+    public function testClampWithInvertedBoundsThrowsException(): void
+    {
+        $number = BigDecimal::of('1.0');
+        $this->expectException(InvalidArgumentException::class);
+        $number->clamp('1.5', '0.5');
+    }
+
     /**
      * @param string $number        The base number.
      * @param int    $exponent      The exponent to apply.

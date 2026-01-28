@@ -1490,6 +1490,13 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
+    public function testClampWithInvertedBoundsThrowsException(): void
+    {
+        $number = BigInteger::of(5);
+        $this->expectException(InvalidArgumentException::class);
+        $number->clamp(10, 0);
+    }
+
     /**
      * @param string $number   The base number.
      * @param int    $exponent The exponent to apply.

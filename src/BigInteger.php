@@ -495,14 +495,22 @@ final readonly class BigInteger extends BigNumber
      * @param BigNumber|int|float|string $min The minimum. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string $max The maximum. Must be convertible to a BigInteger.
      *
-     * @throws MathException If min/max are not convertible to a BigInteger.
+     * @throws MathException            If min/max are not convertible to a BigInteger.
+     * @throws InvalidArgumentException If min is greater than max.
      */
     public function clamp(BigNumber|int|float|string $min, BigNumber|int|float|string $max): BigInteger
     {
+        $min = BigInteger::of($min);
+        $max = BigInteger::of($max);
+
+        if ($min->isGreaterThan($max)) {
+            throw new InvalidArgumentException('Minimum value must be less than or equal to maximum value.');
+        }
+
         if ($this->isLessThan($min)) {
-            return BigInteger::of($min);
+            return $min;
         } elseif ($this->isGreaterThan($max)) {
-            return BigInteger::of($max);
+            return $max;
         }
 
         return $this;

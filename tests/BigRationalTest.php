@@ -517,6 +517,13 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
+    public function testClampWithInvertedBoundsThrowsException(): void
+    {
+        $number = BigRational::of('1/2');
+        $this->expectException(InvalidArgumentException::class);
+        $number->clamp('3/4', '1/4');
+    }
+
     /**
      * @param string $rational The rational number to test.
      * @param string $expected The expected reciprocal.
