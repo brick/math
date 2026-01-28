@@ -351,7 +351,7 @@ final readonly class BigRational extends BigNumber
     }
 
     /**
-     * Returns the negated value of this BigRational.
+     * Returns the negated value of this number.
      *
      * @pure
      */

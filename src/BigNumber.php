@@ -404,6 +404,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * If the number is greater than the largest representable floating point number, positive infinity is returned.
      * If the number is less than the smallest representable floating point number, negative infinity is returned.
+     * NaN can be returned for some conversions where both numerator and denominator overflow when represented as floats.
      *
      * @pure
      */

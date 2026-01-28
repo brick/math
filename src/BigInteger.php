@@ -255,7 +255,7 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
-     * Generates a pseudo-random number between `$min` and `$max`.
+     * Generates a pseudo-random number between `$min` and `$max`, inclusive.
      *
      * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
@@ -682,7 +682,7 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns this number raised into power with modulo.
      *
-     * This operation only works on positive numbers.
+     * This operation only works on non-negative numbers, and a strictly positive modulus.
      *
      * @param BigNumber|int|string $exponent The exponent. Must be positive or zero.
      * @param BigNumber|int|string $modulus  The modulus. Must be strictly positive.
@@ -814,7 +814,7 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
-     * Returns the inverse of this number.
+     * Returns the negated value of this number.
      *
      * @pure
      */

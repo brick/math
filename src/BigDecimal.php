@@ -234,7 +234,7 @@ final readonly class BigDecimal extends BigNumber
      * @param RoundingMode         $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws InvalidArgumentException If the scale is invalid.
-     * @throws MathException            If the number is invalid, is zero, or rounding was necessary.
+     * @throws MathException            If the divisor is invalid, is zero, or rounding was necessary.
      *
      * @pure
      */
@@ -399,6 +399,7 @@ final readonly class BigDecimal extends BigNumber
      * Returns the remainder of the division of this number by the given one.
      *
      * The remainder has a scale of `max($this->scale, $that->scale)`.
+     * The remainder, when non-zero, has the same sign as the dividend.
      *
      * @param BigNumber|int|string $that The divisor. Must be convertible to a BigDecimal.
      *
