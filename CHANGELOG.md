@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 🗑️ **Deprecations**
 
+- **Passing `float` values to `of()` or arithmetic methods is deprecated** and will be removed in 0.15; cast to string explicitly to preserve the previous behaviour (#105)
 - Method `BigInteger::gcdMultiple()` is deprecated, use `gcdAll()` instead
 - Method `BigDecimal::exactlyDividedBy()` is deprecated, use `dividedByExact()` instead
 - Method `BigDecimal::getIntegralPart()` is deprecated (will be removed in 0.15, and re-introduced as returning `BigInteger` in 0.16)

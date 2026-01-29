@@ -72,7 +72,7 @@ All classes provide an `of()` factory method that accepts any of the following t
 
 - `BigNumber` instances
 - `int` numbers
-- `float` numbers
+- `float` numbers (deprecated; will be removed in version 0.15)
 - `string` representations of integer, decimal and rational numbers
 
 Example:
@@ -109,9 +109,9 @@ echo BigInteger::of(999999999999999999999); // 1000000000000000000000
 echo BigInteger::of('999999999999999999999'); // 999999999999999999999
 ```
 
-Note about floating-point values: instantiating from a `float` might be unsafe, as floating-point values are
-imprecise by design, and could result in a loss of information. Always prefer instantiating from a `string`, which
-supports an unlimited number of digits:
+Note about floating-point values: instantiating from a `float` is deprecated and will be removed in 0.15. Floating-
+point values are imprecise by design and could result in a loss of information. Always prefer instantiating from a
+`string`, which supports an unlimited number of digits:
 
 ```php
 echo BigDecimal::of(1.99999999999999999999); // 2
