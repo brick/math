@@ -2,11 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## UNRELEASED (0.14.2)
+## [0.14.2](https://github.com/brick/math/releases/tag/0.14.2) - 2026-01-30
 
 🗑️ **Deprecations**
 
 - **Passing `float` values to `of()` or arithmetic methods is deprecated** and will be removed in 0.15; cast to string explicitly to preserve the previous behaviour (#105)
+- **Accessing `RoundingMode` enum cases through upper snake case (e.g. `HALF_UP`) is deprecated**, use the pascal case version (e.g. `HalfUp`) instead
 - Method `BigInteger::gcdMultiple()` is deprecated, use `gcdAll()` instead
 - Method `BigDecimal::exactlyDividedBy()` is deprecated, use `dividedByExact()` instead
 - Method `BigDecimal::getIntegralPart()` is deprecated (will be removed in 0.15, and re-introduced as returning `BigInteger` in 0.16)
@@ -15,7 +16,6 @@ All notable changes to this project will be documented in this file.
 - Method `BigRational::quotient()` is deprecated, use `getIntegralPart()` instead
 - Method `BigRational::remainder()` is deprecated, use `$number->getNumerator()->remainder($number->getDenominator())` instead
 - Method `BigRational::quotientAndRemainder()` is deprecated, use `$number->getNumerator()->quotientAndRemainder($number->getDenominator())` instead
-- Accessing `RoundingMode` enum cases through upper snake case (e.g. `HALF_UP`) is deprecated, use the pascal case version (e.g. `HalfUp`) instead
 
 ✨ **New features**
 
