@@ -368,6 +368,27 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
+     * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string ...$n The subsequent numbers. Must be convertible to BigInteger.
+     *
+     * @pure
+     */
+    public static function lcmAll(BigNumber|int|float|string $a, BigNumber|int|float|string ...$n): BigInteger
+    {
+        $result = BigInteger::of($a)->abs();
+
+        foreach ($n as $next) {
+            $result = $result->lcm(BigInteger::of($next));
+
+            if ($result->isZero()) {
+                return $result;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * @deprecated Use gcdAll() instead.
      *
      * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
@@ -742,6 +763,28 @@ final readonly class BigInteger extends BigNumber
         }
 
         $value = CalculatorRegistry::get()->gcd($this->value, $that->value);
+
+        return new BigInteger($value);
+    }
+
+    /**
+     * Returns the least common multiple of this number and the given one.
+     *
+     * The LCM is always positive, unless at least one operand is zero, in which case it is zero.
+     *
+     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     *
+     * @pure
+     */
+    public function lcm(BigNumber|int|float|string $that): BigInteger
+    {
+        $that = BigInteger::of($that);
+
+        if ($this->isZero() || $that->isZero()) {
+            return BigInteger::zero();
+        }
+
+        $value = CalculatorRegistry::get()->lcm($this->value, $that->value);
 
         return new BigInteger($value);
     }

@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ✨ **New features**
 
+- New method: `BigInteger::lcm()`
+- New method: `BigInteger::lcmAll()`
 - New method: `BigRational::toRepeatingDecimalString()`
 
 ## [0.14.2](https://github.com/brick/math/releases/tag/0.14.2) - 2026-01-30

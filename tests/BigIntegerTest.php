@@ -20,6 +20,7 @@ use InvalidArgumentException;
 use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+use function abs;
 use function bin2hex;
 use function count;
 use function getenv;
@@ -426,6 +427,40 @@ class BigIntegerTest extends AbstractTestCase
 
         // mixed types
         yield [[12, 14.0, '18', BigInteger::of(20)], '2'];
+    }
+
+    #[DataProvider('providerLcmAll')]
+    public function testLcmAll(array $values, string|int $expectedLCM): void
+    {
+        self::assertBigIntegerEquals((string) $expectedLCM, BigInteger::lcmAll(...$values));
+    }
+
+    public static function providerLcmAll(): Generator
+    {
+        // 1 value
+        foreach ([-4, -3, -2, -1, 0, 1, 2, 3, 4] as $value) {
+            yield [[$value], abs($value)];
+        }
+
+        // 2 values
+        foreach (self::providerLcm() as [$a, $b, $lcm]) {
+            yield [[$a, $b], $lcm];
+        }
+
+        // n values
+        yield [['2', '4', '7'], '28'];
+        yield [['2', '4', '8'], '8'];
+        yield [['2', '4', '-7'], '28'];
+        yield [['2', '4', '-8'], '8'];
+        yield [['3', '5', '7'], '105'];
+        yield [['6', '10', '15'], '30'];
+        yield [['12', '18', '30'], '180'];
+        yield [['12', '18', '30', '7'], '1260'];
+        yield [['12', '18', '30', '15'], '180'];
+        yield [['0', '4', '7'], '0'];
+
+        // mixed types
+        yield [[12, 14.0, '18', BigInteger::of(20)], '1260'];
     }
 
     /**
@@ -1676,6 +1711,51 @@ class BigIntegerTest extends AbstractTestCase
 
             yield ["-$a", "-$b", $gcd];
             yield ["-$b", "-$a", $gcd];
+        }
+    }
+
+    /**
+     * @param string $a   The first number.
+     * @param string $b   The second number.
+     * @param string $lcm The expected LCM.
+     */
+    #[DataProvider('providerLcm')]
+    public function testLcm(string $a, string $b, string $lcm): void
+    {
+        $a = BigInteger::of($a);
+        $b = BigInteger::of($b);
+
+        self::assertBigIntegerEquals($lcm, $a->lcm($b));
+    }
+
+    public static function providerLcm(): Generator
+    {
+        $tests = [
+            ['0', '0', '0'],
+            ['0', '5', '0'],
+            ['1', '1', '1'],
+            ['1', '2', '2'],
+            ['2', '3', '6'],
+            ['4', '6', '12'],
+            ['8', '12', '24'],
+            ['9', '6', '18'],
+            ['21', '6', '42'],
+            ['123456789123456789', '3', '123456789123456789'],
+            ['1000000000000', '999999999999', '999999999999000000000000'],
+        ];
+
+        foreach ($tests as [$a, $b, $lcm]) {
+            yield [$a, $b, $lcm];
+            yield [$b, $a, $lcm];
+
+            yield [$a, "-$b", $lcm];
+            yield [$b, "-$a", $lcm];
+
+            yield ["-$a", $b, $lcm];
+            yield ["-$b", $a, $lcm];
+
+            yield ["-$a", "-$b", $lcm];
+            yield ["-$b", "-$a", $lcm];
         }
     }
 

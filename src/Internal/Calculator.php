@@ -249,6 +249,25 @@ abstract readonly class Calculator
     }
 
     /**
+     * Returns the least common multiple of the two numbers.
+     *
+     * This method can be overridden by the concrete implementation if the underlying library
+     * has built-in support for LCM calculations.
+     *
+     * @return string The LCM, always positive, or zero if at least one argument is zero.
+     *
+     * @pure
+     */
+    public function lcm(string $a, string $b): string
+    {
+        if ($a === '0' || $b === '0') {
+            return '0';
+        }
+
+        return $this->divQ($this->abs($this->mul($a, $b)), $this->gcd($a, $b));
+    }
+
+    /**
      * Returns the square root of the given number, rounded down.
      *
      * The result is the largest x such that x² ≤ n.
