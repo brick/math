@@ -229,7 +229,7 @@ final readonly class BigDecimal extends BigNumber
      * @param int|null                   $scale        The desired scale, or null to use the scale of this number.
      * @param RoundingMode               $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
-     * @throws InvalidArgumentException If the scale or rounding mode is invalid.
+     * @throws InvalidArgumentException If the scale is invalid.
      * @throws MathException            If the number is invalid, is zero, or rounding was necessary.
      *
      * @pure
