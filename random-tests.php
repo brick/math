@@ -76,6 +76,18 @@ if ($maxDigits < 1) {
             if ($c !== '0') {
                 $this->test("$a POW $b MOD $c", fn (Calculator $calc) => $calc->modPow($a, $b, $c));
             }
+
+            foreach ([$a, $b] as $n) {
+                $this->test("SQRT $n", fn (Calculator $c) => $c->sqrt($n));
+
+                for ($exp = 0; $exp <= 3; $exp++) {
+                    $this->test("$n POW $exp", fn (Calculator $calc) => $calc->pow($n, $exp));
+
+                    if ($n !== '0') {
+                        $this->test("-$n POW $exp", fn (Calculator $calc) => $calc->pow("-$n", $exp));
+                    }
+                }
+            }
         }
     }
 
@@ -99,10 +111,7 @@ if ($maxDigits < 1) {
         }
 
         $this->test("GCD $a, $b", fn (Calculator $c) => $c->gcd($a, $b));
-
-        if ($a[0] !== '-') {
-            $this->test("SQRT $a", fn (Calculator $c) => $c->sqrt($a));
-        }
+        $this->test("LCM $a, $b", fn (Calculator $c) => $c->lcm($a, $b));
 
         $this->test("$a AND $b", fn (Calculator $c) => $c->and($a, $b));
         $this->test("$a OR $b", fn (Calculator $c) => $c->or($a, $b));
@@ -120,11 +129,11 @@ if ($maxDigits < 1) {
         $nativeResult = $callback($this->native);
 
         if ($gmpResult !== $bcmathResult) {
-            $this->failure('GMP', 'BCMath', $test);
+            $this->failure('GMP', 'BCMath', $test, $gmpResult, $bcmathResult);
         }
 
         if ($gmpResult !== $nativeResult) {
-            $this->failure('GMP', 'Native', $test);
+            $this->failure('GMP', 'Native', $test, $gmpResult, $nativeResult);
         }
 
         $this->testCounter++;
@@ -149,12 +158,15 @@ if ($maxDigits < 1) {
      * @param string $c1   The name of the first calculator.
      * @param string $c2   The name of the second calculator.
      * @param string $test A string representing the test being executed.
+     * @param string $v1   The value returned by the first calculator.
+     * @param string $v2   The value returned by the second calculator.
      */
-    private function failure(string $c1, string $c2, string $test): never
+    private function failure(string $c1, string $c2, string $test, string $v1, string $v2): never
     {
         echo PHP_EOL;
         echo 'FAILURE!', PHP_EOL;
         echo $c1, ' vs ', $c2, PHP_EOL;
+        echo "$v1 != $v2", PHP_EOL;
         echo $test, PHP_EOL;
         exit(1);
     }
