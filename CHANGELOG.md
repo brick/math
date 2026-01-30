@@ -10,6 +10,10 @@ All notable changes to this project will be documented in this file.
 - New method: `BigInteger::lcmAll()`
 - New method: `BigRational::toRepeatingDecimalString()`
 
+🐛 **Bug fixes**
+
+- `BigInteger::gcdAll()` / `gcdMultiple()` could return a negative result when used with a single negative number
+
 ## [0.14.2](https://github.com/brick/math/releases/tag/0.14.2) - 2026-01-30
 
 🗑️ **Deprecations**

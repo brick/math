@@ -393,17 +393,17 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     #[DataProvider('providerGcdAll')]
-    public function testGcdAll(array $values, string $expectedGCD): void
+    public function testGcdAll(array $values, string|int $expectedGCD): void
     {
-        self::assertSame($expectedGCD, (string) BigInteger::gcdAll(...$values));
-        self::assertSame($expectedGCD, (string) BigInteger::gcdMultiple(...$values));
+        self::assertBigIntegerEquals((string) $expectedGCD, BigInteger::gcdAll(...$values));
+        self::assertBigIntegerEquals((string) $expectedGCD, BigInteger::gcdMultiple(...$values));
     }
 
     public static function providerGcdAll(): Generator
     {
         // 1 value
-        foreach (['-2', '-1', '0', '1', '2'] as $value) {
-            yield [[$value], $value];
+        foreach ([-4, -3, -2, -1, 0, 1, 2, 3, 4] as $value) {
+            yield [[$value], abs($value)];
         }
 
         // 2 values
@@ -417,6 +417,9 @@ class BigIntegerTest extends AbstractTestCase
         yield [['2', '4', '-7'], '1'];
         yield [['2', '4', '-8'], '2'];
         yield [['28', '56', '77777'], '7'];
+        yield [['-28', '56', '77777'], '7'];
+        yield [['-28', '-56', '77777'], '7'];
+        yield [['-28', '-56', '-77777'], '7'];
         yield [['28', '56', '77778'], '2'];
         yield [['28', '56', '77782'], '2'];
         yield [['28', '56', '77783'], '1'];

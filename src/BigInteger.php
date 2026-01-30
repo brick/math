@@ -354,7 +354,7 @@ final readonly class BigInteger extends BigNumber
      */
     public static function gcdAll(BigNumber|int|float|string $a, BigNumber|int|float|string ...$n): BigInteger
     {
-        $result = BigInteger::of($a);
+        $result = BigInteger::of($a)->abs();
 
         foreach ($n as $next) {
             $result = $result->gcd(BigInteger::of($next));
