@@ -1036,6 +1036,46 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
+     * @param string $number   The rational number.
+     * @param string $expected The expected decimal representation.
+     */
+    #[DataProvider('providerToRepeatingDecimalString')]
+    public function testToRepeatingDecimalString(string $number, string $expected): void
+    {
+        self::assertSame($expected, BigRational::of($number)->toRepeatingDecimalString());
+    }
+
+    public static function providerToRepeatingDecimalString(): array
+    {
+        return [
+            ['0/7', '0'],
+            ['10/5', '2'],
+            ['1/2', '0.5'],
+            ['1/3', '0.(3)'],
+            ['4/3', '1.(3)'],
+            ['10/3', '3.(3)'],
+            ['7/6', '1.1(6)'],
+            ['22/7', '3.(142857)'],
+            ['171/70', '2.4(428571)'],
+            ['122200/99', '1234.(34)'],
+            ['123/98', '1.2(551020408163265306122448979591836734693877)'],
+            ['1234500000/99999', '12345.(12345)'],
+            ['12345000000/99999', '123451.(23451)'],
+            ['1/250', '0.004'],
+            ['50/8', '6.25'],
+            ['1/28', '0.03(571428)'],
+            ['1/40', '0.025'],
+            ['-1/28', '-0.03(571428)'],
+            ['-1/3', '-0.(3)'],
+            ['-1/30', '-0.0(3)'],
+            ['-5/2', '-2.5'],
+            ['-22/7', '-3.(142857)'],
+            ['1/90', '0.0(1)'],
+            ['1/12', '0.08(3)'],
+        ];
+    }
+
+    /**
      * @param string $numerator   The numerator.
      * @param string $denominator The denominator.
      * @param string $expected    The expected string output.
