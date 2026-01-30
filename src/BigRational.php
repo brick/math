@@ -12,6 +12,7 @@ use InvalidArgumentException;
 use LogicException;
 use Override;
 
+use function substr;
 use function trigger_error;
 
 use const E_USER_DEPRECATED;
@@ -499,6 +500,62 @@ final readonly class BigRational extends BigNumber
         $simplified = $this->simplified();
 
         return $simplified->numerator->toFloat() / $simplified->denominator->toFloat();
+    }
+
+    /**
+     * Returns the decimal representation of this rational number, with repeating decimals in parentheses.
+     *
+     * Examples:
+     *
+     * - `10/3` returns `3.(3)`
+     * - `171/70` returns `2.4(428571)`
+     * - `1/2` returns `0.5`
+     *
+     * @pure
+     */
+    public function toRepeatingDecimalString(): string
+    {
+        if ($this->numerator->isZero()) {
+            return '0';
+        }
+
+        $sign = $this->numerator->isNegative() ? '-' : '';
+        $numerator = $this->numerator->abs();
+        $denominator = $this->denominator;
+
+        $integral = $numerator->quotient($denominator);
+        $remainder = $numerator->remainder($denominator);
+
+        $integralString = (string) $integral;
+
+        if ($remainder->isZero()) {
+            return $sign . $integralString;
+        }
+
+        $digits = '';
+        $remainderPositions = [];
+        $index = 0;
+
+        while (! $remainder->isZero()) {
+            $remainderAsString = (string) $remainder;
+
+            if (isset($remainderPositions[$remainderAsString])) {
+                $repeatIndex = $remainderPositions[$remainderAsString];
+                $nonRepeating = substr($digits, 0, $repeatIndex);
+                $repeating = substr($digits, $repeatIndex);
+
+                return $sign . $integralString . '.' . $nonRepeating . '(' . $repeating . ')';
+            }
+
+            $remainderPositions[$remainderAsString] = $index;
+            $remainder = $remainder->multipliedBy(10);
+
+            $digits .= (string) $remainder->quotient($denominator);
+            $remainder = $remainder->remainder($denominator);
+            $index++;
+        }
+
+        return $sign . $integralString . '.' . $digits;
     }
 
     #[Override]
