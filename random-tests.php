@@ -75,6 +75,7 @@ if ($maxDigits < 1) {
 
             if ($c !== '0') {
                 $this->test("$a POW $b MOD $c", fn (Calculator $calc) => $calc->modPow($a, $b, $c));
+                $this->test("-$a POW $b MOD $c", fn (Calculator $calc) => $calc->modPow("-$a", $b, $c));
             }
 
             foreach ([$a, $b] as $n) {

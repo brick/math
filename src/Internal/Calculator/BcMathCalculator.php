@@ -71,6 +71,9 @@ final readonly class BcMathCalculator extends Calculator
     #[Override]
     public function modPow(string $base, string $exp, string $mod): string
     {
+        // normalize to Euclidean representative so modPow() stays consistent with mod()
+        $base = $this->mod($base, $mod);
+
         return bcpowmod($base, $exp, $mod, 0);
     }
 

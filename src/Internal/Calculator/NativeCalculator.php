@@ -230,6 +230,9 @@ final readonly class NativeCalculator extends Calculator
     #[Override]
     public function modPow(string $base, string $exp, string $mod): string
     {
+        // normalize to Euclidean representative so modPow() stays consistent with mod()
+        $base = $this->mod($base, $mod);
+
         // special case: the algorithm below fails with 0 power 0 mod 1 (returns 1 instead of 0)
         if ($base === '0' && $exp === '0' && $mod === '1') {
             return '0';

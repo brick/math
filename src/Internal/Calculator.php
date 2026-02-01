@@ -217,7 +217,7 @@ abstract readonly class Calculator
     /**
      * Raises a number into power with modulo.
      *
-     * @param string $base The base number; must be positive or zero.
+     * @param string $base The base number.
      * @param string $exp  The exponent; must be positive or zero.
      * @param string $mod  The modulus; must be strictly positive.
      *

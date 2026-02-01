@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 - Passing a negative modulus to `BigInteger::mod()` is deprecated to align with Euclidean modulo semantics; it will throw `NegativeNumberException` in 0.15
 
+✨ **New features**
+
+- `BigInteger::modPow()` now accepts negative bases
+
 👌 **Improvements**
 
 - `clamp()` methods are now marked as `@pure`

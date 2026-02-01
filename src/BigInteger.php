@@ -723,12 +723,12 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns this number raised into power with modulo.
      *
-     * This operation only works on positive numbers.
+     * This operation requires a non-negative exponent and a strictly positive modulus.
      *
      * @param BigNumber|int|float|string $exp The exponent. Must be positive or zero.
      * @param BigNumber|int|float|string $mod The modulus. Must be strictly positive.
      *
-     * @throws NegativeNumberException If any of the operands is negative.
+     * @throws NegativeNumberException If the exponent or modulus is negative.
      * @throws DivisionByZeroException If the modulus is zero.
      *
      * @pure
@@ -738,8 +738,12 @@ final readonly class BigInteger extends BigNumber
         $exp = BigInteger::of($exp);
         $mod = BigInteger::of($mod);
 
-        if ($this->isNegative() || $exp->isNegative() || $mod->isNegative()) {
-            throw new NegativeNumberException('The operands cannot be negative.');
+        if ($exp->isNegative()) {
+            throw new NegativeNumberException('The exponent cannot be negative.');
+        }
+
+        if ($mod->isNegative()) {
+            throw new NegativeNumberException('The modulus cannot be negative.');
         }
 
         if ($mod->isZero()) {
