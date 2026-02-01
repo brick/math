@@ -35,9 +35,7 @@ use function str_repeat;
 use function strlen;
 use function strtolower;
 use function substr;
-use function trigger_error;
 
-use const E_USER_DEPRECATED;
 use const FILTER_VALIDATE_INT;
 
 /**
@@ -646,17 +644,24 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
-     * Returns the modulo of this number and the given one.
+     * Returns this number modulo the given one.
      *
-     * The modulo operation yields the same result as the remainder operation when both operands are of the same sign,
-     * and may differ when signs are different.
+     * The result is always non-negative, and is the unique value `r` such that `0 <= r < m`
+     * and `this - r` is a multiple of `m`.
      *
-     * The result of the modulo operation, when non-zero, has the same sign as the divisor.
+     * This is also known as Euclidean modulo. Unlike `remainder()`, which can return negative values
+     * when the dividend is negative, `mod()` always returns a non-negative result.
      *
-     * @param BigNumber|int|string $that The divisor. Must be convertible to a BigInteger.
+     * Examples:
      *
-     * @throws MathException           If the divisor is not valid, or is not convertible to a BigInteger.
-     * @throws DivisionByZeroException If the divisor is zero.
+     * - `7` mod `3` returns `1`
+     * - `-7` mod `3` returns `2`
+     *
+     * @param BigNumber|int|string $that The modulus, strictly positive. Must be convertible to a BigInteger.
+     *
+     * @throws MathException           If the modulus is not valid, or is not convertible to a BigInteger.
+     * @throws DivisionByZeroException If the modulus is zero.
+     * @throws NegativeNumberException If the modulus is negative.
      *
      * @pure
      */
@@ -669,11 +674,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($that->isNegative()) {
-            // @phpstan-ignore-next-line
-            trigger_error(
-                'Passing a negative modulus to BigInteger::mod() is deprecated and will throw a NegativeNumberException in 0.15.',
-                E_USER_DEPRECATED,
-            );
+            throw new NegativeNumberException('Modulus must be strictly positive.');
         }
 
         $value = CalculatorRegistry::get()->mod($this->value, $that->value);
