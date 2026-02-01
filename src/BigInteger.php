@@ -518,6 +518,8 @@ final readonly class BigInteger extends BigNumber
      *
      * @throws MathException            If min/max are not convertible to a BigInteger.
      * @throws InvalidArgumentException If min is greater than max.
+     *
+     * @pure
      */
     public function clamp(BigNumber|int|float|string $min, BigNumber|int|float|string $max): BigInteger
     {

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## UNRELEASED (0.14.4)
+
+👌 **Improvements**
+
+- `clamp()` methods are now marked as `@pure`
+
 ## [0.14.3](https://github.com/brick/math/releases/tag/0.14.3) - 2026-02-01
 
 ✨ **New features**

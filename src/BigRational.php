@@ -378,6 +378,8 @@ final readonly class BigRational extends BigNumber
      *
      * @throws MathException            If min/max are not convertible to a BigRational.
      * @throws InvalidArgumentException If min is greater than max.
+     *
+     * @pure
      */
     public function clamp(BigNumber|int|float|string $min, BigNumber|int|float|string $max): BigRational
     {
