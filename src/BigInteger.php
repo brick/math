@@ -666,8 +666,16 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->value === '0') {
+        if ($that->isZero()) {
             throw DivisionByZeroException::modulusMustNotBeZero();
+        }
+
+        if ($that->isNegative()) {
+            // @phpstan-ignore-next-line
+            trigger_error(
+                'Passing a negative modulus to BigInteger::mod() is deprecated and will throw a NegativeNumberException in 0.15.',
+                E_USER_DEPRECATED,
+            );
         }
 
         $value = CalculatorRegistry::get()->mod($this->value, $that->value);
