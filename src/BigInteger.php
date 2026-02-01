@@ -776,7 +776,7 @@ final readonly class BigInteger extends BigNumber
      *
      * The GCD is always positive, unless both operands are zero, in which case it is zero.
      *
-     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|float|string $that The operand. Must be convertible to a BigInteger.
      *
      * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
      *
@@ -804,7 +804,7 @@ final readonly class BigInteger extends BigNumber
      *
      * The LCM is always positive, unless at least one operand is zero, in which case it is zero.
      *
-     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|float|string $that The operand. Must be convertible to a BigInteger.
      *
      * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
      *
