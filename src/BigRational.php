@@ -424,7 +424,7 @@ final readonly class BigRational extends BigNumber
      */
     public function abs(): BigRational
     {
-        return new BigRational($this->numerator->abs(), $this->denominator, false);
+        return $this->isNegative() ? $this->negated() : $this;
     }
 
     /**
