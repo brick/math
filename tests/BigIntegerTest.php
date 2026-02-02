@@ -3446,6 +3446,35 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
+    #[DataProvider('providerArbitraryBaseWithDuplicateChars')]
+    public function testFromArbitraryBaseWithDuplicateCharsInAlphabet(string $alphabet): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The alphabet must not contain duplicate chars.');
+
+        BigInteger::fromArbitraryBase('0', $alphabet);
+    }
+
+    #[DataProvider('providerArbitraryBaseWithDuplicateChars')]
+    public function testToArbitraryBaseWithDuplicateCharsInAlphabet(string $alphabet): void
+    {
+        $number = BigInteger::of(123);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The alphabet must not contain duplicate chars.');
+
+        $number->toArbitraryBase($alphabet);
+    }
+
+    public static function providerArbitraryBaseWithDuplicateChars(): array
+    {
+        return [
+            ['001'],
+            ['abcdea'],
+            ['XYX'],
+        ];
+    }
+
     public function testToArbitraryBaseOnNegativeNumber(): void
     {
         $number = BigInteger::of(-123);

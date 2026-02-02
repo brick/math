@@ -18,6 +18,7 @@ use Override;
 use function assert;
 use function bin2hex;
 use function chr;
+use function count_chars;
 use function filter_var;
 use function hex2bin;
 use function in_array;
@@ -145,7 +146,7 @@ final readonly class BigInteger extends BigNumber
      * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
      *
      * @throws NumberFormatException    If the given number is empty or contains invalid chars for the given alphabet.
-     * @throws InvalidArgumentException If the alphabet does not contain at least 2 chars.
+     * @throws InvalidArgumentException If the alphabet does not contain at least 2 chars, or contains duplicates.
      *
      * @pure
      */
@@ -159,6 +160,10 @@ final readonly class BigInteger extends BigNumber
 
         if ($base < 2) {
             throw new InvalidArgumentException('The alphabet must contain at least 2 chars.');
+        }
+
+        if (strlen(count_chars($alphabet, 3)) !== $base) {
+            throw new InvalidArgumentException('The alphabet must not contain duplicate chars.');
         }
 
         $pattern = '/[^' . preg_quote($alphabet, '/') . ']/';
@@ -1118,7 +1123,7 @@ final readonly class BigInteger extends BigNumber
      * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
      *
      * @throws NegativeNumberException  If this number is negative.
-     * @throws InvalidArgumentException If the given alphabet does not contain at least 2 chars.
+     * @throws InvalidArgumentException If the alphabet does not contain at least 2 chars, or contains duplicates.
      *
      * @pure
      */
@@ -1128,6 +1133,10 @@ final readonly class BigInteger extends BigNumber
 
         if ($base < 2) {
             throw new InvalidArgumentException('The alphabet must contain at least 2 chars.');
+        }
+
+        if (strlen(count_chars($alphabet, 3)) !== $base) {
+            throw new InvalidArgumentException('The alphabet must not contain duplicate chars.');
         }
 
         if ($this->value[0] === '-') {
