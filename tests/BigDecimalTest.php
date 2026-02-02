@@ -3275,7 +3275,6 @@ class BigDecimalTest extends AbstractTestCase
     public function testStrippedOfTrailingZeros(string $number, string $expected): void
     {
         self::assertBigDecimalEquals($expected, BigDecimal::of($number)->strippedOfTrailingZeros());
-        self::assertBigDecimalEquals($expected, BigDecimal::of($number)->stripTrailingZeros());
     }
 
     public static function providerStrippedOfTrailingZeros(): array

@@ -585,21 +585,6 @@ final readonly class BigDecimal extends BigNumber
     /**
      * Returns a copy of this BigDecimal with any trailing zeros removed from the fractional part.
      *
-     * @deprecated Use strippedOfTrailingZeros() instead.
-     */
-    public function stripTrailingZeros(): BigDecimal
-    {
-        trigger_error(
-            'BigDecimal::stripTrailingZeros() is deprecated, use strippedOfTrailingZeros() instead.',
-            E_USER_DEPRECATED,
-        );
-
-        return $this->strippedOfTrailingZeros();
-    }
-
-    /**
-     * Returns a copy of this BigDecimal with any trailing zeros removed from the fractional part.
-     *
      * @pure
      */
     public function strippedOfTrailingZeros(): BigDecimal

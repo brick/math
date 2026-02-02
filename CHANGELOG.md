@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - deprecated method `BigDecimal::exactlyDividedBy()` has been removed, use `dividedByExact()` instead
 - deprecated method `BigDecimal::getIntegralPart()` has been removed (will be re-introduced as returning `BigInteger` in 0.16)
 - deprecated method `BigDecimal::getFractionalPart()` has been removed (will be re-introduced as returning `BigDecimal` with a different meaning in 0.16)
+- deprecated method `BigDecimal::stripTrailingZeros()` has been removed, use `strippedOfTrailingZeros()` instead
 - deprecated method `BigRational::nd()` has been removed, use `ofFraction()` instead
 - deprecated method `BigRational::quotient()` has been removed, use `getIntegralPart()` instead
 - deprecated method `BigRational::remainder()` has been removed, use `$number->getNumerator()->remainder($number->getDenominator())` instead
