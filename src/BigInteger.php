@@ -657,7 +657,7 @@ final readonly class BigInteger extends BigNumber
      * - `7` mod `3` returns `1`
      * - `-7` mod `3` returns `2`
      *
-     * @param BigNumber|int|string $that The modulus, strictly positive. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string $modulus The modulus, strictly positive. Must be convertible to a BigInteger.
      *
      * @throws MathException           If the modulus is not valid, or is not convertible to a BigInteger.
      * @throws DivisionByZeroException If the modulus is zero.
@@ -665,19 +665,19 @@ final readonly class BigInteger extends BigNumber
      *
      * @pure
      */
-    public function mod(BigNumber|int|string $that): BigInteger
+    public function mod(BigNumber|int|string $modulus): BigInteger
     {
-        $that = BigInteger::of($that);
+        $modulus = BigInteger::of($modulus);
 
-        if ($that->isZero()) {
+        if ($modulus->isZero()) {
             throw DivisionByZeroException::modulusMustNotBeZero();
         }
 
-        if ($that->isNegative()) {
+        if ($modulus->isNegative()) {
             throw new NegativeNumberException('Modulus must be strictly positive.');
         }
 
-        $value = CalculatorRegistry::get()->mod($this->value, $that->value);
+        $value = CalculatorRegistry::get()->mod($this->value, $modulus->value);
 
         return new BigInteger($value);
     }

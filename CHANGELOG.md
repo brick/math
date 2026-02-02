@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 
 The following breaking changes only affect you if you're using named arguments:
 
+- `BigInteger::mod()` now uses `$modulus` as the parameter name
 - `BigInteger::modInverse()` now uses `$modulus` as the parameter name
 - `BigInteger::modPow()` now uses `$exponent` and `$modulus` as parameter names
 - `BigInteger::shiftedLeft()` now uses `$bits` as the parameter name
