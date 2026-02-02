@@ -844,6 +844,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testDividedByByZeroThrowsException(int|float|string $zero): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('Division by zero.');
         BigDecimal::of(1)->dividedBy($zero, 0);
     }
 

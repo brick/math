@@ -334,6 +334,10 @@ final readonly class BigRational extends BigNumber
     {
         $that = BigRational::of($that);
 
+        if ($that->isZero()) {
+            throw DivisionByZeroException::divisionByZero();
+        }
+
         $numerator = $this->numerator->multipliedBy($that->denominator);
         $denominator = $this->denominator->multipliedBy($that->numerator);
 

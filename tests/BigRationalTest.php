@@ -431,6 +431,14 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
+    public function testDividedByZero(): void
+    {
+        $number = BigRational::ofFraction(1, 2);
+        $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('Division by zero.');
+        $number->dividedBy(0);
+    }
+
     /**
      * @param string $number   The base number.
      * @param int    $exponent The exponent to apply.

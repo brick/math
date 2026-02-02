@@ -681,6 +681,10 @@ class BigIntegerTest extends AbstractTestCase
 
         if (self::isException($expected)) {
             $this->expectException($expected);
+
+            if ($expected === DivisionByZeroException::class) {
+                $this->expectExceptionMessage('Division by zero.');
+            }
         }
 
         $actual = $number->dividedBy($divisor);
