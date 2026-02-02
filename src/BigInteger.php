@@ -699,12 +699,12 @@ final readonly class BigInteger extends BigNumber
     {
         $modulus = BigInteger::of($modulus);
 
-        if ($modulus->value === '0') {
+        if ($modulus->isZero()) {
             throw DivisionByZeroException::modulusMustNotBeZero();
         }
 
         if ($modulus->isNegative()) {
-            throw new NegativeNumberException('Modulus must not be negative.');
+            throw new NegativeNumberException('Modulus must be strictly positive.');
         }
 
         if ($modulus->value === '1') {
@@ -740,15 +740,15 @@ final readonly class BigInteger extends BigNumber
         $modulus = BigInteger::of($modulus);
 
         if ($exponent->isNegative()) {
-            throw new NegativeNumberException('The exponent cannot be negative.');
-        }
-
-        if ($modulus->isNegative()) {
-            throw new NegativeNumberException('The modulus cannot be negative.');
+            throw new NegativeNumberException('Exponent must not be negative.');
         }
 
         if ($modulus->isZero()) {
             throw DivisionByZeroException::modulusMustNotBeZero();
+        }
+
+        if ($modulus->isNegative()) {
+            throw new NegativeNumberException('Modulus must be strictly positive.');
         }
 
         $result = CalculatorRegistry::get()->modPow($this->value, $exponent->value, $modulus->value);
