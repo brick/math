@@ -2079,13 +2079,14 @@ class BigDecimalTest extends AbstractTestCase
      * @param string $number   The number to trim.
      * @param string $expected The expected result.
      */
-    #[DataProvider('providerStripTrailingZeros')]
-    public function testStripTrailingZeros(string $number, string $expected): void
+    #[DataProvider('providerStrippedOfTrailingZeros')]
+    public function testStrippedOfTrailingZeros(string $number, string $expected): void
     {
+        self::assertBigDecimalEquals($expected, BigDecimal::of($number)->strippedOfTrailingZeros());
         self::assertBigDecimalEquals($expected, BigDecimal::of($number)->stripTrailingZeros());
     }
 
-    public static function providerStripTrailingZeros(): array
+    public static function providerStrippedOfTrailingZeros(): array
     {
         return [
             ['0', '0'],
