@@ -484,12 +484,6 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testMinOfZeroValuesThrowsException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigInteger::min();
-    }
-
     public function testMinOfNonIntegerValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
@@ -518,12 +512,6 @@ class BigIntegerTest extends AbstractTestCase
             [['999999999999999999999999999', '1000000000000000000000000000'], '1000000000000000000000000000'],
             [['-999999999999999999999999999', '-1000000000000000000000000000'], '-999999999999999999999999999'],
         ];
-    }
-
-    public function testMaxOfZeroValuesThrowsException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigInteger::max();
     }
 
     public function testMaxOfNonIntegerValuesThrowsException(): void
@@ -555,12 +543,6 @@ class BigIntegerTest extends AbstractTestCase
             [['1234567', '-1233.00', 137, '406847567975012457258945126'], '406847567975012457260178597'],
             [['-165504564654654879742303821254754', '-4455454', 455879563], '-165504564654654879742303369830645'],
         ];
-    }
-
-    public function testSumOfZeroValuesThrowsException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigInteger::sum();
     }
 
     public function testSumOfNonIntegerValuesThrowsException(): void

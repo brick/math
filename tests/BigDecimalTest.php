@@ -402,12 +402,6 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testMinOfZeroValuesThrowsException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigDecimal::min();
-    }
-
     public function testMinOfNonDecimalValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
@@ -446,12 +440,6 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testMaxOfZeroValuesThrowsException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigDecimal::max();
-    }
-
     public function testMaxOfNonDecimalValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
@@ -488,12 +476,6 @@ class BigDecimalTest extends AbstractTestCase
             [['9.9e50', '1e50', '-3/2'], '1089999999999999999999999999999999999999999999999998.5'],
             [['9.9e50', '-1e-51'], '989999999999999999999999999999999999999999999999999.999999999999999999999999999999999999999999999999999'],
         ];
-    }
-
-    public function testSumOfZeroValuesThrowsException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigDecimal::sum();
     }
 
     public function testSumOfNonDecimalValuesThrowsException(): void

@@ -4,7 +4,6 @@ parameters:
     paths:
         - src
     ignoreErrors:
-        - '~Impure call to function array_shift\(\) in pure method~'
         - '~Possibly impure call to function assert\(\) in pure method~'
         - '~Possibly impure call to function hex2bin\(\) in pure method~'
         - '~Possibly impure call to function preg_match\(\) in pure method~'

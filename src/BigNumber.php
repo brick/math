@@ -13,7 +13,6 @@ use JsonSerializable;
 use Override;
 use Stringable;
 
-use function array_shift;
 use function assert;
 use function filter_var;
 use function is_int;
@@ -120,28 +119,24 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Returns the minimum of the given values.
      *
-     * @param BigNumber|int|string ...$values The numbers to compare. All the numbers need to be convertible
-     *                                        to an instance of the class this method is called on.
+     * @param BigNumber|int|string $a    The first number.
+     * @param BigNumber|int|string ...$n The subsequent numbers. All the numbers need to be convertible
+     *                                   to an instance of the class this method is called on.
      *
-     * @throws InvalidArgumentException If no values are given.
-     * @throws MathException            If an argument is not valid.
+     * @throws MathException If an argument is not valid.
      *
      * @pure
      */
-    final public static function min(BigNumber|int|string ...$values): static
+    final public static function min(BigNumber|int|string $a, BigNumber|int|string ...$n): static
     {
-        $min = null;
+        $min = static::of($a);
 
-        foreach ($values as $value) {
+        foreach ($n as $value) {
             $value = static::of($value);
 
-            if ($min === null || $value->isLessThan($min)) {
+            if ($value->isLessThan($min)) {
                 $min = $value;
             }
-        }
-
-        if ($min === null) {
-            throw new InvalidArgumentException(__METHOD__ . '() expects at least one value.');
         }
 
         return $min;
@@ -150,28 +145,24 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Returns the maximum of the given values.
      *
-     * @param BigNumber|int|string ...$values The numbers to compare. All the numbers need to be convertible
-     *                                        to an instance of the class this method is called on.
+     * @param BigNumber|int|string $a    The first number.
+     * @param BigNumber|int|string ...$n The subsequent numbers. All the numbers need to be convertible
+     *                                   to an instance of the class this method is called on.
      *
-     * @throws InvalidArgumentException If no values are given.
-     * @throws MathException            If an argument is not valid.
+     * @throws MathException If an argument is not valid.
      *
      * @pure
      */
-    final public static function max(BigNumber|int|string ...$values): static
+    final public static function max(BigNumber|int|string $a, BigNumber|int|string ...$n): static
     {
-        $max = null;
+        $max = static::of($a);
 
-        foreach ($values as $value) {
+        foreach ($n as $value) {
             $value = static::of($value);
 
-            if ($max === null || $value->isGreaterThan($max)) {
+            if ($value->isGreaterThan($max)) {
                 $max = $value;
             }
-        }
-
-        if ($max === null) {
-            throw new InvalidArgumentException(__METHOD__ . '() expects at least one value.');
         }
 
         return $max;
@@ -186,25 +177,19 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * When called on BigInteger, BigDecimal, or BigRational, sum() requires that all values can be converted to that
      * specific subclass, and returns a result of the same type.
      *
-     * @param BigNumber|int|string ...$values The values to add. All values must be convertible to the class on
-     *                                        which this method is called.
+     * @param BigNumber|int|string $a    The first value.
+     * @param BigNumber|int|string ...$n The subsequent values. All values must be convertible to the class on
+     *                                   which this method is called.
      *
-     * @throws InvalidArgumentException If no values are given.
-     * @throws MathException            If an argument is not valid.
+     * @throws MathException If an argument is not valid.
      *
      * @pure
      */
-    final public static function sum(BigNumber|int|string ...$values): static
+    final public static function sum(BigNumber|int|string $a, BigNumber|int|string ...$n): static
     {
-        $first = array_shift($values);
+        $sum = static::of($a);
 
-        if ($first === null) {
-            throw new InvalidArgumentException(__METHOD__ . '() expects at least one value.');
-        }
-
-        $sum = static::of($first);
-
-        foreach ($values as $value) {
+        foreach ($n as $value) {
             $sum = self::add($sum, static::of($value));
         }
 
