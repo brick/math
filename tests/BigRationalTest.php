@@ -209,12 +209,6 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    public function testMinOfZeroValuesThrowsException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigRational::min();
-    }
-
     /**
      * @param array  $values The values to compare.
      * @param string $max    The expected maximum value, in rational form.
@@ -238,12 +232,6 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    public function testMaxOfZeroValuesThrowsException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigRational::max();
-    }
-
     /**
      * @param array  $values The values to add.
      * @param string $sum    The expected sum, in rational form.
@@ -265,12 +253,6 @@ class BigRationalTest extends AbstractTestCase
             [['1e-30', '15185185062185185062185185048/123', '2e25'], '17645185062185185062185185048000000000000000000000000000123/123000000000000000000000000000000'],
             [['1e-30', '15185185062185185062185185048/123', '2e26'], '39785185062185185062185185048000000000000000000000000000123/123000000000000000000000000000000'],
         ];
-    }
-
-    public function testSumOfZeroValuesThrowsException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigRational::sum();
     }
 
     /**

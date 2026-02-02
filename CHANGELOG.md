@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - **`BigInteger::mod()` now uses Euclidean modulo semantics**: the modulus must be strictly positive, and the result is always non-negative; this change aligns with Java's `BigInteger.mod()` behaviour
 - **`MathException` is now an interface** instead of a class
 - **`BigDecimal::getPrecision()` now returns `1` for zero values**
+- `BigNumber::min()`, `max()` and `sum()` now throw an `ArgumentCountError` when called with no arguments (previously threw `InvalidArgumentException`)
 - deprecated method `BigInteger::testBit()` has been removed, use `isBitSet()` instead
 - deprecated method `BigInteger::gcdMultiple()` has been removed, use `gcdAll()` instead
 - deprecated method `BigDecimal::exactlyDividedBy()` has been removed, use `dividedByExact()` instead
