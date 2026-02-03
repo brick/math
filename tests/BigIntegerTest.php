@@ -3414,7 +3414,7 @@ class BigIntegerTest extends AbstractTestCase
     public static function providerFromArbitraryBaseWithInvalidNumber(): array
     {
         return [
-            ['', '01', 'The number cannot be empty.'],
+            ['', '01', 'The number must not be empty.'],
             ['X', '01', 'Char "X" is not a valid character in the given alphabet.'],
             ['1', 'XY', 'Char "1" is not a valid character in the given alphabet.'],
             [' ', 'XY', 'Char " " is not a valid character in the given alphabet.'],

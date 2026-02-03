@@ -245,7 +245,7 @@ final readonly class BigDecimal extends BigNumber
         if ($scale === null) {
             $scale = $this->scale;
         } elseif ($scale < 0) {
-            throw new InvalidArgumentException('Scale cannot be negative.');
+            throw new InvalidArgumentException('Scale must not be negative.');
         }
 
         if ($that->value === '1' && $that->scale === 0 && $scale === $this->scale) {
@@ -489,7 +489,7 @@ final readonly class BigDecimal extends BigNumber
     public function sqrt(int $scale): BigDecimal
     {
         if ($scale < 0) {
-            throw new InvalidArgumentException('Scale cannot be negative.');
+            throw new InvalidArgumentException('Scale must not be negative.');
         }
 
         if ($this->value === '0') {

@@ -88,7 +88,7 @@ final readonly class BigInteger extends BigNumber
     public static function fromBase(string $number, int $base): BigInteger
     {
         if ($number === '') {
-            throw new NumberFormatException('The number cannot be empty.');
+            throw new NumberFormatException('The number must not be empty.');
         }
 
         if ($base < 2 || $base > 36) {
@@ -106,7 +106,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($number === '') {
-            throw new NumberFormatException('The number cannot be empty.');
+            throw new NumberFormatException('The number must not be empty.');
         }
 
         $number = ltrim($number, '0');
@@ -153,7 +153,7 @@ final readonly class BigInteger extends BigNumber
     public static function fromArbitraryBase(string $number, string $alphabet): BigInteger
     {
         if ($number === '') {
-            throw new NumberFormatException('The number cannot be empty.');
+            throw new NumberFormatException('The number must not be empty.');
         }
 
         $base = strlen($alphabet);
@@ -236,7 +236,7 @@ final readonly class BigInteger extends BigNumber
     public static function randomBits(int $numBits, ?callable $randomBytesGenerator = null): BigInteger
     {
         if ($numBits < 0) {
-            throw new InvalidArgumentException('The number of bits cannot be negative.');
+            throw new InvalidArgumentException('The number of bits must not be negative.');
         }
 
         if ($numBits === 0) {
@@ -282,7 +282,7 @@ final readonly class BigInteger extends BigNumber
         $max = BigInteger::of($max);
 
         if ($min->isGreaterThan($max)) {
-            throw new MathException('$min cannot be greater than $max.');
+            throw new MathException('$min must be less than or equal to $max.');
         }
 
         if ($min->isEqualTo($max)) {
