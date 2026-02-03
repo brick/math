@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 👌 **Improvements**
 
 - alphabet is now checked for duplicate characters in `BigInteger::(from|to)ArbitraryBase()`
+- `BigNumber::ofNullable()` is now marked as `@pure`
 
 ## [0.14.4](https://github.com/brick/math/releases/tag/0.14.4) - 2026-02-02
 

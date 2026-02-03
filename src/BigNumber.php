@@ -110,6 +110,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * @throws NumberFormatException      If the format of the number is not valid.
      * @throws DivisionByZeroException    If the value represents a rational number with a denominator of zero.
      * @throws RoundingNecessaryException If the value cannot be converted to an instance of the subclass without rounding.
+     *
+     * @pure
      */
     public static function ofNullable(BigNumber|int|float|string|null $value): ?static
     {
