@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 🗑️ **Deprecations**
 
-- not passing a rounding mode to `BigInteger::sqrt()` and `BigDecimal::sqrt()` triggers a deprecation notice: **the default rounding mode will change from `Down` to `Unnecessary` in 0.15**
+- Not passing a rounding mode to `BigInteger::sqrt()` and `BigDecimal::sqrt()` triggers a deprecation notice: **the default rounding mode will change from `Down` to `Unnecessary` in 0.15**
 
 ✨ **New features**
 
@@ -15,7 +15,7 @@ All notable changes to this project will be documented in this file.
 
 👌 **Improvements**
 
-- alphabet is now checked for duplicate characters in `BigInteger::(from|to)ArbitraryBase()`
+- Alphabet is now checked for duplicate characters in `BigInteger::(from|to)ArbitraryBase()`
 - `BigNumber::ofNullable()` is now marked as `@pure`
 
 ## [0.14.4](https://github.com/brick/math/releases/tag/0.14.4) - 2026-02-02
