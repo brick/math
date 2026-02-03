@@ -61,7 +61,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
         '/^' .
         '(?<sign>[\-\+])?' .
         '(?<numerator>[0-9]+)' .
-        '\/?' .
+        '\/' .
         '(?<denominator>[0-9]+)' .
         '$/';
 
