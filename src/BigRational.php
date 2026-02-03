@@ -417,22 +417,7 @@ final readonly class BigRational extends BigNumber
         return new BigRational($this->denominator, $this->numerator, true);
     }
 
-    /**
-     * Returns the absolute value of this BigRational.
-     *
-     * @pure
-     */
-    public function abs(): BigRational
-    {
-        return $this->isNegative() ? $this->negated() : $this;
-    }
-
-    /**
-     * Returns the negated value of this BigRational.
-     *
-     * @pure
-     */
-    public function negated(): BigRational
+    public function negated(): static
     {
         return new BigRational($this->numerator->negated(), $this->denominator, false);
     }

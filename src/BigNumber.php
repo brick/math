@@ -319,6 +319,23 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     }
 
     /**
+     * Returns the absolute value of this number.
+     *
+     * @pure
+     */
+    final public function abs(): static
+    {
+        return $this->isNegative() ? $this->negated() : $this;
+    }
+
+    /**
+     * Returns the negated value of this number.
+     *
+     * @pure
+     */
+    abstract public function negated(): static;
+
+    /**
      * Returns the sign of this number.
      *
      * Returns -1 if the number is negative, 0 if zero, 1 if positive.

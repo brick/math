@@ -828,22 +828,7 @@ final readonly class BigInteger extends BigNumber
         return new BigInteger($value);
     }
 
-    /**
-     * Returns the absolute value of this number.
-     *
-     * @pure
-     */
-    public function abs(): BigInteger
-    {
-        return $this->isNegative() ? $this->negated() : $this;
-    }
-
-    /**
-     * Returns the inverse of this number.
-     *
-     * @pure
-     */
-    public function negated(): BigInteger
+    public function negated(): static
     {
         return new BigInteger(CalculatorRegistry::get()->neg($this->value));
     }

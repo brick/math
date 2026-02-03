@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## UNRELEASED (0.14.5)
 
+✨ **New features**
+
+- `abs()` and `negated()` methods are now available on the base `BigNumber` class
+
 👌 **Improvements**
 
 - alphabet is now checked for duplicate characters in `BigInteger::(from|to)ArbitraryBase()`

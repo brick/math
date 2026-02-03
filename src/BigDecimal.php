@@ -615,22 +615,7 @@ final readonly class BigDecimal extends BigNumber
         return new BigDecimal($value, $scale);
     }
 
-    /**
-     * Returns the absolute value of this number.
-     *
-     * @pure
-     */
-    public function abs(): BigDecimal
-    {
-        return $this->isNegative() ? $this->negated() : $this;
-    }
-
-    /**
-     * Returns the negated value of this number.
-     *
-     * @pure
-     */
-    public function negated(): BigDecimal
+    public function negated(): static
     {
         return new BigDecimal(CalculatorRegistry::get()->neg($this->value), $this->scale);
     }
