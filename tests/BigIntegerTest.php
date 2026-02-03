@@ -3420,6 +3420,7 @@ class BigIntegerTest extends AbstractTestCase
             [' ', 'XY', 'Char " " is not a valid character in the given alphabet.'],
 
             ["\x00", '01', 'Char 00 is not a valid character in the given alphabet.'],
+            ["\x0A", '01', 'Char 0A is not a valid character in the given alphabet.'],
             ["\x1F", '01', 'Char 1F is not a valid character in the given alphabet.'],
             ["\x7F", '01', 'Char 7F is not a valid character in the given alphabet.'],
             ["\x80", '01', 'Char 80 is not a valid character in the given alphabet.'],

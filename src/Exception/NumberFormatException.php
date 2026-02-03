@@ -37,7 +37,7 @@ final class NumberFormatException extends MathException
         if ($ord < 32 || $ord > 126) {
             $char = strtoupper(dechex($ord));
 
-            if ($ord < 10) {
+            if ($ord < 16) {
                 $char = '0' . $char;
             }
         } else {
