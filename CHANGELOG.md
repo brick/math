@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## UNRELEASED (0.14.5)
 
+🗑️ **Deprecations**
+
+- not passing a rounding mode to `BigInteger::sqrt()` and `BigDecimal::sqrt()` triggers a deprecation notice: **the default rounding mode will change from `Down` to `Unnecessary` in 0.15**
+
 ✨ **New features**
 
 - `BigInteger::sqrt()` and `BigDecimal::sqrt()` now support rounding

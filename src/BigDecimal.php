@@ -14,6 +14,7 @@ use InvalidArgumentException;
 use LogicException;
 use Override;
 
+use function func_num_args;
 use function in_array;
 use function intdiv;
 use function max;
@@ -491,6 +492,9 @@ final readonly class BigDecimal extends BigNumber
      *
      * @param int          $scale        The target scale.
      * @param RoundingMode $roundingMode The rounding mode to use, defaults to Down.
+     *                                   ⚠️ WARNING: the default rounding mode was kept as Down for backward
+     *                                   compatibility, but will change to Unnecessary in version 0.15. Pass a rounding
+     *                                   mode explicitly to avoid this upcoming breaking change.
      *
      * @throws InvalidArgumentException   If the scale is negative.
      * @throws NegativeNumberException    If this number is negative.
@@ -500,6 +504,15 @@ final readonly class BigDecimal extends BigNumber
      */
     public function sqrt(int $scale, RoundingMode $roundingMode = RoundingMode::Down): BigDecimal
     {
+        if (func_num_args() === 1) {
+            // @phpstan-ignore-next-line
+            trigger_error(
+                'The default rounding mode of BigDecimal::sqrt() will change from Down to Unnecessary in version 0.15. ' .
+                'Pass a rounding mode explicitly to avoid this breaking change.',
+                E_USER_DEPRECATED,
+            );
+        }
+
         if ($scale < 0) {
             throw new InvalidArgumentException('Scale must not be negative.');
         }
