@@ -39,10 +39,9 @@ use const E_USER_DEPRECATED;
 use const FILTER_VALIDATE_INT;
 
 /**
- * An arbitrary-size integer.
+ * An arbitrarily large integer number.
  *
- * All methods accepting a number as a parameter accept either a BigInteger instance,
- * an integer, or a string representing an arbitrary size integer.
+ * This class is immutable.
  */
 final readonly class BigInteger extends BigNumber
 {

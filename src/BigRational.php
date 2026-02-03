@@ -21,6 +21,9 @@ use const E_USER_DEPRECATED;
  * An arbitrarily large rational number.
  *
  * This class is immutable.
+ *
+ * Fractions are automatically simplified to lowest terms. For example, `2/4` becomes `1/2`.
+ * The denominator is always strictly positive; the sign is carried by the numerator.
  */
 final readonly class BigRational extends BigNumber
 {

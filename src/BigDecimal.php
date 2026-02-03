@@ -25,7 +25,11 @@ use const E_USER_DEPRECATED;
 use const STR_PAD_LEFT;
 
 /**
- * Immutable, arbitrary-precision signed decimal numbers.
+ * An arbitrarily large decimal number.
+ *
+ * This class is immutable.
+ *
+ * The scale of the number is the number of digits after the decimal point. It is always positive or zero.
  */
 final readonly class BigDecimal extends BigNumber
 {
