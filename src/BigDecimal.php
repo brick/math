@@ -235,7 +235,7 @@ final readonly class BigDecimal extends BigNumber
      * Returns the result of the division of this number by the given one, at the given scale.
      *
      * @param BigNumber|int|float|string $that         The divisor.
-     * @param int|null                   $scale        The desired scale, or null to use the scale of this number.
+     * @param int|null                   $scale        The desired scale. Omitting this parameter is deprecated; it will be required in 0.15.
      * @param RoundingMode               $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws InvalidArgumentException If the scale is invalid.
@@ -252,6 +252,12 @@ final readonly class BigDecimal extends BigNumber
         }
 
         if ($scale === null) {
+            // @phpstan-ignore-next-line
+            trigger_error(
+                'Not passing a $scale to BigDecimal::dividedBy() is deprecated. ' .
+                'Use $a->dividedBy($b, $a->getScale(), $roundingMode) to retain current behavior.',
+                E_USER_DEPRECATED,
+            );
             $scale = $this->scale;
         } elseif ($scale < 0) {
             throw new InvalidArgumentException('Scale must not be negative.');
