@@ -81,7 +81,6 @@ Example:
 BigInteger::of(123546);
 BigInteger::of('9999999999999999999999999999999999999999999');
 
-BigDecimal::of(1.2);
 BigDecimal::of('9.99999999999999999999999999999999999999999999');
 
 BigRational::of('2/3');
