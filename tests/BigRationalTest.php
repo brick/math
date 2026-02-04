@@ -17,10 +17,14 @@ use InvalidArgumentException;
 use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+use function is_infinite;
+use function is_nan;
 use function serialize;
+use function sprintf;
 use function unserialize;
 
 use const INF;
+use const PHP_FLOAT_EPSILON;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 
@@ -1021,25 +1025,87 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @param string $value The big decimal value.
-     * @param float  $float The expected float value.
+     * @param BigRational|string $value    The rational number value.
+     * @param float              $expected The expected float value.
      */
     #[DataProvider('providerToFloat')]
-    public function testToFloat(string $value, float $float): void
+    public function testToFloat(BigRational|string $value, float $expected): void
     {
-        self::assertSame($float, BigRational::of($value)->toFloat());
+        $actual = BigRational::of($value)->toFloat();
+
+        self::assertFalse(is_nan($actual));
+
+        if (is_infinite($expected) || $expected === 0.0) {
+            self::assertSame($expected, $actual);
+        } else {
+            $ratio = $actual / $expected;
+
+            $min = 1.0 - PHP_FLOAT_EPSILON;
+            $max = 1.0 + PHP_FLOAT_EPSILON;
+
+            self::assertTrue($ratio >= $min && $ratio <= $max, sprintf('%.20f != %.20f', $actual, $expected));
+        }
     }
 
     public static function providerToFloat(): array
     {
         return [
             ['0', 0.0],
+            ['-0', 0.0],
             ['1.6', 1.6],
             ['-1.6', -1.6],
-            ['1000000000000000000000000000000000000000/3', 3.3333333333333333333333333333333333e+38],
-            ['-2/300000000000000000000000000000000000000', -6.666666666666666666666666666666666e-39],
-            ['9.9e3000', INF],
-            ['-9.9e3000', -INF],
+            ['1.23456789', 1.23456789],
+            ['-1.23456789', -1.23456789],
+            ['1000000000000000000000000000000000000000/3', 3.333333333333333e+38],
+            ['-2/300000000000000000000000000000000000000', -6.666666666666666e-39],
+
+            ['1e-100', 1e-100],
+            ['-1e-100', -1e-100],
+            ['1e-324', 1e-324],
+            ['-1e-324', -1e-324],
+            ['1e-325', 0.0],
+            ['-1e-325', 0.0],
+            ['1e-1000', 0.0],
+            ['-1e-1000', 0.0],
+            ['1.2345e-100', 1.2345e-100],
+            ['-1.2345e-100', -1.2345e-100],
+            ['1.2345e-1000', 0.0],
+            ['-1.2345e-1000', 0.0],
+            ['1e100', 1e100],
+            ['-1e100', -1e100],
+            ['1e308', 1e308],
+            ['-1e308', -1e308],
+            ['1e309', INF],
+            ['-1e309', -INF],
+            ['1e1000', INF],
+            ['-1e1000', -INF],
+            ['1.2345e100', 1.2345e100],
+            ['-1.2345e100', -1.2345e100],
+            ['1.2345e1000', INF],
+            ['-1.2345e1000', -INF],
+
+            [BigRational::ofFraction('1e15', BigInteger::of('1e15')->plus(1)), 0.999999999999999],
+            [BigRational::ofFraction('1e15', BigInteger::of('1e15')->minus(1)), 1.000000000000001],
+            [BigRational::ofFraction('-1e15', BigInteger::of('1e15')->plus(1)), -0.999999999999999],
+            [BigRational::ofFraction('-1e15', BigInteger::of('1e15')->minus(1)), -1.000000000000001],
+            [BigRational::ofFraction('1e1000', BigInteger::of('1e1000')->plus(1)), 1.0],
+            [BigRational::ofFraction('1e1000', BigInteger::of('1e1000')->minus(1)), 1.0],
+            [BigRational::ofFraction('-1e1000', BigInteger::of('1e1000')->plus(1)), -1.0],
+            [BigRational::ofFraction('-1e1000', BigInteger::of('1e1000')->minus(1)), -1.0],
+            [BigRational::ofFraction('1e1000', BigInteger::of('2.5e1001')->plus(1)), 0.04],
+            [BigRational::ofFraction('1e1000', BigInteger::of('2.5e1001')->minus(1)), 0.04],
+            [BigRational::ofFraction('-1e1000', BigInteger::of('2.5e1001')->plus(1)), -0.04],
+            [BigRational::ofFraction('-1e1000', BigInteger::of('2.5e1001')->minus(1)), -0.04],
+            [BigRational::ofFraction(BigInteger::of('1e1000')->plus(1), BigInteger::of('1e2000')->plus(2)), 0.0],
+            [BigRational::ofFraction(BigInteger::of('-1e1000')->minus(1), BigInteger::of('1e2000')->plus(2)), 0.0],
+            [BigRational::ofFraction(BigInteger::of('1.2345e9999')->plus(1), BigInteger::of('2.34e10123')->plus(2)), 5.275641025641025e-125],
+            [BigRational::ofFraction(BigInteger::of('-1.2345e9999')->minus(1), BigInteger::of('2.34e10123')->plus(2)), -5.275641025641025e-125],
+            [BigRational::ofFraction(BigInteger::of('1.2345e10123')->plus(3), BigInteger::of('2.34e9999')->plus(123_000)), 5.275641025641025e123],
+            [BigRational::ofFraction(BigInteger::of('-1.2345e10123')->minus(3), BigInteger::of('2.34e9999')->plus(123_000)), -5.275641025641025e123],
+            [BigRational::ofFraction(BigInteger::of('1e2000')->plus(1), BigInteger::of('1e1000')->plus(2)), INF],
+            [BigRational::ofFraction(BigInteger::of('-1e2000')->minus(1), BigInteger::of('1e1000')->plus(2)), -INF],
+            [BigRational::ofFraction(BigInteger::of('1e309'), 7), 1.4285714285714286e308],
+            [BigRational::ofFraction(BigInteger::of('-1e309'), 7), -1.4285714285714286e308],
         ];
     }
 

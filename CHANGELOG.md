@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 - Not passing a `$scale` to `BigDecimal::dividedBy()` is deprecated; **`$scale` will be required in 0.15**
 
+👌 **Improvements**
+
+- `BigRational::toFloat()` never returns `NAN` anymore
+
 ## [0.14.5](https://github.com/brick/math/releases/tag/0.14.5) - 2026-02-03
 
 🗑️ **Deprecations**

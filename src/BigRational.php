@@ -12,6 +12,10 @@ use InvalidArgumentException;
 use LogicException;
 use Override;
 
+use function is_finite;
+use function max;
+use function min;
+use function strlen;
 use function substr;
 use function trigger_error;
 
@@ -492,8 +496,25 @@ final readonly class BigRational extends BigNumber
     public function toFloat(): float
     {
         $simplified = $this->simplified();
+        $numeratorFloat = $simplified->numerator->toFloat();
+        $denominatorFloat = $simplified->denominator->toFloat();
 
-        return $simplified->numerator->toFloat() / $simplified->denominator->toFloat();
+        if (is_finite($numeratorFloat) && is_finite($denominatorFloat)) {
+            return $numeratorFloat / $denominatorFloat;
+        }
+
+        // At least one side overflows to INF; use a decimal approximation instead.
+        // We need ~17 significant digits for double precision (we use 20 for some margin). Since $scale controls
+        // decimal places (not significant digits), we subtract the estimated order of magnitude so that large results
+        // use fewer decimal places and small results use more (to look past leading zeros). Clamped to [0, 350] as
+        // doubles range from e-324 to e308 (350 ≈ 324 + 20 significant digits + margin).
+        $magnitude = strlen((string) $simplified->numerator->abs()) - strlen((string) $simplified->denominator);
+        $scale = min(350, max(0, 20 - $magnitude));
+
+        return $simplified->numerator
+            ->toBigDecimal()
+            ->dividedBy($simplified->denominator, $scale, RoundingMode::HalfEven)
+            ->toFloat();
     }
 
     /**
