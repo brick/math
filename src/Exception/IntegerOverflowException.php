@@ -22,7 +22,7 @@ final class IntegerOverflowException extends RuntimeException implements MathExc
      */
     public static function integerOutOfRange(BigInteger $value): IntegerOverflowException
     {
-        $message = '%s is out of range %d to %d and cannot be represented as an integer.';
+        $message = '%s is out of range [%d, %d] and cannot be represented as an integer.';
 
         return new self(sprintf($message, $value->toString(), PHP_INT_MIN, PHP_INT_MAX));
     }
