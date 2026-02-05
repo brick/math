@@ -30,7 +30,6 @@ use function ord;
 use function preg_match;
 use function preg_quote;
 use function random_bytes;
-use function sprintf;
 use function str_repeat;
 use function strlen;
 use function strtolower;
@@ -87,11 +86,11 @@ final readonly class BigInteger extends BigNumber
     public static function fromBase(string $number, int $base): BigInteger
     {
         if ($number === '') {
-            throw new NumberFormatException('The number must not be empty.');
+            throw NumberFormatException::emptyNumber();
         }
 
         if ($base < 2 || $base > 36) {
-            throw new InvalidArgumentException(sprintf('Base %d is not in range 2 to 36.', $base));
+            throw InvalidArgumentException::baseOutOfRange($base);
         }
 
         if ($number[0] === '-') {
@@ -105,7 +104,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($number === '') {
-            throw new NumberFormatException('The number must not be empty.');
+            throw NumberFormatException::emptyNumber();
         }
 
         $number = ltrim($number, '0');
@@ -123,7 +122,7 @@ final readonly class BigInteger extends BigNumber
         $pattern = '/[^' . substr(Calculator::ALPHABET, 0, $base) . ']/';
 
         if (preg_match($pattern, strtolower($number), $matches) === 1) {
-            throw new NumberFormatException(sprintf('"%s" is not a valid character in base %d.', $matches[0], $base));
+            throw NumberFormatException::charNotValidInBase($matches[0], $base);
         }
 
         if ($base === 10) {
@@ -155,17 +154,17 @@ final readonly class BigInteger extends BigNumber
     public static function fromArbitraryBase(string $number, string $alphabet): BigInteger
     {
         if ($number === '') {
-            throw new NumberFormatException('The number must not be empty.');
+            throw NumberFormatException::emptyNumber();
         }
 
         $base = strlen($alphabet);
 
         if ($base < 2) {
-            throw new InvalidArgumentException('The alphabet must contain at least 2 chars.');
+            throw InvalidArgumentException::alphabetTooShort();
         }
 
         if (strlen(count_chars($alphabet, 3)) !== $base) {
-            throw new InvalidArgumentException('The alphabet must not contain duplicate chars.');
+            throw InvalidArgumentException::duplicateCharsInAlphabet();
         }
 
         $pattern = '/[^' . preg_quote($alphabet, '/') . ']/';
@@ -201,7 +200,7 @@ final readonly class BigInteger extends BigNumber
     public static function fromBytes(string $value, bool $signed = true): BigInteger
     {
         if ($value === '') {
-            throw new NumberFormatException('The byte string must not be empty.');
+            throw NumberFormatException::emptyByteString();
         }
 
         $twosComplement = false;
@@ -238,7 +237,7 @@ final readonly class BigInteger extends BigNumber
     public static function randomBits(int $numBits, ?callable $randomBytesGenerator = null): BigInteger
     {
         if ($numBits < 0) {
-            throw new InvalidArgumentException('The number of bits must not be negative.');
+            throw InvalidArgumentException::negativeBitCount();
         }
 
         if ($numBits === 0) {
@@ -284,7 +283,7 @@ final readonly class BigInteger extends BigNumber
         $max = BigInteger::of($max);
 
         if ($min->isGreaterThan($max)) {
-            throw new InvalidArgumentException('$min must be less than or equal to $max.');
+            throw InvalidArgumentException::minGreaterThanMax();
         }
 
         if ($min->isEqualTo($max)) {
@@ -528,11 +527,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
-            throw new InvalidArgumentException(sprintf(
-                'The exponent %d is not in the range 0 to %d.',
-                $exponent,
-                Calculator::MAX_POWER,
-            ));
+            throw InvalidArgumentException::exponentOutOfRange($exponent, 0, Calculator::MAX_POWER);
         }
 
         return new BigInteger(CalculatorRegistry::get()->pow($this->value, $exponent));
@@ -674,7 +669,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($modulus->isNegative()) {
-            throw new NegativeNumberException('Modulus must be strictly positive.');
+            throw NegativeNumberException::negativeModulus();
         }
 
         $value = CalculatorRegistry::get()->mod($this->value, $modulus->value);
@@ -704,7 +699,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($modulus->isNegative()) {
-            throw new NegativeNumberException('Modulus must be strictly positive.');
+            throw NegativeNumberException::negativeModulus();
         }
 
         if ($modulus->value === '1') {
@@ -740,7 +735,7 @@ final readonly class BigInteger extends BigNumber
         $modulus = BigInteger::of($modulus);
 
         if ($exponent->isNegative()) {
-            throw new NegativeNumberException('Exponent must not be negative.');
+            throw NegativeNumberException::negativeExponent();
         }
 
         if ($modulus->isZero()) {
@@ -748,7 +743,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($modulus->isNegative()) {
-            throw new NegativeNumberException('Modulus must be strictly positive.');
+            throw NegativeNumberException::negativeModulus();
         }
 
         $result = CalculatorRegistry::get()->modPow($this->value, $exponent->value, $modulus->value);
@@ -821,7 +816,7 @@ final readonly class BigInteger extends BigNumber
     public function sqrt(RoundingMode $roundingMode = RoundingMode::Unnecessary): BigInteger
     {
         if ($this->value[0] === '-') {
-            throw new NegativeNumberException('Cannot calculate the square root of a negative number.');
+            throw NegativeNumberException::squareRootOfNegativeNumber();
         }
 
         $calculator = CalculatorRegistry::get();
@@ -1046,7 +1041,7 @@ final readonly class BigInteger extends BigNumber
     public function isBitSet(int $n): bool
     {
         if ($n < 0) {
-            throw new InvalidArgumentException('The bit to test cannot be negative.');
+            throw InvalidArgumentException::negativeBitIndex();
         }
 
         return $this->shiftedRight($n)->isOdd();
@@ -1148,7 +1143,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($base < 2 || $base > 36) {
-            throw new InvalidArgumentException(sprintf('Base %d is out of range [2, 36]', $base));
+            throw InvalidArgumentException::baseOutOfRange($base);
         }
 
         return CalculatorRegistry::get()->toBase($this->value, $base);
@@ -1175,15 +1170,15 @@ final readonly class BigInteger extends BigNumber
         $base = strlen($alphabet);
 
         if ($base < 2) {
-            throw new InvalidArgumentException('The alphabet must contain at least 2 chars.');
+            throw InvalidArgumentException::alphabetTooShort();
         }
 
         if (strlen(count_chars($alphabet, 3)) !== $base) {
-            throw new InvalidArgumentException('The alphabet must not contain duplicate chars.');
+            throw InvalidArgumentException::duplicateCharsInAlphabet();
         }
 
         if ($this->value[0] === '-') {
-            throw new NegativeNumberException(__FUNCTION__ . '() does not support negative numbers.');
+            throw NegativeNumberException::notSupportedForNegativeNumber(__FUNCTION__);
         }
 
         return CalculatorRegistry::get()->toArbitraryBase($this->value, $alphabet, $base);
@@ -1212,7 +1207,7 @@ final readonly class BigInteger extends BigNumber
     public function toBytes(bool $signed = true): string
     {
         if (! $signed && $this->isNegative()) {
-            throw new NegativeNumberException('Cannot convert a negative number to a byte string when $signed is false.');
+            throw NegativeNumberException::unsignedBytesOfNegativeNumber();
         }
 
         $hex = $this->abs()->toBase(16);

@@ -367,7 +367,7 @@ final readonly class BigRational extends BigNumber
     public function toBigInteger(): BigInteger
     {
         if (! $this->denominator->isEqualTo(1)) {
-            throw new RoundingNecessaryException('This rational number cannot be represented as an integer value without rounding.');
+            throw RoundingNecessaryException::rationalNotConvertibleToInteger();
         }
 
         return $this->numerator;
