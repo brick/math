@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file.
 - **`MathException` is now an interface** instead of a class
 - **`BigDecimal::getPrecision()` now returns `1` for zero values**
 - `BigNumber::min()`, `max()` and `sum()` now throw an `ArgumentCountError` when called with no arguments (previously threw `InvalidArgumentException`)
+
+Deprecated API elements removed:
+
 - deprecated method `BigInteger::testBit()` has been removed, use `isBitSet()` instead
 - deprecated method `BigInteger::gcdMultiple()` has been removed, use `gcdAll()` instead
 - deprecated method `BigDecimal::exactlyDividedBy()` has been removed, use `dividedByExact()` instead
