@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - **floating-point inputs are no longer accepted by `of()` and arithmetic methods**, use `of((string) $float)` to get the same behaviour as before (#105)
 - **`BigRational` is now always simplified to lowest terms:** all operations, including `of()` and `ofFraction()`, now return a fraction in its simplest form (e.g. `2/3` instead of `4/6`)
+- **`BigDecimal::dividedBy()` now requires the `$scale` parameter**
 - **`BigInteger::sqrt()` and `BigDecimal::sqrt()` now default to `RoundingMode::Unnecessary`**, explicitly pass `RoundingMode::Down` to get the previous behaviour
 - **`BigInteger::mod()` now uses Euclidean modulo semantics**: the modulus must be strictly positive, and the result is always non-negative; this change aligns with Java's `BigInteger.mod()` behaviour
 - **`MathException` is now an interface** instead of a class

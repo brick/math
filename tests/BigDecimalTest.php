@@ -740,13 +740,13 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * @param string       $a             The base number.
      * @param string       $b             The number to divide.
-     * @param int|null     $scale         The desired scale of the result.
+     * @param int          $scale         The desired scale of the result.
      * @param RoundingMode $roundingMode  The rounding mode.
      * @param string       $unscaledValue The expected unscaled value of the result.
      * @param int          $expectedScale The expected scale of the result.
      */
     #[DataProvider('providerDividedBy')]
-    public function testDividedBy(string $a, string $b, ?int $scale, RoundingMode $roundingMode, string $unscaledValue, int $expectedScale): void
+    public function testDividedBy(string $a, string $b, int $scale, RoundingMode $roundingMode, string $unscaledValue, int $expectedScale): void
     {
         $decimal = BigDecimal::of($a)->dividedBy($b, $scale, $roundingMode);
         self::assertBigDecimalInternalValues($unscaledValue, $expectedScale, $decimal);
@@ -767,7 +767,7 @@ class BigDecimalTest extends AbstractTestCase
             ['-32479478384783947298.3343898', '1', 7, RoundingMode::Unnecessary, '-324794783847839472983343898', 7],
 
             ['1.5', '2', 2, RoundingMode::Unnecessary, '75', 2],
-            ['1.5', '3', null, RoundingMode::Unnecessary, '5', 1],
+            ['1.5', '3', 1, RoundingMode::Unnecessary, '5', 1],
             ['0.123456789', '0.00244140625', 10, RoundingMode::Unnecessary, '505679007744', 10],
             ['1.234', '123.456', 50, RoundingMode::Down, '999546397096941420425090720580611715914981855883', 50],
             ['1', '3', 10, RoundingMode::Up, '3333333334', 10],
