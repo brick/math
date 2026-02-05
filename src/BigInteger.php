@@ -670,7 +670,7 @@ final readonly class BigInteger extends BigNumber
         $modulus = BigInteger::of($modulus);
 
         if ($modulus->isZero()) {
-            throw DivisionByZeroException::modulusMustNotBeZero();
+            throw DivisionByZeroException::zeroModulus();
         }
 
         if ($modulus->isNegative()) {
@@ -700,7 +700,7 @@ final readonly class BigInteger extends BigNumber
         $modulus = BigInteger::of($modulus);
 
         if ($modulus->isZero()) {
-            throw DivisionByZeroException::modulusMustNotBeZero();
+            throw DivisionByZeroException::zeroModulus();
         }
 
         if ($modulus->isNegative()) {
@@ -744,7 +744,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($modulus->isZero()) {
-            throw DivisionByZeroException::modulusMustNotBeZero();
+            throw DivisionByZeroException::zeroModulus();
         }
 
         if ($modulus->isNegative()) {

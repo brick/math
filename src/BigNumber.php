@@ -548,7 +548,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
             $denominator = self::cleanUp(null, $denominator);
 
             if ($denominator === '0') {
-                throw DivisionByZeroException::denominatorMustNotBeZero();
+                throw DivisionByZeroException::zeroDenominator();
             }
 
             return new BigRational(

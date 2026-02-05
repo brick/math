@@ -22,7 +22,7 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     /**
      * @pure
      */
-    public static function modulusMustNotBeZero(): DivisionByZeroException
+    public static function zeroModulus(): DivisionByZeroException
     {
         return new self('The modulus must not be zero.');
     }
@@ -30,7 +30,7 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     /**
      * @pure
      */
-    public static function denominatorMustNotBeZero(): DivisionByZeroException
+    public static function zeroDenominator(): DivisionByZeroException
     {
         return new self('The denominator of a rational number cannot be zero.');
     }
