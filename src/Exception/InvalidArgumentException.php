@@ -25,7 +25,7 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     public static function exponentOutOfRange(int $exponent, int $min, int $max): InvalidArgumentException
     {
         return new self(sprintf(
-            'The exponent %d is not in the range %d to %d.',
+            'Exponent %d is out of range [%d, %d].',
             $exponent,
             $min,
             $max,
