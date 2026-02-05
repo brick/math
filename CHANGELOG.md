@@ -40,6 +40,7 @@ The following breaking changes are unlikely to affect you:
 
 - `DivisionByZeroException::modulusMustNotBeZero()` has been renamed to `zeroModulus()`
 - `DivisionByZeroException::denominatorMustNotBeZero()` has been renamed to `zeroDenominator()`
+- `IntegerOverflowException::toIntOverflow()` has been renamed to `integerOutOfRange()`
 
 🗑️ **Deprecations**
 

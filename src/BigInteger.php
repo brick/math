@@ -1120,7 +1120,7 @@ final readonly class BigInteger extends BigNumber
         $intValue = filter_var($this->value, FILTER_VALIDATE_INT);
 
         if ($intValue === false) {
-            throw IntegerOverflowException::toIntOverflow($this);
+            throw IntegerOverflowException::integerOutOfRange($this);
         }
 
         return $intValue;

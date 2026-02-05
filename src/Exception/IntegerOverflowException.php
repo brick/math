@@ -20,7 +20,7 @@ final class IntegerOverflowException extends RuntimeException implements MathExc
     /**
      * @pure
      */
-    public static function toIntOverflow(BigInteger $value): IntegerOverflowException
+    public static function integerOutOfRange(BigInteger $value): IntegerOverflowException
     {
         $message = '%s is out of range %d to %d and cannot be represented as an integer.';
 
