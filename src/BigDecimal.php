@@ -341,39 +341,6 @@ final readonly class BigDecimal extends BigNumber
     }
 
     /**
-     * Limits (clamps) this number between the given minimum and maximum values.
-     *
-     * If the number is lower than $min, returns a copy of $min.
-     * If the number is greater than $max, returns a copy of $max.
-     * Otherwise, returns this number unchanged.
-     *
-     * @param BigNumber|int|float|string $min The minimum. Must be convertible to a BigDecimal.
-     * @param BigNumber|int|float|string $max The maximum. Must be convertible to a BigDecimal.
-     *
-     * @throws MathException            If min/max are not convertible to a BigDecimal.
-     * @throws InvalidArgumentException If min is greater than max.
-     *
-     * @pure
-     */
-    public function clamp(BigNumber|int|float|string $min, BigNumber|int|float|string $max): BigDecimal
-    {
-        $min = BigDecimal::of($min);
-        $max = BigDecimal::of($max);
-
-        if ($min->isGreaterThan($max)) {
-            throw new InvalidArgumentException('Minimum value must be less than or equal to maximum value.');
-        }
-
-        if ($this->isLessThan($min)) {
-            return $min;
-        } elseif ($this->isGreaterThan($max)) {
-            return $max;
-        }
-
-        return $this;
-    }
-
-    /**
      * Returns this number exponentiated to the given value.
      *
      * The result has a scale of `$this->scale * $exponent`.
