@@ -424,6 +424,7 @@ final readonly class BigRational extends BigNumber
         return new BigRational($this->denominator, $this->numerator, true);
     }
 
+    #[Override]
     public function negated(): static
     {
         return new BigRational($this->numerator->negated(), $this->denominator, false);

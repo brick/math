@@ -885,6 +885,7 @@ final readonly class BigInteger extends BigNumber
         return new BigInteger($sqrt);
     }
 
+    #[Override]
     public function negated(): static
     {
         return new BigInteger(CalculatorRegistry::get()->neg($this->value));

@@ -662,6 +662,7 @@ final readonly class BigDecimal extends BigNumber
         return new BigDecimal($value, $scale);
     }
 
+    #[Override]
     public function negated(): static
     {
         return new BigDecimal(CalculatorRegistry::get()->neg($this->value), $this->scale);
