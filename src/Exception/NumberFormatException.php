@@ -19,7 +19,7 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     /**
      * @pure
      */
-    public static function invalidFormat(string $value): self
+    public static function invalidFormat(string $value): NumberFormatException
     {
         return new self(sprintf(
             'The given value "%s" does not represent a valid number.',
@@ -32,7 +32,7 @@ final class NumberFormatException extends RuntimeException implements MathExcept
      *
      * @pure
      */
-    public static function charNotInAlphabet(string $char): self
+    public static function charNotInAlphabet(string $char): NumberFormatException
     {
         return new self(sprintf(
             'Character %s is not valid in the given alphabet.',

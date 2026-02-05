@@ -14,7 +14,7 @@ final class NoInverseException extends RuntimeException implements MathException
     /**
      * @pure
      */
-    public static function noModularInverse(): self
+    public static function noModularInverse(): NoInverseException
     {
         return new self('This number has no multiplicative inverse modulo the given modulus (they are not coprime).');
     }
