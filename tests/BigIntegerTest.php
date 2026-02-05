@@ -4888,16 +4888,16 @@ class BigIntegerTest extends AbstractTestCase
     {
         return [
             ['', '01', 'The number must not be empty.'],
-            ['X', '01', 'Char "X" is not a valid character in the given alphabet.'],
-            ['1', 'XY', 'Char "1" is not a valid character in the given alphabet.'],
-            [' ', 'XY', 'Char " " is not a valid character in the given alphabet.'],
+            ['X', '01', 'Character "X" is not valid in the given alphabet.'],
+            ['1', 'XY', 'Character "1" is not valid in the given alphabet.'],
+            [' ', 'XY', 'Character " " is not valid in the given alphabet.'],
 
-            ["\x00", '01', 'Char 00 is not a valid character in the given alphabet.'],
-            ["\x0A", '01', 'Char 0A is not a valid character in the given alphabet.'],
-            ["\x1F", '01', 'Char 1F is not a valid character in the given alphabet.'],
-            ["\x7F", '01', 'Char 7F is not a valid character in the given alphabet.'],
-            ["\x80", '01', 'Char 80 is not a valid character in the given alphabet.'],
-            ["\xFF", '01', 'Char FF is not a valid character in the given alphabet.'],
+            ["\x00", '01', 'Character 0x00 is not valid in the given alphabet.'],
+            ["\x0A", '01', 'Character 0x0A is not valid in the given alphabet.'],
+            ["\x1F", '01', 'Character 0x1F is not valid in the given alphabet.'],
+            ["\x7F", '01', 'Character 0x7F is not valid in the given alphabet.'],
+            ["\x80", '01', 'Character 0x80 is not valid in the given alphabet.'],
+            ["\xFF", '01', 'Character 0xFF is not valid in the given alphabet.'],
         ];
     }
 
