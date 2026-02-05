@@ -374,7 +374,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    public function clamp(BigNumber|int|float|string $min, BigNumber|int|float|string $max): static
+    final public function clamp(BigNumber|int|float|string $min, BigNumber|int|float|string $max): static
     {
         $min = static::of($min);
         $max = static::of($max);
