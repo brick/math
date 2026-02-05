@@ -43,6 +43,42 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     /**
      * @pure
      */
+    public static function charNotValidInBase(string $char, int $base): NumberFormatException
+    {
+        return new self(sprintf(
+            'Character %s is not valid in base %d.',
+            self::charToString($char),
+            $base,
+        ));
+    }
+
+    /**
+     * @pure
+     */
+    public static function emptyNumber(): NumberFormatException
+    {
+        return new self('The number must not be empty.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function emptyByteString(): NumberFormatException
+    {
+        return new self('The byte string must not be empty.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function exponentTooLarge(): NumberFormatException
+    {
+        return new self('Exponent too large.');
+    }
+
+    /**
+     * @pure
+     */
     private static function charToString(string $char): string
     {
         $ord = ord($char);

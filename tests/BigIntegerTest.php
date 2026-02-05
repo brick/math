@@ -4811,7 +4811,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testFromArbitraryBaseWithInvalidAlphabet(string $alphabet): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The alphabet must contain at least 2 chars.');
+        $this->expectExceptionMessage('The alphabet must contain at least 2 characters.');
 
         BigInteger::fromArbitraryBase('0', $alphabet);
     }
@@ -4848,7 +4848,7 @@ class BigIntegerTest extends AbstractTestCase
         $number = BigInteger::of(123);
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The alphabet must contain at least 2 chars.');
+        $this->expectExceptionMessage('The alphabet must contain at least 2 characters.');
 
         $number->toArbitraryBase($alphabet);
     }
@@ -4865,7 +4865,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testFromArbitraryBaseWithDuplicateCharsInAlphabet(string $alphabet): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The alphabet must not contain duplicate chars.');
+        $this->expectExceptionMessage('The alphabet must not contain duplicate characters.');
 
         BigInteger::fromArbitraryBase('0', $alphabet);
     }
@@ -4876,7 +4876,7 @@ class BigIntegerTest extends AbstractTestCase
         $number = BigInteger::of(123);
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The alphabet must not contain duplicate chars.');
+        $this->expectExceptionMessage('The alphabet must not contain duplicate characters.');
 
         $number->toArbitraryBase($alphabet);
     }

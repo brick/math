@@ -4,9 +4,79 @@ declare(strict_types=1);
 
 namespace Brick\Math\Exception;
 
+use function sprintf;
+
 /**
  * Exception thrown when an invalid argument is provided.
  */
 final class InvalidArgumentException extends \InvalidArgumentException implements MathException
 {
+    /**
+     * @pure
+     */
+    public static function baseOutOfRange(int $base): InvalidArgumentException
+    {
+        return new self(sprintf('Base %d is out of range [2, 36].', $base));
+    }
+
+    /**
+     * @pure
+     */
+    public static function exponentOutOfRange(int $exponent, int $min, int $max): InvalidArgumentException
+    {
+        return new self(sprintf(
+            'The exponent %d is not in the range %d to %d.',
+            $exponent,
+            $min,
+            $max,
+        ));
+    }
+
+    /**
+     * @pure
+     */
+    public static function negativeScale(): InvalidArgumentException
+    {
+        return new self('Scale must not be negative.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function negativeBitIndex(): InvalidArgumentException
+    {
+        return new self('The bit index cannot be negative.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function negativeBitCount(): InvalidArgumentException
+    {
+        return new self('The bit count must not be negative.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function alphabetTooShort(): InvalidArgumentException
+    {
+        return new self('The alphabet must contain at least 2 characters.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function duplicateCharsInAlphabet(): InvalidArgumentException
+    {
+        return new self('The alphabet must not contain duplicate characters.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function minGreaterThanMax(): InvalidArgumentException
+    {
+        return new self('Minimum value must be less than or equal to maximum value.');
+    }
 }

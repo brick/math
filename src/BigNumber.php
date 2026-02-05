@@ -370,7 +370,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
         $max = static::of($max);
 
         if ($min->isGreaterThan($max)) {
-            throw new InvalidArgumentException('Minimum value must be less than or equal to maximum value.');
+            throw InvalidArgumentException::minGreaterThanMax();
         }
 
         if ($this->isLessThan($min)) {
@@ -599,7 +599,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
                 }
 
                 if ($exponent === false) {
-                    throw new NumberFormatException('Exponent too large.');
+                    throw NumberFormatException::exponentTooLarge();
                 }
 
                 $unscaledValue = self::cleanUp($sign, $integral . $fractional);

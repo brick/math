@@ -16,6 +16,14 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
      */
     public static function roundingNecessary(): RoundingNecessaryException
     {
-        return new self('Rounding is necessary to represent the result of the operation at this scale.');
+        return new self('Rounding is necessary to represent the result of the operation.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function rationalNotConvertibleToInteger(): RoundingNecessaryException
+    {
+        return new self('This rational number cannot be converted to an integer value without rounding.');
     }
 }

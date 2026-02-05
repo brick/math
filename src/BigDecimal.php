@@ -18,7 +18,6 @@ use function in_array;
 use function intdiv;
 use function max;
 use function rtrim;
-use function sprintf;
 use function str_pad;
 use function str_repeat;
 use function strlen;
@@ -257,7 +256,7 @@ final readonly class BigDecimal extends BigNumber
         }
 
         if ($scale < 0) {
-            throw new InvalidArgumentException('Scale must not be negative.');
+            throw InvalidArgumentException::negativeScale();
         }
 
         if ($that->value === '1' && $that->scale === 0 && $scale === $this->scale) {
@@ -336,11 +335,7 @@ final readonly class BigDecimal extends BigNumber
         }
 
         if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
-            throw new InvalidArgumentException(sprintf(
-                'The exponent %d is not in the range 0 to %d.',
-                $exponent,
-                Calculator::MAX_POWER,
-            ));
+            throw InvalidArgumentException::exponentOutOfRange($exponent, 0, Calculator::MAX_POWER);
         }
 
         return new BigDecimal(CalculatorRegistry::get()->pow($this->value, $exponent), $this->scale * $exponent);
@@ -476,7 +471,7 @@ final readonly class BigDecimal extends BigNumber
     public function sqrt(int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
     {
         if ($scale < 0) {
-            throw new InvalidArgumentException('Scale must not be negative.');
+            throw InvalidArgumentException::negativeScale();
         }
 
         if ($this->value === '0') {
@@ -484,7 +479,7 @@ final readonly class BigDecimal extends BigNumber
         }
 
         if ($this->value[0] === '-') {
-            throw new NegativeNumberException('Cannot calculate the square root of a negative number.');
+            throw NegativeNumberException::squareRootOfNegativeNumber();
         }
 
         $value = $this->value;
