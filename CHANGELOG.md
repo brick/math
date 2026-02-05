@@ -36,6 +36,11 @@ The following breaking changes only affect you if you're using named arguments:
 - `BigDecimal::withPointMovedLeft()` now uses `$places` as the parameter name
 - `BigDecimal::withPointMovedRight()` now uses `$places` as the parameter name
 
+The following breaking changes are unlikely to affect you:
+
+- `DivisionByZeroException::modulusMustNotBeZero()` has been renamed to `zeroModulus()`
+- `DivisionByZeroException::denominatorMustNotBeZero()` has been renamed to `zeroDenominator()`
+
 🗑️ **Deprecations**
 
 - Method `BigRational::simplified()` is deprecated, as it is now a no-op

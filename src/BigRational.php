@@ -55,7 +55,7 @@ final readonly class BigRational extends BigNumber
     {
         if ($checkDenominator) {
             if ($denominator->isZero()) {
-                throw DivisionByZeroException::denominatorMustNotBeZero();
+                throw DivisionByZeroException::zeroDenominator();
             }
 
             if ($denominator->isNegative()) {
