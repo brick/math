@@ -113,7 +113,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    public static function ofNullable(BigNumber|int|float|string|null $value): ?static
+    final public static function ofNullable(BigNumber|int|float|string|null $value): ?static
     {
         if (is_null($value)) {
             return null;
