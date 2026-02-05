@@ -234,12 +234,14 @@ final readonly class BigDecimal extends BigNumber
     /**
      * Returns the result of the division of this number by the given one, at the given scale.
      *
-     * @param BigNumber|int|float|string $that         The divisor.
+     * @param BigNumber|int|float|string $that         The divisor. Must be convertible to a BigDecimal.
      * @param int|null                   $scale        The desired scale. Omitting this parameter is deprecated; it will be required in 0.15.
      * @param RoundingMode               $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
-     * @throws InvalidArgumentException If the scale is invalid.
-     * @throws MathException            If the number is invalid, is zero, or rounding was necessary.
+     * @throws InvalidArgumentException   If the scale is invalid.
+     * @throws MathException              If the divisor is not a valid number or is not convertible to a BigDecimal.
+     * @throws DivisionByZeroException    If the divisor is zero.
+     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used and the result cannot be represented exactly at the given scale.
      *
      * @pure
      */
@@ -304,8 +306,9 @@ final readonly class BigDecimal extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
      *
-     * @throws MathException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero,
-     *                       or the result yields an infinite number of digits.
+     * @throws MathException              If the divisor is not a valid number or is not convertible to a BigDecimal.
+     * @throws DivisionByZeroException    If the divisor is zero.
+     * @throws RoundingNecessaryException If the result yields an infinite number of digits.
      *
      * @pure
      */
@@ -377,7 +380,8 @@ final readonly class BigDecimal extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
      *
-     * @throws MathException If the divisor is not a valid decimal number, or is zero.
+     * @throws MathException           If the divisor is not a valid decimal number.
+     * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
      */
@@ -404,7 +408,8 @@ final readonly class BigDecimal extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
      *
-     * @throws MathException If the divisor is not a valid decimal number, or is zero.
+     * @throws MathException           If the divisor is not a valid decimal number.
+     * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
      */
@@ -435,7 +440,8 @@ final readonly class BigDecimal extends BigNumber
      *
      * @return array{BigDecimal, BigDecimal} An array containing the quotient and the remainder.
      *
-     * @throws MathException If the divisor is not a valid decimal number, or is zero.
+     * @throws MathException           If the divisor is not a valid decimal number.
+     * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
      */

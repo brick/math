@@ -490,8 +490,9 @@ final readonly class BigInteger extends BigNumber
      * @param BigNumber|int|float|string $that         The divisor. Must be convertible to a BigInteger.
      * @param RoundingMode               $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
-     * @throws MathException If the divisor is not a valid number, is not convertible to a BigInteger, is zero,
-     *                       or RoundingMode::Unnecessary is used and the remainder is not zero.
+     * @throws MathException              If the divisor is not a valid number or is not convertible to a BigInteger.
+     * @throws DivisionByZeroException    If the divisor is zero.
+     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used and the remainder is not zero.
      *
      * @pure
      */
