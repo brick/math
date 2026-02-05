@@ -766,6 +766,44 @@ class BigRationalTest extends AbstractTestCase
 
     /**
      * @param string      $number   The rational number to convert.
+     * @param string|null $expected The expected integer number, or null if an exception is expected.
+     */
+    #[DataProvider('providerToBigInteger')]
+    public function testToBigInteger(string $number, ?string $expected): void
+    {
+        if ($expected === null) {
+            $this->expectException(RoundingNecessaryException::class);
+            $this->expectExceptionMessage('This rational number cannot be represented exactly as an integer.');
+        }
+
+        $actual = BigRational::of($number)->toBigInteger();
+
+        if ($expected !== null) {
+            self::assertBigIntegerEquals($expected, $actual);
+        }
+    }
+
+    public static function providerToBigInteger(): array
+    {
+        return [
+            ['0', '0'],
+            ['1', '1'],
+            ['-1', '-1'],
+            ['1/2', null],
+            ['-1/2', null],
+            ['2/2', '1'],
+            ['-2/2', '-1'],
+            ['9999999999999999999999999999999999999998', '9999999999999999999999999999999999999998'],
+            ['-9999999999999999999999999999999999999998', '-9999999999999999999999999999999999999998'],
+            ['9999999999999999999999999999999999999998/2', '4999999999999999999999999999999999999999'],
+            ['-9999999999999999999999999999999999999998/2', '-4999999999999999999999999999999999999999'],
+            ['9999999999999999999999999999999999999998/3', null],
+            ['-9999999999999999999999999999999999999998/3', null],
+        ];
+    }
+
+    /**
+     * @param string      $number   The rational number to convert.
      * @param string|null $expected The expected decimal number, or null if an exception is expected.
      */
     #[DataProvider('providerToBigDecimal')]
@@ -773,6 +811,7 @@ class BigRationalTest extends AbstractTestCase
     {
         if ($expected === null) {
             $this->expectException(RoundingNecessaryException::class);
+            $this->expectExceptionMessage('This rational number cannot be represented exactly as a decimal.');
         }
 
         $actual = BigRational::of($number)->toBigDecimal();

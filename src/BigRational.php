@@ -8,6 +8,7 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\Internal\DecimalHelper;
 use LogicException;
 use Override;
 
@@ -366,17 +367,23 @@ final readonly class BigRational extends BigNumber
     #[Override]
     public function toBigInteger(): BigInteger
     {
-        if (! $this->denominator->isEqualTo(1)) {
-            throw RoundingNecessaryException::rationalNotConvertibleToInteger();
+        if ($this->denominator->isEqualTo(1)) {
+            return $this->numerator;
         }
 
-        return $this->numerator;
+        throw RoundingNecessaryException::rationalNotConvertibleToInteger();
     }
 
     #[Override]
     public function toBigDecimal(): BigDecimal
     {
-        return $this->numerator->toBigDecimal()->dividedByExact($this->denominator);
+        $scale = DecimalHelper::computeScaleFromReducedFractionDenominator($this->denominator->toString());
+
+        if ($scale === null) {
+            throw RoundingNecessaryException::rationalNotConvertibleToDecimal();
+        }
+
+        return $this->numerator->toBigDecimal()->dividedBy($this->denominator, $scale)->strippedOfTrailingZeros();
     }
 
     #[Override]

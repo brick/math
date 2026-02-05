@@ -3635,6 +3635,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testToBigIntegerThrowsExceptionWhenRoundingNecessary(string $decimal): void
     {
         $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessage('This decimal number cannot be represented exactly as an integer.');
         BigDecimal::of($decimal)->toBigInteger();
     }
 

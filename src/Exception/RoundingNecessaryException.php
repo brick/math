@@ -30,8 +30,24 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     /**
      * @pure
      */
+    public static function decimalNotConvertibleToInteger(): RoundingNecessaryException
+    {
+        return new self('This decimal number cannot be represented exactly as an integer.');
+    }
+
+    /**
+     * @pure
+     */
     public static function rationalNotConvertibleToInteger(): RoundingNecessaryException
     {
-        return new self('This rational number cannot be converted to an integer value without rounding.');
+        return new self('This rational number cannot be represented exactly as an integer.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function rationalNotConvertibleToDecimal(): RoundingNecessaryException
+    {
+        return new self('This rational number cannot be represented exactly as a decimal.');
     }
 }

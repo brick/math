@@ -11,6 +11,7 @@ use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
+use Brick\Math\Internal\DecimalHelper;
 use LogicException;
 use Override;
 
@@ -296,25 +297,11 @@ final readonly class BigDecimal extends BigNumber
         [$a, $b] = $this->scaleValues($this->abs(), $that->abs());
 
         $calculator = CalculatorRegistry::get();
-        $b = $calculator->divQ($b, $calculator->gcd($a, $b));
 
-        $d = rtrim($b, '0');
-        $scale = strlen($b) - strlen($d);
+        $denominator = $calculator->divQ($b, $calculator->gcd($a, $b));
+        $scale = DecimalHelper::computeScaleFromReducedFractionDenominator($denominator);
 
-        foreach ([5, 2] as $prime) {
-            for (; ;) {
-                $lastDigit = (int) $d[-1];
-
-                if ($lastDigit % $prime !== 0) {
-                    break;
-                }
-
-                $d = $calculator->divQ($d, (string) $prime);
-                $scale++;
-            }
-        }
-
-        if ($d !== '1') {
+        if ($scale === null) {
             throw RoundingNecessaryException::nonTerminatingDecimal();
         }
 
@@ -693,9 +680,18 @@ final readonly class BigDecimal extends BigNumber
     #[Override]
     public function toBigInteger(): BigInteger
     {
-        $zeroScaleDecimal = $this->scale === 0 ? $this : $this->dividedBy(1, 0);
+        if ($this->scale === 0) {
+            return self::newBigInteger($this->value);
+        }
 
-        return self::newBigInteger($zeroScaleDecimal->value);
+        $rational = $this->toBigRational();
+        $integralPart = $rational->getIntegralPart();
+
+        if ($rational->isEqualTo($integralPart)) {
+            return $integralPart;
+        }
+
+        throw RoundingNecessaryException::decimalNotConvertibleToInteger();
     }
 
     #[Override]
