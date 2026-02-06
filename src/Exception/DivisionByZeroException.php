@@ -32,7 +32,7 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
      */
     public static function zeroDenominator(): DivisionByZeroException
     {
-        return new self('The denominator of a rational number cannot be zero.');
+        return new self('The denominator of a rational number must not be zero.');
     }
 
     /**
