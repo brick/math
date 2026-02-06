@@ -22,19 +22,6 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     /**
      * @pure
      */
-    public static function exponentOutOfRange(int $exponent, int $min, int $max): InvalidArgumentException
-    {
-        return new self(sprintf(
-            'Exponent %d is out of range [%d, %d].',
-            $exponent,
-            $min,
-            $max,
-        ));
-    }
-
-    /**
-     * @pure
-     */
     public static function negativeScale(): InvalidArgumentException
     {
         return new self('The scale must not be negative.');

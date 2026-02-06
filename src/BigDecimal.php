@@ -9,7 +9,6 @@ use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\RoundingNecessaryException;
-use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
 use Brick\Math\Internal\DecimalHelper;
 use LogicException;
@@ -324,7 +323,7 @@ final readonly class BigDecimal extends BigNumber
      *
      * The result has a scale of `$this->scale * $exponent`.
      *
-     * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
+     * @throws InvalidArgumentException If the exponent is negative.
      *
      * @pure
      */
@@ -338,8 +337,8 @@ final readonly class BigDecimal extends BigNumber
             return $this;
         }
 
-        if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
-            throw InvalidArgumentException::exponentOutOfRange($exponent, 0, Calculator::MAX_POWER);
+        if ($exponent < 0) {
+            throw InvalidArgumentException::negativeExponent();
         }
 
         return new BigDecimal(CalculatorRegistry::get()->pow($this->value, $exponent), $this->scale * $exponent);
