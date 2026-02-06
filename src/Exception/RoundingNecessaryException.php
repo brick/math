@@ -14,6 +14,14 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     /**
      * @pure
      */
+    public static function decimalScaleTooSmall(): RoundingNecessaryException
+    {
+        return new self('The value cannot be represented at the requested scale without rounding.');
+    }
+
+    /**
+     * @pure
+     */
     public static function integerDivisionNotExact(): RoundingNecessaryException
     {
         return new self('The division has a non-zero remainder and cannot be represented as an integer without rounding.');
@@ -24,7 +32,7 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
      */
     public static function decimalDivisionNotExact(): RoundingNecessaryException
     {
-        return new self('The division yields a non-terminating decimal expansion and cannot be represented as a decimal number without rounding.');
+        return new self('The division yields a non-terminating decimal expansion and cannot be represented as a decimal without rounding.');
     }
 
     /**
@@ -33,14 +41,6 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     public static function decimalDivisionScaleTooSmall(): RoundingNecessaryException
     {
         return new self('The division result is exact but cannot be represented at the requested scale without rounding.');
-    }
-
-    /**
-     * @pure
-     */
-    public static function scaleRequiresRounding(): RoundingNecessaryException
-    {
-        return new self('The value cannot be represented at the requested scale without rounding.');
     }
 
     /**
@@ -56,7 +56,7 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
      */
     public static function decimalSquareRootNotExact(): RoundingNecessaryException
     {
-        return new self('The square root is not exact and cannot be represented as a decimal number without rounding.');
+        return new self('The square root is not exact and cannot be represented as a decimal without rounding.');
     }
 
     /**
@@ -70,17 +70,9 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     /**
      * @pure
      */
-    public static function nonTerminatingDecimal(): RoundingNecessaryException
-    {
-        return new self('The division yields a non-terminating decimal expansion.');
-    }
-
-    /**
-     * @pure
-     */
     public static function decimalNotConvertibleToInteger(): RoundingNecessaryException
     {
-        return new self('This decimal number cannot be represented exactly as an integer.');
+        return new self('This decimal cannot be represented as an integer without rounding.');
     }
 
     /**
@@ -88,7 +80,7 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
      */
     public static function rationalNotConvertibleToInteger(): RoundingNecessaryException
     {
-        return new self('This rational number cannot be represented exactly as an integer.');
+        return new self('This rational number cannot be represented as an integer without rounding.');
     }
 
     /**
@@ -96,6 +88,6 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
      */
     public static function rationalNotConvertibleToDecimal(): RoundingNecessaryException
     {
-        return new self('This rational number cannot be represented exactly as a decimal.');
+        return new self('This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.');
     }
 }

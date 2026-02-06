@@ -773,7 +773,7 @@ class BigRationalTest extends AbstractTestCase
     {
         if ($expected === null) {
             $this->expectException(RoundingNecessaryException::class);
-            $this->expectExceptionMessage('This rational number cannot be represented exactly as an integer.');
+            $this->expectExceptionMessage('This rational number cannot be represented as an integer without rounding.');
         }
 
         $actual = BigRational::of($number)->toBigInteger();
@@ -811,7 +811,7 @@ class BigRationalTest extends AbstractTestCase
     {
         if ($expected === null) {
             $this->expectException(RoundingNecessaryException::class);
-            $this->expectExceptionMessage('This rational number cannot be represented exactly as a decimal.');
+            $this->expectExceptionMessage('This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.');
         }
 
         $actual = BigRational::of($number)->toBigDecimal();
