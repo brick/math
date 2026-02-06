@@ -26,7 +26,7 @@ final class NegativeNumberException extends RuntimeException implements MathExce
      */
     public static function negativeModulus(): NegativeNumberException
     {
-        return new self('Modulus must be strictly positive.');
+        return new self('The modulus must be strictly positive.');
     }
 
     /**
@@ -34,7 +34,7 @@ final class NegativeNumberException extends RuntimeException implements MathExce
      */
     public static function negativeExponent(): NegativeNumberException
     {
-        return new self('Exponent must not be negative.');
+        return new self('The exponent must not be negative.');
     }
 
     /**
