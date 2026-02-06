@@ -320,6 +320,10 @@ final readonly class BigRational extends BigNumber
      */
     public function reciprocal(): BigRational
     {
+        if ($this->numerator->isZero()) {
+            throw DivisionByZeroException::reciprocalOfZero();
+        }
+
         return new BigRational($this->denominator, $this->numerator, true, false);
     }
 

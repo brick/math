@@ -516,6 +516,7 @@ class BigRationalTest extends AbstractTestCase
     public function testReciprocalOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('The reciprocal of zero is undefined.');
         BigRational::ofFraction(0, 2)->reciprocal();
     }
 
