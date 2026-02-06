@@ -3064,26 +3064,53 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @param string       $number        The number to scale.
-     * @param int          $toScale       The scale to apply.
-     * @param RoundingMode $roundingMode  The rounding mode to apply.
-     * @param string       $unscaledValue The expected unscaled value of the result.
-     * @param int          $scale         The expected scale of the result.
+     * @param string                  $number       The number to scale.
+     * @param int                     $toScale      The scale to apply.
+     * @param RoundingMode            $roundingMode The rounding mode to apply.
+     * @param array{string, int}|null $expected     The expected (unscaled value, scale), or null if an exception is expected.
      */
     #[DataProvider('providerToScale')]
-    public function testToScale(string $number, int $toScale, RoundingMode $roundingMode, string $unscaledValue, int $scale): void
+    public function testToScale(string $number, int $toScale, RoundingMode $roundingMode, ?array $expected): void
     {
-        $decimal = BigDecimal::of($number)->toScale($toScale, $roundingMode);
-        self::assertBigDecimalInternalValues($unscaledValue, $scale, $decimal);
+        $decimal = BigDecimal::of($number);
+
+        if ($expected === null) {
+            $this->expectException(RoundingNecessaryException::class);
+        }
+
+        $decimal = $decimal->toScale($toScale, $roundingMode);
+
+        if ($expected !== null) {
+            [$unscaledValue, $scale] = $expected;
+            self::assertBigDecimalInternalValues($unscaledValue, $scale, $decimal);
+        }
     }
 
     public static function providerToScale(): array
     {
         return [
-            ['123.45', 0, RoundingMode::Down, '123', 0],
-            ['123.45', 1, RoundingMode::Up, '1235', 1],
-            ['123.45', 2, RoundingMode::Unnecessary, '12345', 2],
-            ['123.45', 5, RoundingMode::Unnecessary, '12345000', 5],
+            ['0', 0, RoundingMode::Unnecessary, ['0', 0]],
+            ['0', 1, RoundingMode::Unnecessary, ['0', 1]],
+            ['0.0', 0, RoundingMode::Unnecessary, ['0', 0]],
+            ['0.0', 1, RoundingMode::Unnecessary, ['0', 1]],
+            ['0.0', 2, RoundingMode::Unnecessary, ['0', 2]],
+            ['0.01', 0, RoundingMode::Unnecessary, null],
+            ['0.01', 1, RoundingMode::Unnecessary, null],
+            ['0.01', 2, RoundingMode::Unnecessary, ['1', 2]],
+            ['0.01', 3, RoundingMode::Unnecessary, ['10', 3]],
+            ['0.01', 0, RoundingMode::Down, ['0', 0]],
+            ['0.01', 0, RoundingMode::Up, ['1', 0]],
+            ['0.01', 1, RoundingMode::Down, ['0', 1]],
+            ['0.01', 1, RoundingMode::Up, ['1', 1]],
+            ['0.01', 1, RoundingMode::Unnecessary, null],
+            ['123.45', 0, RoundingMode::Down, ['123', 0]],
+            ['123.45', 0, RoundingMode::Up, ['124', 0]],
+            ['123.45', 1, RoundingMode::Down, ['1234', 1]],
+            ['123.45', 1, RoundingMode::Up, ['1235', 1]],
+            ['123.45', 2, RoundingMode::Unnecessary, ['12345', 2]],
+            ['123.45', 5, RoundingMode::Unnecessary, ['12345000', 5]],
+            ['-12.3400', 2, RoundingMode::Unnecessary, ['-1234', 2]],
+            ['-120.00', 0, RoundingMode::Unnecessary, ['-120', 0]],
         ];
     }
 
