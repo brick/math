@@ -287,7 +287,11 @@ final readonly class BigRational extends BigNumber
     /**
      * Returns this number exponentiated to the given value.
      *
-     * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
+     * Unlike BigInteger and BigDecimal, BigRational supports negative exponents:
+     * the result is the reciprocal raised to the absolute value of the exponent.
+     *
+     * @throws InvalidArgumentException If the exponent is out of range.
+     * @throws DivisionByZeroException  If the exponent is negative and this number is zero.
      *
      * @pure
      */
@@ -299,6 +303,10 @@ final readonly class BigRational extends BigNumber
 
         if ($exponent === 1) {
             return $this;
+        }
+
+        if ($exponent < 0) {
+            return $this->reciprocal()->power(-$exponent);
         }
 
         return new BigRational(

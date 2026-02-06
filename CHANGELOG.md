@@ -52,6 +52,7 @@ The following breaking changes are unlikely to affect you:
 
 ✨ **New features**
 
+- `BigRational::power()` now accepts negative exponents
 - New exception: `InvalidArgumentException` for invalid argument errors
 - New exception: `NoInverseException` for modular inverse errors
 
