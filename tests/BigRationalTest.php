@@ -455,6 +455,56 @@ class BigRationalTest extends AbstractTestCase
 
             ['-123456789/2', 8, '53965948844821664748141453212125737955899777414752273389058576481/256'],
             ['9876543210/3', 7, '4191659474105327353382483648587366147848521700884465442218430000000'],
+
+            // Negative exponents
+            ['1/2',  -1, '2'],
+            ['2/3',  -1, '3/2'],
+            ['-3/4', -1, '-4/3'],
+            ['1/3',  -1, '3'],
+            ['5',    -1, '1/5'],
+
+            ['2/3',  -2, '9/4'],
+            ['-3/4', -2, '16/9'],
+            ['1/2',  -2, '4'],
+
+            ['2/3',  -3, '27/8'],
+            ['-2/3', -3, '-27/8'],
+            ['-1/2', -3, '-8'],
+
+            ['-2/3', -99, '-171792506910670443678820376588540424234035840667/633825300114114700748351602688'],
+            ['-2/3', -100, '515377520732011331036461129765621272702107522001/1267650600228229401496703205376'],
+        ];
+    }
+
+    #[DataProvider('providerPowerWithZeroBaseAndNegativeExponent')]
+    public function testPowerWithZeroBaseAndNegativeExponent(int $exponent): void
+    {
+        $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('The reciprocal of zero is undefined.');
+        BigRational::of('0')->power($exponent);
+    }
+
+    public static function providerPowerWithZeroBaseAndNegativeExponent(): array
+    {
+        return [
+            [-1],
+            [-2],
+            [-100],
+        ];
+    }
+
+    #[DataProvider('providerPowerWithInvalidExponentThrowsException')]
+    public function testPowerWithInvalidExponentThrowsException(int $exponent): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        BigRational::of('1/2')->power($exponent);
+    }
+
+    public static function providerPowerWithInvalidExponentThrowsException(): array
+    {
+        return [
+            [-1000001],
+            [1000001],
         ];
     }
 
