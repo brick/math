@@ -810,7 +810,7 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the integer square root of this number, rounded according to the given rounding mode.
      *
-     * @param RoundingMode $roundingMode The rounding mode to use, defaults to Unnecessary.
+     * @param RoundingMode $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws NegativeNumberException    If this number is negative.
      * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used, and the number is not a perfect square.

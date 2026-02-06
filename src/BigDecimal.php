@@ -234,7 +234,7 @@ final readonly class BigDecimal extends BigNumber
      * Returns the result of the division of this number by the given one, at the given scale.
      *
      * @param BigNumber|int|string $that         The divisor. Must be convertible to a BigDecimal.
-     * @param int                  $scale        The desired scale.
+     * @param int                  $scale        The desired scale. Must be non-negative.
      * @param RoundingMode         $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws InvalidArgumentException   If the scale is negative.
@@ -462,7 +462,7 @@ final readonly class BigDecimal extends BigNumber
      * Returns the square root of this number, rounded to the given scale according to the given rounding mode.
      *
      * @param int          $scale        The target scale. Must be non-negative.
-     * @param RoundingMode $roundingMode The rounding mode to use, defaults to Unnecessary.
+     * @param RoundingMode $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws InvalidArgumentException   If the scale is negative.
      * @throws NegativeNumberException    If this number is negative.
