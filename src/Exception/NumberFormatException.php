@@ -73,7 +73,7 @@ final class NumberFormatException extends RuntimeException implements MathExcept
      */
     public static function exponentTooLarge(): NumberFormatException
     {
-        return new self('Exponent too large.');
+        return new self('The exponent is too large to be represented as an integer.');
     }
 
     /**

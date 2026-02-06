@@ -671,7 +671,7 @@ final readonly class BigInteger extends BigNumber
      * - `7` mod `3` returns `1`
      * - `-7` mod `3` returns `2`
      *
-     * @param BigNumber|int|string $modulus The modulus, strictly positive. Must be convertible to a BigInteger.
+     * @param BigNumber|int|string $modulus The modulus. Must be convertible to a BigInteger.
      *
      * @throws MathException            If the modulus is not valid, or is not convertible to a BigInteger.
      * @throws InvalidArgumentException If the modulus is negative.
@@ -825,7 +825,7 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the integer square root of this number, rounded according to the given rounding mode.
      *
-     * @param RoundingMode $roundingMode The rounding mode to use, defaults to Unnecessary.
+     * @param RoundingMode $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws NegativeNumberException    If this number is negative.
      * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used, and the number is not a perfect square.
