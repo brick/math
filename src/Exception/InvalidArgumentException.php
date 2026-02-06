@@ -79,4 +79,20 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     {
         return new self('The minimum value must be less than or equal to the maximum value.');
     }
+
+    /**
+     * @pure
+     */
+    public static function negativeExponent(): InvalidArgumentException
+    {
+        return new self('The exponent must not be negative.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function negativeModulus(): InvalidArgumentException
+    {
+        return new self('The modulus must be strictly positive.');
+    }
 }

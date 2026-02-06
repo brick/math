@@ -1360,7 +1360,7 @@ class BigIntegerTest extends AbstractTestCase
 
     public function testModNegativeThrowsException(): void
     {
-        $this->expectException(NegativeNumberException::class);
+        $this->expectException(InvalidArgumentException::class);
         BigInteger::of(1)->mod(-1);
     }
 
@@ -1492,7 +1492,7 @@ class BigIntegerTest extends AbstractTestCase
     #[DataProvider('providerModPowNegativeThrowsException')]
     public function testModPowNegativeThrowsException(int $base, int $exp, int $mod): void
     {
-        $this->expectException(NegativeNumberException::class);
+        $this->expectException(InvalidArgumentException::class);
         BigInteger::of($base)->modPow($exp, $mod);
     }
 
@@ -4321,7 +4321,7 @@ class BigIntegerTest extends AbstractTestCase
         return [
             ['0', '0', DivisionByZeroException::class],
             ['1', '0', DivisionByZeroException::class],
-            ['-1234567890', '-19', NegativeNumberException::class],
+            ['-1234567890', '-19', InvalidArgumentException::class],
             ['0', '1000000001', MathException::class],
             ['2', '4', MathException::class],
             ['99', '9', MathException::class],

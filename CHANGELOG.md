@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - **`BigDecimal::dividedBy()` now requires the `$scale` parameter**
 - **`BigInteger::sqrt()` and `BigDecimal::sqrt()` now default to `RoundingMode::Unnecessary`**, explicitly pass `RoundingMode::Down` to get the previous behaviour
 - **`BigInteger::mod()` now uses Euclidean modulo semantics**: the modulus must be strictly positive, and the result is always non-negative; this change aligns with Java's `BigInteger.mod()` behaviour
+- **`BigInteger::mod()`, `modInverse()` and `modPow()` now throw `InvalidArgumentException` (instead of `NegativeNumberException`) for negative modulus/exponent arguments**
 - **`MathException` is now an interface** instead of a class
 - **`BigDecimal::getPrecision()` now returns `1` for zero values**
 - `BigNumber::min()`, `max()` and `sum()` now throw an `ArgumentCountError` when called with no arguments (previously threw `InvalidArgumentException`)
