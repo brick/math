@@ -506,6 +506,10 @@ final readonly class BigInteger extends BigNumber
 
         $result = CalculatorRegistry::get()->divRound($this->value, $that->value, $roundingMode);
 
+        if ($result === null) {
+            throw RoundingNecessaryException::integerDivisionNotExact();
+        }
+
         return new BigInteger($result);
     }
 
