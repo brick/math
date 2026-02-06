@@ -30,11 +30,6 @@ use function substr;
 abstract readonly class Calculator
 {
     /**
-     * The maximum exponent value allowed for the pow() method.
-     */
-    public const MAX_POWER = 1_000_000;
-
-    /**
      * The alphabet for converting from and to base 2 to 36, lowercase.
      */
     public const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
@@ -163,7 +158,7 @@ abstract readonly class Calculator
      * Exponentiates a number.
      *
      * @param string $a The base number.
-     * @param int    $e The exponent, validated as an integer between 0 and MAX_POWER.
+     * @param int    $e The exponent, validated as a non-negative integer.
      *
      * @return string The power.
      *

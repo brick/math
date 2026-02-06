@@ -516,7 +516,7 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns this number exponentiated to the given value.
      *
-     * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
+     * @throws InvalidArgumentException If the exponent is negative.
      *
      * @pure
      */
@@ -530,8 +530,8 @@ final readonly class BigInteger extends BigNumber
             return $this;
         }
 
-        if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
-            throw InvalidArgumentException::exponentOutOfRange($exponent, 0, Calculator::MAX_POWER);
+        if ($exponent < 0) {
+            throw InvalidArgumentException::negativeExponent();
         }
 
         return new BigInteger(CalculatorRegistry::get()->pow($this->value, $exponent));
@@ -944,8 +944,6 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the integer left shifted by a given number of bits.
      *
-     * @throws InvalidArgumentException If the number of bits is out of range.
-     *
      * @pure
      */
     public function shiftedLeft(int $bits): BigInteger
@@ -963,8 +961,6 @@ final readonly class BigInteger extends BigNumber
 
     /**
      * Returns the integer right shifted by a given number of bits.
-     *
-     * @throws InvalidArgumentException If the number of bits is out of range.
      *
      * @pure
      */
