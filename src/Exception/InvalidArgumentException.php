@@ -37,7 +37,7 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
      */
     public static function negativeScale(): InvalidArgumentException
     {
-        return new self('Scale must not be negative.');
+        return new self('The scale must not be negative.');
     }
 
     /**
@@ -45,7 +45,7 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
      */
     public static function negativeBitIndex(): InvalidArgumentException
     {
-        return new self('The bit index cannot be negative.');
+        return new self('The bit index must not be negative.');
     }
 
     /**
@@ -77,6 +77,6 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
      */
     public static function minGreaterThanMax(): InvalidArgumentException
     {
-        return new self('Minimum value must be less than or equal to maximum value.');
+        return new self('The minimum value must be less than or equal to the maximum value.');
     }
 }
