@@ -658,9 +658,9 @@ final readonly class BigInteger extends BigNumber
      *
      * @param BigNumber|int|string $modulus The modulus, strictly positive. Must be convertible to a BigInteger.
      *
-     * @throws MathException           If the modulus is not valid, or is not convertible to a BigInteger.
-     * @throws DivisionByZeroException If the modulus is zero.
-     * @throws NegativeNumberException If the modulus is negative.
+     * @throws MathException            If the modulus is not valid, or is not convertible to a BigInteger.
+     * @throws DivisionByZeroException  If the modulus is zero.
+     * @throws InvalidArgumentException If the modulus is negative.
      *
      * @pure
      */
@@ -673,7 +673,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($modulus->isNegative()) {
-            throw NegativeNumberException::negativeModulus();
+            throw InvalidArgumentException::negativeModulus();
         }
 
         $value = CalculatorRegistry::get()->mod($this->value, $modulus->value);
@@ -686,11 +686,11 @@ final readonly class BigInteger extends BigNumber
      *
      * @param BigNumber|int|string $modulus The modulus. Must be convertible to a BigInteger.
      *
-     * @throws MathException           If the modulus is not valid, or is not convertible to a BigInteger.
-     * @throws DivisionByZeroException If the modulus is zero.
-     * @throws NegativeNumberException If the modulus is negative.
-     * @throws NoInverseException      If this BigInteger has no multiplicative inverse mod m (that is, this BigInteger
-     *                                 is not relatively prime to m).
+     * @throws MathException            If the modulus is not valid, or is not convertible to a BigInteger.
+     * @throws DivisionByZeroException  If the modulus is zero.
+     * @throws InvalidArgumentException If the modulus is negative.
+     * @throws NoInverseException       If this BigInteger has no multiplicative inverse mod m (that is, this BigInteger
+     *                                  is not relatively prime to m).
      *
      * @pure
      */
@@ -703,7 +703,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($modulus->isNegative()) {
-            throw NegativeNumberException::negativeModulus();
+            throw InvalidArgumentException::negativeModulus();
         }
 
         if ($modulus->value === '1') {
@@ -727,9 +727,9 @@ final readonly class BigInteger extends BigNumber
      * @param BigNumber|int|string $exponent The exponent. Must be convertible to a BigInteger.
      * @param BigNumber|int|string $modulus  The modulus. Must be convertible to a BigInteger.
      *
-     * @throws MathException           If the exponent or modulus is not valid, or is not convertible to a BigInteger.
-     * @throws NegativeNumberException If the exponent or modulus is negative.
-     * @throws DivisionByZeroException If the modulus is zero.
+     * @throws MathException            If the exponent or modulus is not valid, or is not convertible to a BigInteger.
+     * @throws InvalidArgumentException If the exponent or modulus is negative.
+     * @throws DivisionByZeroException  If the modulus is zero.
      *
      * @pure
      */
@@ -739,7 +739,7 @@ final readonly class BigInteger extends BigNumber
         $modulus = BigInteger::of($modulus);
 
         if ($exponent->isNegative()) {
-            throw NegativeNumberException::negativeExponent();
+            throw InvalidArgumentException::negativeExponent();
         }
 
         if ($modulus->isZero()) {
@@ -747,7 +747,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($modulus->isNegative()) {
-            throw NegativeNumberException::negativeModulus();
+            throw InvalidArgumentException::negativeModulus();
         }
 
         $result = CalculatorRegistry::get()->modPow($this->value, $exponent->value, $modulus->value);

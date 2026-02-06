@@ -24,22 +24,6 @@ final class NegativeNumberException extends RuntimeException implements MathExce
     /**
      * @pure
      */
-    public static function negativeModulus(): NegativeNumberException
-    {
-        return new self('The modulus must be strictly positive.');
-    }
-
-    /**
-     * @pure
-     */
-    public static function negativeExponent(): NegativeNumberException
-    {
-        return new self('The exponent must not be negative.');
-    }
-
-    /**
-     * @pure
-     */
     public static function notSupportedForNegativeNumber(string $method): NegativeNumberException
     {
         return new self(sprintf('%s() does not support negative numbers.', $method));
