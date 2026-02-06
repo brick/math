@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Brick\Math;
 
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
@@ -122,12 +123,13 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * If several values are equal and minimal, the first one is returned.
      * This can affect the concrete return type when calling this method on BigNumber.
      *
-     * @param BigNumber|int|string $a    The first number.
-     * @param BigNumber|int|string ...$n The additional numbers. All the numbers must be convertible to an
-     *                                   instance of the class this method is called on.
+     * @param BigNumber|int|string $a    The first number. Must be convertible to an instance of the class this method
+     *                                   is called on.
+     * @param BigNumber|int|string ...$n The additional numbers. Each number must be convertible to an instance of the
+     *                                   class this method is called on.
      *
-     * @throws MathException If a number is not valid, or is not convertible to an instance of the class
-     *                       this method is called on.
+     * @throws MathException If a number is not valid, or is not convertible to an instance of the class this method is
+     *                       called on.
      *
      * @pure
      */
@@ -152,12 +154,13 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * If several values are equal and maximal, the first one is returned.
      * This can affect the concrete return type when calling this method on BigNumber.
      *
-     * @param BigNumber|int|string $a    The first number.
-     * @param BigNumber|int|string ...$n The additional numbers. All the numbers must be convertible
-     *                                   to an instance of the class this method is called on.
+     * @param BigNumber|int|string $a    The first number. Must be convertible to an instance of the class this method
+     *                                   is called on.
+     * @param BigNumber|int|string ...$n The additional numbers. Each number must be convertible to an instance of the
+     *                                   class this method is called on.
      *
-     * @throws MathException If a number is not valid, or is not convertible to an instance of the class
-     *                       this method is called on.
+     * @throws MathException If a number is not valid, or is not convertible to an instance of the class this method is
+     *                       called on.
      *
      * @pure
      */
@@ -185,12 +188,13 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * When called on BigInteger, BigDecimal, or BigRational, sum() requires that all values can be converted to that
      * specific subclass, and returns a result of the same type.
      *
-     * @param BigNumber|int|string $a    The first number.
-     * @param BigNumber|int|string ...$n The additional numbers. All the numbers must be convertible to an
-     *                                   instance of the class this method is called on.
+     * @param BigNumber|int|string $a    The first number. Must be convertible to an instance of the class this method
+     *                                   is called on.
+     * @param BigNumber|int|string ...$n The additional numbers. Each number must be convertible to an instance of the
+     *                                   class this method is called on.
      *
-     * @throws MathException If a number is not valid, or is not convertible to an instance of the class
-     *                       this method is called on.
+     * @throws MathException If a number is not valid, or is not convertible to an instance of the class this method is
+     *                       called on.
      *
      * @pure
      */
@@ -438,7 +442,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * If this number cannot be converted to a native integer without losing precision, an exception is thrown.
      * Note that the acceptable range for an integer depends on the platform and differs for 32-bit and 64-bit.
      *
-     * @throws MathException If this number cannot be exactly converted to a native integer.
+     * @throws RoundingNecessaryException If this number cannot be converted to an integer without rounding.
+     * @throws IntegerOverflowException   If this number is too large to fit in a native integer.
      *
      * @pure
      */
