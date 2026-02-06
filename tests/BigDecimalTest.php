@@ -3043,8 +3043,8 @@ class BigDecimalTest extends AbstractTestCase
             ['2',  3,   '8', 0],
             ['3',  3,  '27', 0],
 
-            ['0', 1000000, '0', 0],
-            ['1', 1000000, '1', 0],
+            ['0', 1_000_000, '0', 0],
+            ['1', 1_000_000, '1', 0],
 
             ['-2', 255, '-57896044618658097711785492504343953926634992332820282019728792003956564819968', 0],
             ['2', 256, '115792089237316195423570985008687907853269984665640564039457584007913129639936', 0],
@@ -3059,19 +3059,12 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    #[DataProvider('providerPowerWithInvalidExponentThrowsException')]
-    public function testPowerWithInvalidExponentThrowsException(int $power): void
+    public function testPowerWithNegativeExponentThrowsException(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        BigDecimal::of(1)->power($power);
-    }
+        $this->expectExceptionMessage('The exponent must not be negative.');
 
-    public static function providerPowerWithInvalidExponentThrowsException(): array
-    {
-        return [
-            [-1],
-            [1000001],
-        ];
+        BigDecimal::of(1)->power(-1);
     }
 
     /**

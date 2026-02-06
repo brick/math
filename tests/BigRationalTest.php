@@ -444,8 +444,9 @@ class BigRationalTest extends AbstractTestCase
             ['2/3',  3, '8/27'],
             ['3/4',  3, '27/64'],
 
-            ['0', 1000000, '0'],
-            ['1', 1000000, '1'],
+            ['0', 1_000_000, '0'],
+            ['1', 1_000_000, '1'],
+            ['1', -1_000_000, '1'],
 
             ['-2/3', 99, '-633825300114114700748351602688/171792506910670443678820376588540424234035840667'],
             ['-2/3', 100, '1267650600228229401496703205376/515377520732011331036461129765621272702107522001'],
@@ -490,21 +491,6 @@ class BigRationalTest extends AbstractTestCase
             [-1],
             [-2],
             [-100],
-        ];
-    }
-
-    #[DataProvider('providerPowerWithInvalidExponentThrowsException')]
-    public function testPowerWithInvalidExponentThrowsException(int $exponent): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigRational::of('1/2')->power($exponent);
-    }
-
-    public static function providerPowerWithInvalidExponentThrowsException(): array
-    {
-        return [
-            [-1000001],
-            [1000001],
         ];
     }
 

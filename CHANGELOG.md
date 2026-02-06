@@ -53,6 +53,8 @@ The following breaking changes are unlikely to affect you:
 
 ✨ **New features**
 
+- `BigInteger::power()`, `BigDecimal::power()` and `BigRational::power()` no longer enforce an exponent limit
+- `BigInteger::shiftedLeft()` and `BigInteger::shiftedRight()` no longer enforce a limit on the number of bits
 - `BigRational::power()` now accepts negative exponents
 - New exception: `InvalidArgumentException` for invalid argument errors
 - New exception: `NoInverseException` for modular inverse errors

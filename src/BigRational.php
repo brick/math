@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Brick\Math;
 
 use Brick\Math\Exception\DivisionByZeroException;
-use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\DecimalHelper;
@@ -290,8 +289,7 @@ final readonly class BigRational extends BigNumber
      * Unlike BigInteger and BigDecimal, BigRational supports negative exponents:
      * the result is the reciprocal raised to the absolute value of the exponent.
      *
-     * @throws InvalidArgumentException If the exponent is out of range.
-     * @throws DivisionByZeroException  If the exponent is negative and this number is zero.
+     * @throws DivisionByZeroException If the exponent is negative and this number is zero.
      *
      * @pure
      */
