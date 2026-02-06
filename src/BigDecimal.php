@@ -313,7 +313,7 @@ final readonly class BigDecimal extends BigNumber
         $scale = DecimalHelper::computeScaleFromReducedFractionDenominator($denominator);
 
         if ($scale === null) {
-            throw RoundingNecessaryException::nonTerminatingDecimal();
+            throw RoundingNecessaryException::decimalDivisionNotExact();
         }
 
         return $this->dividedBy($that, $scale)->strippedOfTrailingZeros();
@@ -740,7 +740,7 @@ final readonly class BigDecimal extends BigNumber
         $value = DecimalHelper::scale($this->value, $this->scale, $scale, $roundingMode);
 
         if ($value === null) {
-            throw RoundingNecessaryException::scaleRequiresRounding();
+            throw RoundingNecessaryException::decimalScaleTooSmall();
         }
 
         return new BigDecimal($value, $scale);

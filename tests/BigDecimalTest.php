@@ -751,7 +751,7 @@ class BigDecimalTest extends AbstractTestCase
     {
         if (is_string($expected)) {
             $expectedExceptionMessage = match ($expected) {
-                'DIVISION_NOT_EXACT' => 'The division yields a non-terminating decimal expansion and cannot be represented as a decimal number without rounding.',
+                'DIVISION_NOT_EXACT' => 'The division yields a non-terminating decimal expansion and cannot be represented as a decimal without rounding.',
                 'SCALE_TOO_SMALL' => 'The division result is exact but cannot be represented at the requested scale without rounding.',
             };
 
@@ -1480,7 +1480,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testSqrt(string $number, int $scale, RoundingMode $roundingMode, string $expected): void
     {
         $expectedExceptionMessage = match ($expected) {
-            'SQRT_NOT_EXACT' => 'The square root is not exact and cannot be represented as a decimal number without rounding.',
+            'SQRT_NOT_EXACT' => 'The square root is not exact and cannot be represented as a decimal without rounding.',
             'SCALE_TOO_SMALL' => 'The square root is exact but cannot be represented at the requested scale without rounding.',
             default => null,
         };
@@ -3673,7 +3673,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testToBigIntegerThrowsExceptionWhenRoundingNecessary(string $decimal): void
     {
         $this->expectException(RoundingNecessaryException::class);
-        $this->expectExceptionMessage('This decimal number cannot be represented exactly as an integer.');
+        $this->expectExceptionMessage('This decimal cannot be represented as an integer without rounding.');
         BigDecimal::of($decimal)->toBigInteger();
     }
 
