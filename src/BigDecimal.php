@@ -265,7 +265,21 @@ final readonly class BigDecimal extends BigNumber
         $p = $this->valueWithMinScale($that->scale + $scale);
         $q = $that->valueWithMinScale($this->scale - $scale);
 
-        $result = CalculatorRegistry::get()->divRound($p, $q, $roundingMode);
+        $calculator = CalculatorRegistry::get();
+        $result = $calculator->divRound($p, $q, $roundingMode);
+
+        if ($result === null) {
+            [$a, $b] = $this->scaleValues($this->abs(), $that->abs());
+
+            $denominator = $calculator->divQ($b, $calculator->gcd($a, $b));
+            $requiredScale = DecimalHelper::computeScaleFromReducedFractionDenominator($denominator);
+
+            if ($requiredScale === null) {
+                throw RoundingNecessaryException::decimalDivisionNotExact();
+            }
+
+            throw RoundingNecessaryException::decimalDivisionScaleTooSmall();
+        }
 
         return new BigDecimal($result, $scale);
     }

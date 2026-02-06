@@ -14,9 +14,25 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     /**
      * @pure
      */
-    public static function roundingNecessary(): RoundingNecessaryException
+    public static function integerDivisionNotExact(): RoundingNecessaryException
     {
-        return new self('Rounding is necessary to represent the result of the operation.');
+        return new self('The division has a non-zero remainder and cannot be represented as an integer without rounding.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function decimalDivisionNotExact(): RoundingNecessaryException
+    {
+        return new self('The division yields a non-terminating decimal expansion and cannot be represented as a decimal number without rounding.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function decimalDivisionScaleTooSmall(): RoundingNecessaryException
+    {
+        return new self('The division result is exact but cannot be represented at the requested scale without rounding.');
     }
 
     /**
