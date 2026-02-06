@@ -34,4 +34,12 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     {
         return new self('The denominator of a rational number cannot be zero.');
     }
+
+    /**
+     * @pure
+     */
+    public static function reciprocalOfZero(): DivisionByZeroException
+    {
+        return new self('The reciprocal of zero is undefined.');
+    }
 }
