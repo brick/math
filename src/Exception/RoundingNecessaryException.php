@@ -22,6 +22,14 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     /**
      * @pure
      */
+    public static function nonTerminatingDecimal(): RoundingNecessaryException
+    {
+        return new self('The division yields a non-terminating decimal expansion.');
+    }
+
+    /**
+     * @pure
+     */
     public static function rationalNotConvertibleToInteger(): RoundingNecessaryException
     {
         return new self('This rational number cannot be converted to an integer value without rounding.');

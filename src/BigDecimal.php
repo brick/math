@@ -292,12 +292,13 @@ final readonly class BigDecimal extends BigNumber
             throw DivisionByZeroException::divisionByZero();
         }
 
-        [, $b] = $this->scaleValues($this, $that);
+        [$a, $b] = $this->scaleValues($this->abs(), $that->abs());
+
+        $calculator = CalculatorRegistry::get();
+        $b = $calculator->divQ($b, $calculator->gcd($a, $b));
 
         $d = rtrim($b, '0');
         $scale = strlen($b) - strlen($d);
-
-        $calculator = CalculatorRegistry::get();
 
         foreach ([5, 2] as $prime) {
             for (; ;) {
@@ -310,6 +311,10 @@ final readonly class BigDecimal extends BigNumber
                 $d = $calculator->divQ($d, (string) $prime);
                 $scale++;
             }
+        }
+
+        if ($d !== '1') {
+            throw RoundingNecessaryException::nonTerminatingDecimal();
         }
 
         return $this->dividedBy($that, $scale)->strippedOfTrailingZeros();
