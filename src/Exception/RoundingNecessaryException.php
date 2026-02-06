@@ -22,6 +22,30 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     /**
      * @pure
      */
+    public static function integerSquareRootNotExact(): RoundingNecessaryException
+    {
+        return new self('The square root is not exact and cannot be represented as an integer without rounding.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function decimalSquareRootNotExact(): RoundingNecessaryException
+    {
+        return new self('The square root is not exact and cannot be represented as a decimal number without rounding.');
+    }
+
+    /**
+     * @pure
+     */
+    public static function decimalSquareRootScaleTooSmall(): RoundingNecessaryException
+    {
+        return new self('The square root is exact but cannot be represented at the requested scale without rounding.');
+    }
+
+    /**
+     * @pure
+     */
     public static function nonTerminatingDecimal(): RoundingNecessaryException
     {
         return new self('The division yields a non-terminating decimal expansion.');
