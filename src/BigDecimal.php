@@ -724,7 +724,7 @@ final readonly class BigDecimal extends BigNumber
         $value = DecimalHelper::scale($this->value, $this->scale, $scale, $roundingMode);
 
         if ($value === null) {
-            throw RoundingNecessaryException::roundingNecessary();
+            throw RoundingNecessaryException::scaleRequiresRounding();
         }
 
         return new BigDecimal($value, $scale);

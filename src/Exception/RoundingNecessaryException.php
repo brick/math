@@ -22,6 +22,14 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     /**
      * @pure
      */
+    public static function scaleRequiresRounding(): RoundingNecessaryException
+    {
+        return new self('The value cannot be represented at the requested scale without rounding.');
+    }
+
+    /**
+     * @pure
+     */
     public static function integerSquareRootNotExact(): RoundingNecessaryException
     {
         return new self('The square root is not exact and cannot be represented as an integer without rounding.');
