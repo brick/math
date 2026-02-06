@@ -839,7 +839,7 @@ final readonly class BigInteger extends BigNumber
 
         // sqrt is not exact
         if ($roundingMode === RoundingMode::Unnecessary) {
-            throw RoundingNecessaryException::roundingNecessary();
+            throw RoundingNecessaryException::integerSquareRootNotExact();
         }
 
         // For Up and Ceiling (equivalent for non-negative numbers), round up

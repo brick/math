@@ -19,12 +19,9 @@ use function in_array;
 use function intdiv;
 use function max;
 use function rtrim;
-use function str_pad;
 use function str_repeat;
 use function strlen;
 use function substr;
-
-use const STR_PAD_LEFT;
 
 /**
  * An arbitrarily large decimal number.
@@ -495,7 +492,7 @@ final readonly class BigDecimal extends BigNumber
 
         if (! $isExact) {
             if ($roundingMode === RoundingMode::Unnecessary) {
-                throw RoundingNecessaryException::roundingNecessary();
+                throw RoundingNecessaryException::decimalSquareRootNotExact();
             }
 
             // Non-perfect-square sqrt is irrational, so the true value is strictly above this sqrt floor.
@@ -510,7 +507,13 @@ final readonly class BigDecimal extends BigNumber
             }
         }
 
-        return (new BigDecimal($sqrt, $intermediateScale))->toScale($scale, $roundingMode);
+        $scaled = DecimalHelper::scale($sqrt, $intermediateScale, $scale, $roundingMode);
+
+        if ($scaled === null) {
+            throw RoundingNecessaryException::decimalSquareRootScaleTooSmall();
+        }
+
+        return new BigDecimal($scaled, $scale);
     }
 
     /**
@@ -672,7 +675,7 @@ final readonly class BigDecimal extends BigNumber
             return false;
         }
 
-        $value = $this->getUnscaledValueWithLeadingZeros();
+        $value = DecimalHelper::padUnscaledValue($this->value, $this->scale);
 
         return substr($value, -$this->scale) !== str_repeat('0', $this->scale);
     }
@@ -716,7 +719,17 @@ final readonly class BigDecimal extends BigNumber
             return $this;
         }
 
-        return $this->dividedBy(BigDecimal::one(), $scale, $roundingMode);
+        if ($scale < 0) {
+            throw InvalidArgumentException::negativeScale();
+        }
+
+        $value = DecimalHelper::scale($this->value, $this->scale, $scale, $roundingMode);
+
+        if ($value === null) {
+            throw RoundingNecessaryException::roundingNecessary();
+        }
+
+        return new BigDecimal($value, $scale);
     }
 
     #[Override]
@@ -742,7 +755,7 @@ final readonly class BigDecimal extends BigNumber
             return $this->value;
         }
 
-        $value = $this->getUnscaledValueWithLeadingZeros();
+        $value = DecimalHelper::padUnscaledValue($this->value, $this->scale);
 
         /** @phpstan-ignore return.type */
         return substr($value, 0, -$this->scale) . '.' . substr($value, -$this->scale);
@@ -817,39 +830,6 @@ final readonly class BigDecimal extends BigNumber
 
         if ($this->value !== '0' && $scale > $this->scale) {
             $value .= str_repeat('0', $scale - $this->scale);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Adds leading zeros if necessary to the unscaled value to represent the full decimal number.
-     *
-     * @pure
-     */
-    private function getUnscaledValueWithLeadingZeros(): string
-    {
-        $value = $this->value;
-        $targetLength = $this->scale + 1;
-        $negative = ($value[0] === '-');
-        $length = strlen($value);
-
-        if ($negative) {
-            $length--;
-        }
-
-        if ($length >= $targetLength) {
-            return $this->value;
-        }
-
-        if ($negative) {
-            $value = substr($value, 1);
-        }
-
-        $value = str_pad($value, $targetLength, '0', STR_PAD_LEFT);
-
-        if ($negative) {
-            $value = '-' . $value;
         }
 
         return $value;
