@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - **`MathException` is now an interface** instead of a class
 - **`BigDecimal::getPrecision()` now returns `1` for zero values**
 - `BigNumber::min()`, `max()` and `sum()` now throw an `ArgumentCountError` when called with no arguments (previously threw `InvalidArgumentException`)
+- `BigInteger::randomBits()` and `randomRange()` now throw `RandomSourceException` when random byte generation fails or returns invalid data
 
 Deprecated API elements removed:
 
