@@ -6,8 +6,6 @@ namespace Brick\Math\Exception;
 
 use RuntimeException;
 
-use function sprintf;
-
 /**
  * Exception thrown when attempting to perform an unsupported operation, such as a square root, on a negative number.
  */
@@ -24,9 +22,9 @@ final class NegativeNumberException extends RuntimeException implements MathExce
     /**
      * @pure
      */
-    public static function notSupportedForNegativeNumber(string $method): NegativeNumberException
+    public static function toArbitraryBaseOfNegativeNumber(): NegativeNumberException
     {
-        return new self(sprintf('%s() does not support negative numbers.', $method));
+        return new self('Cannot convert a negative number to an arbitrary base.');
     }
 
     /**

@@ -1178,7 +1178,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($this->value[0] === '-') {
-            throw NegativeNumberException::notSupportedForNegativeNumber(__FUNCTION__);
+            throw NegativeNumberException::toArbitraryBaseOfNegativeNumber();
         }
 
         return CalculatorRegistry::get()->toArbitraryBase($this->value, $alphabet, $base);

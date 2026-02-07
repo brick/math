@@ -4888,7 +4888,7 @@ class BigIntegerTest extends AbstractTestCase
         $number = BigInteger::of(-123);
 
         $this->expectException(NegativeNumberException::class);
-        $this->expectExceptionMessage('toArbitraryBase() does not support negative numbers.');
+        $this->expectExceptionMessage('Cannot convert a negative number to an arbitrary base.');
 
         $number->toArbitraryBase('01');
     }
