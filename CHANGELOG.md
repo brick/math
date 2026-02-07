@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - **`MathException` is now an interface** instead of a class
 - **`BigDecimal::getPrecision()` now returns `1` for zero values**
 - `BigNumber::min()`, `max()` and `sum()` now throw an `ArgumentCountError` when called with no arguments (previously threw `InvalidArgumentException`)
+- `BigInteger::randomBits()` and `randomRange()` now throw `RandomSourceException` when random byte generation fails or returns invalid data
 
 Deprecated API elements removed:
 
@@ -58,6 +59,7 @@ The following breaking changes are unlikely to affect you:
 - `BigRational::power()` now accepts negative exponents
 - New exception: `InvalidArgumentException` for invalid argument errors
 - New exception: `NoInverseException` for modular inverse errors
+- New exception: `RandomSourceException` for random source errors
 
 ## [0.14.8](https://github.com/brick/math/releases/tag/0.14.8) - 2026-02-10
 
