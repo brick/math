@@ -565,6 +565,10 @@ final readonly class BigInteger extends BigNumber
             return $this;
         }
 
+        if ($that->value === '-1') {
+            return $this->negated();
+        }
+
         if ($that->value === '0') {
             throw DivisionByZeroException::divisionByZero();
         }
@@ -597,7 +601,7 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->value === '1') {
+        if ($that->value === '1' || $that->value === '-1') {
             return BigInteger::zero();
         }
 
