@@ -247,14 +247,14 @@ final readonly class BigDecimal extends BigNumber
      */
     public function dividedBy(BigNumber|int|string $that, int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
     {
+        if ($scale < 0) {
+            throw InvalidArgumentException::negativeScale();
+        }
+
         $that = BigDecimal::of($that);
 
         if ($that->isZero()) {
             throw DivisionByZeroException::divisionByZero();
-        }
-
-        if ($scale < 0) {
-            throw InvalidArgumentException::negativeScale();
         }
 
         if ($that->value === '1' && $that->scale === 0 && $scale === $this->scale) {
@@ -728,12 +728,12 @@ final readonly class BigDecimal extends BigNumber
     #[Override]
     public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
     {
-        if ($scale === $this->scale) {
-            return $this;
-        }
-
         if ($scale < 0) {
             throw InvalidArgumentException::negativeScale();
+        }
+
+        if ($scale === $this->scale) {
+            return $this;
         }
 
         $value = DecimalHelper::scale($this->value, $this->scale, $scale, $roundingMode);

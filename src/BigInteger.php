@@ -85,12 +85,12 @@ final readonly class BigInteger extends BigNumber
      */
     public static function fromBase(string $number, int $base): BigInteger
     {
-        if ($number === '') {
-            throw NumberFormatException::emptyNumber();
-        }
-
         if ($base < 2 || $base > 36) {
             throw InvalidArgumentException::baseOutOfRange($base);
+        }
+
+        if ($number === '') {
+            throw NumberFormatException::emptyNumber();
         }
 
         if ($number[0] === '-') {
@@ -153,10 +153,6 @@ final readonly class BigInteger extends BigNumber
      */
     public static function fromArbitraryBase(string $number, string $alphabet): BigInteger
     {
-        if ($number === '') {
-            throw NumberFormatException::emptyNumber();
-        }
-
         $base = strlen($alphabet);
 
         if ($base < 2) {
@@ -165,6 +161,10 @@ final readonly class BigInteger extends BigNumber
 
         if (strlen(count_chars($alphabet, 3)) !== $base) {
             throw InvalidArgumentException::duplicateCharsInAlphabet();
+        }
+
+        if ($number === '') {
+            throw NumberFormatException::emptyNumber();
         }
 
         $pattern = '/[^' . preg_quote($alphabet, '/') . ']/';
@@ -738,16 +738,16 @@ final readonly class BigInteger extends BigNumber
         $exponent = BigInteger::of($exponent);
         $modulus = BigInteger::of($modulus);
 
-        if ($exponent->isNegative()) {
-            throw InvalidArgumentException::negativeExponent();
-        }
-
         if ($modulus->isZero()) {
             throw DivisionByZeroException::zeroModulus();
         }
 
         if ($modulus->isNegative()) {
             throw InvalidArgumentException::negativeModulus();
+        }
+
+        if ($exponent->isNegative()) {
+            throw InvalidArgumentException::negativeExponent();
         }
 
         $result = CalculatorRegistry::get()->modPow($this->value, $exponent->value, $modulus->value);
