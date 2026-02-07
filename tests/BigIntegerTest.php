@@ -13,6 +13,7 @@ use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\RandomSourceException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
@@ -5186,6 +5187,35 @@ class BigIntegerTest extends AbstractTestCase
         self::assertBigIntegerEquals('0', $random);
     }
 
+    public function testRandomBitsWithGeneratorException(): void
+    {
+        $exception = new LogicException('RNG failed.');
+
+        try {
+            BigInteger::randomBits(8, fn () => throw $exception);
+            self::fail('RandomSourceException was not thrown as expected.');
+        } catch (RandomSourceException $e) {
+            self::assertSame('Random byte generation failed.', $e->getMessage());
+            self::assertSame($exception, $e->getPrevious());
+        }
+    }
+
+    public function testRandomBitsWithInvalidGeneratorReturnType(): void
+    {
+        $this->expectException(RandomSourceException::class);
+        $this->expectExceptionMessage('The random bytes generator must return a string, got int.');
+
+        BigInteger::randomBits(8, fn () => 123);
+    }
+
+    public function testRandomBitsWithInvalidGeneratorLength(): void
+    {
+        $this->expectException(RandomSourceException::class);
+        $this->expectExceptionMessage('The random bytes generator returned 0 byte(s), expected 1.');
+
+        BigInteger::randomBits(8, fn () => '');
+    }
+
     #[DataProvider('providerRandomRange')]
     public function testRandomRange(string $min, string $max, array $randomBytesHex, string $expectedNumber): void
     {
@@ -5276,6 +5306,27 @@ class BigIntegerTest extends AbstractTestCase
         $value = '123456789123456789123456789123456789';
         $random = BigInteger::randomRange($value, $value);
         self::assertBigIntegerEquals($value, $random);
+    }
+
+    public function testRandomRangeWrapsGeneratorException(): void
+    {
+        try {
+            BigInteger::randomRange(0, 1, function (int $_): string {
+                throw new LogicException('rng failed');
+            });
+            self::fail('Expected exception was not thrown.');
+        } catch (RandomSourceException $e) {
+            self::assertInstanceOf(LogicException::class, $e->getPrevious());
+            self::assertSame('Random byte generation failed.', $e->getMessage());
+        }
+    }
+
+    public function testRandomRangeRejectsInvalidGeneratorReturnType(): void
+    {
+        $this->expectException(RandomSourceException::class);
+        $this->expectExceptionMessage('The random bytes generator must return a string, got int.');
+
+        BigInteger::randomRange(0, 1, fn (int $_): int => 123);
     }
 
     #[DataProvider('providerToString')]

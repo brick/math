@@ -11,11 +11,13 @@ use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NoInverseException;
 use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\RandomSourceException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
 use LogicException;
 use Override;
+use Throwable;
 
 use function assert;
 use function bin2hex;
@@ -25,6 +27,7 @@ use function filter_var;
 use function hex2bin;
 use function in_array;
 use function intdiv;
+use function is_string;
 use function ltrim;
 use function ord;
 use function preg_match;
@@ -235,6 +238,7 @@ final readonly class BigInteger extends BigNumber
      *                                                           to the `random_bytes()` function.
      *
      * @throws InvalidArgumentException If $numBits is negative.
+     * @throws RandomSourceException    If random byte generation fails.
      */
     public static function randomBits(int $numBits, ?callable $randomBytesGenerator = null): BigInteger
     {
@@ -246,17 +250,13 @@ final readonly class BigInteger extends BigNumber
             return BigInteger::zero();
         }
 
-        if ($randomBytesGenerator === null) {
-            $randomBytesGenerator = random_bytes(...);
-        }
-
         /** @var int<1, max> $byteLength */
         $byteLength = intdiv($numBits - 1, 8) + 1;
 
         $extraBits = ($byteLength * 8 - $numBits);
         $bitmask = chr(0xFF >> $extraBits);
 
-        $randomBytes = $randomBytesGenerator($byteLength);
+        $randomBytes = self::randomBytes($byteLength, $randomBytesGenerator);
         $randomBytes[0] = $randomBytes[0] & $bitmask;
 
         return self::fromBytes($randomBytes, false);
@@ -273,8 +273,9 @@ final readonly class BigInteger extends BigNumber
      *                                                           a string of random bytes of the given length. Defaults
      *                                                           to the `random_bytes()` function.
      *
-     * @throws MathException If one of the parameters cannot be converted to a BigInteger,
-     *                       or `$min` is greater than `$max`.
+     * @throws MathException            If one of the parameters cannot be converted to a BigInteger.
+     * @throws InvalidArgumentException If `$min` is greater than `$max`.
+     * @throws RandomSourceException    If random byte generation fails.
      */
     public static function randomRange(
         BigNumber|int|string $min,
@@ -1296,5 +1297,37 @@ final readonly class BigInteger extends BigNumber
     protected static function from(BigNumber $number): static
     {
         return $number->toBigInteger();
+    }
+
+    /**
+     * Returns random bytes from the provided generator or from random_bytes().
+     *
+     * @param int                          $byteLength           The number of requested bytes.
+     * @param (callable(int): string)|null $randomBytesGenerator The random bytes generator, or null to use random_bytes().
+     *
+     * @throws RandomSourceException If random byte generation fails.
+     */
+    private static function randomBytes(int $byteLength, ?callable $randomBytesGenerator): string
+    {
+        if ($randomBytesGenerator === null) {
+            $randomBytesGenerator = random_bytes(...);
+        }
+
+        try {
+            $randomBytes = $randomBytesGenerator($byteLength);
+        } catch (Throwable $e) {
+            throw RandomSourceException::randomSourceFailure($e);
+        }
+
+        /** @phpstan-ignore function.alreadyNarrowedType (Defensive runtime check for user-provided callbacks) */
+        if (! is_string($randomBytes)) {
+            throw RandomSourceException::invalidRandomBytesType($randomBytes);
+        }
+
+        if (strlen($randomBytes) !== $byteLength) {
+            throw RandomSourceException::invalidRandomBytesLength($byteLength, strlen($randomBytes));
+        }
+
+        return $randomBytes;
     }
 }
