@@ -385,7 +385,9 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
         if ($this->isLessThan($min)) {
             return $min;
-        } elseif ($this->isGreaterThan($max)) {
+        }
+
+        if ($this->isGreaterThan($max)) {
             return $max;
         }
 
