@@ -125,6 +125,9 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Returns the minimum of the given values.
      *
+     * If several values are equal and minimal, the first one is returned.
+     * This can affect the concrete return type when calling this method on BigNumber.
+     *
      * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
      *                                              to an instance of the class this method is called on.
      *
@@ -154,6 +157,9 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
     /**
      * Returns the maximum of the given values.
+     *
+     * If several values are equal and maximal, the first one is returned.
+     * This can affect the concrete return type when calling this method on BigNumber.
      *
      * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
      *                                              to an instance of the class this method is called on.

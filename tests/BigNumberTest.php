@@ -20,6 +20,53 @@ use PHPUnit\Framework\Attributes\DataProvider;
 class BigNumberTest extends AbstractTestCase
 {
     /**
+     * @param list<BigNumber|int|string> $values
+     */
+    #[DataProvider('providerMin')]
+    public function testMin(array $values, string $expectedClass, string $expectedValue): void
+    {
+        $result = BigNumber::min(...$values);
+
+        self::assertInstanceOf($expectedClass, $result);
+        self::assertSame($expectedValue, $result->toString());
+    }
+
+    public static function providerMin(): array
+    {
+        return [
+            [['1', '1.0', '1/1'], BigInteger::class, '1'],
+            [['1.0', '1', '1/1'], BigDecimal::class, '1.0'],
+            [['1/1', '1.0', '1'], BigRational::class, '1'],
+            [[-3, '-4.0', '-4/1'], BigDecimal::class, '-4.0'],
+            [[-3, '-4/1', '-4.0'], BigRational::class, '-4'],
+            [['2/3', '0.67', '0.6666666666666666666666666667'], BigRational::class, '2/3'],
+        ];
+    }
+
+    /**
+     * @param list<BigNumber|int|string> $values
+     */
+    #[DataProvider('providerMax')]
+    public function testMax(array $values, string $expectedClass, string $expectedValue): void
+    {
+        $result = BigNumber::max(...$values);
+
+        self::assertInstanceOf($expectedClass, $result);
+        self::assertSame($expectedValue, $result->toString());
+    }
+
+    public static function providerMax(): array
+    {
+        return [
+            [['1', '1.0', '1/1'], BigInteger::class, '1'],
+            [['1.0', '1', '1/1'], BigDecimal::class, '1.0'],
+            [['1/1', '1.0', '1'], BigRational::class, '1'],
+            [[-3, '-3.0', '-3/1'], BigInteger::class, '-3'],
+            [['1/2', '0.5', '0.50'], BigRational::class, '1/2'],
+        ];
+    }
+
+    /**
      * @param class-string<BigNumber>          $callingClass  The BigNumber class to call sum() on.
      * @param list<BigNumber|int|float|string> $values        The values to add.
      * @param string                           $expectedClass The expected class name.
