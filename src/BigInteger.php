@@ -93,6 +93,8 @@ final readonly class BigInteger extends BigNumber
             throw NumberFormatException::emptyNumber();
         }
 
+        $originalNumber = $number;
+
         if ($number[0] === '-') {
             $sign = '-';
             $number = substr($number, 1);
@@ -104,7 +106,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($number === '') {
-            throw NumberFormatException::emptyNumber();
+            throw NumberFormatException::invalidFormat($originalNumber);
         }
 
         $number = ltrim($number, '0');
