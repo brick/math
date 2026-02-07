@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Brick\Math;
 
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
@@ -435,7 +436,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * If this number cannot be converted to a native integer without losing precision, an exception is thrown.
      * Note that the acceptable range for an integer depends on the platform and differs for 32-bit and 64-bit.
      *
-     * @throws MathException If this number cannot be exactly converted to a native integer.
+     * @throws RoundingNecessaryException If this number cannot be converted to an integer without rounding.
+     * @throws IntegerOverflowException   If this number is too large to fit in a native integer.
      *
      * @pure
      */
