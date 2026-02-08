@@ -503,16 +503,16 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
+        if ($that->isZero()) {
+            throw DivisionByZeroException::divisionByZero();
+        }
+
         if ($that->isOne()) {
             return $this;
         }
 
         if ($that->isMinusOne()) {
             return $this->negated();
-        }
-
-        if ($that->isZero()) {
-            throw DivisionByZeroException::divisionByZero();
         }
 
         $result = CalculatorRegistry::get()->divRound($this->value, $that->value, $roundingMode);
@@ -569,16 +569,16 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
+        if ($that->isZero()) {
+            throw DivisionByZeroException::divisionByZero();
+        }
+
         if ($that->isOne()) {
             return $this;
         }
 
         if ($that->isMinusOne()) {
             return $this->negated();
-        }
-
-        if ($that->isZero()) {
-            throw DivisionByZeroException::divisionByZero();
         }
 
         $quotient = CalculatorRegistry::get()->divQ($this->value, $that->value);
@@ -609,12 +609,12 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->isOne() || $that->isMinusOne()) {
-            return BigInteger::zero();
-        }
-
         if ($that->isZero()) {
             throw DivisionByZeroException::divisionByZero();
+        }
+
+        if ($that->isOne() || $that->isMinusOne()) {
+            return BigInteger::zero();
         }
 
         $remainder = CalculatorRegistry::get()->divR($this->value, $that->value);
