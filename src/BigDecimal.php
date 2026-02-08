@@ -158,11 +158,11 @@ final readonly class BigDecimal extends BigNumber
     {
         $that = BigDecimal::of($that);
 
-        if ($that->value === '0' && $that->scale <= $this->scale) {
+        if ($that->isZero() && $that->scale <= $this->scale) {
             return $this;
         }
 
-        if ($this->value === '0' && $this->scale <= $that->scale) {
+        if ($this->isZero() && $this->scale <= $that->scale) {
             return $that;
         }
 
@@ -189,7 +189,7 @@ final readonly class BigDecimal extends BigNumber
     {
         $that = BigDecimal::of($that);
 
-        if ($that->value === '0' && $that->scale <= $this->scale) {
+        if ($that->isZero() && $that->scale <= $this->scale) {
             return $this;
         }
 
@@ -216,11 +216,11 @@ final readonly class BigDecimal extends BigNumber
     {
         $that = BigDecimal::of($that);
 
-        if ($that->value === '1' && $that->scale === 0) {
+        if ($that->isOneScaleZero()) {
             return $this;
         }
 
-        if ($this->value === '1' && $this->scale === 0) {
+        if ($this->isOneScaleZero()) {
             return $that;
         }
 
@@ -257,7 +257,7 @@ final readonly class BigDecimal extends BigNumber
             throw DivisionByZeroException::divisionByZero();
         }
 
-        if ($that->value === '1' && $that->scale === 0 && $scale === $this->scale) {
+        if ($that->isOneScaleZero() && $scale === $this->scale) {
             return $this;
         }
 
@@ -300,7 +300,7 @@ final readonly class BigDecimal extends BigNumber
     {
         $that = BigDecimal::of($that);
 
-        if ($that->value === '0') {
+        if ($that->isZero()) {
             throw DivisionByZeroException::divisionByZero();
         }
 
@@ -478,11 +478,11 @@ final readonly class BigDecimal extends BigNumber
             throw InvalidArgumentException::negativeScale();
         }
 
-        if ($this->value === '0') {
+        if ($this->isZero()) {
             return new BigDecimal('0', $scale);
         }
 
-        if ($this->value[0] === '-') {
+        if ($this->isNegative()) {
             throw NegativeNumberException::squareRootOfNegativeNumber();
         }
 
@@ -846,5 +846,13 @@ final readonly class BigDecimal extends BigNumber
         }
 
         return $value;
+    }
+
+    /**
+     * @pure
+     */
+    private function isOneScaleZero(): bool
+    {
+        return $this->value === '1' && $this->scale === 0;
     }
 }

@@ -422,11 +422,11 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->value === '0') {
+        if ($that->isZero()) {
             return $this;
         }
 
-        if ($this->value === '0') {
+        if ($this->isZero()) {
             return $that;
         }
 
@@ -448,7 +448,7 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->value === '0') {
+        if ($that->isZero()) {
             return $this;
         }
 
@@ -470,11 +470,11 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->value === '1') {
+        if ($that->isOne()) {
             return $this;
         }
 
-        if ($this->value === '1') {
+        if ($this->isOne()) {
             return $that;
         }
 
@@ -499,11 +499,11 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->value === '1') {
+        if ($that->isOne()) {
             return $this;
         }
 
-        if ($that->value === '0') {
+        if ($that->isZero()) {
             throw DivisionByZeroException::divisionByZero();
         }
 
@@ -561,11 +561,11 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->value === '1') {
+        if ($that->isOne()) {
             return $this;
         }
 
-        if ($that->value === '0') {
+        if ($that->isZero()) {
             throw DivisionByZeroException::divisionByZero();
         }
 
@@ -597,11 +597,11 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->value === '1') {
+        if ($that->isOne()) {
             return BigInteger::zero();
         }
 
-        if ($that->value === '0') {
+        if ($that->isZero()) {
             throw DivisionByZeroException::divisionByZero();
         }
 
@@ -633,7 +633,7 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->value === '0') {
+        if ($that->isZero()) {
             throw DivisionByZeroException::divisionByZero();
         }
 
@@ -709,7 +709,7 @@ final readonly class BigInteger extends BigNumber
             throw InvalidArgumentException::negativeModulus();
         }
 
-        if ($modulus->value === '1') {
+        if ($modulus->isOne()) {
             return BigInteger::zero();
         }
 
@@ -773,11 +773,11 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->value === '0' && $this->value[0] !== '-') {
+        if ($that->isZero() && $this->isPositiveOrZero()) {
             return $this;
         }
 
-        if ($this->value === '0' && $that->value[0] !== '-') {
+        if ($this->isZero() && $that->isPositiveOrZero()) {
             return $that;
         }
 
@@ -822,7 +822,7 @@ final readonly class BigInteger extends BigNumber
      */
     public function sqrt(RoundingMode $roundingMode = RoundingMode::Unnecessary): BigInteger
     {
-        if ($this->value[0] === '-') {
+        if ($this->isNegative()) {
             throw NegativeNumberException::squareRootOfNegativeNumber();
         }
 
@@ -996,7 +996,7 @@ final readonly class BigInteger extends BigNumber
      */
     public function getBitLength(): int
     {
-        if ($this->value === '0') {
+        if ($this->isZero()) {
             return 0;
         }
 
@@ -1180,7 +1180,7 @@ final readonly class BigInteger extends BigNumber
             throw InvalidArgumentException::duplicateCharsInAlphabet();
         }
 
-        if ($this->value[0] === '-') {
+        if ($this->isNegative()) {
             throw NegativeNumberException::toArbitraryBaseOfNegativeNumber();
         }
 
@@ -1329,5 +1329,21 @@ final readonly class BigInteger extends BigNumber
         }
 
         return $randomBytes;
+    }
+
+    /**
+     * @pure
+     */
+    private function isOne(): bool
+    {
+        return $this->value === '1';
+    }
+
+    /**
+     * @pure
+     */
+    private function isMinusOne(): bool
+    {
+        return $this->value === '-1';
     }
 }
