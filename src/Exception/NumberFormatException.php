@@ -22,7 +22,7 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     public static function invalidFormat(string $value): NumberFormatException
     {
         return new self(sprintf(
-            'The given value "%s" does not represent a valid number.',
+            'Value "%s" does not represent a valid number.',
             $value,
         ));
     }
