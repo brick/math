@@ -215,7 +215,7 @@ final readonly class BigDecimal extends BigNumber
      *
      * @param BigNumber|int|float|string $that The multiplier. Must be convertible to a BigDecimal.
      *
-     * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigDecimal.
+     * @throws MathException If the multiplier is not valid, or is not convertible to a BigDecimal.
      *
      * @pure
      */
@@ -245,7 +245,7 @@ final readonly class BigDecimal extends BigNumber
      * @param RoundingMode               $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws InvalidArgumentException   If the scale is negative.
-     * @throws MathException              If the divisor is not a valid number or is not convertible to a BigDecimal.
+     * @throws MathException              If the divisor is not valid, or is not convertible to a BigDecimal.
      * @throws DivisionByZeroException    If the divisor is zero.
      * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used and the result cannot be represented exactly at the given scale.
      *
@@ -312,7 +312,7 @@ final readonly class BigDecimal extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
      *
-     * @throws MathException              If the divisor is not a valid number or is not convertible to a BigDecimal.
+     * @throws MathException              If the divisor is not valid, or is not convertible to a BigDecimal.
      * @throws DivisionByZeroException    If the divisor is zero.
      * @throws RoundingNecessaryException If the result yields an infinite number of digits.
      *

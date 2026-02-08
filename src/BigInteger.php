@@ -478,7 +478,7 @@ final readonly class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The multiplier. Must be convertible to a BigInteger.
      *
-     * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigInteger.
+     * @throws MathException If the multiplier is not valid, or is not convertible to a BigInteger.
      *
      * @pure
      */
@@ -505,7 +505,7 @@ final readonly class BigInteger extends BigNumber
      * @param BigNumber|int|float|string $that         The divisor. Must be convertible to a BigInteger.
      * @param RoundingMode               $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
-     * @throws MathException              If the divisor is not a valid number or is not convertible to a BigInteger.
+     * @throws MathException              If the divisor is not valid, or is not convertible to a BigInteger.
      * @throws DivisionByZeroException    If the divisor is zero.
      * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used and the remainder is not zero.
      *
@@ -743,7 +743,7 @@ final readonly class BigInteger extends BigNumber
      * @param BigNumber|int|float|string $exp The exponent. Must be positive or zero.
      * @param BigNumber|int|float|string $mod The modulus. Must be strictly positive.
      *
-     * @throws MathException           If the exponent or modulus is not valid, or not convertible to a BigInteger.
+     * @throws MathException           If the exponent or modulus is not valid, or is not convertible to a BigInteger.
      * @throws NegativeNumberException If the exponent or modulus is negative.
      * @throws DivisionByZeroException If the modulus is zero.
      *

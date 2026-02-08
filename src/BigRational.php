@@ -105,9 +105,8 @@ final readonly class BigRational extends BigNumber
      * @param BigNumber|int|float|string $numerator   The numerator. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string $denominator The denominator. Must be convertible to a BigInteger.
      *
-     * @throws NumberFormatException      If an argument does not represent a valid number.
-     * @throws RoundingNecessaryException If an argument represents a non-integer number.
-     * @throws DivisionByZeroException    If the denominator is zero.
+     * @throws MathException           If an argument is not valid, or is not convertible to a BigInteger.
+     * @throws DivisionByZeroException If the denominator is zero.
      *
      * @pure
      */
@@ -314,7 +313,7 @@ final readonly class BigRational extends BigNumber
      *
      * @param BigNumber|int|float|string $that The multiplier.
      *
-     * @throws MathException If the multiplier is not a valid number.
+     * @throws MathException If the multiplier is not valid.
      *
      * @pure
      */
@@ -333,7 +332,7 @@ final readonly class BigRational extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor.
      *
-     * @throws MathException           If the divisor is not a valid number.
+     * @throws MathException           If the divisor is not valid.
      * @throws DivisionByZeroException If the divisor is zero.
      *
      * @pure
