@@ -4224,58 +4224,18 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param string $number The number to test.
-     * @param bool   $isOdd  Whether the number is even.
-     */
-    #[DataProvider('providerIsOdd')]
-    public function testIsEven(string $number, bool $isOdd): void
-    {
-        self::assertSame(! $isOdd, BigInteger::of($number)->isEven());
-    }
-
-    /**
-     * @param string $number The number to test.
-     * @param bool   $isOdd  Whether the number is even.
-     */
-    #[DataProvider('providerIsOdd')]
-    public function testIsOdd(string $number, bool $isOdd): void
-    {
-        self::assertSame($isOdd, BigInteger::of($number)->isOdd());
-    }
-
-    public static function providerIsOdd(): Generator
-    {
-        $tests = [
-            ['123456789012345678900', false],
-            ['123456789012345678901', true],
-            ['123456789012345678902', false],
-            ['123456789012345678903', true],
-            ['123456789012345678904', false],
-            ['123456789012345678905', true],
-            ['123456789012345678906', false],
-            ['123456789012345678907', true],
-            ['123456789012345678908', false],
-            ['123456789012345678909', true],
-        ];
-
-        foreach ($tests as [$number, $isOdd]) {
-            yield [$number, $isOdd];
-            yield ['-' . $number, $isOdd];
-        }
-    }
-
-    /**
      * @param BigInteger $number   The number in base 2.
      * @param int        $n        The bit to test.
      * @param bool       $expected The expected result.
      */
-    #[DataProvider('providerTestBit')]
-    public function testTestBit(BigInteger $number, int $n, bool $expected): void
+    #[DataProvider('providerIsBitSet')]
+    public function testIsBitSet(BigInteger $number, int $n, bool $expected): void
     {
+        self::assertSame($expected, $number->isBitSet($n));
         self::assertSame($expected, $number->testBit($n));
     }
 
-    public static function providerTestBit(): Generator
+    public static function providerIsBitSet(): Generator
     {
         $base2BitsSetTests = [
             ['0', []],
@@ -4328,12 +4288,61 @@ class BigIntegerTest extends AbstractTestCase
         }
     }
 
+    public function testIsBitSetWithNegativeBitThrowsException(): void
+    {
+        $number = BigInteger::one();
+
+        $this->expectException(InvalidArgumentException::class);
+        $number->isBitSet(-1);
+    }
+
     public function testTestNegativeBitThrowsException(): void
     {
         $number = BigInteger::one();
 
         $this->expectException(InvalidArgumentException::class);
         $number->testBit(-1);
+    }
+
+    /**
+     * @param string $number The number to test.
+     * @param bool   $isOdd  Whether the number is even.
+     */
+    #[DataProvider('providerIsOdd')]
+    public function testIsEven(string $number, bool $isOdd): void
+    {
+        self::assertSame(! $isOdd, BigInteger::of($number)->isEven());
+    }
+
+    /**
+     * @param string $number The number to test.
+     * @param bool   $isOdd  Whether the number is even.
+     */
+    #[DataProvider('providerIsOdd')]
+    public function testIsOdd(string $number, bool $isOdd): void
+    {
+        self::assertSame($isOdd, BigInteger::of($number)->isOdd());
+    }
+
+    public static function providerIsOdd(): Generator
+    {
+        $tests = [
+            ['123456789012345678900', false],
+            ['123456789012345678901', true],
+            ['123456789012345678902', false],
+            ['123456789012345678903', true],
+            ['123456789012345678904', false],
+            ['123456789012345678905', true],
+            ['123456789012345678906', false],
+            ['123456789012345678907', true],
+            ['123456789012345678908', false],
+            ['123456789012345678909', true],
+        ];
+
+        foreach ($tests as [$number, $isOdd]) {
+            yield [$number, $isOdd];
+            yield ['-' . $number, $isOdd];
+        }
     }
 
     #[DataProvider('providerModInverse')]

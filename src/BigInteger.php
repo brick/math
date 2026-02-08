@@ -1037,6 +1037,26 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
+     * Returns true if and only if the designated bit is set.
+     *
+     * Computes ((this & (1<<n)) != 0).
+     *
+     * @param int $n The bit to test, 0-based.
+     *
+     * @throws InvalidArgumentException If the bit to test is negative.
+     *
+     * @pure
+     */
+    public function isBitSet(int $n): bool
+    {
+        if ($n < 0) {
+            throw new InvalidArgumentException('The bit to test cannot be negative.');
+        }
+
+        return $this->shiftedRight($n)->isOdd();
+    }
+
+    /**
      * Returns whether this number is even.
      *
      * @pure
@@ -1061,19 +1081,20 @@ final readonly class BigInteger extends BigNumber
      *
      * Computes ((this & (1<<n)) != 0).
      *
+     * @deprecated Use isBitSet().
+     *
      * @param int $n The bit to test, 0-based.
      *
      * @throws InvalidArgumentException If the bit to test is negative.
-     *
-     * @pure
      */
     public function testBit(int $n): bool
     {
-        if ($n < 0) {
-            throw new InvalidArgumentException('The bit to test cannot be negative.');
-        }
+        trigger_error(
+            'The BigInteger::testBit() method is deprecated, use isBitSet() instead.',
+            E_USER_DEPRECATED,
+        );
 
-        return $this->shiftedRight($n)->isOdd();
+        return $this->isBitSet($n);
     }
 
     #[Override]

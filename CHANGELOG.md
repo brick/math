@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## UNRELEASED (0.14.8)
+
+🗑️ **Deprecations**
+
+- Method `BigInteger::testBit()` is deprecated, use `isBitSet()` instead
+
+✨ **New features**
+
+- New method: `BigInteger::isBitSet()` (replaces `testBit()`)
+
 ## [0.14.7](https://github.com/brick/math/releases/tag/0.14.7) - 2026-02-07
 
 ✨ **New features**
