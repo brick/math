@@ -193,6 +193,10 @@ final readonly class BigDecimal extends BigNumber
             return $this;
         }
 
+        if ($this->isZero() && $this->scale <= $that->scale) {
+            return $that->negated();
+        }
+
         [$a, $b] = $this->scaleValues($this, $that);
 
         $value = CalculatorRegistry::get()->sub($a, $b);
@@ -222,6 +226,10 @@ final readonly class BigDecimal extends BigNumber
 
         if ($this->isOneScaleZero()) {
             return $that;
+        }
+
+        if ($this->isZero() || $that->isZero()) {
+            return new BigDecimal('0', $this->scale + $that->scale);
         }
 
         $value = CalculatorRegistry::get()->mul($this->value, $that->value);
