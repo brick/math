@@ -213,6 +213,14 @@ final readonly class BigRational extends BigNumber
     {
         $that = BigRational::of($that);
 
+        if ($that->isZero()) {
+            return $this;
+        }
+
+        if ($this->isZero()) {
+            return $that;
+        }
+
         $numerator = $this->numerator->multipliedBy($that->denominator);
         $numerator = $numerator->plus($that->numerator->multipliedBy($this->denominator));
         $denominator = $this->denominator->multipliedBy($that->denominator);
@@ -233,6 +241,14 @@ final readonly class BigRational extends BigNumber
     {
         $that = BigRational::of($that);
 
+        if ($that->isZero()) {
+            return $this;
+        }
+
+        if ($this->isZero()) {
+            return $that->negated();
+        }
+
         $numerator = $this->numerator->multipliedBy($that->denominator);
         $numerator = $numerator->minus($that->numerator->multipliedBy($this->denominator));
         $denominator = $this->denominator->multipliedBy($that->denominator);
@@ -252,6 +268,10 @@ final readonly class BigRational extends BigNumber
     public function multipliedBy(BigNumber|int|string $that): BigRational
     {
         $that = BigRational::of($that);
+
+        if ($that->isZero() || $this->isZero()) {
+            return BigRational::zero();
+        }
 
         $numerator = $this->numerator->multipliedBy($that->numerator);
         $denominator = $this->denominator->multipliedBy($that->denominator);
@@ -326,7 +346,7 @@ final readonly class BigRational extends BigNumber
      */
     public function reciprocal(): BigRational
     {
-        if ($this->numerator->isZero()) {
+        if ($this->isZero()) {
             throw DivisionByZeroException::reciprocalOfZero();
         }
 
@@ -469,7 +489,7 @@ final readonly class BigRational extends BigNumber
      */
     public function toRepeatingDecimalString(): string
     {
-        if ($this->numerator->isZero()) {
+        if ($this->isZero()) {
             return '0';
         }
 

@@ -452,6 +452,10 @@ final readonly class BigInteger extends BigNumber
             return $this;
         }
 
+        if ($this->isZero()) {
+            return $that->negated();
+        }
+
         $value = CalculatorRegistry::get()->sub($this->value, $that->value);
 
         return new BigInteger($value);
@@ -501,6 +505,10 @@ final readonly class BigInteger extends BigNumber
 
         if ($that->isOne()) {
             return $this;
+        }
+
+        if ($that->isMinusOne()) {
+            return $this->negated();
         }
 
         if ($that->isZero()) {
@@ -565,6 +573,10 @@ final readonly class BigInteger extends BigNumber
             return $this;
         }
 
+        if ($that->isMinusOne()) {
+            return $this->negated();
+        }
+
         if ($that->isZero()) {
             throw DivisionByZeroException::divisionByZero();
         }
@@ -597,7 +609,7 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->isOne()) {
+        if ($that->isOne() || $that->isMinusOne()) {
             return BigInteger::zero();
         }
 
@@ -773,12 +785,12 @@ final readonly class BigInteger extends BigNumber
     {
         $that = BigInteger::of($that);
 
-        if ($that->isZero() && $this->isPositiveOrZero()) {
-            return $this;
+        if ($that->isZero()) {
+            return $this->abs();
         }
 
-        if ($this->isZero() && $that->isPositiveOrZero()) {
-            return $that;
+        if ($this->isZero()) {
+            return $that->abs();
         }
 
         $value = CalculatorRegistry::get()->gcd($this->value, $that->value);
