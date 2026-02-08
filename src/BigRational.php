@@ -416,7 +416,15 @@ final readonly class BigRational extends BigNumber
     #[Override]
     public function compareTo(BigNumber|int|float|string $that): int
     {
-        return $this->minus($that)->getSign();
+        $that = BigRational::of($that);
+
+        if ($this->denominator->isEqualTo($that->denominator)) {
+            return $this->numerator->compareTo($that->numerator);
+        }
+
+        return $this->numerator
+            ->multipliedBy($that->denominator)
+            ->compareTo($that->numerator->multipliedBy($this->denominator));
     }
 
     #[Override]
