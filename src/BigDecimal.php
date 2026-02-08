@@ -176,7 +176,7 @@ final readonly class BigDecimal extends BigNumber
         [$a, $b] = $this->scaleValues($this, $that);
 
         $value = CalculatorRegistry::get()->add($a, $b);
-        $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
+        $scale = max($this->scale, $that->scale);
 
         return new BigDecimal($value, $scale);
     }
@@ -203,7 +203,7 @@ final readonly class BigDecimal extends BigNumber
         [$a, $b] = $this->scaleValues($this, $that);
 
         $value = CalculatorRegistry::get()->sub($a, $b);
-        $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
+        $scale = max($this->scale, $that->scale);
 
         return new BigDecimal($value, $scale);
     }
@@ -447,7 +447,7 @@ final readonly class BigDecimal extends BigNumber
 
         $remainder = CalculatorRegistry::get()->divR($p, $q);
 
-        $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
+        $scale = max($this->scale, $that->scale);
 
         return new BigDecimal($remainder, $scale);
     }
@@ -486,7 +486,7 @@ final readonly class BigDecimal extends BigNumber
 
         [$quotient, $remainder] = CalculatorRegistry::get()->divQR($p, $q);
 
-        $scale = $this->scale > $that->scale ? $this->scale : $that->scale;
+        $scale = max($this->scale, $that->scale);
 
         $quotient = new BigDecimal($quotient, 0);
         $remainder = new BigDecimal($remainder, $scale);
