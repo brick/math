@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 💥 **Breaking changes**
 
+- deprecated method `BigInteger::testBit()` has been removed, use `isBitSet()` instead
 - deprecated method `BigDecimal::getIntegralPart()` has been removed (will be re-introduced as returning `BigInteger` in 0.16)
 - deprecated method `BigDecimal::getFractionalPart()` has been removed (will be re-introduced as returning `BigDecimal` with a different meaning in 0.16)
 - deprecated method `BigRational::nd()` has been removed, use `ofFraction()` instead

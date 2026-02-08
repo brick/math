@@ -1099,27 +1099,6 @@ final readonly class BigInteger extends BigNumber
         return in_array($this->value[-1], ['1', '3', '5', '7', '9'], true);
     }
 
-    /**
-     * Returns true if and only if the designated bit is set.
-     *
-     * Computes ((this & (1<<n)) != 0).
-     *
-     * @deprecated Use isBitSet().
-     *
-     * @param int $n The bit to test, 0-based.
-     *
-     * @throws InvalidArgumentException If the bit to test is negative.
-     */
-    public function testBit(int $n): bool
-    {
-        trigger_error(
-            'The BigInteger::testBit() method is deprecated, use isBitSet() instead.',
-            E_USER_DEPRECATED,
-        );
-
-        return $this->isBitSet($n);
-    }
-
     #[Override]
     public function compareTo(BigNumber|int|float|string $that): int
     {

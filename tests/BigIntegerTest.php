@@ -4232,7 +4232,6 @@ class BigIntegerTest extends AbstractTestCase
     public function testIsBitSet(BigInteger $number, int $n, bool $expected): void
     {
         self::assertSame($expected, $number->isBitSet($n));
-        self::assertSame($expected, $number->testBit($n));
     }
 
     public static function providerIsBitSet(): Generator
@@ -4294,14 +4293,6 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(InvalidArgumentException::class);
         $number->isBitSet(-1);
-    }
-
-    public function testTestNegativeBitThrowsException(): void
-    {
-        $number = BigInteger::one();
-
-        $this->expectException(InvalidArgumentException::class);
-        $number->testBit(-1);
     }
 
     /**
