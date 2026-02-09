@@ -128,11 +128,12 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * If several values are equal and minimal, the first one is returned.
      * This can affect the concrete return type when calling this method on BigNumber.
      *
-     * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
-     *                                              to an instance of the class this method is called on.
+     * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers must be convertible to an
+     *                                              instance of the class this method is called on.
      *
      * @throws InvalidArgumentException If no values are given.
-     * @throws MathException            If an argument is not valid.
+     * @throws MathException            If a number is not valid, or is not convertible to an instance of the class
+     *                                  this method is called on.
      *
      * @pure
      */
@@ -161,11 +162,12 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * If several values are equal and maximal, the first one is returned.
      * This can affect the concrete return type when calling this method on BigNumber.
      *
-     * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
-     *                                              to an instance of the class this method is called on.
+     * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers must be convertible to an
+     *                                              instance of the class this method is called on.
      *
      * @throws InvalidArgumentException If no values are given.
-     * @throws MathException            If an argument is not valid.
+     * @throws MathException            If a number is not valid, or is not convertible to an instance of the class
+     *                                  this method is called on.
      *
      * @pure
      */
@@ -197,11 +199,12 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * When called on BigInteger, BigDecimal, or BigRational, sum() requires that all values can be converted to that
      * specific subclass, and returns a result of the same type.
      *
-     * @param BigNumber|int|float|string ...$values The values to add. All values must be convertible to the class on
-     *                                              which this method is called.
+     * @param BigNumber|int|float|string ...$values The numbers to add. All the numbers must be convertible to an
+     *                                              instance of the class this method is called on.
      *
      * @throws InvalidArgumentException If no values are given.
-     * @throws MathException            If an argument is not valid.
+     * @throws MathException            If a number is not valid, or is not convertible to an instance of the class
+     *                                  this method is called on.
      *
      * @pure
      */
@@ -378,8 +381,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Limits (clamps) this number between the given minimum and maximum values.
      *
-     * If the number is lower than $min, returns a copy of $min.
-     * If the number is greater than $max, returns a copy of $max.
+     * If the number is lower than $min, returns $min.
+     * If the number is greater than $max, returns $max.
      * Otherwise, returns this number unchanged.
      *
      * @param BigNumber|int|float|string $min The minimum. Must be convertible to an instance of the class this method is called on.

@@ -361,7 +361,7 @@ final readonly class BigInteger extends BigNumber
      * The GCD is always positive, unless all numbers are zero, in which case it is zero.
      *
      * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
-     * @param BigNumber|int|float|string ...$n The subsequent numbers. Must be convertible to BigInteger.
+     * @param BigNumber|int|float|string ...$n The additional numbers. Each number must be convertible to a BigInteger.
      *
      * @throws MathException If one of the parameters cannot be converted to a BigInteger.
      *
@@ -388,7 +388,7 @@ final readonly class BigInteger extends BigNumber
      * The LCM is always positive, unless one of the numbers is zero, in which case it is zero.
      *
      * @param BigNumber|int|float|string $a    The first number. Must be convertible to a BigInteger.
-     * @param BigNumber|int|float|string ...$n The subsequent numbers. Must be convertible to BigInteger.
+     * @param BigNumber|int|float|string ...$n The additional numbers. Each number must be convertible to a BigInteger.
      *
      * @throws MathException If one of the parameters cannot be converted to a BigInteger.
      *
@@ -740,8 +740,8 @@ final readonly class BigInteger extends BigNumber
      *
      * This operation requires a non-negative exponent and a strictly positive modulus.
      *
-     * @param BigNumber|int|float|string $exp The exponent. Must be positive or zero.
-     * @param BigNumber|int|float|string $mod The modulus. Must be strictly positive.
+     * @param BigNumber|int|float|string $exp The exponent. Must be convertible to a BigInteger.
+     * @param BigNumber|int|float|string $mod The modulus. Must be convertible to a BigInteger.
      *
      * @throws MathException           If the exponent or modulus is not valid, or is not convertible to a BigInteger.
      * @throws NegativeNumberException If the exponent or modulus is negative.
@@ -910,7 +910,7 @@ final readonly class BigInteger extends BigNumber
      *
      * This method returns a negative BigInteger if and only if both operands are negative.
      *
-     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|float|string $that The operand. Must be convertible to a BigInteger.
      *
      * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
      *
@@ -928,7 +928,7 @@ final readonly class BigInteger extends BigNumber
      *
      * This method returns a negative BigInteger if and only if either of the operands is negative.
      *
-     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|float|string $that The operand. Must be convertible to a BigInteger.
      *
      * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
      *
@@ -946,7 +946,7 @@ final readonly class BigInteger extends BigNumber
      *
      * This method returns a negative BigInteger if and only if exactly one of the operands is negative.
      *
-     * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
+     * @param BigNumber|int|float|string $that The operand. Must be convertible to a BigInteger.
      *
      * @throws MathException If the operand is not valid, or is not convertible to a BigInteger.
      *

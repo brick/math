@@ -247,7 +247,8 @@ final readonly class BigDecimal extends BigNumber
      * @throws InvalidArgumentException   If the scale is negative.
      * @throws MathException              If the divisor is not valid, or is not convertible to a BigDecimal.
      * @throws DivisionByZeroException    If the divisor is zero.
-     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used and the result cannot be represented exactly at the given scale.
+     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used and the result cannot be represented
+     *                                    exactly at the given scale.
      *
      * @pure
      */
@@ -505,7 +506,8 @@ final readonly class BigDecimal extends BigNumber
      *
      * @throws InvalidArgumentException   If the scale is negative.
      * @throws NegativeNumberException    If this number is negative.
-     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used, but rounding is necessary.
+     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used and the result cannot be represented
+     *                                    exactly at the given scale.
      *
      * @pure
      */

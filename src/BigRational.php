@@ -507,15 +507,16 @@ final readonly class BigRational extends BigNumber
     /**
      * Returns the decimal representation of this rational number, with repeating decimals in parentheses.
      *
+     * WARNING: This method is unbounded.
+     *          The length of the repeating decimal period can be as large as `denominator - 1`.
+     *          For fractions with large denominators, this method can use excessive memory and CPU time.
+     *          For example, `1/100019` has a repeating period of 100,018 digits.
+     *
      * Examples:
      *
      * - `10/3` returns `3.(3)`
      * - `171/70` returns `2.4(428571)`
      * - `1/2` returns `0.5`
-     *
-     * Warning: the length of the repeating decimal period can be as large as `denominator - 1`.
-     * For fractions with large denominators, this method may use excessive memory and time.
-     * For example, `1/100019` has a repeating period of 100,018 digits.
      *
      * @pure
      */
