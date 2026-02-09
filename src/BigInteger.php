@@ -674,8 +674,8 @@ final readonly class BigInteger extends BigNumber
      * @param BigNumber|int|string $modulus The modulus, strictly positive. Must be convertible to a BigInteger.
      *
      * @throws MathException            If the modulus is not valid, or is not convertible to a BigInteger.
-     * @throws DivisionByZeroException  If the modulus is zero.
      * @throws InvalidArgumentException If the modulus is negative.
+     * @throws DivisionByZeroException  If the modulus is zero.
      *
      * @pure
      */
@@ -702,8 +702,8 @@ final readonly class BigInteger extends BigNumber
      * @param BigNumber|int|string $modulus The modulus. Must be convertible to a BigInteger.
      *
      * @throws MathException            If the modulus is not valid, or is not convertible to a BigInteger.
-     * @throws DivisionByZeroException  If the modulus is zero.
      * @throws InvalidArgumentException If the modulus is negative.
+     * @throws DivisionByZeroException  If the modulus is zero.
      * @throws NoInverseException       If this BigInteger has no multiplicative inverse mod m (that is, this BigInteger
      *                                  is not relatively prime to m).
      *
@@ -1175,8 +1175,8 @@ final readonly class BigInteger extends BigNumber
      *
      * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
      *
-     * @throws NegativeNumberException  If this number is negative.
      * @throws InvalidArgumentException If the alphabet does not contain at least 2 chars, or contains duplicates.
+     * @throws NegativeNumberException  If this number is negative.
      *
      * @pure
      */
