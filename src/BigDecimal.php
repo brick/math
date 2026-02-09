@@ -245,8 +245,8 @@ final readonly class BigDecimal extends BigNumber
      * @param int                  $scale        The desired scale.
      * @param RoundingMode         $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
-     * @throws InvalidArgumentException   If the scale is negative.
      * @throws MathException              If the divisor is not valid, or is not convertible to a BigDecimal.
+     * @throws InvalidArgumentException   If the scale is negative.
      * @throws DivisionByZeroException    If the divisor is zero.
      * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used and the result cannot be represented
      *                                    exactly at the given scale.
