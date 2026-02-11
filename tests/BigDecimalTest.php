@@ -6,8 +6,8 @@ namespace Brick\Math\Tests;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\InvalidArgumentException;
-use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
@@ -19,6 +19,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use function is_array;
 use function is_string;
 use function serialize;
+use function sprintf;
 use function unserialize;
 
 use const INF;
@@ -208,9 +209,10 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     #[DataProvider('providerOfInvalidValueThrowsException')]
-    public function testOfInvalidValueThrowsException(int|string $value): void
+    public function testOfInvalidValueThrowsException(string $value): void
     {
         $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage(sprintf('Value "%s" does not represent a valid number.', $value));
         BigDecimal::of($value);
     }
 
@@ -237,6 +239,20 @@ class BigDecimalTest extends AbstractTestCase
             ['.e3'],
             ['+a'],
             ['-a'],
+        ];
+    }
+
+    #[DataProvider('providerOfExponentTooLargeThrowsException')]
+    public function testOfExponentTooLargeThrowsException(string $value): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage('The exponent is too large to be represented as an integer.');
+        BigDecimal::of($value);
+    }
+
+    public static function providerOfExponentTooLargeThrowsException(): array
+    {
+        return [
             ['1e1000000000000000000000000000000'],
             ['1e-1000000000000000000000000000000'],
         ];
@@ -407,6 +423,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testMinOfNonDecimalValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessage('This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.');
         BigDecimal::min(1, '1/3');
     }
 
@@ -445,6 +462,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testMaxOfNonDecimalValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessage('This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.');
         BigDecimal::min(1, '3/7');
     }
 
@@ -483,6 +501,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testSumOfNonDecimalValuesThrowsException(): void
     {
         $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessage('This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.');
         BigDecimal::min(1, '3/7');
     }
 
@@ -822,6 +841,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testDividedByWithNegativeScaleThrowsException(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The scale must not be negative.');
         BigDecimal::of(1)->dividedBy(2, -1);
     }
 
@@ -837,6 +857,10 @@ class BigDecimalTest extends AbstractTestCase
 
         if (self::isException($expected)) {
             $this->expectException($expected);
+            $this->expectExceptionMessage(match ($expected) {
+                RoundingNecessaryException::class => 'The division yields a non-terminating decimal expansion and cannot be represented as a decimal without rounding.',
+                DivisionByZeroException::class => 'Division by zero.',
+            });
         }
 
         $actual = $number->dividedByExact($divisor);
@@ -885,6 +909,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testDividedByExactWithZero(): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('Division by zero.');
         BigDecimal::of(1)->dividedByExact(0);
     }
 
@@ -1461,18 +1486,21 @@ class BigDecimalTest extends AbstractTestCase
     public function testQuotientOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('Division by zero.');
         BigDecimal::of('1.2')->quotient(0);
     }
 
     public function testRemainderOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('Division by zero.');
         BigDecimal::of('1.2')->remainder(0);
     }
 
     public function testQuotientAndRemainderOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('Division by zero.');
         BigDecimal::of('1.2')->quotientAndRemainder(0);
     }
 
@@ -2957,6 +2985,7 @@ class BigDecimalTest extends AbstractTestCase
     {
         $number = BigDecimal::of(-1);
         $this->expectException(NegativeNumberException::class);
+        $this->expectExceptionMessage('Cannot calculate the square root of a negative number.');
         $number->sqrt(0);
     }
 
@@ -2964,6 +2993,7 @@ class BigDecimalTest extends AbstractTestCase
     {
         $number = BigDecimal::of(1);
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The scale must not be negative.');
         $number->sqrt(-1);
     }
 
@@ -2993,6 +3023,7 @@ class BigDecimalTest extends AbstractTestCase
     {
         $number = BigDecimal::of('1.0');
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The minimum value must be less than or equal to the maximum value.');
         $number->clamp('1.5', '0.5');
     }
 
@@ -3080,6 +3111,7 @@ class BigDecimalTest extends AbstractTestCase
 
         if ($expected === null) {
             $this->expectException(RoundingNecessaryException::class);
+            $this->expectExceptionMessage('The value cannot be represented at the requested scale without rounding.');
         }
 
         $decimal = $decimal->toScale($toScale, $roundingMode);
@@ -3756,21 +3788,33 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @param string $number A valid decimal number that cannot safely be converted to a native integer.
-     */
-    #[DataProvider('providerToIntThrowsException')]
-    public function testToIntThrowsException(string $number): void
+    #[DataProvider('providerToIntThrowsIntegerOverflowException')]
+    public function testToIntThrowsIntegerOverflowException(string $number): void
     {
-        $this->expectException(MathException::class);
+        $this->expectException(IntegerOverflowException::class);
+        $this->expectExceptionMessage(sprintf('%s is out of range [%d, %d] and cannot be represented as an integer.', $number, PHP_INT_MIN, PHP_INT_MAX));
         BigDecimal::of($number)->toInt();
     }
 
-    public static function providerToIntThrowsException(): array
+    public static function providerToIntThrowsIntegerOverflowException(): array
     {
         return [
             ['-999999999999999999999999999999'],
             ['9999999999999999999999999999999'],
+        ];
+    }
+
+    #[DataProvider('providerToIntThrowsRoundingNecessaryException')]
+    public function testToIntThrowsRoundingNecessaryException(string $number): void
+    {
+        $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessage('This decimal cannot be represented as an integer without rounding.');
+        BigDecimal::of($number)->toInt();
+    }
+
+    public static function providerToIntThrowsRoundingNecessaryException(): array
+    {
+        return [
             ['1.2'],
             ['-1.2'],
         ];
@@ -3864,6 +3908,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testDirectCallToUnserialize(): void
     {
         $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('__unserialize() is an internal function, it must not be called directly.');
         BigDecimal::zero()->__unserialize([]);
     }
 
@@ -3880,6 +3925,7 @@ class BigDecimalTest extends AbstractTestCase
         foreach ([$zero, $one, $two] as $scale => $expected) {
             if ($expected === null) {
                 $this->expectException(RoundingNecessaryException::class);
+                $this->expectExceptionMessage('The division result is exact but cannot be represented at the requested scale without rounding.');
             }
 
             $actual = $number->dividedBy($divisor, $scale, $roundingMode);

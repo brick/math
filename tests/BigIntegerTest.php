@@ -10,8 +10,8 @@ use Brick\Math\BigNumber;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\InvalidArgumentException;
-use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
+use Brick\Math\Exception\NoInverseException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RandomSourceException;
 use Brick\Math\Exception\RoundingNecessaryException;
@@ -146,6 +146,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testOfInvalidFormatThrowsException(string $value): void
     {
         $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage(sprintf('Value "%s" does not represent a valid number.', $value));
         BigInteger::of($value);
     }
 
@@ -168,18 +169,19 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     #[DataProvider('providerOfNonConvertibleValueThrowsException')]
-    public function testOfNonConvertibleValueThrowsException(string $value): void
+    public function testOfNonConvertibleValueThrowsException(string $value, string $expectedExceptionMessage): void
     {
         $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessage($expectedExceptionMessage);
         BigInteger::of($value);
     }
 
     public static function providerOfNonConvertibleValueThrowsException(): array
     {
         return [
-            ['1.1'],
-            ['1e-1'],
-            ['7/9'],
+            ['1.1', 'This decimal cannot be represented as an integer without rounding.'],
+            ['1e-1', 'This decimal cannot be represented as an integer without rounding.'],
+            ['7/9', 'This rational number cannot be represented as an integer without rounding.'],
         ];
     }
 
@@ -300,56 +302,57 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     #[DataProvider('providerFromBaseWithInvalidValue')]
-    public function testFromBaseWithInvalidValue(string $value, int $base): void
+    public function testFromBaseWithInvalidValue(string $value, int $base, string $expectedExceptionMessage): void
     {
         $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage($expectedExceptionMessage);
         BigInteger::fromBase($value, $base);
     }
 
     public static function providerFromBaseWithInvalidValue(): array
     {
         return [
-            ['', 10],
-            [' ', 10],
-            ['+', 10],
-            ['-', 10],
-            ['1 ', 10],
-            [' 1', 10],
+            ['', 10, 'The number must not be empty.'],
+            [' ', 10, 'Character " " is not valid in base 10.'],
+            ['+', 10, 'Value "+" does not represent a valid number.'],
+            ['-', 10, 'Value "-" does not represent a valid number.'],
+            ['1 ', 10, 'Character " " is not valid in base 10.'],
+            [' 1', 10, 'Character " " is not valid in base 10.'],
 
-            ['Z', 35],
-            ['y', 34],
-            ['X', 33],
-            ['w', 32],
-            ['V', 31],
-            ['u', 30],
-            ['T', 29],
-            ['s', 28],
-            ['R', 27],
-            ['q', 26],
-            ['P', 25],
-            ['o', 24],
-            ['N', 23],
-            ['m', 22],
-            ['L', 21],
-            ['k', 20],
-            ['J', 19],
-            ['i', 18],
-            ['H', 17],
-            ['g', 16],
-            ['F', 15],
-            ['e', 14],
-            ['D', 13],
-            ['c', 12],
-            ['B', 11],
-            ['a', 10],
-            ['9', 9],
-            ['8', 8],
-            ['7', 7],
-            ['6', 6],
-            ['5', 5],
-            ['4', 4],
-            ['3', 3],
-            ['2', 2],
+            ['Z', 35, 'Character "z" is not valid in base 35.'],
+            ['y', 34, 'Character "y" is not valid in base 34.'],
+            ['X', 33, 'Character "x" is not valid in base 33.'],
+            ['w', 32, 'Character "w" is not valid in base 32.'],
+            ['V', 31, 'Character "v" is not valid in base 31.'],
+            ['u', 30, 'Character "u" is not valid in base 30.'],
+            ['T', 29, 'Character "t" is not valid in base 29.'],
+            ['s', 28, 'Character "s" is not valid in base 28.'],
+            ['R', 27, 'Character "r" is not valid in base 27.'],
+            ['q', 26, 'Character "q" is not valid in base 26.'],
+            ['P', 25, 'Character "p" is not valid in base 25.'],
+            ['o', 24, 'Character "o" is not valid in base 24.'],
+            ['N', 23, 'Character "n" is not valid in base 23.'],
+            ['m', 22, 'Character "m" is not valid in base 22.'],
+            ['L', 21, 'Character "l" is not valid in base 21.'],
+            ['k', 20, 'Character "k" is not valid in base 20.'],
+            ['J', 19, 'Character "j" is not valid in base 19.'],
+            ['i', 18, 'Character "i" is not valid in base 18.'],
+            ['H', 17, 'Character "h" is not valid in base 17.'],
+            ['g', 16, 'Character "g" is not valid in base 16.'],
+            ['F', 15, 'Character "f" is not valid in base 15.'],
+            ['e', 14, 'Character "e" is not valid in base 14.'],
+            ['D', 13, 'Character "d" is not valid in base 13.'],
+            ['c', 12, 'Character "c" is not valid in base 12.'],
+            ['B', 11, 'Character "b" is not valid in base 11.'],
+            ['a', 10, 'Character "a" is not valid in base 10.'],
+            ['9', 9, 'Character "9" is not valid in base 9.'],
+            ['8', 8, 'Character "8" is not valid in base 8.'],
+            ['7', 7, 'Character "7" is not valid in base 7.'],
+            ['6', 6, 'Character "6" is not valid in base 6.'],
+            ['5', 5, 'Character "5" is not valid in base 5.'],
+            ['4', 4, 'Character "4" is not valid in base 4.'],
+            ['3', 3, 'Character "3" is not valid in base 3.'],
+            ['2', 2, 'Character "2" is not valid in base 2.'],
         ];
     }
 
@@ -357,6 +360,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testFromBaseWithInvalidBase(int $base): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Base %d is out of range [2, 36].', $base));
         BigInteger::fromBase('0', $base);
     }
 
@@ -485,10 +489,20 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testMinOfNonIntegerValuesThrowsException(): void
+    #[DataProvider('providerMinOfNonIntegerValuesThrowsException')]
+    public function testMinOfNonIntegerValuesThrowsException(string $number, string $expectedExceptionMessage): void
     {
         $this->expectException(RoundingNecessaryException::class);
-        BigInteger::min(1, '1.2');
+        $this->expectExceptionMessage($expectedExceptionMessage);
+        BigInteger::min(1, $number);
+    }
+
+    public static function providerMinOfNonIntegerValuesThrowsException(): array
+    {
+        return [
+            ['1.2', 'This decimal cannot be represented as an integer without rounding.'],
+            ['2/3', 'This rational number cannot be represented as an integer without rounding.'],
+        ];
     }
 
     /**
@@ -515,10 +529,20 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testMaxOfNonIntegerValuesThrowsException(): void
+    #[DataProvider('providerMaxOfNonIntegerValuesThrowsException')]
+    public function testMaxOfNonIntegerValuesThrowsException(string $number, string $expectedExceptionMessage): void
     {
         $this->expectException(RoundingNecessaryException::class);
-        BigInteger::max(1, '3/2');
+        $this->expectExceptionMessage($expectedExceptionMessage);
+        BigInteger::max(1, $number);
+    }
+
+    public static function providerMaxOfNonIntegerValuesThrowsException(): array
+    {
+        return [
+            ['1.2', 'This decimal cannot be represented as an integer without rounding.'],
+            ['2/3', 'This rational number cannot be represented as an integer without rounding.'],
+        ];
     }
 
     /**
@@ -546,10 +570,20 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testSumOfNonIntegerValuesThrowsException(): void
+    #[DataProvider('providerSumOfNonIntegerValuesThrowsException')]
+    public function testSumOfNonIntegerValuesThrowsException(string $number, string $expectedExceptionMessage): void
     {
         $this->expectException(RoundingNecessaryException::class);
-        BigInteger::sum(1, '3/2');
+        $this->expectExceptionMessage($expectedExceptionMessage);
+        BigInteger::sum(1, $number);
+    }
+
+    public static function providerSumOfNonIntegerValuesThrowsException(): array
+    {
+        return [
+            ['1.2', 'This decimal cannot be represented as an integer without rounding.'],
+            ['2/3', 'This rational number cannot be represented as an integer without rounding.'],
+        ];
     }
 
     /**
@@ -1188,6 +1222,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testQuotientOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('Division by zero.');
         BigInteger::of(1)->quotient(0);
     }
 
@@ -1206,6 +1241,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testRemainderOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('Division by zero.');
         BigInteger::of(1)->remainder(0);
     }
 
@@ -1292,6 +1328,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testQuotientAndRemainderByZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('Division by zero.');
         BigInteger::of(1)->quotientAndRemainder(0);
     }
 
@@ -1356,12 +1393,14 @@ class BigIntegerTest extends AbstractTestCase
     public function testModZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('The modulus must not be zero.');
         BigInteger::of(1)->mod(0);
     }
 
     public function testModNegativeThrowsException(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The modulus must not be negative.');
         BigInteger::of(1)->mod(-1);
     }
 
@@ -1491,23 +1530,25 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     #[DataProvider('providerModPowNegativeThrowsException')]
-    public function testModPowNegativeThrowsException(int $base, int $exp, int $mod): void
+    public function testModPowNegativeThrowsException(int $base, int $exp, int $mod, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage($expectedExceptionMessage);
         BigInteger::of($base)->modPow($exp, $mod);
     }
 
     public static function providerModPowNegativeThrowsException(): array
     {
         return [
-            [1,  1, -1],
-            [1, -1,  1],
+            [1, -1,  1, 'The exponent must not be negative.'],
+            [1,  1, -1, 'The modulus must not be negative.'],
         ];
     }
 
     public function testModPowZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('The modulus must not be zero.');
         BigInteger::of(1)->modPow(1, 0);
     }
 
@@ -1537,6 +1578,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $number = BigInteger::of(5);
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The minimum value must be less than or equal to the maximum value.');
         $number->clamp(10, 0);
     }
 
@@ -1765,6 +1807,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         if ($expected === null) {
             $this->expectException(RoundingNecessaryException::class);
+            $this->expectExceptionMessage('The square root is not exact and cannot be represented as an integer without rounding.');
         }
 
         $actual = BigInteger::of($number)->sqrt($roundingMode);
@@ -3578,6 +3621,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $number = BigInteger::of(-1);
         $this->expectException(NegativeNumberException::class);
+        $this->expectExceptionMessage('Cannot calculate the square root of a negative number.');
         $number->sqrt();
     }
 
@@ -4227,6 +4271,7 @@ class BigIntegerTest extends AbstractTestCase
         $number = BigInteger::one();
 
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The bit index must not be negative.');
         $number->isBitSet(-1);
     }
 
@@ -4307,6 +4352,11 @@ class BigIntegerTest extends AbstractTestCase
         $m = BigInteger::of($m);
 
         $this->expectException($expectedException);
+        $this->expectExceptionMessage(match ($expectedException) {
+            DivisionByZeroException::class => 'The modulus must not be zero.',
+            InvalidArgumentException::class => 'The modulus must not be negative.',
+            NoInverseException::class => 'This number has no multiplicative inverse modulo the given modulus (they are not coprime).',
+        });
         $x->modInverse($m);
     }
 
@@ -4316,11 +4366,11 @@ class BigIntegerTest extends AbstractTestCase
             ['0', '0', DivisionByZeroException::class],
             ['1', '0', DivisionByZeroException::class],
             ['-1234567890', '-19', InvalidArgumentException::class],
-            ['0', '1000000001', MathException::class],
-            ['2', '4', MathException::class],
-            ['99', '9', MathException::class],
-            ['19', '1000000001', MathException::class],
-            ['123456789012345678901234567890', '123456789012345678901234567899', MathException::class],
+            ['0', '1000000001', NoInverseException::class],
+            ['2', '4', NoInverseException::class],
+            ['99', '9', NoInverseException::class],
+            ['19', '1000000001', NoInverseException::class],
+            ['123456789012345678901234567890', '123456789012345678901234567899', NoInverseException::class],
         ];
     }
 
@@ -4546,12 +4596,14 @@ class BigIntegerTest extends AbstractTestCase
     public function testToIntNegativeOverflowThrowsException(): void
     {
         $this->expectException(IntegerOverflowException::class);
+        $this->expectExceptionMessageMatches('/^\-[0-9]+ is out of range \[\-[0-9]+, [0-9]+\] and cannot be represented as an integer\.$/');
         BigInteger::of(PHP_INT_MIN)->minus(1)->toInt();
     }
 
     public function testToIntPositiveOverflowThrowsException(): void
     {
         $this->expectException(IntegerOverflowException::class);
+        $this->expectExceptionMessageMatches('/^[0-9]+ is out of range \[\-[0-9]+, [0-9]+\] and cannot be represented as an integer\.$/');
         BigInteger::of(PHP_INT_MAX)->plus(1)->toInt();
     }
 
@@ -4684,6 +4736,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testToInvalidBaseThrowsException(int $base): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Base %d is out of range [2, 36].', $base));
         BigInteger::of(0)->toBase($base);
     }
 
@@ -4915,6 +4968,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testFromBytesWithEmptyString(): void
     {
         $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage('The byte string must not be empty.');
         BigInteger::fromBytes('');
     }
 
@@ -5117,6 +5171,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $number = BigInteger::of(-1);
         $this->expectException(NegativeNumberException::class);
+        $this->expectExceptionMessage('Cannot convert a negative number to a byte string in unsigned mode.');
         $number->toBytes(false);
     }
 
@@ -5175,9 +5230,10 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    public function testRandomBitsWithNegativeBits(): void
+    public function testRandomBitsWithNegativeBitCount(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The bit count must not be negative.');
         BigInteger::randomBits(-1);
     }
 
@@ -5297,7 +5353,8 @@ class BigIntegerTest extends AbstractTestCase
 
     public function testRandomRangeWithMinGreaterThanMax(): void
     {
-        $this->expectException(MathException::class);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The minimum value must be less than or equal to the maximum value.');
         BigInteger::randomRange(3, 2);
     }
 
@@ -5370,6 +5427,7 @@ class BigIntegerTest extends AbstractTestCase
     public function testDirectCallToUnserialize(): void
     {
         $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('__unserialize() is an internal function, it must not be called directly.');
         BigInteger::zero()->__unserialize([]);
     }
 
@@ -5397,6 +5455,7 @@ class BigIntegerTest extends AbstractTestCase
 
             if ($expected === null) {
                 $this->expectException(RoundingNecessaryException::class);
+                $this->expectExceptionMessage('The division has a non-zero remainder and cannot be represented as an integer without rounding.');
             }
 
             $actual = $number->dividedBy($divisor, $roundingMode);

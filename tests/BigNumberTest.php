@@ -110,17 +110,18 @@ class BigNumberTest extends AbstractTestCase
      * @param list<BigNumber|int|string> $values       The values to add.
      */
     #[DataProvider('providerSumThrowsRoundingNecessaryException')]
-    public function testSumThrowsRoundingNecessaryException(string $callingClass, array $values): void
+    public function testSumThrowsRoundingNecessaryException(string $callingClass, array $values, string $expectedExceptionMessage): void
     {
         $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessage($expectedExceptionMessage);
         $callingClass::sum(...$values);
     }
 
     public static function providerSumThrowsRoundingNecessaryException(): array
     {
         return [
-            [BigInteger::class, [1, '1.5']],
-            [BigDecimal::class, ['1.5', '1/3']],
+            [BigInteger::class, [1, '1.5'], 'This decimal cannot be represented as an integer without rounding.'],
+            [BigDecimal::class, ['1.5', '1/3'], 'This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.'],
         ];
     }
 }

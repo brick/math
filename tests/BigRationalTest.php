@@ -8,8 +8,8 @@ use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\BigRational;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\InvalidArgumentException;
-use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
@@ -66,6 +66,7 @@ class BigRationalTest extends AbstractTestCase
     public function testOfFractionWithZeroDenominator(): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('The denominator of a rational number must not be zero.');
         BigRational::ofFraction(1, 0);
     }
 
@@ -135,6 +136,7 @@ class BigRationalTest extends AbstractTestCase
     public function testOfWithZeroDenominator(): void
     {
         $this->expectException(DivisionByZeroException::class);
+        $this->expectExceptionMessage('The denominator of a rational number must not be zero.');
         BigRational::of('2/0');
     }
 
@@ -145,6 +147,7 @@ class BigRationalTest extends AbstractTestCase
     public function testOfInvalidString(string $string): void
     {
         $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage(sprintf('Value "%s" does not represent a valid number.', $string));
         BigRational::of($string);
     }
 
@@ -524,6 +527,7 @@ class BigRationalTest extends AbstractTestCase
     {
         $number = BigRational::of('1/2');
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The minimum value must be less than or equal to the maximum value.');
         $number->clamp('3/4', '1/4');
     }
 
@@ -953,13 +957,20 @@ class BigRationalTest extends AbstractTestCase
     {
         $number = BigRational::of($number);
 
-        if (self::isException($expected)) {
-            $this->expectException($expected);
+        $expectedExceptionMessage = match ($expected) {
+            'DIVISION_NOT_EXACT' => 'The division yields a non-terminating decimal expansion and cannot be represented as a decimal without rounding.',
+            'SCALE_TOO_SMALL' => 'The division result is exact but cannot be represented at the requested scale without rounding.',
+            default => null,
+        };
+
+        if ($expectedExceptionMessage !== null) {
+            $this->expectException(RoundingNecessaryException::class);
+            $this->expectExceptionMessage($expectedExceptionMessage);
         }
 
         $actual = $number->toScale($scale, $roundingMode);
 
-        if (! self::isException($expected)) {
+        if ($expectedExceptionMessage === null) {
             self::assertBigDecimalEquals($expected, $actual);
         }
     }
@@ -968,12 +979,12 @@ class BigRationalTest extends AbstractTestCase
     {
         return [
             ['1/8', 3, RoundingMode::Unnecessary, '0.125'],
-            ['1/16', 3, RoundingMode::Unnecessary, RoundingNecessaryException::class],
+            ['1/16', 3, RoundingMode::Unnecessary, 'SCALE_TOO_SMALL'],
             ['1/16', 3, RoundingMode::HalfDown, '0.062'],
             ['1/16', 3, RoundingMode::HalfUp, '0.063'],
             ['1/9', 30, RoundingMode::Down, '0.111111111111111111111111111111'],
             ['1/9', 30, RoundingMode::Up, '0.111111111111111111111111111112'],
-            ['1/9', 100, RoundingMode::Unnecessary, RoundingNecessaryException::class],
+            ['1/9', 100, RoundingMode::Unnecessary, 'DIVISION_NOT_EXACT'],
         ];
     }
 
@@ -1003,20 +1014,34 @@ class BigRationalTest extends AbstractTestCase
         ];
     }
 
-    /**
-     * @param string $number A valid rational number that cannot safely be converted to a native integer.
-     */
-    #[DataProvider('providerToIntThrowsException')]
-    public function testToIntThrowsException(string $number): void
+    #[DataProvider('providerToIntThrowsIntegerOverflowException')]
+    public function testToIntThrowsIntegerOverflowException(string $number): void
     {
-        $this->expectException(MathException::class);
+        $this->expectException(IntegerOverflowException::class);
+        $this->expectExceptionMessage(sprintf('%s is out of range [%d, %d] and cannot be represented as an integer.', $number, PHP_INT_MIN, PHP_INT_MAX));
         BigRational::of($number)->toInt();
     }
 
-    public static function providerToIntThrowsException(): array
+    public static function providerToIntThrowsIntegerOverflowException(): array
     {
         return [
             ['-999999999999999999999999999999'],
+            ['9999999999999999999999999999999'],
+        ];
+    }
+
+    #[DataProvider('providerToIntThrowsRoundingNecessaryException')]
+    public function testToIntThrowsRoundingNecessaryException(string $number): void
+    {
+        $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessage('This rational number cannot be represented as an integer without rounding.');
+        BigRational::of($number)->toInt();
+    }
+
+    public static function providerToIntThrowsRoundingNecessaryException(): array
+    {
+        return [
+            ['-9999999999999999999999999999999/2'],
             ['9999999999999999999999999999999/2'],
             ['1/2'],
             ['2/3'],
@@ -1189,6 +1214,7 @@ class BigRationalTest extends AbstractTestCase
     public function testDirectCallToUnserialize(): void
     {
         $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('__unserialize() is an internal function, it must not be called directly.');
         BigRational::ofFraction(1, 2)->__unserialize([]);
     }
 }
