@@ -228,32 +228,32 @@ final readonly class BigInteger extends BigNumber
     }
 
     /**
-     * Generates a pseudo-random number in the range 0 to 2^numBits - 1.
+     * Generates a pseudo-random number in the range 0 to 2^bitCount - 1.
      *
      * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
-     * @param int                          $numBits              The number of bits.
+     * @param int                          $bitCount             The number of bits.
      * @param (callable(int): string)|null $randomBytesGenerator A function that accepts a number of bytes, and returns
      *                                                           a string of random bytes of the given length. Defaults
      *                                                           to the `random_bytes()` function.
      *
-     * @throws InvalidArgumentException If $numBits is negative.
+     * @throws InvalidArgumentException If $bitCount is negative.
      * @throws RandomSourceException    If random byte generation fails.
      */
-    public static function randomBits(int $numBits, ?callable $randomBytesGenerator = null): BigInteger
+    public static function randomBits(int $bitCount, ?callable $randomBytesGenerator = null): BigInteger
     {
-        if ($numBits < 0) {
+        if ($bitCount < 0) {
             throw InvalidArgumentException::negativeBitCount();
         }
 
-        if ($numBits === 0) {
+        if ($bitCount === 0) {
             return BigInteger::zero();
         }
 
         /** @var int<1, max> $byteLength */
-        $byteLength = intdiv($numBits - 1, 8) + 1;
+        $byteLength = intdiv($bitCount - 1, 8) + 1;
 
-        $extraBits = ($byteLength * 8 - $numBits);
+        $extraBits = ($byteLength * 8 - $bitCount);
         $bitmask = chr(0xFF >> $extraBits);
 
         $randomBytes = self::randomBytes($byteLength, $randomBytesGenerator);
@@ -1045,21 +1045,21 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns true if and only if the designated bit is set.
      *
-     * Computes ((this & (1<<n)) != 0).
+     * Computes ((this & (1<<bitIndex)) != 0).
      *
-     * @param int $n The bit to test, 0-based.
+     * @param int $bitIndex The bit to test, 0-based.
      *
      * @throws InvalidArgumentException If the bit to test is negative.
      *
      * @pure
      */
-    public function isBitSet(int $n): bool
+    public function isBitSet(int $bitIndex): bool
     {
-        if ($n < 0) {
+        if ($bitIndex < 0) {
             throw InvalidArgumentException::negativeBitIndex();
         }
 
-        return $this->shiftedRight($n)->isOdd();
+        return $this->shiftedRight($bitIndex)->isOdd();
     }
 
     /**
