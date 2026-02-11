@@ -114,6 +114,7 @@ class BigNumberTest extends AbstractTestCase
     {
         $this->expectException(RoundingNecessaryException::class);
         $this->expectExceptionMessageExact($expectedExceptionMessage);
+
         $callingClass::sum(...$values);
     }
 
