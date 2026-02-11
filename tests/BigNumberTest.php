@@ -120,7 +120,8 @@ class BigNumberTest extends AbstractTestCase
     public static function providerSumThrowsRoundingNecessaryException(): array
     {
         return [
-            [BigInteger::class, [1, '1.5'], 'This decimal cannot be represented as an integer without rounding.'],
+            [BigInteger::class, [1, '1.5'], 'This decimal number cannot be represented as an integer without rounding.'],
+            [BigInteger::class, [1, '1/2'], 'This rational number cannot be represented as an integer without rounding.'],
             [BigDecimal::class, ['1.5', '1/3'], 'This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.'],
         ];
     }

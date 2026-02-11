@@ -179,8 +179,8 @@ class BigIntegerTest extends AbstractTestCase
     public static function providerOfNonConvertibleValueThrowsException(): array
     {
         return [
-            ['1.1', 'This decimal cannot be represented as an integer without rounding.'],
-            ['1e-1', 'This decimal cannot be represented as an integer without rounding.'],
+            ['1.1', 'This decimal number cannot be represented as an integer without rounding.'],
+            ['1e-1', 'This decimal number cannot be represented as an integer without rounding.'],
             ['7/9', 'This rational number cannot be represented as an integer without rounding.'],
         ];
     }
@@ -500,7 +500,7 @@ class BigIntegerTest extends AbstractTestCase
     public static function providerMinOfNonIntegerValuesThrowsException(): array
     {
         return [
-            ['1.2', 'This decimal cannot be represented as an integer without rounding.'],
+            ['1.2', 'This decimal number cannot be represented as an integer without rounding.'],
             ['2/3', 'This rational number cannot be represented as an integer without rounding.'],
         ];
     }
@@ -540,7 +540,7 @@ class BigIntegerTest extends AbstractTestCase
     public static function providerMaxOfNonIntegerValuesThrowsException(): array
     {
         return [
-            ['1.2', 'This decimal cannot be represented as an integer without rounding.'],
+            ['1.2', 'This decimal number cannot be represented as an integer without rounding.'],
             ['2/3', 'This rational number cannot be represented as an integer without rounding.'],
         ];
     }
@@ -581,7 +581,7 @@ class BigIntegerTest extends AbstractTestCase
     public static function providerSumOfNonIntegerValuesThrowsException(): array
     {
         return [
-            ['1.2', 'This decimal cannot be represented as an integer without rounding.'],
+            ['1.2', 'This decimal number cannot be represented as an integer without rounding.'],
             ['2/3', 'This rational number cannot be represented as an integer without rounding.'],
         ];
     }
