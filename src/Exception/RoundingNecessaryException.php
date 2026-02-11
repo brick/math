@@ -22,6 +22,14 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     /**
      * @pure
      */
+    public static function rationalScaleTooSmall(): RoundingNecessaryException
+    {
+        return new self('This rational number cannot be represented at the requested scale without rounding.');
+    }
+
+    /**
+     * @pure
+     */
     public static function integerDivisionNotExact(): RoundingNecessaryException
     {
         return new self('The division has a non-zero remainder and cannot be represented as an integer without rounding.');

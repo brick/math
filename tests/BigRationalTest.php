@@ -958,8 +958,8 @@ class BigRationalTest extends AbstractTestCase
         $number = BigRational::of($number);
 
         $expectedExceptionMessage = match ($expected) {
-            'DIVISION_NOT_EXACT' => 'The division yields a non-terminating decimal expansion and cannot be represented as a decimal without rounding.',
-            'SCALE_TOO_SMALL' => 'The division result is exact but cannot be represented at the requested scale without rounding.',
+            'NON_EXACT' => 'This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.',
+            'SCALE_TOO_SMALL' => 'This rational number cannot be represented at the requested scale without rounding.',
             default => null,
         };
 
@@ -984,7 +984,7 @@ class BigRationalTest extends AbstractTestCase
             ['1/16', 3, RoundingMode::HalfUp, '0.063'],
             ['1/9', 30, RoundingMode::Down, '0.111111111111111111111111111111'],
             ['1/9', 30, RoundingMode::Up, '0.111111111111111111111111111112'],
-            ['1/9', 100, RoundingMode::Unnecessary, 'DIVISION_NOT_EXACT'],
+            ['1/9', 100, RoundingMode::Unnecessary, 'NON_EXACT'],
         ];
     }
 
