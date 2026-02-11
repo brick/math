@@ -704,15 +704,10 @@ final readonly class BigDecimal extends BigNumber
     #[Override]
     public function toBigInteger(): BigInteger
     {
-        if ($this->scale === 0) {
-            return self::newBigInteger($this->value);
-        }
+        $value = DecimalHelper::tryScaleExactly($this->value, $this->scale, 0);
 
-        $rational = $this->toBigRational();
-        $integralPart = $rational->getIntegralPart();
-
-        if ($rational->isEqualTo($integralPart)) {
-            return $integralPart;
+        if ($value !== null) {
+            return self::newBigInteger($value);
         }
 
         throw RoundingNecessaryException::decimalNotConvertibleToInteger();

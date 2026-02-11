@@ -135,13 +135,13 @@ final class DecimalHelper
      *
      * @pure
      */
-    private static function tryScaleExactly(string $value, int $currentScale, int $targetScale): ?string
+    public static function tryScaleExactly(string $value, int $currentScale, int $targetScale): ?string
     {
-        if ($value === '0') {
+        if ($value === '0' || $targetScale === $currentScale) {
             return $value;
         }
 
-        if ($targetScale >= $currentScale) {
+        if ($targetScale > $currentScale) {
             return $value . str_repeat('0', $targetScale - $currentScale);
         }
 
