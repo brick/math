@@ -1221,9 +1221,11 @@ class BigIntegerTest extends AbstractTestCase
 
     public function testQuotientOfZeroThrowsException(): void
     {
+        $one = BigInteger::one();
+
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('Division by zero.');
-        BigInteger::of(1)->quotient(0);
+        $one->quotient(0);
     }
 
     /**
@@ -1240,9 +1242,11 @@ class BigIntegerTest extends AbstractTestCase
 
     public function testRemainderOfZeroThrowsException(): void
     {
+        $one = BigInteger::one();
+
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('Division by zero.');
-        BigInteger::of(1)->remainder(0);
+        $one->remainder(0);
     }
 
     /**
@@ -1327,9 +1331,11 @@ class BigIntegerTest extends AbstractTestCase
 
     public function testQuotientAndRemainderByZeroThrowsException(): void
     {
+        $one = BigInteger::one();
+
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('Division by zero.');
-        BigInteger::of(1)->quotientAndRemainder(0);
+        $one->quotientAndRemainder(0);
     }
 
     #[DataProvider('providerMod')]
@@ -1392,16 +1398,20 @@ class BigIntegerTest extends AbstractTestCase
 
     public function testModZeroThrowsException(): void
     {
+        $one = BigInteger::one();
+
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('The modulus must not be zero.');
-        BigInteger::of(1)->mod(0);
+        $one->mod(0);
     }
 
     public function testModNegativeThrowsException(): void
     {
+        $one = BigInteger::one();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The modulus must not be negative.');
-        BigInteger::of(1)->mod(-1);
+        $one->mod(-1);
     }
 
     #[DataProvider('providerModPow')]
@@ -1530,26 +1540,30 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     #[DataProvider('providerModPowNegativeThrowsException')]
-    public function testModPowNegativeThrowsException(int $base, int $exp, int $mod, string $expectedExceptionMessage): void
+    public function testModPowNegativeThrowsException(int $exp, int $mod, string $expectedExceptionMessage): void
     {
+        $one = BigInteger::one();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact($expectedExceptionMessage);
-        BigInteger::of($base)->modPow($exp, $mod);
+        $one->modPow($exp, $mod);
     }
 
     public static function providerModPowNegativeThrowsException(): array
     {
         return [
-            [1, -1,  1, 'The exponent must not be negative.'],
-            [1,  1, -1, 'The modulus must not be negative.'],
+            [-1, 1, 'The exponent must not be negative.'],
+            [1, -1, 'The modulus must not be negative.'],
         ];
     }
 
     public function testModPowZeroThrowsException(): void
     {
+        $one = BigInteger::one();
+
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('The modulus must not be zero.');
-        BigInteger::of(1)->modPow(1, 0);
+        $one->modPow(1, 0);
     }
 
     #[DataProvider('providerClamp')]
@@ -1652,10 +1666,12 @@ class BigIntegerTest extends AbstractTestCase
 
     public function testPowerWithNegativeExponentThrowsException(): void
     {
+        $one = BigInteger::of(1);
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The exponent must not be negative.');
 
-        BigInteger::of(1)->power(-1);
+        $one->power(-1);
     }
 
     /**
@@ -1805,12 +1821,14 @@ class BigIntegerTest extends AbstractTestCase
     #[DataProvider('providerSqrt')]
     public function testSqrt(string $number, RoundingMode $roundingMode, ?string $expected): void
     {
+        $number = BigInteger::of($number);
+
         if ($expected === null) {
             $this->expectException(RoundingNecessaryException::class);
             $this->expectExceptionMessageExact('The square root is not exact and cannot be represented as an integer without rounding.');
         }
 
-        $actual = BigInteger::of($number)->sqrt($roundingMode);
+        $actual = $number->sqrt($roundingMode);
 
         if ($expected !== null) {
             self::assertBigIntegerEquals($expected, $actual);
@@ -4595,16 +4613,20 @@ class BigIntegerTest extends AbstractTestCase
 
     public function testToIntNegativeOverflowThrowsException(): void
     {
+        $number = BigInteger::of(PHP_INT_MIN)->minus(1);
+
         $this->expectException(IntegerOverflowException::class);
         $this->expectExceptionMessageMatches('/^\-[0-9]+ is out of range \[\-[0-9]+, [0-9]+\] and cannot be represented as an integer\.$/');
-        BigInteger::of(PHP_INT_MIN)->minus(1)->toInt();
+        $number->toInt();
     }
 
     public function testToIntPositiveOverflowThrowsException(): void
     {
+        $number = BigInteger::of(PHP_INT_MAX)->plus(1);
+
         $this->expectException(IntegerOverflowException::class);
         $this->expectExceptionMessageMatches('/^[0-9]+ is out of range \[\-[0-9]+, [0-9]+\] and cannot be represented as an integer\.$/');
-        BigInteger::of(PHP_INT_MAX)->plus(1)->toInt();
+        $number->toInt();
     }
 
     /**
@@ -4735,9 +4757,11 @@ class BigIntegerTest extends AbstractTestCase
     #[DataProvider('providerToInvalidBaseThrowsException')]
     public function testToInvalidBaseThrowsException(int $base): void
     {
+        $zero = BigInteger::zero();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact(sprintf('Base %d is out of range [2, 36].', $base));
-        BigInteger::of(0)->toBase($base);
+        $zero->toBase($base);
     }
 
     public static function providerToInvalidBaseThrowsException(): array
@@ -5426,9 +5450,11 @@ class BigIntegerTest extends AbstractTestCase
 
     public function testDirectCallToUnserialize(): void
     {
+        $zero = BigInteger::zero();
+
         $this->expectException(LogicException::class);
         $this->expectExceptionMessageExact('__unserialize() is an internal function, it must not be called directly.');
-        BigInteger::zero()->__unserialize([]);
+        $zero->__unserialize([]);
     }
 
     public function testJsonSerialize(): void

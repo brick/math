@@ -483,9 +483,11 @@ class BigRationalTest extends AbstractTestCase
     #[DataProvider('providerPowerWithZeroBaseAndNegativeExponent')]
     public function testPowerWithZeroBaseAndNegativeExponent(int $exponent): void
     {
+        $zero = BigRational::zero();
+
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('The reciprocal of zero is undefined.');
-        BigRational::of('0')->power($exponent);
+        $zero->power($exponent);
     }
 
     public static function providerPowerWithZeroBaseAndNegativeExponent(): array
@@ -555,9 +557,11 @@ class BigRationalTest extends AbstractTestCase
 
     public function testReciprocalOfZeroThrowsException(): void
     {
+        $number = BigRational::ofFraction(0, 2);
+
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('The reciprocal of zero is undefined.');
-        BigRational::ofFraction(0, 2)->reciprocal();
+        $number->reciprocal();
     }
 
     /**
@@ -812,12 +816,14 @@ class BigRationalTest extends AbstractTestCase
     #[DataProvider('providerToBigInteger')]
     public function testToBigInteger(string $number, ?string $expected): void
     {
+        $number = BigRational::of($number);
+
         if ($expected === null) {
             $this->expectException(RoundingNecessaryException::class);
             $this->expectExceptionMessageExact('This rational number cannot be represented as an integer without rounding.');
         }
 
-        $actual = BigRational::of($number)->toBigInteger();
+        $actual = $number->toBigInteger();
 
         if ($expected !== null) {
             self::assertBigIntegerEquals($expected, $actual);
@@ -1017,9 +1023,11 @@ class BigRationalTest extends AbstractTestCase
     #[DataProvider('providerToIntThrowsIntegerOverflowException')]
     public function testToIntThrowsIntegerOverflowException(string $number): void
     {
+        $rational = BigRational::of($number);
+
         $this->expectException(IntegerOverflowException::class);
         $this->expectExceptionMessageExact(sprintf('%s is out of range [%d, %d] and cannot be represented as an integer.', $number, PHP_INT_MIN, PHP_INT_MAX));
-        BigRational::of($number)->toInt();
+        $rational->toInt();
     }
 
     public static function providerToIntThrowsIntegerOverflowException(): array
@@ -1033,9 +1041,11 @@ class BigRationalTest extends AbstractTestCase
     #[DataProvider('providerToIntThrowsRoundingNecessaryException')]
     public function testToIntThrowsRoundingNecessaryException(string $number): void
     {
+        $number = BigRational::of($number);
+
         $this->expectException(RoundingNecessaryException::class);
         $this->expectExceptionMessageExact('This rational number cannot be represented as an integer without rounding.');
-        BigRational::of($number)->toInt();
+        $number->toInt();
     }
 
     public static function providerToIntThrowsRoundingNecessaryException(): array
@@ -1213,8 +1223,10 @@ class BigRationalTest extends AbstractTestCase
 
     public function testDirectCallToUnserialize(): void
     {
+        $number = BigRational::ofFraction(1, 2);
+
         $this->expectException(LogicException::class);
         $this->expectExceptionMessageExact('__unserialize() is an internal function, it must not be called directly.');
-        BigRational::ofFraction(1, 2)->__unserialize([]);
+        $number->__unserialize([]);
     }
 }
