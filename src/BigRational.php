@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Brick\Math;
 
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\DecimalHelper;
@@ -425,6 +426,22 @@ final readonly class BigRational extends BigNumber
     #[Override]
     public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
     {
+        if ($scale < 0) {
+            throw InvalidArgumentException::negativeScale();
+        }
+
+        if ($roundingMode === RoundingMode::Unnecessary) {
+            $requiredScale = DecimalHelper::computeScaleFromReducedFractionDenominator($this->denominator->toString());
+
+            if ($requiredScale === null) {
+                throw RoundingNecessaryException::rationalNotConvertibleToDecimal();
+            }
+
+            if ($requiredScale > $scale) {
+                throw RoundingNecessaryException::rationalScaleTooSmall();
+            }
+        }
+
         return $this->numerator->toBigDecimal()->dividedBy($this->denominator, $scale, $roundingMode);
     }
 
