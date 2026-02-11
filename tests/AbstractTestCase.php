@@ -9,6 +9,7 @@ use Brick\Math\BigInteger;
 use Brick\Math\BigRational;
 use PHPUnit\Framework\TestCase;
 
+use function preg_quote;
 use function str_ends_with;
 
 /**
@@ -16,6 +17,11 @@ use function str_ends_with;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    final protected function expectExceptionMessageExact(string $message): void
+    {
+        $this->expectExceptionMessageMatches('/^' . preg_quote($message, '/') . '$/');
+    }
+
     /**
      * @param string     $expected The expected value, as a string.
      * @param BigInteger $actual   The BigInteger instance to test.

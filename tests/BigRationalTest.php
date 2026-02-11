@@ -66,7 +66,7 @@ class BigRationalTest extends AbstractTestCase
     public function testOfFractionWithZeroDenominator(): void
     {
         $this->expectException(DivisionByZeroException::class);
-        $this->expectExceptionMessage('The denominator of a rational number must not be zero.');
+        $this->expectExceptionMessageExact('The denominator of a rational number must not be zero.');
         BigRational::ofFraction(1, 0);
     }
 
@@ -136,7 +136,7 @@ class BigRationalTest extends AbstractTestCase
     public function testOfWithZeroDenominator(): void
     {
         $this->expectException(DivisionByZeroException::class);
-        $this->expectExceptionMessage('The denominator of a rational number must not be zero.');
+        $this->expectExceptionMessageExact('The denominator of a rational number must not be zero.');
         BigRational::of('2/0');
     }
 
@@ -147,7 +147,7 @@ class BigRationalTest extends AbstractTestCase
     public function testOfInvalidString(string $string): void
     {
         $this->expectException(NumberFormatException::class);
-        $this->expectExceptionMessage(sprintf('Value "%s" does not represent a valid number.', $string));
+        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $string));
         BigRational::of($string);
     }
 
@@ -397,7 +397,7 @@ class BigRationalTest extends AbstractTestCase
     {
         $number = BigRational::ofFraction(1, 2);
         $this->expectException(DivisionByZeroException::class);
-        $this->expectExceptionMessage('Division by zero.');
+        $this->expectExceptionMessageExact('Division by zero.');
         $number->dividedBy(0);
     }
 
@@ -484,7 +484,7 @@ class BigRationalTest extends AbstractTestCase
     public function testPowerWithZeroBaseAndNegativeExponent(int $exponent): void
     {
         $this->expectException(DivisionByZeroException::class);
-        $this->expectExceptionMessage('The reciprocal of zero is undefined.');
+        $this->expectExceptionMessageExact('The reciprocal of zero is undefined.');
         BigRational::of('0')->power($exponent);
     }
 
@@ -527,7 +527,7 @@ class BigRationalTest extends AbstractTestCase
     {
         $number = BigRational::of('1/2');
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The minimum value must be less than or equal to the maximum value.');
+        $this->expectExceptionMessageExact('The minimum value must be less than or equal to the maximum value.');
         $number->clamp('3/4', '1/4');
     }
 
@@ -556,7 +556,7 @@ class BigRationalTest extends AbstractTestCase
     public function testReciprocalOfZeroThrowsException(): void
     {
         $this->expectException(DivisionByZeroException::class);
-        $this->expectExceptionMessage('The reciprocal of zero is undefined.');
+        $this->expectExceptionMessageExact('The reciprocal of zero is undefined.');
         BigRational::ofFraction(0, 2)->reciprocal();
     }
 
@@ -814,7 +814,7 @@ class BigRationalTest extends AbstractTestCase
     {
         if ($expected === null) {
             $this->expectException(RoundingNecessaryException::class);
-            $this->expectExceptionMessage('This rational number cannot be represented as an integer without rounding.');
+            $this->expectExceptionMessageExact('This rational number cannot be represented as an integer without rounding.');
         }
 
         $actual = BigRational::of($number)->toBigInteger();
@@ -852,7 +852,7 @@ class BigRationalTest extends AbstractTestCase
     {
         if ($expected === null) {
             $this->expectException(RoundingNecessaryException::class);
-            $this->expectExceptionMessage('This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.');
+            $this->expectExceptionMessageExact('This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.');
         }
 
         $actual = BigRational::of($number)->toBigDecimal();
@@ -965,7 +965,7 @@ class BigRationalTest extends AbstractTestCase
 
         if ($expectedExceptionMessage !== null) {
             $this->expectException(RoundingNecessaryException::class);
-            $this->expectExceptionMessage($expectedExceptionMessage);
+            $this->expectExceptionMessageExact($expectedExceptionMessage);
         }
 
         $actual = $number->toScale($scale, $roundingMode);
@@ -1018,7 +1018,7 @@ class BigRationalTest extends AbstractTestCase
     public function testToIntThrowsIntegerOverflowException(string $number): void
     {
         $this->expectException(IntegerOverflowException::class);
-        $this->expectExceptionMessage(sprintf('%s is out of range [%d, %d] and cannot be represented as an integer.', $number, PHP_INT_MIN, PHP_INT_MAX));
+        $this->expectExceptionMessageExact(sprintf('%s is out of range [%d, %d] and cannot be represented as an integer.', $number, PHP_INT_MIN, PHP_INT_MAX));
         BigRational::of($number)->toInt();
     }
 
@@ -1034,7 +1034,7 @@ class BigRationalTest extends AbstractTestCase
     public function testToIntThrowsRoundingNecessaryException(string $number): void
     {
         $this->expectException(RoundingNecessaryException::class);
-        $this->expectExceptionMessage('This rational number cannot be represented as an integer without rounding.');
+        $this->expectExceptionMessageExact('This rational number cannot be represented as an integer without rounding.');
         BigRational::of($number)->toInt();
     }
 
@@ -1214,7 +1214,7 @@ class BigRationalTest extends AbstractTestCase
     public function testDirectCallToUnserialize(): void
     {
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('__unserialize() is an internal function, it must not be called directly.');
+        $this->expectExceptionMessageExact('__unserialize() is an internal function, it must not be called directly.');
         BigRational::ofFraction(1, 2)->__unserialize([]);
     }
 }
