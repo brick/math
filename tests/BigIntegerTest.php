@@ -147,6 +147,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $this->expectException(NumberFormatException::class);
         $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $value));
+
         BigInteger::of($value);
     }
 
@@ -173,6 +174,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $this->expectException(RoundingNecessaryException::class);
         $this->expectExceptionMessageExact($expectedExceptionMessage);
+
         BigInteger::of($value);
     }
 
@@ -306,6 +308,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $this->expectException(NumberFormatException::class);
         $this->expectExceptionMessageExact($expectedExceptionMessage);
+
         BigInteger::fromBase($value, $base);
     }
 
@@ -361,6 +364,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact(sprintf('Base %d is out of range [2, 36].', $base));
+
         BigInteger::fromBase('0', $base);
     }
 
@@ -494,6 +498,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $this->expectException(RoundingNecessaryException::class);
         $this->expectExceptionMessageExact($expectedExceptionMessage);
+
         BigInteger::min(1, $number);
     }
 
@@ -534,6 +539,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $this->expectException(RoundingNecessaryException::class);
         $this->expectExceptionMessageExact($expectedExceptionMessage);
+
         BigInteger::max(1, $number);
     }
 
@@ -575,6 +581,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $this->expectException(RoundingNecessaryException::class);
         $this->expectExceptionMessageExact($expectedExceptionMessage);
+
         BigInteger::sum(1, $number);
     }
 
@@ -1225,6 +1232,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('Division by zero.');
+
         $one->quotient(0);
     }
 
@@ -1246,6 +1254,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('Division by zero.');
+
         $one->remainder(0);
     }
 
@@ -1335,6 +1344,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('Division by zero.');
+
         $one->quotientAndRemainder(0);
     }
 
@@ -1402,6 +1412,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('The modulus must not be zero.');
+
         $one->mod(0);
     }
 
@@ -1411,6 +1422,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The modulus must not be negative.');
+
         $one->mod(-1);
     }
 
@@ -1546,6 +1558,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact($expectedExceptionMessage);
+
         $one->modPow($exp, $mod);
     }
 
@@ -1563,6 +1576,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('The modulus must not be zero.');
+
         $one->modPow(1, 0);
     }
 
@@ -1593,6 +1607,7 @@ class BigIntegerTest extends AbstractTestCase
         $number = BigInteger::of(5);
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The minimum value must be less than or equal to the maximum value.');
+
         $number->clamp(10, 0);
     }
 
@@ -3640,6 +3655,7 @@ class BigIntegerTest extends AbstractTestCase
         $number = BigInteger::of(-1);
         $this->expectException(NegativeNumberException::class);
         $this->expectExceptionMessageExact('Cannot calculate the square root of a negative number.');
+
         $number->sqrt();
     }
 
@@ -4290,6 +4306,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The bit index must not be negative.');
+
         $number->isBitSet(-1);
     }
 
@@ -4375,6 +4392,7 @@ class BigIntegerTest extends AbstractTestCase
             InvalidArgumentException::class => 'The modulus must not be negative.',
             NoInverseException::class => 'This number has no multiplicative inverse modulo the given modulus (they are not coprime).',
         });
+
         $x->modInverse($m);
     }
 
@@ -4617,6 +4635,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(IntegerOverflowException::class);
         $this->expectExceptionMessageMatches('/^\-[0-9]+ is out of range \[\-[0-9]+, [0-9]+\] and cannot be represented as an integer\.$/');
+
         $number->toInt();
     }
 
@@ -4626,6 +4645,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(IntegerOverflowException::class);
         $this->expectExceptionMessageMatches('/^[0-9]+ is out of range \[\-[0-9]+, [0-9]+\] and cannot be represented as an integer\.$/');
+
         $number->toInt();
     }
 
@@ -4761,6 +4781,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact(sprintf('Base %d is out of range [2, 36].', $base));
+
         $zero->toBase($base);
     }
 
@@ -4993,6 +5014,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $this->expectException(NumberFormatException::class);
         $this->expectExceptionMessageExact('The byte string must not be empty.');
+
         BigInteger::fromBytes('');
     }
 
@@ -5196,6 +5218,7 @@ class BigIntegerTest extends AbstractTestCase
         $number = BigInteger::of(-1);
         $this->expectException(NegativeNumberException::class);
         $this->expectExceptionMessageExact('Cannot convert a negative number to a byte string in unsigned mode.');
+
         $number->toBytes(false);
     }
 
@@ -5258,6 +5281,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The bit count must not be negative.');
+
         BigInteger::randomBits(-1);
     }
 
@@ -5379,6 +5403,7 @@ class BigIntegerTest extends AbstractTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The minimum value must be less than or equal to the maximum value.');
+
         BigInteger::randomRange(3, 2);
     }
 
@@ -5454,6 +5479,7 @@ class BigIntegerTest extends AbstractTestCase
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessageExact('__unserialize() is an internal function, it must not be called directly.');
+
         $zero->__unserialize([]);
     }
 

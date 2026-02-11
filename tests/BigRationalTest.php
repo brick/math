@@ -67,6 +67,7 @@ class BigRationalTest extends AbstractTestCase
     {
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('The denominator of a rational number must not be zero.');
+
         BigRational::ofFraction(1, 0);
     }
 
@@ -137,6 +138,7 @@ class BigRationalTest extends AbstractTestCase
     {
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('The denominator of a rational number must not be zero.');
+
         BigRational::of('2/0');
     }
 
@@ -148,6 +150,7 @@ class BigRationalTest extends AbstractTestCase
     {
         $this->expectException(NumberFormatException::class);
         $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $string));
+
         BigRational::of($string);
     }
 
@@ -398,6 +401,7 @@ class BigRationalTest extends AbstractTestCase
         $number = BigRational::ofFraction(1, 2);
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('Division by zero.');
+
         $number->dividedBy(0);
     }
 
@@ -487,6 +491,7 @@ class BigRationalTest extends AbstractTestCase
 
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('The reciprocal of zero is undefined.');
+
         $zero->power($exponent);
     }
 
@@ -530,6 +535,7 @@ class BigRationalTest extends AbstractTestCase
         $number = BigRational::of('1/2');
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The minimum value must be less than or equal to the maximum value.');
+
         $number->clamp('3/4', '1/4');
     }
 
@@ -561,6 +567,7 @@ class BigRationalTest extends AbstractTestCase
 
         $this->expectException(DivisionByZeroException::class);
         $this->expectExceptionMessageExact('The reciprocal of zero is undefined.');
+
         $number->reciprocal();
     }
 
@@ -1027,6 +1034,7 @@ class BigRationalTest extends AbstractTestCase
 
         $this->expectException(IntegerOverflowException::class);
         $this->expectExceptionMessageExact(sprintf('%s is out of range [%d, %d] and cannot be represented as an integer.', $number, PHP_INT_MIN, PHP_INT_MAX));
+
         $rational->toInt();
     }
 
@@ -1045,6 +1053,7 @@ class BigRationalTest extends AbstractTestCase
 
         $this->expectException(RoundingNecessaryException::class);
         $this->expectExceptionMessageExact('This rational number cannot be represented as an integer without rounding.');
+
         $number->toInt();
     }
 
@@ -1227,6 +1236,7 @@ class BigRationalTest extends AbstractTestCase
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessageExact('__unserialize() is an internal function, it must not be called directly.');
+
         $number->__unserialize([]);
     }
 }
