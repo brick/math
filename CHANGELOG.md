@@ -58,7 +58,7 @@ All notable changes to this project will be documented in this file.
 
 🗑️ **Deprecations**
 
-- Passing a negative modulus to `BigInteger::mod()` is deprecated to align with Euclidean modulo semantics; it will throw `NegativeNumberException` in 0.15
+- Passing a negative modulus to `BigInteger::mod()` is deprecated to align with Euclidean modulo semantics; it will throw `InvalidArgumentException` in 0.15
 - Method `BigDecimal::stripTrailingZeros()` is deprecated, use `strippedOfTrailingZeros()` instead
 
 ✨ **New features**
