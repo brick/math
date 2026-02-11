@@ -3111,7 +3111,7 @@ class BigDecimalTest extends AbstractTestCase
 
         if ($expected === null) {
             $this->expectException(RoundingNecessaryException::class);
-            $this->expectExceptionMessageExact('The value cannot be represented at the requested scale without rounding.');
+            $this->expectExceptionMessageExact('This decimal number cannot be represented at the requested scale without rounding.');
         }
 
         $decimal = $decimal->toScale($toScale, $roundingMode);
@@ -3698,7 +3698,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testToBigIntegerThrowsExceptionWhenRoundingNecessary(string $decimal): void
     {
         $this->expectException(RoundingNecessaryException::class);
-        $this->expectExceptionMessageExact('This decimal cannot be represented as an integer without rounding.');
+        $this->expectExceptionMessageExact('This decimal number cannot be represented as an integer without rounding.');
         BigDecimal::of($decimal)->toBigInteger();
     }
 
@@ -3808,7 +3808,7 @@ class BigDecimalTest extends AbstractTestCase
     public function testToIntThrowsRoundingNecessaryException(string $number): void
     {
         $this->expectException(RoundingNecessaryException::class);
-        $this->expectExceptionMessageExact('This decimal cannot be represented as an integer without rounding.');
+        $this->expectExceptionMessageExact('This decimal number cannot be represented as an integer without rounding.');
         BigDecimal::of($number)->toInt();
     }
 

@@ -16,7 +16,7 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
      */
     public static function decimalScaleTooSmall(): RoundingNecessaryException
     {
-        return new self('The value cannot be represented at the requested scale without rounding.');
+        return new self('This decimal number cannot be represented at the requested scale without rounding.');
     }
 
     /**
@@ -80,7 +80,7 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
      */
     public static function decimalNotConvertibleToInteger(): RoundingNecessaryException
     {
-        return new self('This decimal cannot be represented as an integer without rounding.');
+        return new self('This decimal number cannot be represented as an integer without rounding.');
     }
 
     /**
