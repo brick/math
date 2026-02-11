@@ -80,6 +80,6 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
      */
     public static function negativeModulus(): InvalidArgumentException
     {
-        return new self('The modulus must be strictly positive.');
+        return new self('The modulus must not be negative.');
     }
 }
