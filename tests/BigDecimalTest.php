@@ -3019,7 +3019,7 @@ class BigDecimalTest extends AbstractTestCase
 
     public function testSqrtWithNegativeScale(): void
     {
-        $number = BigDecimal::of(1);
+        $number = BigDecimal::one();
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The scale must not be negative.');
 
