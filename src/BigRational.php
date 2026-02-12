@@ -414,7 +414,7 @@ final readonly class BigRational extends BigNumber
             throw RoundingNecessaryException::rationalNotConvertibleToDecimal();
         }
 
-        return $this->numerator->toBigDecimal()->dividedBy($this->denominator, $scale)->strippedOfTrailingZeros();
+        return $this->numerator->toBigDecimal()->dividedBy($this->denominator, $scale)->strippedOfTrailingZeros(); // @phpstan-ignore argument.type
     }
 
     #[Override]
@@ -426,7 +426,7 @@ final readonly class BigRational extends BigNumber
     #[Override]
     public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
     {
-        if ($scale < 0) {
+        if ($scale < 0) { // @phpstan-ignore smaller.alwaysFalse
             throw InvalidArgumentException::negativeScale();
         }
 
