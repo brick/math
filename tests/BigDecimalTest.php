@@ -3182,6 +3182,16 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
+    public function testToScaleWithNegativeScale(): void
+    {
+        $number = BigDecimal::of('1.2');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageExact('The scale must not be negative.');
+
+        $number->toScale(-1);
+    }
+
     /**
      * @param string $number   The decimal number as a string.
      * @param int    $places   The number of decimal places to move left.

@@ -988,6 +988,16 @@ class BigRationalTest extends AbstractTestCase
         }
     }
 
+    public function testToScaleWithNegativeScale(): void
+    {
+        $number = BigRational::of('1/2');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageExact('The scale must not be negative.');
+
+        $number->toScale(-1);
+    }
+
     public static function providerToScale(): array
     {
         return [

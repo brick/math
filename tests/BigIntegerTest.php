@@ -4610,6 +4610,16 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
+    public function testToScaleWithNegativeScale(): void
+    {
+        $number = BigInteger::one();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageExact('The scale must not be negative.');
+
+        $number->toScale(-1);
+    }
+
     #[DataProvider('providerToInt')]
     public function testToInt(int $number): void
     {
