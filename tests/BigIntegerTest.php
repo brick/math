@@ -1681,7 +1681,7 @@ class BigIntegerTest extends AbstractTestCase
 
     public function testPowerWithNegativeExponentThrowsException(): void
     {
-        $one = BigInteger::of(1);
+        $one = BigInteger::one();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The exponent must not be negative.');
