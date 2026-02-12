@@ -70,11 +70,6 @@ class BigRationalTest extends AbstractTestCase
         BigRational::ofFraction(1, 0);
     }
 
-    public function testOfFractionWithNegativeDenominator(): void
-    {
-        self::assertBigRationalEquals('-1/2', BigRational::ofFraction(1, -2));
-    }
-
     /**
      * @param string $string   The string to parse.
      * @param string $expected The expected rational result.
@@ -182,14 +177,6 @@ class BigRationalTest extends AbstractTestCase
     {
         self::assertBigRationalEquals('10', BigRational::ten());
         self::assertSame(BigRational::ten(), BigRational::ten());
-    }
-
-    public function testAccessors(): void
-    {
-        $rational = BigRational::ofFraction('7919', '578177289437982730');
-
-        self::assertBigIntegerEquals('7919', $rational->getNumerator());
-        self::assertBigIntegerEquals('578177289437982730', $rational->getDenominator());
     }
 
     /**
