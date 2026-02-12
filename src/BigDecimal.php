@@ -242,7 +242,7 @@ final readonly class BigDecimal extends BigNumber
      * Returns the result of the division of this number by the given one, at the given scale.
      *
      * @param BigNumber|int|string $that         The divisor. Must be convertible to a BigDecimal.
-     * @param int                  $scale        The desired scale. Must be non-negative.
+     * @param non-negative-int     $scale        The desired scale. Must be non-negative.
      * @param RoundingMode         $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws MathException              If the divisor is not valid, or is not convertible to a BigDecimal.
@@ -255,7 +255,7 @@ final readonly class BigDecimal extends BigNumber
      */
     public function dividedBy(BigNumber|int|string $that, int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
     {
-        if ($scale < 0) {
+        if ($scale < 0) { // @phpstan-ignore smaller.alwaysFalse
             throw InvalidArgumentException::negativeScale();
         }
 
@@ -331,6 +331,8 @@ final readonly class BigDecimal extends BigNumber
      *
      * The result has a scale of `$this->scale * $exponent`.
      *
+     * @param non-negative-int $exponent
+     *
      * @throws InvalidArgumentException If the exponent is negative.
      *
      * @pure
@@ -345,7 +347,7 @@ final readonly class BigDecimal extends BigNumber
             return $this;
         }
 
-        if ($exponent < 0) {
+        if ($exponent < 0) { // @phpstan-ignore smaller.alwaysFalse
             throw InvalidArgumentException::negativeExponent();
         }
 
@@ -470,8 +472,8 @@ final readonly class BigDecimal extends BigNumber
     /**
      * Returns the square root of this number, rounded to the given scale according to the given rounding mode.
      *
-     * @param int          $scale        The target scale. Must be non-negative.
-     * @param RoundingMode $roundingMode An optional rounding mode, defaults to Unnecessary.
+     * @param non-negative-int $scale        The target scale. Must be non-negative.
+     * @param RoundingMode     $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
      * @throws InvalidArgumentException   If the scale is negative.
      * @throws NegativeNumberException    If this number is negative.
@@ -482,7 +484,7 @@ final readonly class BigDecimal extends BigNumber
      */
     public function sqrt(int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
     {
-        if ($scale < 0) {
+        if ($scale < 0) { // @phpstan-ignore smaller.alwaysFalse
             throw InvalidArgumentException::negativeScale();
         }
 
@@ -731,7 +733,7 @@ final readonly class BigDecimal extends BigNumber
     #[Override]
     public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
     {
-        if ($scale < 0) {
+        if ($scale < 0) { // @phpstan-ignore smaller.alwaysFalse
             throw InvalidArgumentException::negativeScale();
         }
 

@@ -426,7 +426,7 @@ final readonly class BigRational extends BigNumber
     #[Override]
     public function toScale(int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
     {
-        if ($scale < 0) {
+        if ($scale < 0) { // @phpstan-ignore smaller.alwaysFalse
             throw InvalidArgumentException::negativeScale();
         }
 
