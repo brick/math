@@ -969,12 +969,6 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    public function testDividedByWithNegativeScaleThrowsException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigDecimal::of(1)->dividedBy(2, -1);
-    }
-
     /**
      * @param RoundingMode $roundingMode The rounding mode.
      * @param string       $number       The number to round.
@@ -3040,13 +3034,6 @@ class BigDecimalTest extends AbstractTestCase
         $number->sqrt(0);
     }
 
-    public function testSqrtWithNegativeScale(): void
-    {
-        $number = BigDecimal::of(1);
-        $this->expectException(InvalidArgumentException::class);
-        $number->sqrt(-1);
-    }
-
     public function testSqrtWithoutRoundingModeTriggersDeprecation(): void
     {
         $this->expectUserDeprecationMessage(
@@ -3145,21 +3132,6 @@ class BigDecimalTest extends AbstractTestCase
 
             ['-123456789', 8, '53965948844821664748141453212125737955899777414752273389058576481', 0],
             ['9876543210', 7, '9167159269868350921847491739460569765344716959834325922131706410000000', 0],
-        ];
-    }
-
-    #[DataProvider('providerPowerWithInvalidExponentThrowsException')]
-    public function testPowerWithInvalidExponentThrowsException(int $power): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigDecimal::of(1)->power($power);
-    }
-
-    public static function providerPowerWithInvalidExponentThrowsException(): array
-    {
-        return [
-            [-1],
-            [1000001],
         ];
     }
 

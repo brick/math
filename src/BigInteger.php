@@ -78,11 +78,10 @@ final readonly class BigInteger extends BigNumber
      *
      * For bases greater than 36, and/or custom alphabets, use the fromArbitraryBase() method.
      *
-     * @param string $number The number to convert, in the given base.
-     * @param int    $base   The base of the number, between 2 and 36.
+     * @param string     $number The number to convert, in the given base.
+     * @param int<2, 36> $base   The base of the number, between 2 and 36.
      *
-     * @throws NumberFormatException    If the number is empty, or contains invalid chars for the given base.
-     * @throws InvalidArgumentException If the base is out of range.
+     * @throws NumberFormatException If the number is empty, or contains invalid chars for the given base.
      *
      * @pure
      */
@@ -90,10 +89,6 @@ final readonly class BigInteger extends BigNumber
     {
         if ($number === '') {
             throw new NumberFormatException('The number must not be empty.');
-        }
-
-        if ($base < 2 || $base > 36) {
-            throw new InvalidArgumentException(sprintf('Base %d is not in range 2 to 36.', $base));
         }
 
         if ($number[0] === '-') {
@@ -230,19 +225,13 @@ final readonly class BigInteger extends BigNumber
      *
      * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
-     * @param int                          $numBits              The number of bits.
+     * @param non-negative-int             $numBits              The number of bits.
      * @param (callable(int): string)|null $randomBytesGenerator A function that accepts a number of bytes, and returns
      *                                                           a string of random bytes of the given length. Defaults
      *                                                           to the `random_bytes()` function.
-     *
-     * @throws InvalidArgumentException If $numBits is negative.
      */
     public static function randomBits(int $numBits, ?callable $randomBytesGenerator = null): BigInteger
     {
-        if ($numBits < 0) {
-            throw new InvalidArgumentException('The number of bits must not be negative.');
-        }
-
         if ($numBits === 0) {
             return BigInteger::zero();
         }
@@ -531,7 +520,7 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns this number exponentiated to the given value.
      *
-     * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
+     * @param int<0, 1000000> $exponent
      *
      * @pure
      */
@@ -543,14 +532,6 @@ final readonly class BigInteger extends BigNumber
 
         if ($exponent === 1) {
             return $this;
-        }
-
-        if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
-            throw new InvalidArgumentException(sprintf(
-                'The exponent %d is not in the range 0 to %d.',
-                $exponent,
-                Calculator::MAX_POWER,
-            ));
         }
 
         return new BigInteger(CalculatorRegistry::get()->pow($this->value, $exponent));
@@ -972,7 +953,7 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the integer left shifted by a given number of bits.
      *
-     * @throws InvalidArgumentException If the number of bits is out of range.
+     * @param int<-1000000, 1000000> $distance
      *
      * @pure
      */
@@ -992,7 +973,7 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the integer right shifted by a given number of bits.
      *
-     * @throws InvalidArgumentException If the number of bits is out of range.
+     * @param int<-1000000, 1000000> $distance
      *
      * @pure
      */
@@ -1020,6 +1001,8 @@ final readonly class BigInteger extends BigNumber
      *
      * For positive BigIntegers, this is equivalent to the number of bits in the ordinary binary representation.
      * Computes (ceil(log2(this < 0 ? -this : this+1))).
+     *
+     * @return non-negative-int
      *
      * @pure
      */
@@ -1064,18 +1047,12 @@ final readonly class BigInteger extends BigNumber
      *
      * Computes ((this & (1<<n)) != 0).
      *
-     * @param int $n The bit to test, 0-based.
-     *
-     * @throws InvalidArgumentException If the bit to test is negative.
+     * @param int<0, 1000000> $n The bit to test, 0-based.
      *
      * @pure
      */
     public function isBitSet(int $n): bool
     {
-        if ($n < 0) {
-            throw new InvalidArgumentException('The bit to test cannot be negative.');
-        }
-
         return $this->shiftedRight($n)->isOdd();
     }
 
@@ -1106,9 +1083,7 @@ final readonly class BigInteger extends BigNumber
      *
      * @deprecated Use isBitSet().
      *
-     * @param int $n The bit to test, 0-based.
-     *
-     * @throws InvalidArgumentException If the bit to test is negative.
+     * @param int<0, 1000000> $n The bit to test, 0-based.
      */
     public function testBit(int $n): bool
     {
@@ -1185,7 +1160,7 @@ final readonly class BigInteger extends BigNumber
      *
      * The output will always be lowercase for bases greater than 10.
      *
-     * @throws InvalidArgumentException If the base is out of range.
+     * @param int<2, 36> $base
      *
      * @pure
      */
@@ -1193,10 +1168,6 @@ final readonly class BigInteger extends BigNumber
     {
         if ($base === 10) {
             return $this->value;
-        }
-
-        if ($base < 2 || $base > 36) {
-            throw new InvalidArgumentException(sprintf('Base %d is out of range [2, 36]', $base));
         }
 
         return CalculatorRegistry::get()->toBase($this->value, $base);

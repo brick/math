@@ -441,10 +441,9 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Converts this number to a BigDecimal with the given scale, using rounding if necessary.
      *
-     * @param int          $scale        The scale of the resulting `BigDecimal`. Must be non-negative.
-     * @param RoundingMode $roundingMode An optional rounding mode, defaults to Unnecessary.
+     * @param non-negative-int $scale        The scale of the resulting `BigDecimal`. Must be non-negative.
+     * @param RoundingMode     $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
-     * @throws InvalidArgumentException   If the scale is negative.
      * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used, and this number cannot be converted to
      *                                    the given scale without rounding.
      *

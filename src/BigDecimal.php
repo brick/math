@@ -8,18 +8,16 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\RoundingNecessaryException;
-use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
-use InvalidArgumentException;
 use LogicException;
 use Override;
 
+use function assert;
 use function func_num_args;
 use function in_array;
 use function intdiv;
 use function max;
 use function rtrim;
-use function sprintf;
 use function str_pad;
 use function str_repeat;
 use function strlen;
@@ -241,10 +239,9 @@ final readonly class BigDecimal extends BigNumber
      * Returns the result of the division of this number by the given one, at the given scale.
      *
      * @param BigNumber|int|float|string $that         The divisor. Must be convertible to a BigDecimal.
-     * @param int|null                   $scale        The desired scale. Omitting this parameter is deprecated; it will be required in 0.15.
+     * @param non-negative-int|null      $scale        The desired scale. Omitting this parameter is deprecated; it will be required in 0.15.
      * @param RoundingMode               $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
-     * @throws InvalidArgumentException   If the scale is negative.
      * @throws MathException              If the divisor is not valid, or is not convertible to a BigDecimal.
      * @throws DivisionByZeroException    If the divisor is zero.
      * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used and the result cannot be represented
@@ -268,8 +265,6 @@ final readonly class BigDecimal extends BigNumber
                 E_USER_DEPRECATED,
             );
             $scale = $this->scale;
-        } elseif ($scale < 0) {
-            throw new InvalidArgumentException('Scale must not be negative.');
         }
 
         if ($that->value === '1' && $that->scale === 0 && $scale === $this->scale) {
@@ -347,6 +342,8 @@ final readonly class BigDecimal extends BigNumber
             }
         }
 
+        assert($scale >= 0);
+
         return $this->dividedBy($that, $scale)->strippedOfTrailingZeros();
     }
 
@@ -355,7 +352,7 @@ final readonly class BigDecimal extends BigNumber
      *
      * The result has a scale of `$this->scale * $exponent`.
      *
-     * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
+     * @param int<0, 1000000> $exponent
      *
      * @pure
      */
@@ -367,14 +364,6 @@ final readonly class BigDecimal extends BigNumber
 
         if ($exponent === 1) {
             return $this;
-        }
-
-        if ($exponent < 0 || $exponent > Calculator::MAX_POWER) {
-            throw new InvalidArgumentException(sprintf(
-                'The exponent %d is not in the range 0 to %d.',
-                $exponent,
-                Calculator::MAX_POWER,
-            ));
         }
 
         return new BigDecimal(CalculatorRegistry::get()->pow($this->value, $exponent), $this->scale * $exponent);
@@ -498,13 +487,12 @@ final readonly class BigDecimal extends BigNumber
     /**
      * Returns the square root of this number, rounded to the given scale according to the given rounding mode.
      *
-     * @param int          $scale        The target scale. Must be non-negative.
-     * @param RoundingMode $roundingMode The rounding mode to use, defaults to Down.
-     *                                   ⚠️ WARNING: the default rounding mode was kept as Down for backward
-     *                                   compatibility, but will change to Unnecessary in version 0.15. Pass a rounding
-     *                                   mode explicitly to avoid this upcoming breaking change.
+     * @param non-negative-int $scale        The target scale. Must be non-negative.
+     * @param RoundingMode     $roundingMode The rounding mode to use, defaults to Down.
+     *                                       ⚠️ WARNING: the default rounding mode was kept as Down for backward
+     *                                       compatibility, but will change to Unnecessary in version 0.15. Pass a rounding
+     *                                       mode explicitly to avoid this upcoming breaking change.
      *
-     * @throws InvalidArgumentException   If the scale is negative.
      * @throws NegativeNumberException    If this number is negative.
      * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used and the result cannot be represented
      *                                    exactly at the given scale.
@@ -520,10 +508,6 @@ final readonly class BigDecimal extends BigNumber
                 'Pass a rounding mode explicitly to avoid this breaking change.',
                 E_USER_DEPRECATED,
             );
-        }
-
-        if ($scale < 0) {
-            throw new InvalidArgumentException('Scale must not be negative.');
         }
 
         if ($this->value === '0') {

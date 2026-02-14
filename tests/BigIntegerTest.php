@@ -356,24 +356,6 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
-    #[DataProvider('providerFromBaseWithInvalidBase')]
-    public function testFromBaseWithInvalidBase(int $base): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigInteger::fromBase('0', $base);
-    }
-
-    public static function providerFromBaseWithInvalidBase(): array
-    {
-        return [
-            [-2],
-            [-1],
-            [0],
-            [1],
-            [37],
-        ];
-    }
-
     public function testZero(): void
     {
         self::assertBigIntegerEquals('0', BigInteger::zero());
@@ -1654,21 +1636,6 @@ class BigIntegerTest extends AbstractTestCase
 
             ['-123456789', 8, '53965948844821664748141453212125737955899777414752273389058576481'],
             ['9876543210', 7, '9167159269868350921847491739460569765344716959834325922131706410000000'],
-        ];
-    }
-
-    #[DataProvider('providerPowerWithInvalidExponentThrowsException')]
-    public function testPowerWithInvalidExponentThrowsException(int $power): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigInteger::of(1)->power($power);
-    }
-
-    public static function providerPowerWithInvalidExponentThrowsException(): array
-    {
-        return [
-            [-1],
-            [1000001],
         ];
     }
 
@@ -4288,22 +4255,6 @@ class BigIntegerTest extends AbstractTestCase
         }
     }
 
-    public function testIsBitSetWithNegativeBitThrowsException(): void
-    {
-        $number = BigInteger::one();
-
-        $this->expectException(InvalidArgumentException::class);
-        $number->isBitSet(-1);
-    }
-
-    public function testTestNegativeBitThrowsException(): void
-    {
-        $number = BigInteger::one();
-
-        $this->expectException(InvalidArgumentException::class);
-        $number->testBit(-1);
-    }
-
     /**
      * @param string $number The number to test.
      * @param bool   $isOdd  Whether the number is even.
@@ -4752,24 +4703,6 @@ class BigIntegerTest extends AbstractTestCase
                 yield ['-' . $number, $base, '-' . $expected];
             }
         }
-    }
-
-    #[DataProvider('providerToInvalidBaseThrowsException')]
-    public function testToInvalidBaseThrowsException(int $base): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigInteger::of(0)->toBase($base);
-    }
-
-    public static function providerToInvalidBaseThrowsException(): array
-    {
-        return [
-            [-2],
-            [-1],
-            [0],
-            [1],
-            [37],
-        ];
     }
 
     #[DataProvider('providerFromArbitraryBase')]
@@ -5247,12 +5180,6 @@ class BigIntegerTest extends AbstractTestCase
             [193, '23FA2323B9820B983E098309280D98ACF34793874972398329', '12410449599020781090835918168854683378199468792756026573609'],
             [193, 'FFFA2323B9820B983E098309280D98ACF34793874972398329', '12410449599020781090835918168854683378199468792756026573609'],
         ];
-    }
-
-    public function testRandomBitsWithNegativeBits(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        BigInteger::randomBits(-1);
     }
 
     public function testRandomBitsWithZeroBits(): void
