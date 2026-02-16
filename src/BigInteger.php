@@ -1028,6 +1028,8 @@ final readonly class BigInteger extends BigNumber
      *
      * Returns -1 if this BigInteger contains no one bits.
      *
+     * @return -1|non-negative-int
+     *
      * @pure
      */
     public function getLowestSetBit(): int

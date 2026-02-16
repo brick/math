@@ -513,6 +513,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @internal
      *
+     * @param non-negative-int $scale
+     *
      * @pure
      */
     final protected function newBigDecimal(string $value, int $scale = 0): BigDecimal

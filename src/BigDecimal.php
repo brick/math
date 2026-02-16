@@ -44,14 +44,16 @@ final readonly class BigDecimal extends BigNumber
      * The scale (number of digits after the decimal point) of this decimal number.
      *
      * This must be zero or more.
+     *
+     * @var non-negative-int
      */
     private int $scale;
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.
      *
-     * @param string $value The unscaled value, validated.
-     * @param int    $scale The scale, validated.
+     * @param string           $value The unscaled value, validated.
+     * @param non-negative-int $scale The scale, validated.
      *
      * @pure
      */
@@ -613,6 +615,8 @@ final readonly class BigDecimal extends BigNumber
         }
 
         $value = substr($this->value, 0, -$trimmableZeros);
+
+        /** @var non-negative-int $scale */
         $scale = $this->scale - $trimmableZeros;
 
         return new BigDecimal($value, $scale);
@@ -657,6 +661,8 @@ final readonly class BigDecimal extends BigNumber
     }
 
     /**
+     * @return non-negative-int
+     *
      * @pure
      */
     public function getScale(): int
@@ -678,12 +684,15 @@ final readonly class BigDecimal extends BigNumber
      *   0.00123 => 3
      *   0.0012300 => 5
      *
+     * @return positive-int
+     *
      * @pure
      */
     public function getPrecision(): int
     {
         $length = strlen($this->value);
 
+        /** @var positive-int */
         return ($this->value[0] === '-') ? $length - 1 : $length;
     }
 
@@ -796,7 +805,7 @@ final readonly class BigDecimal extends BigNumber
      *
      * @internal
      *
-     * @param array{value: string, scale: int} $data
+     * @param array{value: string, scale: non-negative-int} $data
      *
      * @throws LogicException
      */
