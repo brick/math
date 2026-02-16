@@ -33,6 +33,8 @@ final class DecimalHelper
      *
      * @param string $denominator The denominator of the reduced fraction. Must be strictly positive.
      *
+     * @return non-negative-int|null
+     *
      * @pure
      */
     public static function computeScaleFromReducedFractionDenominator(string $denominator): ?int
@@ -40,6 +42,8 @@ final class DecimalHelper
         $calculator = CalculatorRegistry::get();
 
         $d = rtrim($denominator, '0');
+
+        /** @var non-negative-int $scale rtrim can only shorten a string */
         $scale = strlen($denominator) - strlen($d);
 
         foreach ([5, 2] as $prime) {

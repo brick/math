@@ -78,8 +78,8 @@ final readonly class BigInteger extends BigNumber
      *
      * For bases greater than 36, and/or custom alphabets, use the fromArbitraryBase() method.
      *
-     * @param string $number The number to convert, in the given base.
-     * @param int    $base   The base of the number, between 2 and 36.
+     * @param string     $number The number to convert, in the given base.
+     * @param int<2, 36> $base   The base of the number, between 2 and 36.
      *
      * @throws NumberFormatException    If the number is empty, or contains invalid chars for the given base.
      * @throws InvalidArgumentException If the base is out of range.
@@ -88,7 +88,7 @@ final readonly class BigInteger extends BigNumber
      */
     public static function fromBase(string $number, int $base): BigInteger
     {
-        if ($base < 2 || $base > 36) {
+        if ($base < 2 || $base > 36) { // @phpstan-ignore smaller.alwaysFalse, greater.alwaysFalse, booleanOr.alwaysFalse
             throw InvalidArgumentException::baseOutOfRange($base);
         }
 
@@ -232,7 +232,7 @@ final readonly class BigInteger extends BigNumber
      *
      * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
-     * @param int                          $bitCount             The number of bits.
+     * @param non-negative-int             $bitCount             The number of bits.
      * @param (callable(int): string)|null $randomBytesGenerator A function that accepts a number of bytes, and returns
      *                                                           a string of random bytes of the given length. Defaults
      *                                                           to the `random_bytes()` function.
@@ -242,7 +242,7 @@ final readonly class BigInteger extends BigNumber
      */
     public static function randomBits(int $bitCount, ?callable $randomBytesGenerator = null): BigInteger
     {
-        if ($bitCount < 0) {
+        if ($bitCount < 0) { // @phpstan-ignore smaller.alwaysFalse
             throw InvalidArgumentException::negativeBitCount();
         }
 
@@ -527,6 +527,8 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns this number exponentiated to the given value.
      *
+     * @param non-negative-int $exponent
+     *
      * @throws InvalidArgumentException If the exponent is negative.
      *
      * @pure
@@ -541,7 +543,7 @@ final readonly class BigInteger extends BigNumber
             return $this;
         }
 
-        if ($exponent < 0) {
+        if ($exponent < 0) { // @phpstan-ignore smaller.alwaysFalse
             throw InvalidArgumentException::negativeExponent();
         }
 
@@ -1004,6 +1006,8 @@ final readonly class BigInteger extends BigNumber
      * For positive BigIntegers, this is equivalent to the number of bits in the ordinary binary representation.
      * Computes (ceil(log2(this < 0 ? -this : this+1))).
      *
+     * @return non-negative-int
+     *
      * @pure
      */
     public function getBitLength(): int
@@ -1047,7 +1051,7 @@ final readonly class BigInteger extends BigNumber
      *
      * Computes ((this & (1<<bitIndex)) != 0).
      *
-     * @param int $bitIndex The bit to test, 0-based.
+     * @param non-negative-int $bitIndex The bit to test, 0-based.
      *
      * @throws InvalidArgumentException If the bit to test is negative.
      *
@@ -1055,7 +1059,7 @@ final readonly class BigInteger extends BigNumber
      */
     public function isBitSet(int $bitIndex): bool
     {
-        if ($bitIndex < 0) {
+        if ($bitIndex < 0) { // @phpstan-ignore smaller.alwaysFalse
             throw InvalidArgumentException::negativeBitIndex();
         }
 
@@ -1147,6 +1151,8 @@ final readonly class BigInteger extends BigNumber
      *
      * The output will always be lowercase for bases greater than 10.
      *
+     * @param int<2, 36> $base
+     *
      * @throws InvalidArgumentException If the base is out of range.
      *
      * @pure
@@ -1157,7 +1163,7 @@ final readonly class BigInteger extends BigNumber
             return $this->value;
         }
 
-        if ($base < 2 || $base > 36) {
+        if ($base < 2 || $base > 36) { // @phpstan-ignore smaller.alwaysFalse, greater.alwaysFalse, booleanOr.alwaysFalse
             throw InvalidArgumentException::baseOutOfRange($base);
         }
 
