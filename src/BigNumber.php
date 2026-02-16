@@ -641,8 +641,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Removes optional leading zeros and applies sign.
      *
-     * @param string|null $sign   The sign, '+' or '-', optional. Null is allowed for convenience and treated as '+'.
-     * @param string      $number The number, validated as a string of digits.
+     * @param '+'|'-'|null     $sign   The sign, optional. Null is allowed for convenience and treated as '+'.
+     * @param non-empty-string $number The number, validated as a string of digits.
      *
      * @pure
      */

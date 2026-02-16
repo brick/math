@@ -78,8 +78,8 @@ final readonly class BigInteger extends BigNumber
      *
      * For bases greater than 36, and/or custom alphabets, use the fromArbitraryBase() method.
      *
-     * @param string     $number The number to convert, in the given base.
-     * @param int<2, 36> $base   The base of the number, between 2 and 36.
+     * @param non-empty-string $number The number to convert, in the given base.
+     * @param int<2, 36>       $base   The base of the number, between 2 and 36.
      *
      * @throws NumberFormatException    If the number is empty, or contains invalid chars for the given base.
      * @throws InvalidArgumentException If the base is out of range.
@@ -92,7 +92,7 @@ final readonly class BigInteger extends BigNumber
             throw InvalidArgumentException::baseOutOfRange($base);
         }
 
-        if ($number === '') {
+        if ($number === '') { // @phpstan-ignore identical.alwaysFalse
             throw NumberFormatException::emptyNumber();
         }
 
@@ -148,8 +148,8 @@ final readonly class BigInteger extends BigNumber
      *
      * Because this method accepts any single-byte character, including dash, it does not handle negative numbers.
      *
-     * @param string $number   The number to parse.
-     * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
+     * @param non-empty-string $number   The number to parse.
+     * @param non-empty-string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
      *
      * @throws NumberFormatException    If the given number is empty or contains invalid chars for the given alphabet.
      * @throws InvalidArgumentException If the alphabet does not contain at least 2 chars, or contains duplicates.
@@ -168,7 +168,7 @@ final readonly class BigInteger extends BigNumber
             throw InvalidArgumentException::duplicateCharsInAlphabet();
         }
 
-        if ($number === '') {
+        if ($number === '') { // @phpstan-ignore identical.alwaysFalse
             throw NumberFormatException::emptyNumber();
         }
 
@@ -194,9 +194,9 @@ final readonly class BigInteger extends BigNumber
      *
      * This method can be used to retrieve a number exported by `toBytes()`, as long as the `$signed` flags match.
      *
-     * @param string $value  The byte string.
-     * @param bool   $signed Whether to interpret as a signed number in two's-complement representation with a leading
-     *                       sign bit.
+     * @param non-empty-string $value  The byte string.
+     * @param bool             $signed Whether to interpret as a signed number in two's-complement representation with a leading
+     *                                 sign bit.
      *
      * @throws NumberFormatException If the string is empty.
      *
@@ -204,7 +204,7 @@ final readonly class BigInteger extends BigNumber
      */
     public static function fromBytes(string $value, bool $signed = true): BigInteger
     {
-        if ($value === '') {
+        if ($value === '') { // @phpstan-ignore identical.alwaysFalse
             throw NumberFormatException::emptyByteString();
         }
 
@@ -1181,7 +1181,7 @@ final readonly class BigInteger extends BigNumber
      * Because this method accepts any single-byte character, including dash, it does not handle negative numbers;
      * a NegativeNumberException will be thrown when attempting to call this method on a negative number.
      *
-     * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
+     * @param non-empty-string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
      *
      * @throws InvalidArgumentException If the alphabet does not contain at least 2 chars, or contains duplicates.
      * @throws NegativeNumberException  If this number is negative.
@@ -1246,6 +1246,7 @@ final readonly class BigInteger extends BigNumber
                 $bin = hex2bin($hex);
                 assert($bin !== false);
 
+                /** @var non-empty-string $hex */
                 $hex = bin2hex(~$bin);
                 $hex = self::fromBase($hex, 16)->plus(1)->toBase(16);
 
