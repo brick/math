@@ -63,6 +63,10 @@ The following breaking changes are unlikely to affect you:
 - New exception: `NoInverseException` for modular inverse errors
 - New exception: `RandomSourceException` for random source errors
 
+👌 **Improvements**
+
+- Narrowed parameter and return types with static analysis annotations (#108 by @simPod)
+
 ## [0.14.8](https://github.com/brick/math/releases/tag/0.14.8) - 2026-02-10
 
 🗑️ **Deprecations**
