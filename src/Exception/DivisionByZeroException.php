@@ -42,4 +42,12 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     {
         return new self('The reciprocal of zero is undefined.');
     }
+
+    /**
+     * @pure
+     */
+    public static function zeroToNegativePower(): DivisionByZeroException
+    {
+        return new self('Cannot raise zero to a negative power.');
+    }
 }

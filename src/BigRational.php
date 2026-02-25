@@ -330,6 +330,10 @@ final readonly class BigRational extends BigNumber
         }
 
         if ($exponent < 0) {
+            if ($this->isZero()) {
+                throw DivisionByZeroException::zeroToNegativePower();
+            }
+
             return $this->reciprocal()->power(-$exponent);
         }
 

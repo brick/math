@@ -474,7 +474,7 @@ class BigRationalTest extends AbstractTestCase
         $zero = BigRational::zero();
 
         $this->expectException(DivisionByZeroException::class);
-        $this->expectExceptionMessageExact('The reciprocal of zero is undefined.');
+        $this->expectExceptionMessageExact('Cannot raise zero to a negative power.');
 
         $zero->power($exponent);
     }
