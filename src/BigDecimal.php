@@ -720,6 +720,12 @@ final readonly class BigDecimal extends BigNumber
     /**
      * Returns a copy of this BigDecimal with any trailing zeros removed from the fractional part.
      *
+     * Examples:
+     *
+     * - `1.200` returns `1.2`
+     * - `1.000` returns `1`
+     * - `100` returns `100`
+     *
      * @pure
      */
     public function strippedOfTrailingZeros(): BigDecimal
