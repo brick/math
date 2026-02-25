@@ -19,6 +19,7 @@ use LogicException;
 use Override;
 use Throwable;
 
+use function array_map;
 use function assert;
 use function bin2hex;
 use function chr;
@@ -371,8 +372,10 @@ final readonly class BigInteger extends BigNumber
     {
         $result = BigInteger::of($a)->abs();
 
+        $n = array_map(BigInteger::of(...), $n); // @phpstan-ignore possiblyImpure.functionCall
+
         foreach ($n as $next) {
-            $result = $result->gcd(BigInteger::of($next));
+            $result = $result->gcd($next);
 
             if ($result->isEqualTo(1)) {
                 return $result;
@@ -398,8 +401,10 @@ final readonly class BigInteger extends BigNumber
     {
         $result = BigInteger::of($a)->abs();
 
+        $n = array_map(BigInteger::of(...), $n); // @phpstan-ignore possiblyImpure.functionCall
+
         foreach ($n as $next) {
-            $result = $result->lcm(BigInteger::of($next));
+            $result = $result->lcm($next);
 
             if ($result->isZero()) {
                 return $result;
