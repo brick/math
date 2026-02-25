@@ -850,7 +850,8 @@ final readonly class BigDecimal extends BigNumber
      * - `0.123` returns `0`
      * - `-0.123` returns `0`
      *
-     * The following identity holds: `$d->isEqualTo($d->getFractionalPart()->plus($d->getIntegralPart()))`.
+     * The following identity holds: `$d->isEqualTo($d->getFractionalPart()->plus($d->getIntegralPart()))`. Note that in
+     * this identity, the operand order is significant: the reversed form throws when the fractional part is non-zero.
      *
      * @pure
      */
@@ -880,7 +881,8 @@ final readonly class BigDecimal extends BigNumber
      * - `123` returns `0`
      * - `-123` returns `0`
      *
-     * The following identity holds: `$d->isEqualTo($d->getFractionalPart()->plus($d->getIntegralPart()))`.
+     * The following identity holds: `$d->isEqualTo($d->getFractionalPart()->plus($d->getIntegralPart()))`. Note that in
+     * this identity, the operand order is significant: the reversed form throws when the fractional part is non-zero.
      *
      * @pure
      */
