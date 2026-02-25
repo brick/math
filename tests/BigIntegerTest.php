@@ -4192,11 +4192,11 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param string $number       The number to test.
-     * @param int    $lowestSetBit The expected lowest set bit.
+     * @param string   $number       The number to test.
+     * @param int|null $lowestSetBit The expected lowest set bit.
      */
     #[DataProvider('providerGetLowestSetBit')]
-    public function testGetLowestSetBit(string $number, int $lowestSetBit): void
+    public function testGetLowestSetBit(string $number, ?int $lowestSetBit): void
     {
         self::assertSame($lowestSetBit, BigInteger::of($number)->getLowestSetBit());
     }
@@ -4214,7 +4214,7 @@ class BigIntegerTest extends AbstractTestCase
             ['-3', 0],
             ['-2', 1],
             ['-1', 0],
-            ['0', -1],
+            ['0', null],
             ['1', 0],
             ['2', 1],
             ['3', 0],

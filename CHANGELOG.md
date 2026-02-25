@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 💥 **Breaking changes**
 
+- **`BigInteger::getLowestSetBit()` now returns `null` instead of `-1` when the number is zero**
 - Deprecated method `BigRational::simplified()` has been removed, as it is now a no-op
 
 ✨ **New features**
