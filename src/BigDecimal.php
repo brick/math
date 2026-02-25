@@ -880,6 +880,9 @@ final readonly class BigDecimal extends BigNumber
      * - `-123.456` returns `-0.456`
      * - `123` returns `0`
      * - `-123` returns `0`
+     * - `123.000` returns `0.000`
+     *
+     * The result always has the same scale as `$this`.
      *
      * The following identity holds: `$d->isEqualTo($d->getFractionalPart()->plus($d->getIntegralPart()))`.
      * The operand order is significant; the reversed form throws when the fractional part is non-zero.
