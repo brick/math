@@ -344,7 +344,7 @@ final readonly class BigRational extends BigNumber
      *
      * The reciprocal has the numerator and denominator swapped.
      *
-     * @throws DivisionByZeroException If the numerator is zero.
+     * @throws DivisionByZeroException If this number is zero.
      *
      * @pure
      */
