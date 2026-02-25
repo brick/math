@@ -783,6 +783,10 @@ final readonly class BigDecimal extends BigNumber
     }
 
     /**
+     * Returns the unscaled value of this decimal number.
+     *
+     * For example, the unscaled value of `123.456` is `123456`.
+     *
      * @pure
      */
     public function getUnscaledValue(): BigInteger
@@ -791,6 +795,10 @@ final readonly class BigDecimal extends BigNumber
     }
 
     /**
+     * Returns the scale of this decimal number.
+     *
+     * The scale is the number of digits after the decimal point. For example, the scale of `123.456` is `3`.
+     *
      * @return non-negative-int
      *
      * @pure
