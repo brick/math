@@ -656,6 +656,14 @@ final readonly class BigInteger extends BigNumber
             throw DivisionByZeroException::divisionByZero();
         }
 
+        if ($that->isOne()) {
+            return [$this, BigInteger::zero()];
+        }
+
+        if ($that->isMinusOne()) {
+            return [$this->negated(), BigInteger::zero()];
+        }
+
         [$quotient, $remainder] = CalculatorRegistry::get()->divQR($this->value, $that->value);
 
         return [
