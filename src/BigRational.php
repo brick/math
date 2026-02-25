@@ -149,6 +149,8 @@ final readonly class BigRational extends BigNumber
     }
 
     /**
+     * Returns the numerator of this rational number.
+     *
      * @pure
      */
     public function getNumerator(): BigInteger
@@ -157,6 +159,10 @@ final readonly class BigRational extends BigNumber
     }
 
     /**
+     * Returns the denominator of this rational number.
+     *
+     * The denominator is always strictly positive.
+     *
      * @pure
      */
     public function getDenominator(): BigInteger
