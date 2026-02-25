@@ -670,6 +670,8 @@ final readonly class BigDecimal extends BigNumber
     /**
      * Returns a copy of this BigDecimal with the decimal point moved to the left by the given number of places.
      *
+     * If $places is negative, the decimal point is moved to the right by the absolute value instead.
+     *
      * @pure
      */
     public function withPointMovedLeft(int $places): BigDecimal
@@ -687,6 +689,8 @@ final readonly class BigDecimal extends BigNumber
 
     /**
      * Returns a copy of this BigDecimal with the decimal point moved to the right by the given number of places.
+     *
+     * If $places is negative, the decimal point is moved to the left by the absolute value instead.
      *
      * @pure
      */

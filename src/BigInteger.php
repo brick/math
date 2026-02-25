@@ -966,6 +966,8 @@ final readonly class BigInteger extends BigNumber
     /**
      * Returns the integer left shifted by a given number of bits.
      *
+     * If $bits is negative, the integer is shifted right by the absolute value instead.
+     *
      * @pure
      */
     public function shiftedLeft(int $bits): BigInteger
@@ -983,6 +985,8 @@ final readonly class BigInteger extends BigNumber
 
     /**
      * Returns the integer right shifted by a given number of bits.
+     *
+     * If $bits is negative, the integer is shifted left by the absolute value instead.
      *
      * @pure
      */
