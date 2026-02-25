@@ -179,6 +179,7 @@ final readonly class BigRational extends BigNumber
      * - `-7/3` returns `-2` (since -7/3 = -2 + (-1/3))
      *
      * The following identity holds: `$r->isEqualTo($r->getFractionalPart()->plus($r->getIntegralPart()))`.
+     * The operand order is significant; the reversed form throws when the fractional part is non-zero.
      *
      * @pure
      */
@@ -196,6 +197,7 @@ final readonly class BigRational extends BigNumber
      * - `-7/3` returns `-1/3` (since -7/3 = -2 + (-1/3))
      *
      * The following identity holds: `$r->isEqualTo($r->getFractionalPart()->plus($r->getIntegralPart()))`.
+     * The operand order is significant; the reversed form throws when the fractional part is non-zero.
      *
      * @pure
      */
