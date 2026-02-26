@@ -5,7 +5,7 @@
 A PHP library to work with arbitrary precision numbers.
 
 [![Build Status](https://github.com/brick/math/workflows/CI/badge.svg)](https://github.com/brick/math/actions)
-[![Coverage Status](https://coveralls.io/repos/github/brick/math/badge.svg?branch=master)](https://coveralls.io/github/brick/math?branch=master)
+[![Coverage Status](https://codecov.io/github/brick/math/graph/badge.svg)](https://codecov.io/github/brick/math)
 [![Latest Stable Version](https://poser.pugx.org/brick/math/v/stable)](https://packagist.org/packages/brick/math)
 [![Total Downloads](https://poser.pugx.org/brick/math/downloads)](https://packagist.org/packages/brick/math)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
