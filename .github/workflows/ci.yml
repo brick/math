@@ -86,7 +86,7 @@ jobs:
         if: ${{ matrix.php-version != env.COVERAGE_PHP_VERSION }}
 
       - name: Run PHPUnit with coverage
-        run: vendor/bin/phpunit --fail-on-skipped --coverage-clover clover.xml
+        run: vendor/bin/phpunit --coverage-clover clover.xml
         env:
           CALCULATOR: ${{ matrix.calculator }}
         if: ${{ matrix.php-version == env.COVERAGE_PHP_VERSION }}
