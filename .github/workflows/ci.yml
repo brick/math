@@ -86,9 +86,7 @@ jobs:
         if: ${{ matrix.php-version != env.COVERAGE_PHP_VERSION }}
 
       - name: Run PHPUnit with coverage
-        run: |
-          mkdir -p build/logs
-          vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+        run: vendor/bin/phpunit --coverage-clover clover.xml
         env:
           CALCULATOR: ${{ matrix.calculator }}
         if: ${{ matrix.php-version == env.COVERAGE_PHP_VERSION }}
@@ -100,8 +98,8 @@ jobs:
           BCMATH_DEFAULT_SCALE: 8
         if: ${{ matrix.calculator == 'BCMath' }}
 
-      - name: Upload coverage report to Coveralls
-        run: vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
         env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         if: ${{ matrix.php-version == env.COVERAGE_PHP_VERSION }}
