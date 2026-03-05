@@ -25,9 +25,17 @@
         "phpunit/phpunit": "^11.5",
         "phpstan/phpstan": "2.1.22"
     },
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "phpstan/extension.neon"
+            ]
+        }
+    },
     "autoload": {
         "psr-4": {
-            "Brick\\Math\\": "src/"
+            "Brick\\Math\\": "src/",
+            "Brick\\Math\\PHPStan\\": "phpstan/"
         }
     },
     "autoload-dev": {

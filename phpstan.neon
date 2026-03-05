@@ -1,3 +1,6 @@
+includes:
+    - phpstan/extension.neon
+
 parameters:
     level: 10
     checkUninitializedProperties: true

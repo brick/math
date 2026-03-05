@@ -1,0 +1,20 @@
+services:
+	-
+		class: Brick\Math\PHPStan\BigNumberOfThrowTypeExtension
+		tags:
+			- phpstan.dynamicStaticMethodThrowTypeExtension
+
+	-
+		class: Brick\Math\PHPStan\BigNumberConversionThrowTypeExtension
+		tags:
+			- phpstan.dynamicMethodThrowTypeExtension
+
+	-
+		class: Brick\Math\PHPStan\BigNumberOperationThrowTypeExtension
+		tags:
+			- phpstan.dynamicMethodThrowTypeExtension
+
+	-
+		class: Brick\Math\PHPStan\RoundingModeThrowTypeExtension
+		tags:
+			- phpstan.dynamicMethodThrowTypeExtension

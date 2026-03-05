@@ -260,3 +260,18 @@ even if these machines do not share the same set of PHP extensions.
 
 For example, serializing on a machine with GMP support and unserializing on a machine that does not have this extension
 installed will still work as expected.
+
+### PHPStan
+
+This library ships with a PHPStan extension that narrows throw types based on argument types.
+For example, PHPStan will know that `BigInteger::of(BigInteger)` cannot throw, or that
+`toScale()` with a rounding mode other than `Unnecessary` cannot throw `RoundingNecessaryException`.
+
+If you use [`phpstan/extension-installer`](https://github.com/phpstan/extension-installer), the extension is registered automatically.
+
+Otherwise, include `phpstan/extension.neon` in your PHPStan configuration:
+
+```neon
+includes:
+    - vendor/brick/math/phpstan/extension.neon
+```
