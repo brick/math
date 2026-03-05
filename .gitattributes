@@ -5,7 +5,6 @@ phpstan.neon       export-ignore
 phpunit.php        export-ignore
 phpunit.xml        export-ignore
 random-tests.php   export-ignore
-README.md          export-ignore
 tests/             export-ignore
 tools/             export-ignore
 .github/           export-ignore
