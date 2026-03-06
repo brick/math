@@ -70,6 +70,14 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     /**
      * @pure
      */
+    public static function cannotConvertFloat(string $type): self
+    {
+        return new self(sprintf('Cannot convert %s to a BigDecimal.', $type));
+    }
+
+    /**
+     * @pure
+     */
     public static function negativeExponent(): InvalidArgumentException
     {
         return new self('The exponent must not be negative.');

@@ -9,21 +9,30 @@ use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\Exception\UnsupportedPlatformException;
 use Brick\Math\Internal\CalculatorRegistry;
 use Brick\Math\Internal\DecimalHelper;
 use LogicException;
 use Override;
 
+use function assert;
 use function in_array;
+use function ini_set;
 use function intdiv;
+use function is_infinite;
+use function is_nan;
+use function json_encode;
 use function max;
+use function pack;
 use function rtrim;
 use function str_repeat;
 use function strlen;
 use function substr;
 use function trigger_error;
+use function unpack;
 
 use const E_USER_DEPRECATED;
+use const PHP_INT_SIZE;
 
 /**
  * An arbitrarily large decimal number.
@@ -146,6 +155,122 @@ final readonly class BigDecimal extends BigNumber
         }
 
         return $ten;
+    }
+
+    /**
+     * Creates a BigDecimal from the exact IEEE-754 value of a float.
+     *
+     * Examples:
+     *   - `fromFloatExact(0.1)` returns a BigDecimal with value '0.1000000000000000055511151231257827021181583404541015625'
+     *   - `fromFloatExact(0.3)` returns a BigDecimal with value '0.299999999999999988897769753748434595763683319091796875'
+     *   - `fromFloatExact(0.5)` returns a BigDecimal with value '0.5'
+     *   - `fromFloatExact(1.0)` returns a BigDecimal with value '1'
+     *
+     * Note that BigDecimal has no concept of negative zero, so `-0.0` and `0.0` both convert to zero.
+     *
+     * @throws InvalidArgumentException     If the value is NaN or infinite.
+     * @throws UnsupportedPlatformException If PHP is not 64-bit, or if the platform uses a non-IEEE-754 double format.
+     *
+     * @pure
+     */
+    public static function fromFloatExact(float $value): BigDecimal
+    {
+        if (is_nan($value)) {
+            throw InvalidArgumentException::cannotConvertFloat('NaN');
+        }
+        if (is_infinite($value)) {
+            throw InvalidArgumentException::cannotConvertFloat($value > 0 ? 'INF' : '-INF');
+        }
+
+        if (PHP_INT_SIZE < 8) {
+            throw UnsupportedPlatformException::require64BitPhp();
+        }
+
+        if (pack('E', 1.0) !== "\x3f\xf0\x00\x00\x00\x00\x00\x00") {
+            throw UnsupportedPlatformException::unsupportedFloatFormat();
+        }
+
+        // Extract the raw IEEE-754 bit pattern as a 64-bit integer (big-endian).
+        /** @var array{bits: int} $unpacked */
+        $unpacked = unpack('Jbits', pack('E', $value));
+        $bits = $unpacked['bits'];
+
+        // Fields: [sign(1)|exp(11)|mantissa(52)]
+        $signBit = ($bits >> 63) & 1;
+        $expBits = ($bits >> 52) & 0x7FF;
+        $mantissa = $bits & 0xFFFFFFFFFFFFF;
+
+        // Zero (covers both 0.0 and -0.0).
+        if ($expBits === 0 && $mantissa === 0) {
+            return BigDecimal::zero();
+        }
+
+        if ($expBits === 0) {
+            // Subnormal: no implicit leading 1-bit; effective exponent = -1074.
+            $significand = BigInteger::of($mantissa);
+            $baseExp = -1074;
+        } else {
+            // Normal: implicit leading 1-bit (2^52).
+            $significand = BigInteger::of(0x10000000000000 | $mantissa);
+            $baseExp = $expBits - 1075; // biased exp - 1023 (bias) - 52 (mantissa shift)
+        }
+
+        if ($baseExp >= 0) {
+            // Result is an integer: significand × 2^baseExp.
+            $unscaled = $significand->multipliedBy(BigInteger::of(2)->power($baseExp));
+            $scale = 0;
+        } else {
+            // Fraction: significand × 5^|baseExp| / 10^|baseExp|.
+            // Multiplying by 5^n eliminates the 2-based denominator while keeping scale = n.
+            $absExp = -$baseExp;
+            $unscaled = $significand->multipliedBy(BigInteger::of(5)->power($absExp));
+            $scale = $absExp;
+        }
+
+        if ($signBit === 1) {
+            $unscaled = $unscaled->negated();
+        }
+
+        return BigDecimal::ofUnscaledValue($unscaled, $scale)->strippedOfTrailingZeros();
+    }
+
+    /**
+     * Creates a BigDecimal from the shortest decimal representation of a float that round-trips back to the same value.
+     *
+     * The result is the shortest BigDecimal that passes `BigDecimal::fromFloatShortest($f)->toFloat() === $f`.
+     *
+     * Examples:
+     *   - `fromFloatShortest(0.3)` returns a BigDecimal with value '0.3'
+     *   - `fromFloatShortest(0.1 * 3.0)` returns a BigDecimal with value '0.30000000000000004' (`0.1 * 3.0 !== 0.3`)
+     *   - `fromFloatShortest(1.0 / 3.0)` returns a BigDecimal with value '0.3333333333333333'
+     *
+     * Note that BigDecimal has no concept of negative zero, so `-0.0` and `0.0` both convert to zero.
+     *
+     * @throws InvalidArgumentException If the value is NaN or infinite.
+     */
+    public static function fromFloatShortest(float $value): BigDecimal
+    {
+        if (is_nan($value)) {
+            throw InvalidArgumentException::cannotConvertFloat('NaN');
+        }
+        if (is_infinite($value)) {
+            throw InvalidArgumentException::cannotConvertFloat($value > 0 ? 'INF' : '-INF');
+        }
+
+        // json_encode() uses serialize_precision; precision -1 uses the shortest round-trip algorithm
+        $previousPrecision = ini_set('serialize_precision', '-1');
+
+        try {
+            $str = json_encode($value);
+        } finally {
+            if ($previousPrecision !== false) {
+                ini_set('serialize_precision', $previousPrecision);
+            }
+        }
+
+        assert($str !== false);
+
+        return BigDecimal::of($str)->strippedOfTrailingZeros();
     }
 
     /**
