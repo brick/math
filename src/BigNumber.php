@@ -469,10 +469,15 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * The output of this method can be parsed by the `of()` factory method; this will yield an object equal to this
      * one, but possibly of a different type if instantiated through `BigNumber::of()`.
      *
+     * @return non-empty-string
+     *
      * @pure
      */
     abstract public function toString(): string;
 
+    /**
+     * @return non-empty-string
+     */
     #[Override]
     final public function jsonSerialize(): string
     {
@@ -480,6 +485,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     }
 
     /**
+     * @return non-empty-string
+     *
      * @pure
      */
     final public function __toString(): string
