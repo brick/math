@@ -5,8 +5,8 @@ on:
   pull_request:
 
 env:
-  PHPSTAN_PHP_VERSION: "8.4"
-  COVERAGE_PHP_VERSION: "8.4"
+  PHPSTAN_PHP_VERSION: "8.5"
+  COVERAGE_PHP_VERSION: "8.5"
 
 jobs:
   phpstan:
