@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.16.1](https://github.com/brick/math/releases/tag/0.16.1) - 2026-03-09
+
+👌 **Improvements**
+
+- Add `@return non-empty-string` to `toString()`, `jsonSerialize()` and `__toString()` (#111 by @vudaltsov)
+
 ## [0.16.0](https://github.com/brick/math/releases/tag/0.16.0) - 2026-03-06
 
 💥 **Breaking changes**
