@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.16.2](https://github.com/brick/math/releases/tag/0.16.2) - 2026-03-15
+
+✨ **New features**
+
+New methods to create a `BigDecimal` from a `float` value:
+
+- `BigDecimal::fromFloatExact()`
+- `BigDecimal::fromFloatShortest()`
+
 ## [0.16.1](https://github.com/brick/math/releases/tag/0.16.1) - 2026-03-09
 
 👌 **Improvements**
