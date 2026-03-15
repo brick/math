@@ -8,8 +8,11 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\BigRational;
+use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use PHPUnit\Framework\Attributes\DataProvider;
+
+use function sprintf;
 
 /**
  * Unit tests for class BigNumber.
@@ -19,6 +22,108 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 class BigNumberTest extends AbstractTestCase
 {
+    #[DataProvider('providerOf')]
+    public function testOf(BigNumber|int|string $value, string $expectedClass, string $expectedValue): void
+    {
+        $result = BigNumber::of($value);
+
+        self::assertSame($expectedClass, $result::class);
+        self::assertSame($expectedValue, $result->toString());
+    }
+
+    #[DataProvider('providerOf')]
+    public function testOfNullableWithValidInputBehavesLikeOf(mixed $value, string $expectedClass, string $expectedValue): void
+    {
+        $result = BigNumber::ofNullable($value);
+
+        self::assertNotNull($result);
+        self::assertSame($expectedClass, $result::class);
+        self::assertSame($expectedValue, $result->toString());
+    }
+
+    public function testOfNullableWithNullInput(): void
+    {
+        self::assertNull(BigNumber::ofNullable(null));
+    }
+
+    public static function providerOf(): array
+    {
+        return [
+            [123, BigInteger::class, '123'],
+            ['1', BigInteger::class, '1'],
+            ['123', BigInteger::class, '123'],
+            ['123.0', BigDecimal::class, '123.0'],
+            ['-0.1', BigDecimal::class, '-0.1'],
+            ['.1', BigDecimal::class, '0.1'],
+            ['-.1', BigDecimal::class, '-0.1'],
+            ['1.', BigDecimal::class, '1'],
+            ['1e2', BigDecimal::class, '100'],
+            ['-1e3', BigDecimal::class, '-1000'],
+            ['1.2e3', BigDecimal::class, '1200'],
+            ['-1.2e3', BigDecimal::class, '-1200'],
+            ['1e-2', BigDecimal::class, '0.01'],
+            ['-1e-3', BigDecimal::class, '-0.001'],
+            ['2/3', BigRational::class, '2/3'],
+            ['-1/8', BigRational::class, '-1/8'],
+            [BigInteger::of(123), BigInteger::class, '123'],
+            [BigDecimal::of(123), BigDecimal::class, '123'],
+            [BigRational::of(123), BigRational::class, '123'],
+        ];
+    }
+
+    public function testOfEmptyStringThrowsException(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The number must not be empty.');
+
+        BigNumber::of('');
+    }
+
+    #[DataProvider('providerOfInvalidFormatThrowsException')]
+    public function testOfInvalidFormatThrowsException(string $value): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $value));
+
+        BigNumber::of($value);
+    }
+
+    public static function providerOfInvalidFormatThrowsException(): array
+    {
+        return [
+            ['a'],
+            [' 1'],
+            ['1 '],
+            ['+'],
+            ['-'],
+            ['+a'],
+            ['-a'],
+            ['a0'],
+            ['0a'],
+            ['1.a'],
+            ['a.1'],
+            ['..1'],
+            ['1..'],
+            ['.1.'],
+            ['.'],
+            ['1e'],
+            ['.e'],
+            ['.e1'],
+            ['1e+'],
+            ['1e-'],
+            ['+e1'],
+            ['-e2'],
+            ['.e3'],
+            ['123/-456'],
+            ['1e4/2'],
+            ['1.2/3'],
+            ['1e2/3'],
+            [' 1/2'],
+            ['1/2 '],
+            ['/'],
+        ];
+    }
+
     /**
      * @param list<BigNumber|int|string> $values
      */
