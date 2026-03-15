@@ -103,3 +103,36 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         if: ${{ matrix.php-version == env.COVERAGE_PHP_VERSION }}
+
+  phpunit-32bit:
+    name: PHPUnit (32-bit)
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        calculator:
+          - GMP
+          - BCMath
+          - Native
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run PHPUnit
+        run: |
+          docker run --platform linux/386 --rm -i \
+            -v ${{ github.workspace }}:/app \
+            -w /app \
+            -e CALCULATOR=${{ matrix.calculator }} \
+            php:8.5-cli bash -e <<'EOF'
+              apt-get update
+              apt-get install -y libgmp-dev unzip
+              docker-php-ext-install gmp bcmath > /dev/null
+              curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+              composer install --no-interaction
+              php -r 'echo "PHP_INT_SIZE=", PHP_INT_SIZE, "\n";'
+              php -r 'exit(PHP_INT_SIZE === 4 ? 0 : 1);'
+              vendor/bin/phpunit
+          EOF
