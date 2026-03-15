@@ -12,6 +12,18 @@ use RuntimeException;
 final class NoInverseException extends RuntimeException implements MathException
 {
     /**
+     * @internal
+     *
+     * @pure
+     */
+    public function __construct(string $message)
+    {
+        parent::__construct($message);
+    }
+
+    /**
+     * @internal
+     *
      * @pure
      */
     public static function noModularInverse(): self

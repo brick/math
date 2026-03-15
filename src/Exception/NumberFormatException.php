@@ -17,6 +17,18 @@ use function strtoupper;
 final class NumberFormatException extends RuntimeException implements MathException
 {
     /**
+     * @internal
+     *
+     * @pure
+     */
+    public function __construct(string $message)
+    {
+        parent::__construct($message);
+    }
+
+    /**
+     * @internal
+     *
      * @pure
      */
     public static function invalidFormat(string $value): self
@@ -28,6 +40,8 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     }
 
     /**
+     * @internal
+     *
      * @param string $char The failing character.
      *
      * @pure
@@ -41,6 +55,8 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function charNotValidInBase(string $char, int $base): self
@@ -53,6 +69,8 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function emptyNumber(): self
@@ -61,6 +79,8 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function emptyByteString(): self
@@ -69,6 +89,8 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function exponentTooLarge(): self

@@ -12,6 +12,18 @@ use RuntimeException;
 final class NegativeNumberException extends RuntimeException implements MathException
 {
     /**
+     * @internal
+     *
+     * @pure
+     */
+    public function __construct(string $message)
+    {
+        parent::__construct($message);
+    }
+
+    /**
+     * @internal
+     *
      * @pure
      */
     public static function squareRootOfNegativeNumber(): self
@@ -20,6 +32,8 @@ final class NegativeNumberException extends RuntimeException implements MathExce
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function toArbitraryBaseOfNegativeNumber(): self
@@ -28,6 +42,8 @@ final class NegativeNumberException extends RuntimeException implements MathExce
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function unsignedBytesOfNegativeNumber(): self

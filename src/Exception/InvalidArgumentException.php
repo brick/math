@@ -12,6 +12,18 @@ use function sprintf;
 final class InvalidArgumentException extends \InvalidArgumentException implements MathException
 {
     /**
+     * @internal
+     *
+     * @pure
+     */
+    public function __construct(string $message)
+    {
+        parent::__construct($message);
+    }
+
+    /**
+     * @internal
+     *
      * @pure
      */
     public static function baseOutOfRange(int $base): self
@@ -20,6 +32,8 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function negativeScale(): self
@@ -28,6 +42,8 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function negativeBitIndex(): self
@@ -36,6 +52,8 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function negativeBitCount(): self
@@ -44,6 +62,8 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function alphabetTooShort(): self
@@ -52,6 +72,8 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function duplicateCharsInAlphabet(): self
@@ -60,6 +82,8 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function minGreaterThanMax(): self
@@ -68,6 +92,8 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function cannotConvertFloat(string $type): self
@@ -76,6 +102,8 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function negativeExponent(): self
@@ -84,6 +112,8 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function negativeModulus(): self

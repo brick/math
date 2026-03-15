@@ -12,6 +12,18 @@ use RuntimeException;
 final class UnsupportedPlatformException extends RuntimeException implements MathException
 {
     /**
+     * @internal
+     *
+     * @pure
+     */
+    public function __construct(string $message)
+    {
+        parent::__construct($message);
+    }
+
+    /**
+     * @internal
+     *
      * @pure
      */
     public static function require64BitPhp(): self
@@ -20,6 +32,8 @@ final class UnsupportedPlatformException extends RuntimeException implements Mat
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function unsupportedFloatFormat(): self
