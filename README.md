@@ -257,3 +257,7 @@ even if these machines do not share the same set of PHP extensions.
 
 For example, serializing on a machine with GMP support and unserializing on a machine that does not have this extension
 installed will still work as expected.
+
+#### PHPStan extension
+
+A third-party [PHPStan extension](https://github.com/simPod/phpstan-brick-math) is available for this library. It provides more specific throw type narrowing for brick/math methods, so that PHPStan can infer the exact exception classes thrown. Note that this extension is not maintained by the author of brick/math.
