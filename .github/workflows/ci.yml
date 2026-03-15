@@ -103,3 +103,45 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         if: ${{ matrix.php-version == env.COVERAGE_PHP_VERSION }}
+
+  phpunit-32bit:
+    name: PHPUnit (32-bit)
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        calculator:
+          - GMP
+          - BCMath
+          - Native
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run PHPUnit with coverage
+        run: |
+          docker run --platform linux/386 --rm -i \
+            -v ${{ github.workspace }}:/app \
+            -w /app \
+            -e CI=true \
+            -e CALCULATOR=${{ matrix.calculator }} \
+            php:8.5-cli bash -e <<'EOF'
+              apt-get update
+              apt-get install -y unzip
+              if [ "$CALCULATOR" = "GMP" ]; then apt-get install -y libgmp-dev && docker-php-ext-install gmp > /dev/null; fi
+              if [ "$CALCULATOR" = "BCMath" ]; then docker-php-ext-install bcmath > /dev/null; fi
+              pecl install pcov > /dev/null
+              docker-php-ext-enable pcov
+              curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+              composer install --no-interaction
+              php -r 'echo "PHP_INT_SIZE=", PHP_INT_SIZE, "\n";'
+              php -r 'exit(PHP_INT_SIZE === 4 ? 0 : 1);'
+              vendor/bin/phpunit --coverage-clover clover.xml
+          EOF
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
