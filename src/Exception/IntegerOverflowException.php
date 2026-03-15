@@ -18,6 +18,18 @@ use const PHP_INT_MIN;
 final class IntegerOverflowException extends RuntimeException implements MathException
 {
     /**
+     * @internal
+     *
+     * @pure
+     */
+    public function __construct(string $message)
+    {
+        parent::__construct($message);
+    }
+
+    /**
+     * @internal
+     *
      * @pure
      */
     public static function integerOutOfRange(BigInteger $value): self

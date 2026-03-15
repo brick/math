@@ -12,6 +12,18 @@ use RuntimeException;
 final class DivisionByZeroException extends RuntimeException implements MathException
 {
     /**
+     * @internal
+     *
+     * @pure
+     */
+    public function __construct(string $message)
+    {
+        parent::__construct($message);
+    }
+
+    /**
+     * @internal
+     *
      * @pure
      */
     public static function divisionByZero(): self
@@ -20,6 +32,8 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function zeroModulus(): self
@@ -28,6 +42,8 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function zeroDenominator(): self
@@ -36,6 +52,8 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function reciprocalOfZero(): self
@@ -44,6 +62,8 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function zeroToNegativePower(): self

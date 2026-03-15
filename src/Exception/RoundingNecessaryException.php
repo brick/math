@@ -12,6 +12,18 @@ use RuntimeException;
 final class RoundingNecessaryException extends RuntimeException implements MathException
 {
     /**
+     * @internal
+     *
+     * @pure
+     */
+    public function __construct(string $message)
+    {
+        parent::__construct($message);
+    }
+
+    /**
+     * @internal
+     *
      * @pure
      */
     public static function decimalScaleTooSmall(): self
@@ -20,6 +32,8 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function rationalScaleTooSmall(): self
@@ -28,6 +42,8 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function integerDivisionNotExact(): self
@@ -36,6 +52,8 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function decimalDivisionNotExact(): self
@@ -44,6 +62,8 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function decimalDivisionScaleTooSmall(): self
@@ -52,6 +72,8 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function integerSquareRootNotExact(): self
@@ -60,6 +82,8 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function decimalSquareRootNotExact(): self
@@ -68,6 +92,8 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function decimalSquareRootScaleTooSmall(): self
@@ -76,6 +102,8 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function decimalNotConvertibleToInteger(): self
@@ -84,6 +112,8 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function rationalNotConvertibleToInteger(): self
@@ -92,6 +122,8 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
     }
 
     /**
+     * @internal
+     *
      * @pure
      */
     public static function rationalNotConvertibleToDecimal(): self
