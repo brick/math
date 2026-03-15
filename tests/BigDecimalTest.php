@@ -11,6 +11,7 @@ use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\Exception\UnsupportedPlatformException;
 use Brick\Math\RoundingMode;
 use Generator;
 use LogicException;
@@ -31,6 +32,7 @@ use const PHP_FLOAT_MAX;
 use const PHP_FLOAT_MIN;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
+use const PHP_INT_SIZE;
 
 /**
  * Unit tests for class BigDecimal.
@@ -3999,7 +4001,15 @@ class BigDecimalTest extends AbstractTestCase
     #[DataProvider('providerFromFloatExact')]
     public function testFromFloatExact(float $value, string $expected): void
     {
-        self::assertBigDecimalEquals($expected, BigDecimal::fromFloatExact($value));
+        if (PHP_INT_SIZE !== 8) {
+            $this->expectException(UnsupportedPlatformException::class);
+        }
+
+        $actual = BigDecimal::fromFloatExact($value);
+
+        if (PHP_INT_SIZE === 8) {
+            self::assertBigDecimalEquals($expected, $actual);
+        }
     }
 
     public static function providerFromFloatExact(): Generator
