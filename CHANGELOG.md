@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file.
 - Deprecated method `BigDecimal::hasNonZeroFractionalPart()` has been removed, use `! $number->getFractionalPart()->isZero()` instead
 - Exception constructors and factory methods are now `@internal`
 
+✨ **Compatibility improvements**
+
+- `BigDecimal::fromFloatExact()` now supports 32-bit PHP
+
 ## [0.16.2](https://github.com/brick/math/releases/tag/0.16.2) - 2026-03-15
 
 ✨ **New features**
