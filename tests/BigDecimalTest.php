@@ -475,7 +475,7 @@ class BigDecimalTest extends AbstractTestCase
         $this->expectException(RoundingNecessaryException::class);
         $this->expectExceptionMessageExact('This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.');
 
-        BigDecimal::min(1, '3/7');
+        BigDecimal::max(1, '3/7');
     }
 
     /**
@@ -515,7 +515,7 @@ class BigDecimalTest extends AbstractTestCase
         $this->expectException(RoundingNecessaryException::class);
         $this->expectExceptionMessageExact('This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.');
 
-        BigDecimal::min(1, '3/7');
+        BigDecimal::sum(1, '3/7');
     }
 
     /**
