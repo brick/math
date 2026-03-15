@@ -558,6 +558,10 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
             return new BigInteger((string) $value);
         }
 
+        if ($value === '') {
+            throw NumberFormatException::emptyNumber();
+        }
+
         if (str_contains($value, '/')) {
             // Rational number
             if (preg_match(self::PARSE_REGEXP_RATIONAL, $value, $matches, PREG_UNMATCHED_AS_NULL) !== 1) {

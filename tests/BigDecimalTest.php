@@ -214,8 +214,16 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
-    #[DataProvider('providerOfInvalidValueThrowsException')]
-    public function testOfInvalidValueThrowsException(string $value): void
+    public function testOfEmptyStringThrowsException(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage('The number must not be empty.');
+
+        BigDecimal::of('');
+    }
+
+    #[DataProvider('providerOfInvalidFormatThrowsException')]
+    public function testOfInvalidFormatThrowsException(string $value): void
     {
         $this->expectException(NumberFormatException::class);
         $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $value));
@@ -223,10 +231,9 @@ class BigDecimalTest extends AbstractTestCase
         BigDecimal::of($value);
     }
 
-    public static function providerOfInvalidValueThrowsException(): array
+    public static function providerOfInvalidFormatThrowsException(): array
     {
         return [
-            [''],
             ['a'],
             [' 1'],
             ['1 '],

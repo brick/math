@@ -134,11 +134,19 @@ class BigRationalTest extends AbstractTestCase
         BigRational::of('2/0');
     }
 
+    public function testOfEmptyStringThrowsException(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage('The number must not be empty.');
+
+        BigRational::of('');
+    }
+
     /**
      * @param string $string An invalid string representation.
      */
-    #[DataProvider('providerOfInvalidString')]
-    public function testOfInvalidString(string $string): void
+    #[DataProvider('providerOfInvalidFormatThrowsException')]
+    public function testOfInvalidFormatThrowsException(string $string): void
     {
         $this->expectException(NumberFormatException::class);
         $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $string));
@@ -146,7 +154,7 @@ class BigRationalTest extends AbstractTestCase
         BigRational::of($string);
     }
 
-    public static function providerOfInvalidString(): array
+    public static function providerOfInvalidFormatThrowsException(): array
     {
         return [
             ['123/-456'],
