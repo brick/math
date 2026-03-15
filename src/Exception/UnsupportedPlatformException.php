@@ -26,16 +26,6 @@ final class UnsupportedPlatformException extends RuntimeException implements Mat
      *
      * @pure
      */
-    public static function require64BitPhp(): self
-    {
-        return new self('This feature requires 64-bit PHP.');
-    }
-
-    /**
-     * @internal
-     *
-     * @pure
-     */
     public static function unsupportedFloatFormat(): self
     {
         return new self('Unsupported float format: expected IEEE-754 double.');

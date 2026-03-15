@@ -16,6 +16,7 @@ use LogicException;
 use Override;
 
 use function assert;
+use function chr;
 use function in_array;
 use function ini_set;
 use function intdiv;
@@ -167,7 +168,7 @@ final readonly class BigDecimal extends BigNumber
      * Note that BigDecimal has no concept of negative zero, so `-0.0` and `0.0` both convert to zero.
      *
      * @throws InvalidArgumentException     If the value is NaN or infinite.
-     * @throws UnsupportedPlatformException If PHP is not 64-bit, or if the platform uses a non-IEEE-754 double format.
+     * @throws UnsupportedPlatformException If the platform uses a non-IEEE-754 double format.
      *
      * @pure
      */
@@ -180,36 +181,64 @@ final readonly class BigDecimal extends BigNumber
             throw InvalidArgumentException::cannotConvertFloat($value > 0 ? 'INF' : '-INF');
         }
 
-        if (PHP_INT_SIZE < 8) {
-            throw UnsupportedPlatformException::require64BitPhp();
-        }
-
         if (pack('E', 1.0) !== "\x3f\xf0\x00\x00\x00\x00\x00\x00") {
             throw UnsupportedPlatformException::unsupportedFloatFormat();
         }
 
-        // Extract the raw IEEE-754 bit pattern as a 64-bit integer (big-endian).
-        /** @var array{bits: int} $unpacked */
-        $unpacked = unpack('Jbits', pack('E', $value));
-        $bits = $unpacked['bits'];
+        if (PHP_INT_SIZE >= 8) {
+            // 64-bit: extract the IEEE-754 bit pattern as a 64-bit integer.
+            /** @var array{1: int} $unpacked */
+            $unpacked = unpack('J', pack('E', $value));
+            $bits = $unpacked[1];
 
-        // Fields: [sign(1)|exp(11)|mantissa(52)]
-        $signBit = ($bits >> 63) & 1;
-        $expBits = ($bits >> 52) & 0x7FF;
-        $mantissa = $bits & 0xFFFFFFFFFFFFF;
+            // Bits: [sign(1)|exp(11)|mantissa(52)]
+            $signBit = ($bits >> 63) & 1;
+            $expBits = ($bits >> 52) & 0x7FF;
+            $mantissa = $bits & 0xFFFFFFFFFFFFF;
 
-        // Zero (covers both 0.0 and -0.0).
-        if ($expBits === 0 && $mantissa === 0) {
-            return BigDecimal::zero();
+            // Zero (covers both 0.0 and -0.0).
+            if ($expBits === 0 && $mantissa === 0) {
+                return BigDecimal::zero();
+            }
+
+            if ($expBits === 0) {
+                $significand = BigInteger::of($mantissa);
+            } else {
+                $significand = BigInteger::of(0x10000000000000 | $mantissa);
+            }
+        } else {
+            // 32-bit: extract the IEEE-754 bit pattern as 8 bytes.
+            $packed = pack('E', $value);
+
+            // Get the first 16 bits as an integer.
+            /** @var array{1: int} $unpacked */
+            $unpacked = unpack('n', $packed);
+            $header = $unpacked[1];
+
+            // Bits: [sign(1)|exp(11)|mantissa(4)] in header (bytes 0-1) + 48 bits of mantissa in bytes 2-7
+            $signBit = ($header >> 15) & 1;
+            $expBits = ($header >> 4) & 0x7FF;
+            $mantissaBytes = chr($header & 0x0F) . substr($packed, 2);
+
+            // Zero (covers both 0.0 and -0.0).
+            if ($expBits === 0 && $mantissaBytes === "\x00\x00\x00\x00\x00\x00\x00") {
+                return BigDecimal::zero();
+            }
+
+            $mantissa = BigInteger::fromBytes($mantissaBytes, false);
+
+            if ($expBits === 0) {
+                $significand = $mantissa;
+            } else {
+                // Implicit leading 1-bit (2^52).
+                $significand = $mantissa->plus(BigInteger::of(1)->shiftedLeft(52));
+            }
         }
 
         if ($expBits === 0) {
             // Subnormal: no implicit leading 1-bit; effective exponent = -1074.
-            $significand = BigInteger::of($mantissa);
             $baseExp = -1074;
         } else {
-            // Normal: implicit leading 1-bit (2^52).
-            $significand = BigInteger::of(0x10000000000000 | $mantissa);
             $baseExp = $expBits - 1075; // biased exp - 1023 (bias) - 52 (mantissa shift)
         }
 
