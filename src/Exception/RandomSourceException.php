@@ -18,7 +18,7 @@ final class RandomSourceException extends RuntimeException implements MathExcept
     /**
      * @pure
      */
-    public static function randomSourceFailure(Throwable $previous): RandomSourceException
+    public static function randomSourceFailure(Throwable $previous): self
     {
         return new self('Random byte generation failed.', 0, $previous);
     }
@@ -26,7 +26,7 @@ final class RandomSourceException extends RuntimeException implements MathExcept
     /**
      * @pure
      */
-    public static function invalidRandomBytesType(mixed $value): RandomSourceException
+    public static function invalidRandomBytesType(mixed $value): self
     {
         return new self(sprintf(
             'The random bytes generator must return a string, got %s.',
@@ -37,7 +37,7 @@ final class RandomSourceException extends RuntimeException implements MathExcept
     /**
      * @pure
      */
-    public static function invalidRandomBytesLength(int $expectedLength, int $actualLength): RandomSourceException
+    public static function invalidRandomBytesLength(int $expectedLength, int $actualLength): self
     {
         return new self(sprintf(
             'The random bytes generator returned %d byte(s), expected %d.',

@@ -14,7 +14,7 @@ final class NegativeNumberException extends RuntimeException implements MathExce
     /**
      * @pure
      */
-    public static function squareRootOfNegativeNumber(): NegativeNumberException
+    public static function squareRootOfNegativeNumber(): self
     {
         return new self('Cannot calculate the square root of a negative number.');
     }
@@ -22,7 +22,7 @@ final class NegativeNumberException extends RuntimeException implements MathExce
     /**
      * @pure
      */
-    public static function toArbitraryBaseOfNegativeNumber(): NegativeNumberException
+    public static function toArbitraryBaseOfNegativeNumber(): self
     {
         return new self('Cannot convert a negative number to an arbitrary base.');
     }
@@ -30,7 +30,7 @@ final class NegativeNumberException extends RuntimeException implements MathExce
     /**
      * @pure
      */
-    public static function unsignedBytesOfNegativeNumber(): NegativeNumberException
+    public static function unsignedBytesOfNegativeNumber(): self
     {
         return new self('Cannot convert a negative number to a byte string in unsigned mode.');
     }
