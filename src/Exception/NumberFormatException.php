@@ -19,7 +19,7 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     /**
      * @pure
      */
-    public static function invalidFormat(string $value): NumberFormatException
+    public static function invalidFormat(string $value): self
     {
         return new self(sprintf(
             'Value "%s" does not represent a valid number.',
@@ -32,7 +32,7 @@ final class NumberFormatException extends RuntimeException implements MathExcept
      *
      * @pure
      */
-    public static function charNotInAlphabet(string $char): NumberFormatException
+    public static function charNotInAlphabet(string $char): self
     {
         return new self(sprintf(
             'Character %s is not valid in the given alphabet.',
@@ -43,7 +43,7 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     /**
      * @pure
      */
-    public static function charNotValidInBase(string $char, int $base): NumberFormatException
+    public static function charNotValidInBase(string $char, int $base): self
     {
         return new self(sprintf(
             'Character %s is not valid in base %d.',
@@ -55,7 +55,7 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     /**
      * @pure
      */
-    public static function emptyNumber(): NumberFormatException
+    public static function emptyNumber(): self
     {
         return new self('The number must not be empty.');
     }
@@ -63,7 +63,7 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     /**
      * @pure
      */
-    public static function emptyByteString(): NumberFormatException
+    public static function emptyByteString(): self
     {
         return new self('The byte string must not be empty.');
     }
@@ -71,7 +71,7 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     /**
      * @pure
      */
-    public static function exponentTooLarge(): NumberFormatException
+    public static function exponentTooLarge(): self
     {
         return new self('The exponent is too large to be represented as an integer.');
     }

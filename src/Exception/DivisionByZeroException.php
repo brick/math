@@ -14,7 +14,7 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     /**
      * @pure
      */
-    public static function divisionByZero(): DivisionByZeroException
+    public static function divisionByZero(): self
     {
         return new self('Division by zero.');
     }
@@ -22,7 +22,7 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     /**
      * @pure
      */
-    public static function zeroModulus(): DivisionByZeroException
+    public static function zeroModulus(): self
     {
         return new self('The modulus must not be zero.');
     }
@@ -30,7 +30,7 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     /**
      * @pure
      */
-    public static function zeroDenominator(): DivisionByZeroException
+    public static function zeroDenominator(): self
     {
         return new self('The denominator of a rational number must not be zero.');
     }
@@ -38,7 +38,7 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     /**
      * @pure
      */
-    public static function reciprocalOfZero(): DivisionByZeroException
+    public static function reciprocalOfZero(): self
     {
         return new self('The reciprocal of zero is undefined.');
     }
@@ -46,7 +46,7 @@ final class DivisionByZeroException extends RuntimeException implements MathExce
     /**
      * @pure
      */
-    public static function zeroToNegativePower(): DivisionByZeroException
+    public static function zeroToNegativePower(): self
     {
         return new self('Cannot raise zero to a negative power.');
     }
