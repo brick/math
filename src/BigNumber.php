@@ -489,6 +489,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
+    #[Override]
     final public function __toString(): string
     {
         return $this->toString();
