@@ -93,18 +93,15 @@ BigRational::of('1.15'); // 23/20 (reduced to lowest terms)
 ```
 
 > [!NOTE]
-> Floating-point values are not accepted as inputs. This is intentional, as `float` values are imprecise by design and
-> could result in a loss of information. Always instantiate from a `string`, which supports an unlimited number of
-> digits:
+> The `of()` factory method does not accept `float` values, because casting a float to string can be lossy.
+> To convert a float to a `BigDecimal`, use one of the dedicated methods:
 >
 > ```php
-> BigDecimal::of('1.9999999999999999999999999');
-> ```
-> 
-> If you need to convert a `float` to a `BigNumber` and understand the risks, cast it to a string first:
-> 
-> ```php
-> BigDecimal::of((string) $float);
+> // Exact IEEE-754 representation — the value the float actually holds:
+> BigDecimal::fromFloatExact(0.1); // 0.1000000000000000055511151231257827021181583404541015625
+>
+> // Shortest decimal that round-trips back to the same float:
+> BigDecimal::fromFloatShortest(0.1); // 0.1
 > ```
 
 #### Immutability & chaining
