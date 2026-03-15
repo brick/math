@@ -142,6 +142,14 @@ class BigIntegerTest extends AbstractTestCase
         self::assertSame($decimal, BigInteger::of($decimal));
     }
 
+    public function testOfEmptyStringThrowsException(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The number must not be empty.');
+
+        BigInteger::of('');
+    }
+
     #[DataProvider('providerOfInvalidFormatThrowsException')]
     public function testOfInvalidFormatThrowsException(string $value): void
     {
@@ -154,7 +162,6 @@ class BigIntegerTest extends AbstractTestCase
     public static function providerOfInvalidFormatThrowsException(): array
     {
         return [
-            [''],
             ['a'],
             [' 1'],
             ['1 '],
