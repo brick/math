@@ -9,6 +9,7 @@ use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\DecimalHelper;
+use Brick\Math\Internal\Safe;
 use LogicException;
 use Override;
 
@@ -334,7 +335,7 @@ final readonly class BigRational extends BigNumber
                 throw DivisionByZeroException::zeroToNegativePower();
             }
 
-            return $this->reciprocal()->power(-$exponent);
+            return $this->reciprocal()->power(Safe::neg($exponent));
         }
 
         return new BigRational(

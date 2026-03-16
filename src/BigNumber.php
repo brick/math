@@ -10,6 +10,7 @@ use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\Internal\Safe;
 use JsonSerializable;
 use Override;
 use Stringable;
@@ -632,11 +633,11 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
                 $unscaledValue = self::cleanUp($sign, $integral . $fractional);
 
-                $scale = strlen($fractional) - $exponent;
+                $scale = Safe::sub(strlen($fractional), $exponent);
 
                 if ($scale < 0) {
                     if ($unscaledValue !== '0') {
-                        $unscaledValue .= str_repeat('0', -$scale);
+                        $unscaledValue .= str_repeat('0', Safe::neg($scale));
                     }
                     $scale = 0;
                 }

@@ -15,6 +15,7 @@ use Brick\Math\Exception\RandomSourceException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
+use Brick\Math\Internal\Safe;
 use LogicException;
 use Override;
 use Throwable;
@@ -985,7 +986,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($bits < 0) {
-            return $this->shiftedRight(-$bits);
+            return $this->shiftedRight(Safe::neg($bits));
         }
 
         return $this->multipliedBy(BigInteger::of(2)->power($bits));
@@ -1005,7 +1006,7 @@ final readonly class BigInteger extends BigNumber
         }
 
         if ($bits < 0) {
-            return $this->shiftedLeft(-$bits);
+            return $this->shiftedLeft(Safe::neg($bits));
         }
 
         $operand = BigInteger::of(2)->power($bits);

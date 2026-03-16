@@ -12,6 +12,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Exception\UnsupportedPlatformException;
 use Brick\Math\Internal\CalculatorRegistry;
 use Brick\Math\Internal\DecimalHelper;
+use Brick\Math\Internal\Safe;
 use LogicException;
 use Override;
 
@@ -97,7 +98,7 @@ final readonly class BigDecimal extends BigNumber
 
         if ($scale < 0) {
             if ($value !== '0') {
-                $value .= str_repeat('0', -$scale);
+                $value .= str_repeat('0', Safe::neg($scale));
             }
             $scale = 0;
         }
@@ -385,12 +386,14 @@ final readonly class BigDecimal extends BigNumber
             return $that;
         }
 
+        /** @var non-negative-int $scale */
+        $scale = Safe::add($this->scale, $that->scale);
+
         if ($this->isZero() || $that->isZero()) {
-            return new BigDecimal('0', $this->scale + $that->scale);
+            return new BigDecimal('0', $scale);
         }
 
         $value = CalculatorRegistry::get()->mul($this->value, $that->value);
-        $scale = $this->scale + $that->scale;
 
         return new BigDecimal($value, $scale);
     }
@@ -426,8 +429,8 @@ final readonly class BigDecimal extends BigNumber
             return $this;
         }
 
-        $p = $this->valueWithMinScale($that->scale + $scale);
-        $q = $that->valueWithMinScale($this->scale - $scale);
+        $p = $this->valueWithMinScale(Safe::add($that->scale, $scale));
+        $q = $that->valueWithMinScale(Safe::sub($this->scale, $scale));
 
         $calculator = CalculatorRegistry::get();
         $result = $calculator->divRound($p, $q, $roundingMode);
@@ -508,7 +511,10 @@ final readonly class BigDecimal extends BigNumber
             throw InvalidArgumentException::negativeExponent();
         }
 
-        return new BigDecimal(CalculatorRegistry::get()->pow($this->value, $exponent), $this->scale * $exponent);
+        /** @var non-negative-int $scale */
+        $scale = Safe::mul($this->scale, $exponent);
+
+        return new BigDecimal(CalculatorRegistry::get()->pow($this->value, $exponent), $scale);
     }
 
     /**
@@ -658,14 +664,14 @@ final readonly class BigDecimal extends BigNumber
 
         if ($inputScale % 2 !== 0) {
             $value .= '0';
-            $inputScale++;
+            $inputScale = Safe::add($inputScale, 1);
         }
 
         $calculator = CalculatorRegistry::get();
 
         // Keep one extra digit for rounding.
-        $intermediateScale = max($scale, intdiv($inputScale, 2)) + 1;
-        $value .= str_repeat('0', 2 * $intermediateScale - $inputScale);
+        $intermediateScale = Safe::add(max($scale, intdiv($inputScale, 2)), 1);
+        $value .= str_repeat('0', Safe::sub(Safe::mul(2, $intermediateScale), $inputScale));
 
         $sqrt = $calculator->sqrt($value);
         $isExact = $calculator->mul($sqrt, $sqrt) === $value;
@@ -710,10 +716,13 @@ final readonly class BigDecimal extends BigNumber
         }
 
         if ($places < 0) {
-            return $this->withPointMovedRight(-$places);
+            return $this->withPointMovedRight(Safe::neg($places));
         }
 
-        return new BigDecimal($this->value, $this->scale + $places);
+        /** @var non-negative-int $scale */
+        $scale = Safe::add($this->scale, $places);
+
+        return new BigDecimal($this->value, $scale);
     }
 
     /**
@@ -730,15 +739,15 @@ final readonly class BigDecimal extends BigNumber
         }
 
         if ($places < 0) {
-            return $this->withPointMovedLeft(-$places);
+            return $this->withPointMovedLeft(Safe::neg($places));
         }
 
         $value = $this->value;
-        $scale = $this->scale - $places;
+        $scale = Safe::sub($this->scale, $places);
 
         if ($scale < 0) {
             if ($value !== '0') {
-                $value .= str_repeat('0', -$scale);
+                $value .= str_repeat('0', Safe::neg($scale));
             }
             $scale = 0;
         }
