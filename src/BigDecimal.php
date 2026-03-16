@@ -1008,7 +1008,7 @@ final readonly class BigDecimal extends BigNumber
      *
      * @internal
      *
-     * @return array{value: string, scale: int}
+     * @return array{value: string, scale: non-negative-int}
      */
     public function __serialize(): array
     {
