@@ -4111,21 +4111,21 @@ class BigDecimalTest extends AbstractTestCase
     public function testFromFloatExactNan(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot convert NaN to a BigDecimal.');
+        $this->expectExceptionMessageExact('Cannot convert NaN to a BigDecimal.');
         BigDecimal::fromFloatExact(NAN);
     }
 
     public function testFromFloatExactInf(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot convert INF to a BigDecimal.');
+        $this->expectExceptionMessageExact('Cannot convert INF to a BigDecimal.');
         BigDecimal::fromFloatExact(INF);
     }
 
     public function testFromFloatExactNegativeInf(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot convert -INF to a BigDecimal.');
+        $this->expectExceptionMessageExact('Cannot convert -INF to a BigDecimal.');
         BigDecimal::fromFloatExact(-INF);
     }
 
@@ -4172,21 +4172,21 @@ class BigDecimalTest extends AbstractTestCase
     public function testFromFloatShortestNan(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot convert NaN to a BigDecimal.');
+        $this->expectExceptionMessageExact('Cannot convert NaN to a BigDecimal.');
         BigDecimal::fromFloatShortest(NAN);
     }
 
     public function testFromFloatShortestInf(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot convert INF to a BigDecimal.');
+        $this->expectExceptionMessageExact('Cannot convert INF to a BigDecimal.');
         BigDecimal::fromFloatShortest(INF);
     }
 
     public function testFromFloatShortestNegativeInf(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot convert -INF to a BigDecimal.');
+        $this->expectExceptionMessageExact('Cannot convert -INF to a BigDecimal.');
         BigDecimal::fromFloatShortest(-INF);
     }
 
