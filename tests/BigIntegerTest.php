@@ -60,7 +60,10 @@ class BigIntegerTest extends AbstractTestCase
     #[DataProvider('providerOf')]
     public function testOfNullableWithValidInputBehavesLikeOf(mixed $value, string $expected): void
     {
-        self::assertBigIntegerEquals($expected, BigInteger::ofNullable($value));
+        $result = BigInteger::ofNullable($value);
+
+        self::assertNotNull($result);
+        self::assertBigIntegerEquals($expected, $result);
     }
 
     public function testOfNullableWithNullInput(): void
