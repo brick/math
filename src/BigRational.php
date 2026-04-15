@@ -13,7 +13,6 @@ use Brick\Math\Internal\Safe;
 use LogicException;
 use Override;
 
-use function is_finite;
 use function max;
 use function min;
 use function strlen;
@@ -449,14 +448,14 @@ final readonly class BigRational extends BigNumber
     #[Override]
     public function toFloat(): float
     {
-        $numeratorFloat = $this->numerator->toFloat();
-        $denominatorFloat = $this->denominator->toFloat();
-
-        if (is_finite($numeratorFloat) && is_finite($denominatorFloat)) {
-            return $numeratorFloat / $denominatorFloat;
+        if ($this->denominator->isEqualTo(1)) {
+            return $this->numerator->toFloat();
         }
 
-        // At least one side overflows to INF; use a decimal approximation instead.
+        // Avoid $this->numerator->toFloat() / $this->denominator->toFloat(): converting both operands to float first
+        // adds an extra rounding step before the division and can change the final float. Instead, divide in decimal
+        // first and convert the resulting decimal approximation to float once.
+
         // We need ~17 significant digits for double precision (we use 20 for some margin). Since $scale controls
         // decimal places (not significant digits), we subtract the estimated order of magnitude so that large results
         // use fewer decimal places and small results use more (to look past leading zeros). Clamped to [0, 350] as
@@ -464,10 +463,17 @@ final readonly class BigRational extends BigNumber
         $magnitude = strlen($this->numerator->abs()->toString()) - strlen($this->denominator->toString());
         $scale = min(350, max(0, 20 - $magnitude));
 
-        return $this->numerator
+        $result = $this->numerator
             ->toBigDecimal()
             ->dividedBy($this->denominator, $scale, RoundingMode::HalfEven)
             ->toFloat();
+
+        // Preserve the sign when the decimal approximation underflows to zero.
+        if ($result === 0.0 && $this->numerator->isNegative()) {
+            return -0.0;
+        }
+
+        return $result;
     }
 
     #[Override]

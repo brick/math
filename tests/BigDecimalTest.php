@@ -16,8 +16,10 @@ use Generator;
 use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+use function bin2hex;
 use function ini_get;
 use function ini_set;
+use function pack;
 use function serialize;
 use function sprintf;
 use function unserialize;
@@ -3906,6 +3908,27 @@ class BigDecimalTest extends AbstractTestCase
             ['-9.999999999999999999999999999999999999999999999999999999999999', -9.999999999999999999999999999999],
             ['9.9e3000', INF],
             ['-9.9e3000', -INF],
+        ];
+    }
+
+    #[DataProvider('providerToFloatIsStableAcrossLosslessToBigRationalConversion')]
+    public function testToFloatIsStableAcrossLosslessToBigRationalConversion(string $value): void
+    {
+        $decimal = BigDecimal::of($value);
+
+        self::assertSame(
+            bin2hex(pack('E', $decimal->toFloat())),
+            bin2hex(pack('E', $decimal->toBigRational()->toFloat())),
+            sprintf('BigDecimal::toFloat() changed after lossless toBigRational() conversion for %s.', $value),
+        );
+    }
+
+    public static function providerToFloatIsStableAcrossLosslessToBigRationalConversion(): array
+    {
+        return [
+            ['3e-308'],
+            ['-3e-308'],
+            ['-1e-500'],
         ];
     }
 
