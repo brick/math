@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.17.1](https://github.com/brick/math/releases/tag/0.17.1) - 2026-04-15
+## [0.17.1](https://github.com/brick/math/releases/tag/0.17.1) - 2026-04-19
 
 - More precise `float` approximations in `BigRational::toFloat()`
 
