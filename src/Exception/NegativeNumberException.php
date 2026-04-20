@@ -36,6 +36,16 @@ final class NegativeNumberException extends RuntimeException implements MathExce
      *
      * @pure
      */
+    public static function nthRootOfNegativeNumber(): self
+    {
+        return new self('Cannot take an even nth root of a negative number.');
+    }
+
+    /**
+     * @internal
+     *
+     * @pure
+     */
     public static function toArbitraryBaseOfNegativeNumber(): self
     {
         return new self('Cannot convert a negative number to an arbitrary base.');

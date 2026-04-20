@@ -902,6 +902,90 @@ final readonly class BigInteger extends BigNumber
         return new BigInteger($sqrt);
     }
 
+    /**
+     * Returns the integer nth root of this number, rounded according to the given rounding mode.
+     *
+     * For odd $n, the operation is defined for negative inputs: the sign is preserved and the
+     * magnitude of the root is |$this|^(1/$n).
+     *
+     * @param int          $n            The root degree. Must be a strictly positive integer.
+     * @param RoundingMode $roundingMode An optional rounding mode, defaults to Unnecessary.
+     *
+     * @throws InvalidArgumentException   If $n is less than 1.
+     * @throws NegativeNumberException    If this number is negative and $n is even.
+     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used, and this number is not a perfect nth power.
+     *
+     * @pure
+     */
+    public function nthRoot(int $n, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigInteger
+    {
+        if ($n < 1) {
+            throw InvalidArgumentException::nonPositiveNthRootDegree();
+        }
+
+        if ($n === 1) {
+            return $this;
+        }
+
+        $isNegative = $this->isNegative();
+
+        if ($isNegative && $n % 2 === 0) {
+            throw NegativeNumberException::nthRootOfNegativeNumber();
+        }
+
+        if ($this->isZero()) {
+            return BigInteger::zero();
+        }
+
+        $calculator = CalculatorRegistry::get();
+
+        // Truncation toward zero: for positive $this this is the floor root, for negative $this
+        // with odd $n this is the ceiling of the true root (i.e., the root of smaller magnitude).
+        $truncatedRoot = $calculator->nthRoot($this->value, $n);
+        $rootPow = $calculator->pow($truncatedRoot, $n);
+
+        if ($rootPow === $this->value) {
+            return new BigInteger($truncatedRoot);
+        }
+
+        if ($roundingMode === RoundingMode::Unnecessary) {
+            throw RoundingNecessaryException::integerNthRootNotExact();
+        }
+
+        $isPositive = ! $isNegative;
+
+        // The next-step root is one unit further from zero than the truncated root.
+        $nextStep = $isPositive
+            ? $calculator->add($truncatedRoot, '1')
+            : $calculator->sub($truncatedRoot, '1');
+
+        if ($roundingMode === RoundingMode::Up) {
+            $increment = true;
+        } elseif ($roundingMode === RoundingMode::Down) {
+            $increment = false;
+        } elseif ($roundingMode === RoundingMode::Ceiling) {
+            $increment = $isPositive;
+        } elseif ($roundingMode === RoundingMode::Floor) {
+            $increment = ! $isPositive;
+        } else {
+            // Half* modes: compare 2*|$this| to |truncated^n| + |nextStep^n|.
+            // For consecutive integers r and r±1, the sum r^n + (r±1)^n is always odd, while
+            // 2*|$this| is always even, so a midpoint tie is impossible. Therefore all five Half*
+            // modes collapse to: increment iff 2*|$this| > |truncated^n| + |nextStep^n|.
+            $nextPow = $calculator->pow($nextStep, $n);
+            $absValue = $isPositive ? $this->value : substr($this->value, 1);
+            $absRootPow = $isPositive ? $rootPow : substr($rootPow, 1);
+            $absNextPow = $isPositive ? $nextPow : substr($nextPow, 1);
+
+            $twoAbsValue = $calculator->mul($absValue, '2');
+            $midSum = $calculator->add($absRootPow, $absNextPow);
+
+            $increment = $calculator->cmp($twoAbsValue, $midSum) > 0;
+        }
+
+        return new BigInteger($increment ? $nextStep : $truncatedRoot);
+    }
+
     #[Override]
     public function negated(): static
     {

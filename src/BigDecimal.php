@@ -703,6 +703,111 @@ final readonly class BigDecimal extends BigNumber
     }
 
     /**
+     * Returns the nth root of this number, rounded to the given scale according to the given rounding mode.
+     *
+     * For odd $n, the operation is defined for negative inputs: the sign is preserved and the
+     * magnitude of the root is |$this|^(1/$n).
+     *
+     * @param int              $n            The root degree. Must be a strictly positive integer.
+     * @param non-negative-int $scale        The target scale. Must be non-negative.
+     * @param RoundingMode     $roundingMode An optional rounding mode, defaults to Unnecessary.
+     *
+     * @throws InvalidArgumentException   If $n is less than 1 or $scale is negative.
+     * @throws NegativeNumberException    If this number is negative and $n is even.
+     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is used and the result cannot be represented
+     *                                    exactly at the given scale.
+     *
+     * @pure
+     */
+    public function nthRoot(int $n, int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
+    {
+        if ($n < 1) {
+            throw InvalidArgumentException::nonPositiveNthRootDegree();
+        }
+
+        if ($scale < 0) { // @phpstan-ignore smaller.alwaysFalse
+            throw InvalidArgumentException::negativeScale();
+        }
+
+        $isNegative = $this->isNegative();
+
+        if ($isNegative && $n % 2 === 0) {
+            throw NegativeNumberException::nthRootOfNegativeNumber();
+        }
+
+        if ($n === 1) {
+            return $this->toScale($scale, $roundingMode);
+        }
+
+        if ($this->isZero()) {
+            return new BigDecimal('0', $scale);
+        }
+
+        $value = $this->value;
+        $inputScale = $this->scale;
+
+        // Pad inputScale up to a multiple of $n so the shift by n*intermediateScale lands cleanly.
+        $remainder = $inputScale % $n;
+
+        if ($remainder !== 0) {
+            $padding = $n - $remainder;
+            $value .= str_repeat('0', $padding);
+            $inputScale = Safe::add($inputScale, $padding);
+        }
+
+        $calculator = CalculatorRegistry::get();
+
+        // Keep one extra digit beyond the target scale for rounding.
+        $intermediateScale = Safe::add(max($scale, intdiv($inputScale, $n)), 1);
+        $value .= str_repeat('0', Safe::sub(Safe::mul($n, $intermediateScale), $inputScale));
+
+        $root = $calculator->nthRoot($value, $n);
+        $isExact = $calculator->pow($root, $n) === $value;
+
+        if (! $isExact) {
+            if ($roundingMode === RoundingMode::Unnecessary) {
+                throw RoundingNecessaryException::decimalNthRootNotExact();
+            }
+
+            $isPositive = ! $isNegative;
+
+            // Non-perfect-nth-power root is irrational, so the true value has strictly greater
+            // magnitude than this truncated root. For "round away from zero" modes, bump the
+            // integer root one step further from zero so the subsequent rescale rounds up.
+            if (
+                $roundingMode === RoundingMode::Up
+                || ($roundingMode === RoundingMode::Ceiling && $isPositive)
+                || ($roundingMode === RoundingMode::Floor && ! $isPositive)
+            ) {
+                $root = $isPositive
+                    ? $calculator->add($root, '1')
+                    : $calculator->sub($root, '1');
+            }
+
+            // Irrational nth root cannot land on a midpoint. For any Half* mode, the "tie" case
+            // never occurs, so rewrite them all to HalfUp (round half away from zero), which is
+            // the mode whose away-from-zero direction matches the sign of the (strictly larger
+            // in magnitude) true value for both positive and negative inputs.
+            elseif (in_array($roundingMode, [
+                RoundingMode::HalfDown,
+                RoundingMode::HalfEven,
+                RoundingMode::HalfFloor,
+                RoundingMode::HalfCeiling,
+            ], true)) {
+                $roundingMode = RoundingMode::HalfUp;
+            }
+        }
+
+        $scaled = DecimalHelper::scale($root, $intermediateScale, $scale, $roundingMode);
+
+        if ($scaled === null) {
+            throw RoundingNecessaryException::decimalNthRootScaleTooSmall();
+        }
+
+        return new BigDecimal($scaled, $scale);
+    }
+
+    /**
      * Returns a copy of this BigDecimal with the decimal point moved to the left by the given number of places.
      *
      * If $places is negative, the decimal point is moved to the right by the absolute value instead.
