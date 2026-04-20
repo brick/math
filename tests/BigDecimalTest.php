@@ -3034,6 +3034,260 @@ class BigDecimalTest extends AbstractTestCase
         $number->sqrt(-1);
     }
 
+    #[DataProvider('providerNthRoot')]
+    public function testNthRoot(string $number, int $n, int $scale, RoundingMode $roundingMode, string $expected): void
+    {
+        $number = BigDecimal::of($number);
+
+        $expectedExceptionMessage = match ($expected) {
+            'NTH_ROOT_NOT_EXACT' => 'The nth root is not exact and cannot be represented as a decimal without rounding.',
+            'SCALE_TOO_SMALL' => 'The nth root is exact but cannot be represented at the requested scale without rounding.',
+            default => null,
+        };
+
+        if ($expectedExceptionMessage !== null) {
+            $this->expectException(RoundingNecessaryException::class);
+            $this->expectExceptionMessageExact($expectedExceptionMessage);
+        }
+
+        $actual = $number->nthRoot($n, $scale, $roundingMode);
+
+        if ($expectedExceptionMessage === null) {
+            self::assertBigDecimalEquals($expected, $actual);
+        }
+    }
+
+    public static function providerNthRoot(): Generator
+    {
+        $tests = [
+            // n = 1 is an identity passthrough, delegated to toScale.
+            ['1.23', 1, 2, RoundingMode::Unnecessary, '1.23'],
+            ['1.23', 1, 3, RoundingMode::Unnecessary, '1.230'],
+            ['1.23', 1, 5, RoundingMode::Unnecessary, '1.23000'],
+            ['-1.23', 1, 2, RoundingMode::Unnecessary, '-1.23'],
+            ['0', 1, 4, RoundingMode::Unnecessary, '0.0000'],
+
+            // Zero at various scales for various n.
+            ['0', 2, 0, RoundingMode::Unnecessary, '0'],
+            ['0', 2, 5, RoundingMode::Unnecessary, '0.00000'],
+            ['0', 3, 0, RoundingMode::Unnecessary, '0'],
+            ['0', 3, 3, RoundingMode::Unnecessary, '0.000'],
+            ['0', 5, 2, RoundingMode::Unnecessary, '0.00'],
+            ['0.0', 3, 4, RoundingMode::Unnecessary, '0.0000'],
+            ['0.000', 7, 10, RoundingMode::Unnecessary, '0.0000000000'],
+
+            // One at various scales for various n.
+            ['1', 2, 0, RoundingMode::Unnecessary, '1'],
+            ['1', 2, 4, RoundingMode::Unnecessary, '1.0000'],
+            ['1', 3, 2, RoundingMode::Unnecessary, '1.00'],
+            ['1', 100, 8, RoundingMode::Unnecessary, '1.00000000'],
+
+            // Perfect cubes (integer).
+            ['8', 3, 0, RoundingMode::Unnecessary, '2'],
+            ['8', 3, 3, RoundingMode::Unnecessary, '2.000'],
+            ['27', 3, 0, RoundingMode::Unnecessary, '3'],
+            ['125', 3, 2, RoundingMode::Unnecessary, '5.00'],
+
+            // Perfect cube with fractional input: 1.728 = 1.2^3.
+            ['1.728', 3, 1, RoundingMode::Unnecessary, '1.2'],
+            ['1.728', 3, 3, RoundingMode::Unnecessary, '1.200'],
+            ['1.728', 3, 5, RoundingMode::Unnecessary, '1.20000'],
+            //   Exact but scale too small: 1.2 doesn't fit at scale 0.
+            ['1.728', 3, 0, RoundingMode::Unnecessary, 'SCALE_TOO_SMALL'],
+            ['1.728', 3, 0, RoundingMode::Up, '2'],
+            ['1.728', 3, 0, RoundingMode::Down, '1'],
+            ['1.728', 3, 0, RoundingMode::HalfUp, '1'],
+
+            // Perfect cube on negative with odd n.
+            ['-1.728', 3, 1, RoundingMode::Unnecessary, '-1.2'],
+            ['-1.728', 3, 3, RoundingMode::Unnecessary, '-1.200'],
+            ['-8', 3, 0, RoundingMode::Unnecessary, '-2'],
+            ['-1.728', 3, 0, RoundingMode::Unnecessary, 'SCALE_TOO_SMALL'],
+            ['-1.728', 3, 0, RoundingMode::Up, '-2'],
+            ['-1.728', 3, 0, RoundingMode::Down, '-1'],
+
+            // Perfect 4th: 16 = 2^4, 0.0016 = 0.2^4.
+            ['16', 4, 0, RoundingMode::Unnecessary, '2'],
+            ['0.0016', 4, 1, RoundingMode::Unnecessary, '0.2'],
+            ['0.0016', 4, 4, RoundingMode::Unnecessary, '0.2000'],
+            ['0.0016', 4, 0, RoundingMode::Unnecessary, 'SCALE_TOO_SMALL'],
+
+            // Perfect 5th: 32 = 2^5, 243 = 3^5, 100000 = 10^5.
+            ['32', 5, 0, RoundingMode::Unnecessary, '2'],
+            ['243', 5, 0, RoundingMode::Unnecessary, '3'],
+            ['100000', 5, 2, RoundingMode::Unnecessary, '10.00'],
+            ['0.00032', 5, 1, RoundingMode::Unnecessary, '0.2'],
+            ['0.00032', 5, 5, RoundingMode::Unnecessary, '0.20000'],
+
+            // Perfect 7th: 128 = 2^7.
+            ['128', 7, 0, RoundingMode::Unnecessary, '2'],
+            ['128', 7, 4, RoundingMode::Unnecessary, '2.0000'],
+
+            // Non-exact cube root of 2 ≈ 1.2599210498948731647672106072...
+            ['2', 3, 0, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['2', 3, 0, RoundingMode::Up, '2'],
+            ['2', 3, 0, RoundingMode::Down, '1'],
+            ['2', 3, 0, RoundingMode::HalfUp, '1'],
+
+            ['2', 3, 1, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['2', 3, 1, RoundingMode::Up, '1.3'],
+            ['2', 3, 1, RoundingMode::Down, '1.2'],
+            ['2', 3, 1, RoundingMode::HalfUp, '1.3'],
+
+            ['2', 3, 5, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['2', 3, 5, RoundingMode::Up, '1.25993'],
+            ['2', 3, 5, RoundingMode::Down, '1.25992'],
+            ['2', 3, 5, RoundingMode::HalfUp, '1.25992'],
+
+            ['2', 3, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['2', 3, 10, RoundingMode::Up, '1.2599210499'],
+            ['2', 3, 10, RoundingMode::Down, '1.2599210498'],
+            ['2', 3, 10, RoundingMode::HalfUp, '1.2599210499'],
+
+            ['2', 3, 20, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['2', 3, 20, RoundingMode::Up, '1.25992104989487316477'],
+            ['2', 3, 20, RoundingMode::Down, '1.25992104989487316476'],
+            ['2', 3, 20, RoundingMode::HalfUp, '1.25992104989487316477'],
+
+            // Non-exact cube root of a decimal input.
+            // 2.5^(1/3) ≈ 1.35720880829745...
+            ['2.5', 3, 5, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['2.5', 3, 5, RoundingMode::Up, '1.35721'],
+            ['2.5', 3, 5, RoundingMode::Down, '1.35720'],
+            ['2.5', 3, 5, RoundingMode::HalfUp, '1.35721'],
+
+            // Non-exact cube root of negative: -2^(1/3) ≈ -1.25992104989...
+            ['-2', 3, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['-2', 3, 10, RoundingMode::Up, '-1.2599210499'],
+            ['-2', 3, 10, RoundingMode::Down, '-1.2599210498'],
+            ['-2', 3, 10, RoundingMode::HalfUp, '-1.2599210499'],
+
+            // Non-exact 4th root of 2 ≈ 1.1892071150027210667...
+            ['2', 4, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['2', 4, 10, RoundingMode::Up, '1.1892071151'],
+            ['2', 4, 10, RoundingMode::Down, '1.1892071150'],
+            ['2', 4, 10, RoundingMode::HalfUp, '1.1892071150'],
+
+            // Non-exact 5th root of 2 ≈ 1.1486983549970350067...
+            ['2', 5, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['2', 5, 10, RoundingMode::Up, '1.1486983550'],
+            ['2', 5, 10, RoundingMode::Down, '1.1486983549'],
+            ['2', 5, 10, RoundingMode::HalfUp, '1.1486983550'],
+
+            // 5th root of negative: -2^(1/5) ≈ -1.14869835499...
+            ['-2', 5, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['-2', 5, 10, RoundingMode::Up, '-1.1486983550'],
+            ['-2', 5, 10, RoundingMode::Down, '-1.1486983549'],
+            ['-2', 5, 10, RoundingMode::HalfUp, '-1.1486983550'],
+
+            // Non-exact 7th root of 2 ≈ 1.1040895136738123820...
+            ['2', 7, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['2', 7, 10, RoundingMode::Up, '1.1040895137'],
+            ['2', 7, 10, RoundingMode::Down, '1.1040895136'],
+            ['2', 7, 10, RoundingMode::HalfUp, '1.1040895137'],
+
+            // n = 2 (cross-checks sqrt semantics). √2 ≈ 1.41421356237309504880...
+            ['2', 2, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['2', 2, 10, RoundingMode::Up, '1.4142135624'],
+            ['2', 2, 10, RoundingMode::Down, '1.4142135623'],
+            ['2', 2, 10, RoundingMode::HalfUp, '1.4142135624'],
+
+            // Large scale.
+            ['3', 3, 30, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['3', 3, 30, RoundingMode::Up, '1.442249570307408382321638310781'],
+            ['3', 3, 30, RoundingMode::Down, '1.442249570307408382321638310780'],
+            ['3', 3, 30, RoundingMode::HalfUp, '1.442249570307408382321638310780'],
+
+            // Value with large non-trivial scale whose root is exact.
+            // 0.000001 = (0.01)^3.
+            ['0.000001', 3, 2, RoundingMode::Unnecessary, '0.01'],
+            ['0.000001', 3, 6, RoundingMode::Unnecessary, '0.010000'],
+            ['0.000001', 3, 1, RoundingMode::Unnecessary, 'SCALE_TOO_SMALL'],
+            ['0.000001', 3, 1, RoundingMode::Up, '0.1'],
+            ['0.000001', 3, 1, RoundingMode::Down, '0.0'],
+
+            // Mixed inputScale % n != 0 path: inputScale=2, n=3, padding=1.
+            // 0.25 is not a perfect cube; 0.25^(1/3) ≈ 0.62996052494...
+            ['0.25', 3, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['0.25', 3, 10, RoundingMode::Up, '0.6299605250'],
+            ['0.25', 3, 10, RoundingMode::Down, '0.6299605249'],
+            ['0.25', 3, 10, RoundingMode::HalfUp, '0.6299605249'],
+
+            // inputScale=1, n=3, padding=2: 1.5^(1/3) ≈ 1.14471424255...
+            ['1.5', 3, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['1.5', 3, 10, RoundingMode::Up, '1.1447142426'],
+            ['1.5', 3, 10, RoundingMode::Down, '1.1447142425'],
+            ['1.5', 3, 10, RoundingMode::HalfUp, '1.1447142426'],
+        ];
+
+        foreach ($tests as [$number, $n, $scale, $roundingMode, $expected]) {
+            yield [$number, $n, $scale, $roundingMode, $expected];
+
+            // Rounding-mode equivalences. Irrational nth roots never hit a midpoint tie,
+            // so all Half* modes collapse to HalfUp (round half away from zero).
+            $eqs = match ($roundingMode) {
+                RoundingMode::Up => ($number[0] === '-') ? [RoundingMode::Floor] : [RoundingMode::Ceiling],
+                RoundingMode::Down => ($number[0] === '-') ? [RoundingMode::Ceiling] : [RoundingMode::Floor],
+                RoundingMode::HalfUp => [
+                    RoundingMode::HalfCeiling,
+                    RoundingMode::HalfDown,
+                    RoundingMode::HalfEven,
+                    RoundingMode::HalfFloor,
+                ],
+                default => [],
+            };
+
+            foreach ($eqs as $eq) {
+                yield [$number, $n, $scale, $eq, $expected];
+            }
+        }
+    }
+
+    public function testNthRootOfNegativeNumberWithEvenDegree(): void
+    {
+        $number = BigDecimal::of(-1);
+        $this->expectException(NegativeNumberException::class);
+        $this->expectExceptionMessageExact('Cannot take an even nth root of a negative number.');
+
+        $number->nthRoot(2, 0);
+    }
+
+    public function testNthRootOfNegativeNumberWithLargeEvenDegree(): void
+    {
+        $number = BigDecimal::of('-1.5');
+        $this->expectException(NegativeNumberException::class);
+        $this->expectExceptionMessageExact('Cannot take an even nth root of a negative number.');
+
+        $number->nthRoot(100, 10);
+    }
+
+    public function testNthRootWithZeroDegree(): void
+    {
+        $number = BigDecimal::of('1.5');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageExact('The degree of an nth root must be a positive integer.');
+
+        $number->nthRoot(0, 10);
+    }
+
+    public function testNthRootWithNegativeDegree(): void
+    {
+        $number = BigDecimal::of('1.5');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageExact('The degree of an nth root must be a positive integer.');
+
+        $number->nthRoot(-2, 10);
+    }
+
+    public function testNthRootWithNegativeScale(): void
+    {
+        $number = BigDecimal::one();
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageExact('The scale must not be negative.');
+
+        $number->nthRoot(3, -1);
+    }
+
     #[DataProvider('providerClamp')]
     public function testClamp(string $number, string $min, string $max, string $expected): void
     {
