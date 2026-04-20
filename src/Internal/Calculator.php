@@ -7,6 +7,7 @@ namespace Brick\Math\Internal;
 use Brick\Math\RoundingMode;
 
 use function chr;
+use function intdiv;
 use function ltrim;
 use function ord;
 use function str_repeat;
