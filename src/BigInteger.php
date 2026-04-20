@@ -933,10 +933,6 @@ final readonly class BigInteger extends BigNumber
             throw NegativeNumberException::nthRootOfNegativeNumber();
         }
 
-        if ($this->isZero()) {
-            return BigInteger::zero();
-        }
-
         $calculator = CalculatorRegistry::get();
 
         // Truncation toward zero: for positive $this this is the floor root, for negative $this
