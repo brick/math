@@ -973,12 +973,9 @@ final readonly class BigInteger extends BigNumber
             // 2*|$this| is always even, so a midpoint tie is impossible. Therefore all five Half*
             // modes collapse to: increment iff 2*|$this| > |truncated^n| + |nextStep^n|.
             $nextPow = $calculator->pow($nextStep, $n);
-            $absValue = $isPositive ? $this->value : substr($this->value, 1);
-            $absRootPow = $isPositive ? $rootPow : substr($rootPow, 1);
-            $absNextPow = $isPositive ? $nextPow : substr($nextPow, 1);
 
-            $twoAbsValue = $calculator->mul($absValue, '2');
-            $midSum = $calculator->add($absRootPow, $absNextPow);
+            $twoAbsValue = $calculator->mul($calculator->abs($this->value), '2');
+            $midSum = $calculator->add($calculator->abs($rootPow), $calculator->abs($nextPow));
 
             $increment = $calculator->cmp($twoAbsValue, $midSum) > 0;
         }
