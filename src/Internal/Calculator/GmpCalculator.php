@@ -155,10 +155,6 @@ final readonly class GmpCalculator extends Calculator
     #[Override]
     public function nthRoot(string $n, int $k): string
     {
-        if ($k === 1) {
-            return $n;
-        }
-
         // Delegate on the absolute value and re-apply the sign ourselves so the
         // truncation-toward-zero convention matches the shared Newton-Raphson fallback
         // bit-for-bit, regardless of any PHP/GMP behaviour changes for negative inputs.

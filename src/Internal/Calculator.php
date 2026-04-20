@@ -291,10 +291,6 @@ abstract readonly class Calculator
      */
     public function nthRoot(string $n, int $k): string
     {
-        if ($k === 1) {
-            return $n;
-        }
-
         if ($n === '0') {
             return '0';
         }
