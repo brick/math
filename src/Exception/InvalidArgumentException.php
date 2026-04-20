@@ -120,4 +120,14 @@ final class InvalidArgumentException extends \InvalidArgumentException implement
     {
         return new self('The modulus must not be negative.');
     }
+
+    /**
+     * @internal
+     *
+     * @pure
+     */
+    public static function nonPositiveNthRootDegree(): self
+    {
+        return new self('The degree of an nth root must be a positive integer.');
+    }
 }
