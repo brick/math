@@ -964,16 +964,18 @@ final readonly class BigInteger extends BigNumber
         } elseif ($roundingMode === RoundingMode::Floor) {
             $increment = ! $isPositive;
         } else {
-            // Half* modes: compare 2*|$this| to |truncated^n| + |nextStep^n|.
-            // For consecutive integers r and r±1, the sum r^n + (r±1)^n is always odd, while
-            // 2*|$this| is always even, so a midpoint tie is impossible. Therefore all five Half*
-            // modes collapse to: increment iff 2*|$this| > |truncated^n| + |nextStep^n|.
-            $nextPow = $calculator->pow($nextStep, $n);
+            // Half* modes: increment iff |$this| > (|truncated| + 0.5)^n, equivalently
+            // 2^n * |$this| > (2*|truncated| + 1)^n. The rhs is odd while the lhs is even
+            // (n ≥ 2 here, so 2^n is even), so a midpoint tie is impossible and all five
+            // Half* modes collapse to the same comparison.
+            $absValue = $calculator->abs($this->value);
+            $absTruncated = $calculator->abs($truncatedRoot);
+            $twoAbsRootPlus1 = $calculator->add($calculator->mul($absTruncated, '2'), '1');
 
-            $twoAbsValue = $calculator->mul($calculator->abs($this->value), '2');
-            $midSum = $calculator->add($calculator->abs($rootPow), $calculator->abs($nextPow));
+            $lhs = $calculator->mul($calculator->pow('2', $n), $absValue);
+            $rhs = $calculator->pow($twoAbsRootPlus1, $n);
 
-            $increment = $calculator->cmp($twoAbsValue, $midSum) > 0;
+            $increment = $calculator->cmp($lhs, $rhs) > 0;
         }
 
         return new BigInteger($increment ? $nextStep : $truncatedRoot);
