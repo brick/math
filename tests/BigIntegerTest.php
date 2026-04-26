@@ -3755,33 +3755,39 @@ class BigIntegerTest extends AbstractTestCase
             ['1000', 3, RoundingMode::Unnecessary, '10'],
             ['1000000', 3, RoundingMode::Unnecessary, '100'],
 
-            // n = 3, non-exact, all rounding modes. truncatedRoot=1, nextStep=2, sum=9, 2*n:
-            //   7: 14 > 9 → HalfUp=2.
+            // n = 3, non-exact, all rounding modes. truncatedRoot=1, nextStep=2, threshold=(1.5)^3=3.375.
+            //   7: 7 > 3.375 → HalfUp=2.
             ['7', 3, RoundingMode::Unnecessary, null],
             ['7', 3, RoundingMode::Down, '1'],
             ['7', 3, RoundingMode::Up, '2'],
             ['7', 3, RoundingMode::HalfUp, '2'],
 
-            // truncatedRoot=2, nextStep=3, sum=8+27=35.
-            //   9: 18 < 35 → HalfUp=2.
+            // truncatedRoot=2, nextStep=3, threshold=(2.5)^3=15.625.
+            //   9: 9 < 15.625 → HalfUp=2.
             ['9', 3, RoundingMode::Unnecessary, null],
             ['9', 3, RoundingMode::Down, '2'],
             ['9', 3, RoundingMode::Up, '3'],
             ['9', 3, RoundingMode::HalfUp, '2'],
 
-            //   17: 34 < 35 → HalfUp=2.
+            //   16: 16 > 15.625 → HalfUp=3.
+            ['16', 3, RoundingMode::Unnecessary, null],
+            ['16', 3, RoundingMode::Down, '2'],
+            ['16', 3, RoundingMode::Up, '3'],
+            ['16', 3, RoundingMode::HalfUp, '3'],
+
+            //   17: 17 > 15.625 → HalfUp=3.
             ['17', 3, RoundingMode::Unnecessary, null],
             ['17', 3, RoundingMode::Down, '2'],
             ['17', 3, RoundingMode::Up, '3'],
-            ['17', 3, RoundingMode::HalfUp, '2'],
+            ['17', 3, RoundingMode::HalfUp, '3'],
 
-            //   18: 36 > 35 → HalfUp=3.
+            //   18: 18 > 15.625 → HalfUp=3.
             ['18', 3, RoundingMode::Unnecessary, null],
             ['18', 3, RoundingMode::Down, '2'],
             ['18', 3, RoundingMode::Up, '3'],
             ['18', 3, RoundingMode::HalfUp, '3'],
 
-            //   26: 52 > 35 → HalfUp=3.
+            //   26: 26 > 15.625 → HalfUp=3.
             ['26', 3, RoundingMode::Unnecessary, null],
             ['26', 3, RoundingMode::Down, '2'],
             ['26', 3, RoundingMode::Up, '3'],
@@ -3796,21 +3802,21 @@ class BigIntegerTest extends AbstractTestCase
             ['-27', 3, RoundingMode::Unnecessary, '-3'],
             ['-1000', 3, RoundingMode::Unnecessary, '-10'],
 
-            // truncatedRoot=-1, nextStep=-2, |sum|=9.
-            //   -7: 2*7=14 > 9 → HalfUp=-2 (further from zero). Up (away from zero) = -2. Down = -1.
+            // truncatedRoot=-1, nextStep=-2, threshold=(1.5)^3=3.375 in magnitude.
+            //   -7: 7 > 3.375 → HalfUp=-2 (further from zero). Up (away from zero) = -2. Down = -1.
             ['-7', 3, RoundingMode::Unnecessary, null],
             ['-7', 3, RoundingMode::Down, '-1'],
             ['-7', 3, RoundingMode::Up, '-2'],
             ['-7', 3, RoundingMode::HalfUp, '-2'],
 
-            // truncatedRoot=-2, nextStep=-3, |sum|=35.
-            //   -17: 34 < 35 → HalfUp=-2. Up=-3, Down=-2.
+            // truncatedRoot=-2, nextStep=-3, threshold=(2.5)^3=15.625 in magnitude.
+            //   -17: 17 > 15.625 → HalfUp=-3.
             ['-17', 3, RoundingMode::Unnecessary, null],
             ['-17', 3, RoundingMode::Down, '-2'],
             ['-17', 3, RoundingMode::Up, '-3'],
-            ['-17', 3, RoundingMode::HalfUp, '-2'],
+            ['-17', 3, RoundingMode::HalfUp, '-3'],
 
-            //   -18: 36 > 35 → HalfUp=-3.
+            //   -18: 18 > 15.625 → HalfUp=-3.
             ['-18', 3, RoundingMode::Unnecessary, null],
             ['-18', 3, RoundingMode::Down, '-2'],
             ['-18', 3, RoundingMode::Up, '-3'],
@@ -3822,14 +3828,14 @@ class BigIntegerTest extends AbstractTestCase
             ['10000', 4, RoundingMode::Unnecessary, '10'],
             ['100000000', 4, RoundingMode::Unnecessary, '100'],
 
-            // n = 4, non-exact. truncatedRoot=1, nextStep=2, sum=17.
-            //   8: 16 < 17 → HalfUp=1.
+            // n = 4, non-exact. truncatedRoot=1, nextStep=2, threshold=(1.5)^4=5.0625.
+            //   8: 8 > 5.0625 → HalfUp=2.
             ['8', 4, RoundingMode::Unnecessary, null],
             ['8', 4, RoundingMode::Down, '1'],
             ['8', 4, RoundingMode::Up, '2'],
-            ['8', 4, RoundingMode::HalfUp, '1'],
+            ['8', 4, RoundingMode::HalfUp, '2'],
 
-            //   9: 18 > 17 → HalfUp=2.
+            //   9: 9 > 5.0625 → HalfUp=2.
             ['9', 4, RoundingMode::Unnecessary, null],
             ['9', 4, RoundingMode::Down, '1'],
             ['9', 4, RoundingMode::Up, '2'],
@@ -3840,20 +3846,20 @@ class BigIntegerTest extends AbstractTestCase
             ['243', 5, RoundingMode::Unnecessary, '3'],
             ['100000', 5, RoundingMode::Unnecessary, '10'],
 
-            // n = 5, non-exact. truncatedRoot=1, nextStep=2, sum=33.
-            //   15: 30 < 33 → HalfUp=1.
+            // n = 5, non-exact. truncatedRoot=1, nextStep=2, threshold=(1.5)^5=7.59375.
+            //   15: 15 > 7.59375 → HalfUp=2.
             ['15', 5, RoundingMode::Unnecessary, null],
             ['15', 5, RoundingMode::Down, '1'],
             ['15', 5, RoundingMode::Up, '2'],
-            ['15', 5, RoundingMode::HalfUp, '1'],
+            ['15', 5, RoundingMode::HalfUp, '2'],
 
-            //   17: 34 > 33 → HalfUp=2.
+            //   17: 17 > 7.59375 → HalfUp=2.
             ['17', 5, RoundingMode::Unnecessary, null],
             ['17', 5, RoundingMode::Down, '1'],
             ['17', 5, RoundingMode::Up, '2'],
             ['17', 5, RoundingMode::HalfUp, '2'],
 
-            //   31: 62 > 33 → HalfUp=2.
+            //   31: 31 > 7.59375 → HalfUp=2.
             ['31', 5, RoundingMode::Unnecessary, null],
             ['31', 5, RoundingMode::Down, '1'],
             ['31', 5, RoundingMode::Up, '2'],
@@ -3871,14 +3877,14 @@ class BigIntegerTest extends AbstractTestCase
             ['-15', 5, RoundingMode::Unnecessary, null],
             ['-15', 5, RoundingMode::Down, '-1'],
             ['-15', 5, RoundingMode::Up, '-2'],
-            ['-15', 5, RoundingMode::HalfUp, '-1'],
+            ['-15', 5, RoundingMode::HalfUp, '-2'],
 
             // n = 7, perfect seventh powers.
             ['128', 7, RoundingMode::Unnecessary, '2'],
             ['2187', 7, RoundingMode::Unnecessary, '3'],
 
-            // n = 7, non-exact. truncatedRoot=1, nextStep=2, sum=129.
-            //   127: 254 > 129 → HalfUp=2.
+            // n = 7, non-exact. truncatedRoot=1, nextStep=2, threshold=(1.5)^7≈17.086.
+            //   127: 127 > 17.086 → HalfUp=2.
             ['127', 7, RoundingMode::Unnecessary, null],
             ['127', 7, RoundingMode::Down, '1'],
             ['127', 7, RoundingMode::Up, '2'],
@@ -3887,14 +3893,14 @@ class BigIntegerTest extends AbstractTestCase
             ['-128', 7, RoundingMode::Unnecessary, '-2'],
 
             // Boundary cases for n = 3 on a larger number.
-            // truncatedRoot=9, nextStep=10, sum=729+1000=1729.
-            //   864: 2*864=1728 < 1729 → HalfUp=9.
+            // truncatedRoot=9, nextStep=10, threshold=(9.5)^3=857.375.
+            //   864: 864 > 857.375 → HalfUp=10.
             ['864', 3, RoundingMode::Unnecessary, null],
             ['864', 3, RoundingMode::Down, '9'],
             ['864', 3, RoundingMode::Up, '10'],
-            ['864', 3, RoundingMode::HalfUp, '9'],
+            ['864', 3, RoundingMode::HalfUp, '10'],
 
-            //   865: 2*865=1730 > 1729 → HalfUp=10.
+            //   865: 865 > 857.375 → HalfUp=10.
             ['865', 3, RoundingMode::Unnecessary, null],
             ['865', 3, RoundingMode::Down, '9'],
             ['865', 3, RoundingMode::Up, '10'],
@@ -3924,7 +3930,7 @@ class BigIntegerTest extends AbstractTestCase
             // Very large n (degree), small value: for n=100, 1^100 = 1, 2^100 ≈ 1.27e30.
             //   Input 1 → exact 1.
             ['1', 100, RoundingMode::Unnecessary, '1'],
-            //   Input 2 → truncated 1, next 2, 1^100+2^100 = 1 + 2^100. 2*2=4 ≪ 2^100 → HalfUp=1.
+            //   Input 2 → truncated 1, threshold=(1.5)^100 ≈ 4.07e17. 2 ≪ threshold → HalfUp=1.
             ['2', 100, RoundingMode::Unnecessary, null],
             ['2', 100, RoundingMode::Down, '1'],
             ['2', 100, RoundingMode::Up, '2'],
@@ -3932,6 +3938,32 @@ class BigIntegerTest extends AbstractTestCase
 
             // 2^100 is exact.
             ['1267650600228229401496703205376', 100, RoundingMode::Unnecessary, '2'],
+
+            // ∛17 ≈ 2.5713
+            ['17',  3, RoundingMode::Unnecessary, null],
+            ['17',  3, RoundingMode::Down,        '2'],
+            ['17',  3, RoundingMode::Up,          '3'],
+            ['17',  3, RoundingMode::HalfUp,      '3'],
+            // ∛16 ≈ 2.5198
+            ['16',  3, RoundingMode::Unnecessary, null],
+            ['16',  3, RoundingMode::Down,        '2'],
+            ['16',  3, RoundingMode::Up,          '3'],
+            ['16',  3, RoundingMode::HalfUp,      '3'],
+            // ∛864 ≈ 9.5224
+            ['864', 3, RoundingMode::Unnecessary, null],
+            ['864', 3, RoundingMode::Down,        '9'],
+            ['864', 3, RoundingMode::Up,          '10'],
+            ['864', 3, RoundingMode::HalfUp,      '10'],
+            // 8^¼ ≈ 1.6818
+            ['8',   4, RoundingMode::Unnecessary, null],
+            ['8',   4, RoundingMode::Down,        '1'],
+            ['8',   4, RoundingMode::Up,          '2'],
+            ['8',   4, RoundingMode::HalfUp,      '2'],
+            // ∛-17 ≈ -2.5713
+            ['-17', 3, RoundingMode::Unnecessary, null],
+            ['-17', 3, RoundingMode::Down,        '-2'],
+            ['-17', 3, RoundingMode::Up,          '-3'],
+            ['-17', 3, RoundingMode::HalfUp,      '-3'],
         ];
 
         foreach ($tests as [$number, $n, $roundingMode, $expected]) {

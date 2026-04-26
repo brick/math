@@ -3218,6 +3218,32 @@ class BigDecimalTest extends AbstractTestCase
             ['1.5', 3, 10, RoundingMode::Up, '1.1447142426'],
             ['1.5', 3, 10, RoundingMode::Down, '1.1447142425'],
             ['1.5', 3, 10, RoundingMode::HalfUp, '1.1447142426'],
+
+            // ∛17 ≈ 2.5713
+            ['17',  3, 0, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['17',  3, 0, RoundingMode::Down,        '2'],
+            ['17',  3, 0, RoundingMode::Up,          '3'],
+            ['17',  3, 0, RoundingMode::HalfUp,      '3'],
+            // ∛16 ≈ 2.5198
+            ['16',  3, 0, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['16',  3, 0, RoundingMode::Down,        '2'],
+            ['16',  3, 0, RoundingMode::Up,          '3'],
+            ['16',  3, 0, RoundingMode::HalfUp,      '3'],
+            // ∛864 ≈ 9.5224
+            ['864', 3, 0, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['864', 3, 0, RoundingMode::Down,        '9'],
+            ['864', 3, 0, RoundingMode::Up,          '10'],
+            ['864', 3, 0, RoundingMode::HalfUp,      '10'],
+            // 8^¼ ≈ 1.6818
+            ['8',   4, 0, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['8',   4, 0, RoundingMode::Down,        '1'],
+            ['8',   4, 0, RoundingMode::Up,          '2'],
+            ['8',   4, 0, RoundingMode::HalfUp,      '2'],
+            // ∛-17 ≈ -2.5713
+            ['-17', 3, 0, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['-17', 3, 0, RoundingMode::Down,        '-2'],
+            ['-17', 3, 0, RoundingMode::Up,          '-3'],
+            ['-17', 3, 0, RoundingMode::HalfUp,      '-3'],
         ];
 
         foreach ($tests as [$number, $n, $scale, $roundingMode, $expected]) {
