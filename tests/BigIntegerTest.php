@@ -3669,6 +3669,357 @@ class BigIntegerTest extends AbstractTestCase
         $number->sqrt();
     }
 
+    #[DataProvider('providerNthRoot')]
+    public function testNthRoot(string $number, int $n, RoundingMode $roundingMode, ?string $expected): void
+    {
+        $number = BigInteger::of($number);
+
+        if ($expected === null) {
+            $this->expectException(RoundingNecessaryException::class);
+            $this->expectExceptionMessageExact('The nth root is not exact and cannot be represented as an integer without rounding.');
+        }
+
+        $actual = $number->nthRoot($n, $roundingMode);
+
+        if ($expected !== null) {
+            self::assertBigIntegerEquals($expected, $actual);
+        }
+    }
+
+    public static function providerNthRoot(): Generator
+    {
+        $tests = [
+            // n = 1 is an identity passthrough (any value, any rounding mode).
+            ['0', 1, RoundingMode::Unnecessary, '0'],
+            ['0', 1, RoundingMode::Down, '0'],
+            ['0', 1, RoundingMode::Up, '0'],
+            ['0', 1, RoundingMode::HalfUp, '0'],
+
+            ['1', 1, RoundingMode::Unnecessary, '1'],
+            ['1', 1, RoundingMode::Down, '1'],
+            ['1', 1, RoundingMode::Up, '1'],
+            ['1', 1, RoundingMode::HalfUp, '1'],
+
+            ['-1', 1, RoundingMode::Unnecessary, '-1'],
+            ['-1', 1, RoundingMode::Down, '-1'],
+            ['-1', 1, RoundingMode::Up, '-1'],
+            ['-1', 1, RoundingMode::HalfUp, '-1'],
+
+            ['7', 1, RoundingMode::Unnecessary, '7'],
+            ['7', 1, RoundingMode::HalfUp, '7'],
+
+            ['-12345678901234567890', 1, RoundingMode::Unnecessary, '-12345678901234567890'],
+
+            // Zero input with various n.
+            ['0', 2, RoundingMode::Unnecessary, '0'],
+            ['0', 3, RoundingMode::Unnecessary, '0'],
+            ['0', 4, RoundingMode::Unnecessary, '0'],
+            ['0', 5, RoundingMode::Unnecessary, '0'],
+            ['0', 7, RoundingMode::Unnecessary, '0'],
+            ['0', 100, RoundingMode::Unnecessary, '0'],
+
+            // Unit input with various n.
+            ['1', 2, RoundingMode::Unnecessary, '1'],
+            ['1', 3, RoundingMode::Unnecessary, '1'],
+            ['1', 5, RoundingMode::Unnecessary, '1'],
+            ['1', 100, RoundingMode::Unnecessary, '1'],
+
+            ['-1', 3, RoundingMode::Unnecessary, '-1'],
+            ['-1', 5, RoundingMode::Unnecessary, '-1'],
+            ['-1', 7, RoundingMode::Unnecessary, '-1'],
+            ['-1', 99, RoundingMode::Unnecessary, '-1'],
+
+            // n = 2 (agrees with sqrt).
+            ['4', 2, RoundingMode::Unnecessary, '2'],
+            ['4', 2, RoundingMode::Down, '2'],
+            ['4', 2, RoundingMode::Up, '2'],
+            ['4', 2, RoundingMode::HalfUp, '2'],
+
+            ['2', 2, RoundingMode::Unnecessary, null],
+            ['2', 2, RoundingMode::Down, '1'],
+            ['2', 2, RoundingMode::Up, '2'],
+            ['2', 2, RoundingMode::HalfUp, '1'],
+
+            ['3', 2, RoundingMode::Unnecessary, null],
+            ['3', 2, RoundingMode::Down, '1'],
+            ['3', 2, RoundingMode::Up, '2'],
+            ['3', 2, RoundingMode::HalfUp, '2'],
+
+            // n = 3, perfect cubes.
+            ['8', 3, RoundingMode::Unnecessary, '2'],
+            ['8', 3, RoundingMode::Down, '2'],
+            ['8', 3, RoundingMode::Up, '2'],
+            ['8', 3, RoundingMode::HalfUp, '2'],
+
+            ['27', 3, RoundingMode::Unnecessary, '3'],
+            ['1000', 3, RoundingMode::Unnecessary, '10'],
+            ['1000000', 3, RoundingMode::Unnecessary, '100'],
+
+            // n = 3, non-exact, all rounding modes. truncatedRoot=1, nextStep=2, threshold=(1.5)^3=3.375.
+            //   7: 7 > 3.375 → HalfUp=2.
+            ['7', 3, RoundingMode::Unnecessary, null],
+            ['7', 3, RoundingMode::Down, '1'],
+            ['7', 3, RoundingMode::Up, '2'],
+            ['7', 3, RoundingMode::HalfUp, '2'],
+
+            // truncatedRoot=2, nextStep=3, threshold=(2.5)^3=15.625.
+            //   9: 9 < 15.625 → HalfUp=2.
+            ['9', 3, RoundingMode::Unnecessary, null],
+            ['9', 3, RoundingMode::Down, '2'],
+            ['9', 3, RoundingMode::Up, '3'],
+            ['9', 3, RoundingMode::HalfUp, '2'],
+
+            //   16: 16 > 15.625 → HalfUp=3.
+            ['16', 3, RoundingMode::Unnecessary, null],
+            ['16', 3, RoundingMode::Down, '2'],
+            ['16', 3, RoundingMode::Up, '3'],
+            ['16', 3, RoundingMode::HalfUp, '3'],
+
+            //   17: 17 > 15.625 → HalfUp=3.
+            ['17', 3, RoundingMode::Unnecessary, null],
+            ['17', 3, RoundingMode::Down, '2'],
+            ['17', 3, RoundingMode::Up, '3'],
+            ['17', 3, RoundingMode::HalfUp, '3'],
+
+            //   18: 18 > 15.625 → HalfUp=3.
+            ['18', 3, RoundingMode::Unnecessary, null],
+            ['18', 3, RoundingMode::Down, '2'],
+            ['18', 3, RoundingMode::Up, '3'],
+            ['18', 3, RoundingMode::HalfUp, '3'],
+
+            //   26: 26 > 15.625 → HalfUp=3.
+            ['26', 3, RoundingMode::Unnecessary, null],
+            ['26', 3, RoundingMode::Down, '2'],
+            ['26', 3, RoundingMode::Up, '3'],
+            ['26', 3, RoundingMode::HalfUp, '3'],
+
+            // n = 3, negative inputs (odd n is defined).
+            ['-8', 3, RoundingMode::Unnecessary, '-2'],
+            ['-8', 3, RoundingMode::Down, '-2'],
+            ['-8', 3, RoundingMode::Up, '-2'],
+            ['-8', 3, RoundingMode::HalfUp, '-2'],
+
+            ['-27', 3, RoundingMode::Unnecessary, '-3'],
+            ['-1000', 3, RoundingMode::Unnecessary, '-10'],
+
+            // truncatedRoot=-1, nextStep=-2, threshold=(1.5)^3=3.375 in magnitude.
+            //   -7: 7 > 3.375 → HalfUp=-2 (further from zero). Up (away from zero) = -2. Down = -1.
+            ['-7', 3, RoundingMode::Unnecessary, null],
+            ['-7', 3, RoundingMode::Down, '-1'],
+            ['-7', 3, RoundingMode::Up, '-2'],
+            ['-7', 3, RoundingMode::HalfUp, '-2'],
+
+            // truncatedRoot=-2, nextStep=-3, threshold=(2.5)^3=15.625 in magnitude.
+            //   -17: 17 > 15.625 → HalfUp=-3.
+            ['-17', 3, RoundingMode::Unnecessary, null],
+            ['-17', 3, RoundingMode::Down, '-2'],
+            ['-17', 3, RoundingMode::Up, '-3'],
+            ['-17', 3, RoundingMode::HalfUp, '-3'],
+
+            //   -18: 18 > 15.625 → HalfUp=-3.
+            ['-18', 3, RoundingMode::Unnecessary, null],
+            ['-18', 3, RoundingMode::Down, '-2'],
+            ['-18', 3, RoundingMode::Up, '-3'],
+            ['-18', 3, RoundingMode::HalfUp, '-3'],
+
+            // n = 4, perfect fourth powers.
+            ['16', 4, RoundingMode::Unnecessary, '2'],
+            ['81', 4, RoundingMode::Unnecessary, '3'],
+            ['10000', 4, RoundingMode::Unnecessary, '10'],
+            ['100000000', 4, RoundingMode::Unnecessary, '100'],
+
+            // n = 4, non-exact. truncatedRoot=1, nextStep=2, threshold=(1.5)^4=5.0625.
+            //   8: 8 > 5.0625 → HalfUp=2.
+            ['8', 4, RoundingMode::Unnecessary, null],
+            ['8', 4, RoundingMode::Down, '1'],
+            ['8', 4, RoundingMode::Up, '2'],
+            ['8', 4, RoundingMode::HalfUp, '2'],
+
+            //   9: 9 > 5.0625 → HalfUp=2.
+            ['9', 4, RoundingMode::Unnecessary, null],
+            ['9', 4, RoundingMode::Down, '1'],
+            ['9', 4, RoundingMode::Up, '2'],
+            ['9', 4, RoundingMode::HalfUp, '2'],
+
+            // n = 5, perfect fifth powers.
+            ['32', 5, RoundingMode::Unnecessary, '2'],
+            ['243', 5, RoundingMode::Unnecessary, '3'],
+            ['100000', 5, RoundingMode::Unnecessary, '10'],
+
+            // n = 5, non-exact. truncatedRoot=1, nextStep=2, threshold=(1.5)^5=7.59375.
+            //   15: 15 > 7.59375 → HalfUp=2.
+            ['15', 5, RoundingMode::Unnecessary, null],
+            ['15', 5, RoundingMode::Down, '1'],
+            ['15', 5, RoundingMode::Up, '2'],
+            ['15', 5, RoundingMode::HalfUp, '2'],
+
+            //   17: 17 > 7.59375 → HalfUp=2.
+            ['17', 5, RoundingMode::Unnecessary, null],
+            ['17', 5, RoundingMode::Down, '1'],
+            ['17', 5, RoundingMode::Up, '2'],
+            ['17', 5, RoundingMode::HalfUp, '2'],
+
+            //   31: 31 > 7.59375 → HalfUp=2.
+            ['31', 5, RoundingMode::Unnecessary, null],
+            ['31', 5, RoundingMode::Down, '1'],
+            ['31', 5, RoundingMode::Up, '2'],
+            ['31', 5, RoundingMode::HalfUp, '2'],
+
+            // n = 5, negative (odd).
+            ['-32', 5, RoundingMode::Unnecessary, '-2'],
+            ['-243', 5, RoundingMode::Unnecessary, '-3'],
+
+            ['-17', 5, RoundingMode::Unnecessary, null],
+            ['-17', 5, RoundingMode::Down, '-1'],
+            ['-17', 5, RoundingMode::Up, '-2'],
+            ['-17', 5, RoundingMode::HalfUp, '-2'],
+
+            ['-15', 5, RoundingMode::Unnecessary, null],
+            ['-15', 5, RoundingMode::Down, '-1'],
+            ['-15', 5, RoundingMode::Up, '-2'],
+            ['-15', 5, RoundingMode::HalfUp, '-2'],
+
+            // n = 7, perfect seventh powers.
+            ['128', 7, RoundingMode::Unnecessary, '2'],
+            ['2187', 7, RoundingMode::Unnecessary, '3'],
+
+            // n = 7, non-exact. truncatedRoot=1, nextStep=2, threshold=(1.5)^7≈17.086.
+            //   127: 127 > 17.086 → HalfUp=2.
+            ['127', 7, RoundingMode::Unnecessary, null],
+            ['127', 7, RoundingMode::Down, '1'],
+            ['127', 7, RoundingMode::Up, '2'],
+            ['127', 7, RoundingMode::HalfUp, '2'],
+
+            ['-128', 7, RoundingMode::Unnecessary, '-2'],
+
+            // Boundary cases for n = 3 on a larger number.
+            // truncatedRoot=9, nextStep=10, threshold=(9.5)^3=857.375.
+            //   864: 864 > 857.375 → HalfUp=10.
+            ['864', 3, RoundingMode::Unnecessary, null],
+            ['864', 3, RoundingMode::Down, '9'],
+            ['864', 3, RoundingMode::Up, '10'],
+            ['864', 3, RoundingMode::HalfUp, '10'],
+
+            //   865: 865 > 857.375 → HalfUp=10.
+            ['865', 3, RoundingMode::Unnecessary, null],
+            ['865', 3, RoundingMode::Down, '9'],
+            ['865', 3, RoundingMode::Up, '10'],
+            ['865', 3, RoundingMode::HalfUp, '10'],
+
+            // Large perfect cube: 10^30 = (10^10)^3.
+            ['1000000000000000000000000000000', 3, RoundingMode::Unnecessary, '10000000000'],
+            ['1000000000000000000000000000000', 3, RoundingMode::Down, '10000000000'],
+            ['1000000000000000000000000000000', 3, RoundingMode::Up, '10000000000'],
+            ['1000000000000000000000000000000', 3, RoundingMode::HalfUp, '10000000000'],
+
+            // Just above a large cube: truncated = 10^10, next = 10^10 + 1.
+            ['1000000000000000000000000000001', 3, RoundingMode::Unnecessary, null],
+            ['1000000000000000000000000000001', 3, RoundingMode::Down, '10000000000'],
+            ['1000000000000000000000000000001', 3, RoundingMode::Up, '10000000001'],
+            ['1000000000000000000000000000001', 3, RoundingMode::HalfUp, '10000000000'],
+
+            // Large perfect 5th power: (10^6)^5 = 10^30.
+            ['1000000000000000000000000000000', 5, RoundingMode::Unnecessary, '1000000'],
+
+            // Large perfect 7th power: 13^7 = 62748517.
+            ['62748517', 7, RoundingMode::Unnecessary, '13'],
+
+            // Large perfect 2nd power, mirroring providerSqrt.
+            ['1000000000000000000000000000000000000000000000000000000000000', 2, RoundingMode::Unnecessary, '1000000000000000000000000000000'],
+
+            // Very large n (degree), small value: for n=100, 1^100 = 1, 2^100 ≈ 1.27e30.
+            //   Input 1 → exact 1.
+            ['1', 100, RoundingMode::Unnecessary, '1'],
+            //   Input 2 → truncated 1, threshold=(1.5)^100 ≈ 4.07e17. 2 ≪ threshold → HalfUp=1.
+            ['2', 100, RoundingMode::Unnecessary, null],
+            ['2', 100, RoundingMode::Down, '1'],
+            ['2', 100, RoundingMode::Up, '2'],
+            ['2', 100, RoundingMode::HalfUp, '1'],
+
+            // 2^100 is exact.
+            ['1267650600228229401496703205376', 100, RoundingMode::Unnecessary, '2'],
+
+            // Tightest possible Half* boundaries, where 2^n·|V| differs from (2·|t|+1)^n by ±1.
+            // V=43, n=3: 2^3·43 = 344 vs 7^3 = 343 (diff +1) → smallest "round up". ∛43 ≈ 3.5034.
+            ['43', 3, RoundingMode::Unnecessary, null],
+            ['43', 3, RoundingMode::Down, '3'],
+            ['43', 3, RoundingMode::Up, '4'],
+            ['43', 3, RoundingMode::HalfUp, '4'],
+            ['-43', 3, RoundingMode::Unnecessary, null],
+            ['-43', 3, RoundingMode::Down, '-3'],
+            ['-43', 3, RoundingMode::Up, '-4'],
+            ['-43', 3, RoundingMode::HalfUp, '-4'],
+
+            // V=91, n=3: 2^3·91 = 728 vs 9^3 = 729 (diff -1) → smallest "round down". ∛91 ≈ 4.4979.
+            ['91', 3, RoundingMode::Unnecessary, null],
+            ['91', 3, RoundingMode::Down, '4'],
+            ['91', 3, RoundingMode::Up, '5'],
+            ['91', 3, RoundingMode::HalfUp, '4'],
+            ['-91', 3, RoundingMode::Unnecessary, null],
+            ['-91', 3, RoundingMode::Down, '-4'],
+            ['-91', 3, RoundingMode::Up, '-5'],
+            ['-91', 3, RoundingMode::HalfUp, '-4'],
+        ];
+
+        foreach ($tests as [$number, $n, $roundingMode, $expected]) {
+            yield [$number, $n, $roundingMode, $expected];
+
+            $roundingModeEqs = match ($roundingMode) {
+                // Positive numbers make these rounding modes equivalent (and negative makes the opposite pair equivalent).
+                RoundingMode::Up => ($number[0] === '-') ? [RoundingMode::Floor] : [RoundingMode::Ceiling],
+                RoundingMode::Down => ($number[0] === '-') ? [RoundingMode::Ceiling] : [RoundingMode::Floor],
+                // For integer nth root, a midpoint tie is impossible, so all Half* modes collapse.
+                RoundingMode::HalfUp => [
+                    RoundingMode::HalfCeiling,
+                    RoundingMode::HalfDown,
+                    RoundingMode::HalfEven,
+                    RoundingMode::HalfFloor,
+                ],
+                default => [],
+            };
+
+            foreach ($roundingModeEqs as $roundingModeEq) {
+                yield [$number, $n, $roundingModeEq, $expected];
+            }
+        }
+    }
+
+    public function testNthRootOfNegativeNumberWithEvenDegree(): void
+    {
+        $number = BigInteger::of(-8);
+        $this->expectException(NegativeNumberException::class);
+        $this->expectExceptionMessageExact('Cannot take an even nth root of a negative number.');
+
+        $number->nthRoot(2);
+    }
+
+    public function testNthRootOfNegativeNumberWithLargeEvenDegree(): void
+    {
+        $number = BigInteger::of(-1);
+        $this->expectException(NegativeNumberException::class);
+        $this->expectExceptionMessageExact('Cannot take an even nth root of a negative number.');
+
+        $number->nthRoot(100);
+    }
+
+    public function testNthRootWithZeroDegree(): void
+    {
+        $number = BigInteger::of(8);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageExact('The degree of an nth root must be a positive integer.');
+
+        $number->nthRoot(0);
+    }
+
+    public function testNthRootWithNegativeDegree(): void
+    {
+        $number = BigInteger::of(8);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageExact('The degree of an nth root must be a positive integer.');
+
+        $number->nthRoot(-3);
+    }
+
     /**
      * @param string $number   The number as a string.
      * @param string $expected The expected absolute result.

@@ -7,6 +7,7 @@ namespace Brick\Math\Internal;
 use Brick\Math\RoundingMode;
 
 use function chr;
+use function intdiv;
 use function ltrim;
 use function ord;
 use function str_repeat;
@@ -270,6 +271,64 @@ abstract readonly class Calculator
      * @pure
      */
     abstract public function sqrt(string $n): string;
+
+    /**
+     * Returns the integer nth root of the given number, truncated toward zero.
+     *
+     * If $n is non-negative, the result is the largest x such that x^$k ≤ $n (floor).
+     * If $n is negative, $k MUST be odd, and the result is the negation of the floor root of |$n|
+     * (i.e., truncation toward zero: the smallest x such that x^$k ≥ $n).
+     *
+     * The caller MUST guarantee that $k ≥ 1 and that $n is non-negative when $k is even.
+     *
+     * This method can be overridden by the concrete implementation if the underlying library
+     * has built-in support for nth root calculations.
+     *
+     * @param string $n The number. May be negative only when $k is odd.
+     * @param int    $k The root degree. Must be strictly positive.
+     *
+     * @pure
+     */
+    public function nthRoot(string $n, int $k): string
+    {
+        if ($n === '0') {
+            return '0';
+        }
+
+        $negative = ($n[0] === '-');
+        $m = $negative ? substr($n, 1) : $n;
+
+        if ($m === '1') {
+            return $negative ? '-1' : '1';
+        }
+
+        // Initial overshoot: 10^ceil(strlen(m)/k) is strictly greater than the true root.
+        // Newton-Raphson requires starting above the true root to converge monotonically down.
+        $x = '1' . str_repeat('0', intdiv(strlen($m) - 1, $k) + 1);
+
+        $kStr = (string) $k;
+        $kMinusOneStr = (string) ($k - 1);
+
+        // Newton-Raphson recurrence for integer nth root:
+        //   x_{i+1} = floor(((k-1) * x_i + floor(m / x_i^{k-1})) / k)
+        for (; ;) {
+            $nx = $this->divQ(
+                $this->add(
+                    $this->mul($kMinusOneStr, $x),
+                    $this->divQ($m, $this->pow($x, $k - 1)),
+                ),
+                $kStr,
+            );
+
+            if ($this->cmp($nx, $x) >= 0) {
+                break;
+            }
+
+            $x = $nx;
+        }
+
+        return $negative ? $this->neg($x) : $x;
+    }
 
     /**
      * Converts a number from an arbitrary base.

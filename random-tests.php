@@ -81,6 +81,15 @@ if ($maxDigits < 1) {
             foreach ([$a, $b] as $n) {
                 $this->test("SQRT $n", fn (Calculator $c) => $c->sqrt($n));
 
+                foreach ([2, 3, 4, 5, 7] as $k) {
+                    $this->test("ROOT$k $n", fn (Calculator $c) => $c->nthRoot($n, $k));
+
+                    // Negative input only defined for odd k.
+                    if ($n !== '0' && $k % 2 === 1) {
+                        $this->test("ROOT$k -$n", fn (Calculator $c) => $c->nthRoot("-$n", $k));
+                    }
+                }
+
                 for ($exp = 0; $exp <= 3; $exp++) {
                     $this->test("$n POW $exp", fn (Calculator $calc) => $calc->pow($n, $exp));
 

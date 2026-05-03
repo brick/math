@@ -106,6 +106,36 @@ final class RoundingNecessaryException extends RuntimeException implements MathE
      *
      * @pure
      */
+    public static function integerNthRootNotExact(): self
+    {
+        return new self('The nth root is not exact and cannot be represented as an integer without rounding.');
+    }
+
+    /**
+     * @internal
+     *
+     * @pure
+     */
+    public static function decimalNthRootNotExact(): self
+    {
+        return new self('The nth root is not exact and cannot be represented as a decimal without rounding.');
+    }
+
+    /**
+     * @internal
+     *
+     * @pure
+     */
+    public static function decimalNthRootScaleTooSmall(): self
+    {
+        return new self('The nth root is exact but cannot be represented at the requested scale without rounding.');
+    }
+
+    /**
+     * @internal
+     *
+     * @pure
+     */
     public static function decimalNotConvertibleToInteger(): self
     {
         return new self('This decimal number cannot be represented as an integer without rounding.');
