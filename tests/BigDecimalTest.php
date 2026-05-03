@@ -3244,6 +3244,18 @@ class BigDecimalTest extends AbstractTestCase
             ['-17', 3, 0, RoundingMode::Down,        '-2'],
             ['-17', 3, 0, RoundingMode::Up,          '-3'],
             ['-17', 3, 0, RoundingMode::HalfUp,      '-3'],
+
+            // Tightest possible Half* boundaries, where 2^n·|V| differs from (2·|t|+1)^n by ±1.
+            // V=43, n=3: 2^3·43 = 344 vs 7^3 = 343 (diff +1) → smallest "round up". ∛43 ≈ 3.5034.
+            ['43',  3, 0, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['43',  3, 0, RoundingMode::Down,        '3'],
+            ['43',  3, 0, RoundingMode::Up,          '4'],
+            ['43',  3, 0, RoundingMode::HalfUp,      '4'],
+            // V=91, n=3: 2^3·91 = 728 vs 9^3 = 729 (diff -1) → smallest "round down". ∛91 ≈ 4.4979.
+            ['91',  3, 0, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['91',  3, 0, RoundingMode::Down,        '4'],
+            ['91',  3, 0, RoundingMode::Up,          '5'],
+            ['91',  3, 0, RoundingMode::HalfUp,      '4'],
         ];
 
         foreach ($tests as [$number, $n, $scale, $roundingMode, $expected]) {
