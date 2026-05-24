@@ -7,6 +7,7 @@ namespace Brick\Math\Tests;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigRational;
+use Brick\Math\RoundingMode;
 use PHPUnit\Framework\TestCase;
 
 use function count;
@@ -23,6 +24,18 @@ use function substr;
  */
 abstract class AbstractTestCase extends TestCase
 {
+    protected const ALL_ROUNDING_MODES_BUT_UNNECESSARY = [
+        RoundingMode::Up,
+        RoundingMode::Down,
+        RoundingMode::Ceiling,
+        RoundingMode::Floor,
+        RoundingMode::HalfUp,
+        RoundingMode::HalfDown,
+        RoundingMode::HalfCeiling,
+        RoundingMode::HalfFloor,
+        RoundingMode::HalfEven,
+    ];
+
     final protected function expectExceptionMessageExact(string $message): void
     {
         $this->expectExceptionMessageMatches('/^' . preg_quote($message, '/') . '$/');
