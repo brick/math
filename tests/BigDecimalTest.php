@@ -17,6 +17,7 @@ use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 use function bin2hex;
+use function in_array;
 use function ini_get;
 use function ini_set;
 use function pack;
