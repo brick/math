@@ -138,7 +138,7 @@ jobs:
               composer install --no-interaction
               php -r 'echo "PHP_INT_SIZE=", PHP_INT_SIZE, "\n";'
               php -r 'exit(PHP_INT_SIZE === 4 ? 0 : 1);'
-              vendor/bin/phpunit --coverage-clover clover.xml
+              php -d memory_limit=256M vendor/bin/phpunit --coverage-clover clover.xml
           EOF
 
       - name: Upload coverage to Codecov
