@@ -736,7 +736,13 @@ final readonly class BigDecimal extends BigNumber
         }
 
         if ($n === 1) {
-            return $this->toScale($scale, $roundingMode);
+            $scaled = DecimalHelper::scale($this->value, $this->scale, $scale, $roundingMode);
+
+            if ($scaled === null) {
+                throw RoundingNecessaryException::decimalNthRootScaleTooSmall();
+            }
+
+            return new BigDecimal($scaled, $scale);
         }
 
         if ($this->isZero()) {

@@ -2524,15 +2524,19 @@ class BigDecimalTest extends AbstractTestCase
             ['0',     1, 4, RoundingMode::Unnecessary, '0.0000'],
             ['0.0',   1, 0, RoundingMode::Unnecessary, '0'],
             ['0.00',  1, 1, RoundingMode::Unnecessary, '0.0'],
+            ['1.23',  1, 1, RoundingMode::Unnecessary, 'SCALE_TOO_SMALL'],
             ['1.23',  1, 1, RoundingMode::Down,        '1.2'],
             ['1.23',  1, 1, RoundingMode::Up,          '1.3'],
             ['1.23',  1, 1, RoundingMode::HalfUp,      '1.2'],
+            ['1.27',  1, 1, RoundingMode::Unnecessary, 'SCALE_TOO_SMALL'],
             ['1.27',  1, 1, RoundingMode::Down,        '1.2'],
             ['1.27',  1, 1, RoundingMode::Up,          '1.3'],
             ['1.27',  1, 1, RoundingMode::HalfUp,      '1.3'],
+            ['-1.23', 1, 1, RoundingMode::Unnecessary, 'SCALE_TOO_SMALL'],
             ['-1.23', 1, 1, RoundingMode::Down,        '-1.2'],
             ['-1.23', 1, 1, RoundingMode::Up,          '-1.3'],
             ['-1.23', 1, 1, RoundingMode::HalfUp,      '-1.2'],
+            ['-1.27', 1, 1, RoundingMode::Unnecessary, 'SCALE_TOO_SMALL'],
             ['-1.27', 1, 1, RoundingMode::Down,        '-1.2'],
             ['-1.27', 1, 1, RoundingMode::Up,          '-1.3'],
             ['-1.27', 1, 1, RoundingMode::HalfUp,      '-1.3'],
@@ -2799,6 +2803,7 @@ class BigDecimalTest extends AbstractTestCase
     {
         $tests = [
             // n = 1 identity at a tie: 1.25 doesn't fit at scale 1; midpoint between 1.2 and 1.3.
+            ['1.25', 1, 1, RoundingMode::Unnecessary, 'SCALE_TOO_SMALL'],
             ['1.25', 1, 1, RoundingMode::Down,        '1.2'],
             ['1.25', 1, 1, RoundingMode::Up,          '1.3'],
             ['1.25', 1, 1, RoundingMode::HalfUp,      '1.3'],
