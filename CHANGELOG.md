@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ✨ **New features**
 
-- New methods: `BigInteger::nthRoot()` and `BigDecimal::nthRoot()` compute the nth root of a number.
+- New methods: `BigInteger::nthRoot()` and `BigDecimal::nthRoot()` compute the nth root of a number (#113 by @Pablo1Gustavo)
 
 ## [0.17.1](https://github.com/brick/math/releases/tag/0.17.1) - 2026-04-19
 
