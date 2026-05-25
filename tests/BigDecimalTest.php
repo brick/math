@@ -2679,6 +2679,47 @@ class BigDecimalTest extends AbstractTestCase
             ['91',  3, 0, RoundingMode::Up,          '5'],
             ['91',  3, 0, RoundingMode::HalfUp,      '4'],
 
+            ['0.999',  3, 0, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['0.999',  3, 0, RoundingMode::Down,        '0'],
+            ['0.999',  3, 0, RoundingMode::Up,          '1'],
+            ['0.999',  3, 0, RoundingMode::HalfUp,      '1'],
+            ['0.999',  3, 1, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['0.999',  3, 1, RoundingMode::Down,        '0.9'],
+            ['0.999',  3, 1, RoundingMode::Up,          '1.0'],
+            ['0.999',  3, 1, RoundingMode::HalfUp,      '1.0'],
+            ['0.999',  3, 2, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['0.999',  3, 2, RoundingMode::Down,        '0.99'],
+            ['0.999',  3, 2, RoundingMode::Up,          '1.00'],
+            ['0.999',  3, 2, RoundingMode::HalfUp,      '1.00'],
+            ['0.999',  3, 3, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['0.999',  3, 3, RoundingMode::Down,        '0.999'],
+            ['0.999',  3, 3, RoundingMode::Up,          '1.000'],
+            ['0.999',  3, 3, RoundingMode::HalfUp,      '1.000'],
+            ['0.999',  3, 4, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['0.999',  3, 4, RoundingMode::Down,        '0.9996'],
+            ['0.999',  3, 4, RoundingMode::Up,          '0.9997'],
+            ['0.999',  3, 4, RoundingMode::HalfUp,      '0.9997'],
+            ['-0.999', 3, 0, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['-0.999', 3, 0, RoundingMode::Down,        '0'],
+            ['-0.999', 3, 0, RoundingMode::Up,          '-1'],
+            ['-0.999', 3, 0, RoundingMode::HalfUp,      '-1'],
+            ['-0.999', 3, 1, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['-0.999', 3, 1, RoundingMode::Down,        '-0.9'],
+            ['-0.999', 3, 1, RoundingMode::Up,          '-1.0'],
+            ['-0.999', 3, 1, RoundingMode::HalfUp,      '-1.0'],
+            ['-0.999', 3, 2, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['-0.999', 3, 2, RoundingMode::Down,        '-0.99'],
+            ['-0.999', 3, 2, RoundingMode::Up,          '-1.00'],
+            ['-0.999', 3, 2, RoundingMode::HalfUp,      '-1.00'],
+            ['-0.999', 3, 3, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['-0.999', 3, 3, RoundingMode::Down,        '-0.999'],
+            ['-0.999', 3, 3, RoundingMode::Up,          '-1.000'],
+            ['-0.999', 3, 3, RoundingMode::HalfUp,      '-1.000'],
+            ['-0.999', 3, 4, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['-0.999', 3, 4, RoundingMode::Down,        '-0.9996'],
+            ['-0.999', 3, 4, RoundingMode::Up,          '-0.9997'],
+            ['-0.999', 3, 4, RoundingMode::HalfUp,      '-0.9997'],
+
             // n = 4
 
             // Perfect 4th powers: 16 = 2^4, 0.0016 = 0.2^4.
@@ -2739,6 +2780,38 @@ class BigDecimalTest extends AbstractTestCase
             ['2', 100, 5, RoundingMode::Up,          '1.00696'],
             ['2', 100, 5, RoundingMode::Down,        '1.00695'],
             ['2', 100, 5, RoundingMode::HalfUp,      '1.00696'],
+
+            // 2^100
+            ['1267650600228229401496703205376', 100, 10, RoundingMode::Unnecessary, '2.0000000000'],
+
+            // 2^100 + 1
+            ['1267650600228229401496703205377', 100, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['1267650600228229401496703205377', 100, 10, RoundingMode::Down,        '2.0000000000'],
+            ['1267650600228229401496703205377', 100, 10, RoundingMode::Up,          '2.0000000001'],
+            ['1267650600228229401496703205377', 100, 10, RoundingMode::HalfUp,      '2.0000000000'],
+
+            // 2^100 - 1
+            ['1267650600228229401496703205375', 100, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['1267650600228229401496703205375', 100, 10, RoundingMode::Down,        '1.9999999999'],
+            ['1267650600228229401496703205375', 100, 10, RoundingMode::Up,          '2.0000000000'],
+            ['1267650600228229401496703205375', 100, 10, RoundingMode::HalfUp,      '2.0000000000'],
+
+            // n = 101
+
+            // -(2^101)
+            ['-2535301200456458802993406410752', 101, 10, RoundingMode::Unnecessary, '-2.0000000000'],
+
+            // -(2^101 + 1)
+            ['-2535301200456458802993406410753', 101, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['-2535301200456458802993406410753', 101, 10, RoundingMode::Down,        '-2.0000000000'],
+            ['-2535301200456458802993406410753', 101, 10, RoundingMode::Up,          '-2.0000000001'],
+            ['-2535301200456458802993406410753', 101, 10, RoundingMode::HalfUp,      '-2.0000000000'],
+
+            // -(2^101 - 1)
+            ['-2535301200456458802993406410751', 101, 10, RoundingMode::Unnecessary, 'NTH_ROOT_NOT_EXACT'],
+            ['-2535301200456458802993406410751', 101, 10, RoundingMode::Down,        '-1.9999999999'],
+            ['-2535301200456458802993406410751', 101, 10, RoundingMode::Up,          '-2.0000000000'],
+            ['-2535301200456458802993406410751', 101, 10, RoundingMode::HalfUp,      '-2.0000000000'],
         ];
 
         foreach ($tests as [$number, $n, $scale, $roundingMode, $expected]) {
