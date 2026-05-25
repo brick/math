@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [0.17.2](https://github.com/brick/math/releases/tag/0.17.2) - 2026-05-25
 
 ✨ **New features**
 
-- New methods: `BigInteger::nthRoot()` and `BigDecimal::nthRoot()` compute the nth root of a number with the full `RoundingMode` contract. Odd degrees accept negative inputs.
+- New methods: `BigInteger::nthRoot()` and `BigDecimal::nthRoot()` compute the nth root of a number.
 
 ## [0.17.1](https://github.com/brick/math/releases/tag/0.17.1) - 2026-04-19
 
