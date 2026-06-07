@@ -65,6 +65,10 @@ final readonly class BcMathCalculator extends Calculator
     #[Override]
     public function pow(string $a, int $e): string
     {
+        if ($e === 0) {
+            return '1';
+        }
+
         // bcpow() allocates memory proportional to the exponent even when the base is trivial,
         // exhausting memory on 32-bit builds at large exponents.
         if ($a === '0' || $a === '1') {
