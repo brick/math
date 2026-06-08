@@ -633,7 +633,12 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
                 $unscaledValue = self::cleanUp($sign, $integral . $fractional);
 
-                $scale = Safe::sub(strlen($fractional), $exponent);
+                $scale = strlen($fractional) - $exponent;
+
+                // @phpstan-ignore function.alreadyNarrowedType
+                if (! is_int($scale)) {
+                    throw NumberFormatException::exponentTooLarge();
+                }
 
                 if ($scale < 0) {
                     if ($unscaledValue !== '0') {
