@@ -87,7 +87,7 @@ enum RoundingMode
      *
      * Note that this is the rounding mode that statistically minimizes
      * cumulative error when applied repeatedly over a sequence of calculations.
-     * It is sometimes known as "Banker's rounding", and is chiefly used in the USA.
+     * It is sometimes known as "Banker's rounding", and is the default rounding mode in IEEE 754.
      */
     case HalfEven;
 }
