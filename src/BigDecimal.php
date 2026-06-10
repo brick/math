@@ -708,7 +708,7 @@ final readonly class BigDecimal extends BigNumber
      * For odd $n, the operation is defined for negative inputs: the sign is preserved and the
      * magnitude of the root is |$this|^(1/$n).
      *
-     * @param int              $n            The root degree. Must be a strictly positive integer.
+     * @param positive-int     $n            The root degree. Must be a strictly positive integer.
      * @param non-negative-int $scale        The target scale. Must be non-negative.
      * @param RoundingMode     $roundingMode An optional rounding mode, defaults to Unnecessary.
      *
@@ -721,7 +721,7 @@ final readonly class BigDecimal extends BigNumber
      */
     public function nthRoot(int $n, int $scale, RoundingMode $roundingMode = RoundingMode::Unnecessary): BigDecimal
     {
-        if ($n < 1) {
+        if ($n < 1) { // @phpstan-ignore smaller.alwaysFalse
             throw InvalidArgumentException::nonPositiveNthRootDegree();
         }
 
