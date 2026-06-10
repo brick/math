@@ -196,7 +196,7 @@ final readonly class BigInteger extends BigNumber
      *
      * This method can be used to retrieve a number exported by `toBytes()`, as long as the `$signed` flags match.
      *
-     * @param non-empty-string $value  The byte string.
+     * @param non-empty-string $bytes  The byte string.
      * @param bool             $signed Whether to interpret as a signed number in two's-complement representation with a leading
      *                                 sign bit.
      *
@@ -204,23 +204,23 @@ final readonly class BigInteger extends BigNumber
      *
      * @pure
      */
-    public static function fromBytes(string $value, bool $signed = true): BigInteger
+    public static function fromBytes(string $bytes, bool $signed = true): BigInteger
     {
-        if ($value === '') { // @phpstan-ignore identical.alwaysFalse
+        if ($bytes === '') { // @phpstan-ignore identical.alwaysFalse
             throw NumberFormatException::emptyByteString();
         }
 
         $twosComplement = false;
 
         if ($signed) {
-            $x = ord($value[0]);
+            $x = ord($bytes[0]);
 
             if (($twosComplement = ($x >= 0x80))) {
-                $value = ~$value;
+                $bytes = ~$bytes;
             }
         }
 
-        $number = self::fromBase(bin2hex($value), 16);
+        $number = self::fromBase(bin2hex($bytes), 16);
 
         if ($twosComplement) {
             return $number->plus(1)->negated();
