@@ -168,6 +168,8 @@ class BigIntegerTest extends AbstractTestCase
             ['a'],
             [' 1'],
             ['1 '],
+            ["\n123"],
+            ["123\n"],
             ['+'],
             ['-'],
             ['+a'],

@@ -41,6 +41,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 {
     /**
      * The regular expression used to parse integer or decimal numbers.
+     *
+     * The end anchor must be \z, not $: the latter would also match before a trailing newline.
      */
     private const PARSE_REGEXP_NUMERICAL =
         '/^' .
@@ -49,10 +51,12 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
         '(?<point>\.)?' .
         '(?<fractional>[0-9]+)?' .
         '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
-        '$/';
+        '\z/';
 
     /**
      * The regular expression used to parse rational numbers.
+     *
+     * The end anchor must be \z, not $: the latter would also match before a trailing newline.
      */
     private const PARSE_REGEXP_RATIONAL =
         '/^' .
@@ -60,7 +64,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
         '(?<numerator>[0-9]+)' .
         '\/' .
         '(?<denominator>[0-9]+)' .
-        '$/';
+        '\z/';
 
     /**
      * Creates a BigNumber of the given value.
