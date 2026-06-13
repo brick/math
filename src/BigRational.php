@@ -44,6 +44,7 @@ final readonly class BigRational extends BigNumber
      * @param BigInteger $numerator        The numerator.
      * @param BigInteger $denominator      The denominator.
      * @param bool       $checkDenominator Whether to check the denominator for negative and zero.
+     * @param bool       $simplify         Whether to simplify the fraction to lowest terms.
      *
      * @throws DivisionByZeroException If the denominator is zero.
      *
