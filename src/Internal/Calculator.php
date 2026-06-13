@@ -600,29 +600,27 @@ abstract readonly class Calculator
     }
 
     /**
-     * @return array{string, string, string} GCD, X, Y
+     * @param string $a Must be non-negative.
+     * @param string $b Must be non-negative.
+     *
+     * @return array{string, string} GCD, X
      *
      * @pure
      */
     private function gcdExtended(string $a, string $b): array
     {
-        // Iterative extended Euclidean algorithm (recursion would exhaust memory on large
-        // inputs, see gcd()), maintaining the invariants:
-        //   $a * $x0 + $b * $y0 = $r0
-        //   $a * $x1 + $b * $y1 = $r1
+        // Iterative extended Euclidean algorithm; recursion would exhaust memory on large inputs.
         [$r0, $r1] = [$a, $b];
         [$x0, $x1] = ['1', '0'];
-        [$y0, $y1] = ['0', '1'];
 
         while ($r1 !== '0') {
             [$q, $r] = $this->divQR($r0, $r1);
 
             [$r0, $r1] = [$r1, $r];
             [$x0, $x1] = [$x1, $this->sub($x0, $this->mul($q, $x1))];
-            [$y0, $y1] = [$y1, $this->sub($y0, $this->mul($q, $y1))];
         }
 
-        return [$r0, $x0, $y0];
+        return [$r0, $x0];
     }
 
     /**
