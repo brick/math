@@ -275,8 +275,14 @@ class BigDecimalTest extends AbstractTestCase
     public static function providerOfExponentTooLargeThrowsException(): array
     {
         return [
+            // Exponent string does not fit in a native integer.
             ['1e1000000000000000000000000000000'],
             ['1e-1000000000000000000000000000000'],
+
+            // Exponent fits in a native integer, but computing the scale as
+            // strlen(fractional) - exponent overflows the native integer range.
+            ['1.5e-' . PHP_INT_MAX],
+            ['1.25e-' . PHP_INT_MAX],
         ];
     }
 
