@@ -503,6 +503,8 @@ final readonly class BigRational extends BigNumber
      * - `171/70` returns `2.4(428571)`
      * - `1/2` returns `0.5`
      *
+     * @return non-empty-string
+     *
      * @pure
      */
     public function toRepeatingDecimalString(): string

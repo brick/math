@@ -1251,6 +1251,8 @@ final readonly class BigInteger extends BigNumber
      *
      * @param int<2, 36> $base
      *
+     * @return non-empty-string
+     *
      * @throws InvalidArgumentException If the base is out of range.
      *
      * @pure
@@ -1258,6 +1260,7 @@ final readonly class BigInteger extends BigNumber
     public function toBase(int $base): string
     {
         if ($base === 10) {
+            /** @var non-empty-string */
             return $this->value;
         }
 
@@ -1265,6 +1268,7 @@ final readonly class BigInteger extends BigNumber
             throw InvalidArgumentException::baseOutOfRange($base);
         }
 
+        /** @var non-empty-string */
         return CalculatorRegistry::get()->toBase($this->value, $base);
     }
 
@@ -1278,6 +1282,8 @@ final readonly class BigInteger extends BigNumber
      * a NegativeNumberException will be thrown when attempting to call this method on a negative number.
      *
      * @param non-empty-string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
+     *
+     * @return non-empty-string
      *
      * @throws InvalidArgumentException If the alphabet does not contain at least 2 chars, or contains duplicates.
      * @throws NegativeNumberException  If this number is negative.
@@ -1300,6 +1306,7 @@ final readonly class BigInteger extends BigNumber
             throw NegativeNumberException::toArbitraryBaseOfNegativeNumber();
         }
 
+        /** @var non-empty-string */
         return CalculatorRegistry::get()->toArbitraryBase($this->value, $alphabet, $base);
     }
 
@@ -1318,6 +1325,8 @@ final readonly class BigInteger extends BigNumber
      * This representation is compatible with the `fromBytes()` factory method, as long as the `$signed` flags match.
      *
      * @param bool $signed Whether to output a signed number in two's-complement representation with a leading sign bit.
+     *
+     * @return non-empty-string
      *
      * @throws NegativeNumberException If $signed is false, and the number is negative.
      *
@@ -1365,6 +1374,7 @@ final readonly class BigInteger extends BigNumber
         $result = hex2bin($hex);
         assert($result !== false);
 
+        /** @var non-empty-string */
         return $result;
     }
 
