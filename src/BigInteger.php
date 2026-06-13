@@ -37,7 +37,6 @@ use function preg_quote;
 use function random_bytes;
 use function str_repeat;
 use function strlen;
-use function strtolower;
 use function substr;
 
 use const FILTER_VALIDATE_INT;
@@ -126,9 +125,9 @@ final readonly class BigInteger extends BigNumber
             return new BigInteger($sign . '1');
         }
 
-        $pattern = '/[^' . substr(Calculator::ALPHABET, 0, $base) . ']/';
+        $pattern = '/[^' . substr(Calculator::ALPHABET, 0, $base) . ']/i';
 
-        if (preg_match($pattern, strtolower($number), $matches) === 1) {
+        if (preg_match($pattern, $number, $matches) === 1) {
             throw NumberFormatException::charNotValidInBase($matches[0], $base);
         }
 
