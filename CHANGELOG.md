@@ -21,7 +21,7 @@ The following breaking change only affects you if you're using named arguments:
 - `BigInteger::gcd()` no longer exhausts memory on large inputs when the GMP extension is not installed
 - `BigInteger::modInverse()` no longer exhausts memory on large inputs, and is faster when the GMP extension is not installed
 
-👌 **Improvements**
+👌 **Static analysis improvements**
 
 - Narrowed parameter and return types with static analysis annotations:
   - `nthRoot()`'s `$n` is now `positive-int`
