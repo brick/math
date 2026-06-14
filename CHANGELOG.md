@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.18.0](https://github.com/brick/math/releases/tag/0.18.0) - 2026-06-14
+
+💥 **Breaking changes**
+
+The following breaking change only affects you if you're using named arguments:
+
+- `BigInteger::fromBytes()` now uses `$bytes` as the parameter name
+
+🐛 **Bug fixes**
+
+- `of()` no longer accepts a trailing newline (`\n`) in the input string; such input now throws `NumberFormatException`
+- `of()` now consistently throws `NumberFormatException` for exponents too large to process, instead of `IntegerOverflowException` in some cases
+- `BigInteger::fromBase()` now reports the invalid character with its original case in the `NumberFormatException` message, instead of lower-casing it
+
+⚡️ **Performance improvements**
+
+- `BigInteger::gcd()` no longer exhausts memory on large inputs when the GMP extension is not installed
+- `BigInteger::modInverse()` no longer exhausts memory on large inputs, and is faster when the GMP extension is not installed
+
+👌 **Improvements**
+
+- Narrowed parameter and return types with static analysis annotations:
+  - `nthRoot()`'s `$n` is now `positive-int`
+  - `BigInteger::toBase()`, `toArbitraryBase()`, `toBytes()` and `BigRational::toRepeatingDecimalString()` now return `non-empty-string`
+
 ## [0.17.2](https://github.com/brick/math/releases/tag/0.17.2) - 2026-05-25
 
 ✨ **New features**
