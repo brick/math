@@ -973,6 +973,8 @@ class BigRationalTest extends AbstractTestCase
             ['1/16', 3, RoundingMode::Unnecessary, 'SCALE_TOO_SMALL'],
             ['1/16', 3, RoundingMode::HalfDown, '0.062'],
             ['1/16', 3, RoundingMode::HalfUp, '0.063'],
+            ['1/16', 3, RoundingMode::HalfEven, '0.062'],
+            ['1/16', 3, RoundingMode::HalfOdd, '0.063'],
             ['1/9', 30, RoundingMode::Down, '0.111111111111111111111111111111'],
             ['1/9', 30, RoundingMode::Up, '0.111111111111111111111111111112'],
             ['1/9', 100, RoundingMode::Unnecessary, 'NON_EXACT'],

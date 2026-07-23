@@ -892,6 +892,7 @@ final readonly class BigInteger extends BigNumber
         //   - HalfUp, HalfCeiling => $cmp >= 0
         //   - HalfDown, HalfFloor => $cmp > 0
         //   - HalfEven => $cmp > 0 || ($cmp === 0 && $sqrt % 2 === 1)
+        //   - HalfOdd => $cmp > 0 || ($cmp === 0 && $sqrt % 2 === 0)
         // But 2*remainder is always even and 2*s + 1 is always odd, so $cmp is never zero.
         // Therefore, all Half* modes simplify to:
         if ($cmp > 0) {
@@ -965,7 +966,7 @@ final readonly class BigInteger extends BigNumber
         } else {
             // Half* modes: increment iff |$this| > (|truncated| + 0.5)^n, equivalently
             // 2^n * |$this| > (2*|truncated| + 1)^n. The rhs is odd while the lhs is even
-            // (n ≥ 2 here, so 2^n is even), so a midpoint tie is impossible and all five
+            // (n ≥ 2 here, so 2^n is even), so a midpoint tie is impossible and all six
             // Half* modes collapse to the same comparison.
             $absValue = $calculator->abs($this->value);
             $absTruncated = $calculator->abs($truncatedRoot);

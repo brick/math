@@ -90,4 +90,15 @@ enum RoundingMode
      * It is sometimes known as "Banker's rounding", and is the default rounding mode in IEEE 754.
      */
     case HalfEven;
+
+    /**
+     * Rounds towards the "nearest neighbor" unless both neighbors are equidistant, in which case rounds towards the odd neighbor.
+     *
+     * Behaves as for HalfUp if the digit to the left of the discarded fraction is even;
+     * behaves as for HalfDown if it's odd.
+     *
+     * Like HalfEven, this rounding mode is free of bias towards or away from zero on ties;
+     * unlike HalfEven, ties never round to an even digit — in particular, never to zero or to a multiple of ten.
+     */
+    case HalfOdd;
 }

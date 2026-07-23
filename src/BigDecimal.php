@@ -687,8 +687,14 @@ final readonly class BigDecimal extends BigNumber
                 $sqrt = $calculator->add($sqrt, '1');
             }
 
-            // Irrational sqrt cannot land exactly on a midpoint; treat tie-to-down modes as HalfUp.
-            elseif (in_array($roundingMode, [RoundingMode::HalfDown, RoundingMode::HalfEven, RoundingMode::HalfFloor], true)) {
+            // Irrational sqrt cannot land exactly on a midpoint; the intermediate approximation can,
+            // so rewrite every tie-sensitive mode that could round down on such a phantom tie to HalfUp.
+            elseif (in_array($roundingMode, [
+                RoundingMode::HalfDown,
+                RoundingMode::HalfFloor,
+                RoundingMode::HalfEven,
+                RoundingMode::HalfOdd,
+            ], true)) {
                 $roundingMode = RoundingMode::HalfUp;
             }
         }
@@ -796,9 +802,10 @@ final readonly class BigDecimal extends BigNumber
             // in magnitude) true value for both positive and negative inputs.
             elseif (in_array($roundingMode, [
                 RoundingMode::HalfDown,
-                RoundingMode::HalfEven,
-                RoundingMode::HalfFloor,
                 RoundingMode::HalfCeiling,
+                RoundingMode::HalfFloor,
+                RoundingMode::HalfEven,
+                RoundingMode::HalfOdd,
             ], true)) {
                 $roundingMode = RoundingMode::HalfUp;
             }

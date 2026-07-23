@@ -533,6 +533,13 @@ abstract readonly class Calculator
                 $increment = $lastDigitIsEven ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
 
                 break;
+
+            case RoundingMode::HalfOdd:
+                $lastDigit = (int) $quotient[-1];
+                $lastDigitIsOdd = ($lastDigit % 2 === 1);
+                $increment = $lastDigitIsOdd ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
+
+                break;
         }
 
         if ($increment) {

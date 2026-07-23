@@ -34,6 +34,7 @@ abstract class AbstractTestCase extends TestCase
         RoundingMode::HalfCeiling,
         RoundingMode::HalfFloor,
         RoundingMode::HalfEven,
+        RoundingMode::HalfOdd,
     ];
 
     final protected function expectExceptionMessageExact(string $message): void
