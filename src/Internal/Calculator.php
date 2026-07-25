@@ -479,71 +479,30 @@ abstract readonly class Calculator
             return $this->cmp($r, $b);
         };
 
-        $increment = false;
+        $lastDigitIsEven = (int) $quotient[-1] % 2 === 0;
 
-        switch ($roundingMode) {
-            case RoundingMode::Unnecessary:
-                if ($hasDiscardedFraction) {
-                    return null;
-                }
+        $increment = match ($roundingMode) {
+            RoundingMode::Unnecessary => $hasDiscardedFraction ? null : false,
+            RoundingMode::Up => $hasDiscardedFraction,
+            RoundingMode::Down => false,
+            RoundingMode::Ceiling => $hasDiscardedFraction && $isPositiveOrZero,
+            RoundingMode::Floor => $hasDiscardedFraction && ! $isPositiveOrZero,
+            RoundingMode::HalfUp => $discardedFractionSign() >= 0,
+            RoundingMode::HalfDown => $discardedFractionSign() > 0,
+            RoundingMode::HalfCeiling => $isPositiveOrZero ? $discardedFractionSign() >= 0 : $discardedFractionSign() > 0,
+            RoundingMode::HalfFloor => $isPositiveOrZero ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0,
+            RoundingMode::HalfEven => $lastDigitIsEven ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0,
+            RoundingMode::HalfOdd => $lastDigitIsEven ? $discardedFractionSign() >= 0 : $discardedFractionSign() > 0,
+        };
 
-                break;
-
-            case RoundingMode::Up:
-                $increment = $hasDiscardedFraction;
-
-                break;
-
-            case RoundingMode::Down:
-                break;
-
-            case RoundingMode::Ceiling:
-                $increment = $hasDiscardedFraction && $isPositiveOrZero;
-
-                break;
-
-            case RoundingMode::Floor:
-                $increment = $hasDiscardedFraction && ! $isPositiveOrZero;
-
-                break;
-
-            case RoundingMode::HalfUp:
-                $increment = $discardedFractionSign() >= 0;
-
-                break;
-
-            case RoundingMode::HalfDown:
-                $increment = $discardedFractionSign() > 0;
-
-                break;
-
-            case RoundingMode::HalfCeiling:
-                $increment = $isPositiveOrZero ? $discardedFractionSign() >= 0 : $discardedFractionSign() > 0;
-
-                break;
-
-            case RoundingMode::HalfFloor:
-                $increment = $isPositiveOrZero ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
-
-                break;
-
-            case RoundingMode::HalfEven:
-                $lastDigit = (int) $quotient[-1];
-                $lastDigitIsEven = ($lastDigit % 2 === 0);
-                $increment = $lastDigitIsEven ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
-
-                break;
-
-            case RoundingMode::HalfOdd:
-                $lastDigit = (int) $quotient[-1];
-                $lastDigitIsOdd = ($lastDigit % 2 === 1);
-                $increment = $lastDigitIsOdd ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
-
-                break;
+        if ($increment === null) {
+            return null;
         }
 
         if ($increment) {
-            return $this->add($quotient, $isPositiveOrZero ? '1' : '-1');
+            return $isPositiveOrZero
+                ? $this->add($quotient, '1')
+                : $this->sub($quotient, '1');
         }
 
         return $quotient;
