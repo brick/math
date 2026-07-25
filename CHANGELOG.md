@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ✨ **New features**
 
 - New rounding mode: `RoundingMode::HalfOdd`
+- New method: `RoundingMode::fromNativeRoundingMode()` converts from a native PHP `RoundingMode` enum (PHP 8.4+)
 
 ## [0.18.0](https://github.com/brick/math/releases/tag/0.18.0) - 2026-06-14
 
