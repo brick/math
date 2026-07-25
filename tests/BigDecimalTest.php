@@ -4548,13 +4548,14 @@ class BigDecimalTest extends AbstractTestCase
     {
         foreach ([$zero, $one, $two] as $scale => $expected) {
             if ($expected === null) {
-                $this->expectException(RoundingNecessaryException::class);
-                $this->expectExceptionMessageExact('The division result is exact but cannot be represented at the requested scale without rounding.');
-            }
-
-            $actual = $number->dividedBy($divisor, $scale, $roundingMode);
-
-            if ($expected !== null) {
+                try {
+                    $number->dividedBy($divisor, $scale, $roundingMode);
+                    self::fail(sprintf('Dividing %s by %s at scale %d should throw a RoundingNecessaryException.', $number, $divisor, $scale));
+                } catch (RoundingNecessaryException $e) {
+                    self::assertSame('The division result is exact but cannot be represented at the requested scale without rounding.', $e->getMessage());
+                }
+            } else {
+                $actual = $number->dividedBy($divisor, $scale, $roundingMode);
                 self::assertBigDecimalEquals($expected, $actual);
             }
         }

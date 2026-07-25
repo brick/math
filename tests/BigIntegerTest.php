@@ -5546,9 +5546,9 @@ class BigIntegerTest extends AbstractTestCase
      * @param RoundingMode $roundingMode The rounding mode.
      * @param BigInteger   $number       The number to round.
      * @param string       $divisor      The divisor.
-     * @param string|null  $ten          The expected rounding to a scale of two, or null if an exception is expected.
-     * @param string|null  $hundred      The expected rounding to a scale of one, or null if an exception is expected.
-     * @param string|null  $thousand     The expected rounding to a scale of zero, or null if an exception is expected.
+     * @param string|null  $ten          The expected result of the division by 10 times the divisor, or null if an exception is expected.
+     * @param string|null  $hundred      The expected result of the division by 100 times the divisor, or null if an exception is expected.
+     * @param string|null  $thousand     The expected result of the division by 1000 times the divisor, or null if an exception is expected.
      */
     private function doTestDividedByWithRoundingMode(RoundingMode $roundingMode, BigInteger $number, string $divisor, ?string $ten, ?string $hundred, ?string $thousand): void
     {
@@ -5556,13 +5556,14 @@ class BigIntegerTest extends AbstractTestCase
             $divisor .= '0';
 
             if ($expected === null) {
-                $this->expectException(RoundingNecessaryException::class);
-                $this->expectExceptionMessageExact('The division has a non-zero remainder and cannot be represented as an integer without rounding.');
-            }
-
-            $actual = $number->dividedBy($divisor, $roundingMode);
-
-            if ($expected !== null) {
+                try {
+                    $number->dividedBy($divisor, $roundingMode);
+                    self::fail(sprintf('Dividing %s by %s should throw a RoundingNecessaryException.', $number, $divisor));
+                } catch (RoundingNecessaryException $e) {
+                    self::assertSame('The division has a non-zero remainder and cannot be represented as an integer without rounding.', $e->getMessage());
+                }
+            } else {
+                $actual = $number->dividedBy($divisor, $roundingMode);
                 self::assertBigIntegerEquals($expected, $actual);
             }
         }
