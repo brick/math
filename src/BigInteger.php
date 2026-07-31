@@ -1336,6 +1336,11 @@ final readonly class BigInteger extends BigNumber
      * The string will contain the minimum number of bytes required to represent this BigInteger, including a sign bit
      * if `$signed` is true.
      *
+     * Note that in signed mode, a positive number whose most significant byte is 0x80 or greater gains an extra leading
+     * 0x00 byte, so that its first bit is not interpreted as a sign bit: for example, 128 converts to "\x00\x80" when
+     * signed, and to "\x80" when unsigned. Callers that require fixed-width unsigned output, such as cryptographic
+     * code, should use `$signed = false`.
+     *
      * This representation is compatible with the `fromBytes()` factory method, as long as the `$signed` flags match.
      *
      * @param bool $signed Whether to output a signed number in two's-complement representation with a leading sign bit.
