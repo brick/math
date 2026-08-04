@@ -30,4 +30,17 @@ final class PlatformException extends UnsupportedPlatformException
     {
         return new self('Unsupported float format: expected IEEE-754 double.');
     }
+
+    /**
+     * @internal
+     *
+     * @pure
+     */
+    public static function pcreFailure(): self
+    {
+        return new self(sprintf(
+            'PCRE regular expression matching failed: %s. Check the pcre.* ini settings.',
+            preg_last_error_msg(),
+        ));
+    }
 }

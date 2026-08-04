@@ -11,6 +11,7 @@ use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NoInverseException;
 use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\PlatformException;
 use Brick\Math\Exception\RandomSourceException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
@@ -127,7 +128,13 @@ final readonly class BigInteger extends BigNumber
 
         $pattern = '/[^' . substr(Calculator::ALPHABET, 0, $base) . ']/i';
 
-        if (preg_match($pattern, $number, $matches) === 1) {
+        $result = preg_match($pattern, $number, $matches);
+
+        if ($result === false) {
+            throw PlatformException::pcreFailure();
+        }
+
+        if ($result === 1) {
             throw NumberFormatException::charNotValidInBase($matches[0], $base);
         }
 
@@ -175,7 +182,13 @@ final readonly class BigInteger extends BigNumber
 
         $pattern = '/[^' . preg_quote($alphabet, '/') . ']/';
 
-        if (preg_match($pattern, $number, $matches) === 1) {
+        $result = preg_match($pattern, $number, $matches);
+
+        if ($result === false) {
+            throw PlatformException::pcreFailure();
+        }
+
+        if ($result === 1) {
             throw NumberFormatException::charNotInAlphabet($matches[0]);
         }
 

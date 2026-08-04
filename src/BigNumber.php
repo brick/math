@@ -9,6 +9,7 @@ use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\PlatformException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Safe;
 use JsonSerializable;
@@ -569,7 +570,13 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
         if (str_contains($value, '/')) {
             // Rational number
-            if (preg_match(self::PARSE_REGEXP_RATIONAL, $value, $matches, PREG_UNMATCHED_AS_NULL) !== 1) {
+            $result = preg_match(self::PARSE_REGEXP_RATIONAL, $value, $matches, PREG_UNMATCHED_AS_NULL);
+
+            if ($result === false) {
+                throw PlatformException::pcreFailure();
+            }
+
+            if ($result === 0) {
                 throw NumberFormatException::invalidFormat($value);
             }
 
@@ -593,7 +600,13 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
         }
 
         // Integer or decimal number
-        if (preg_match(self::PARSE_REGEXP_NUMERICAL, $value, $matches, PREG_UNMATCHED_AS_NULL) !== 1) {
+        $result = preg_match(self::PARSE_REGEXP_NUMERICAL, $value, $matches, PREG_UNMATCHED_AS_NULL);
+
+        if ($result === false) {
+            throw PlatformException::pcreFailure();
+        }
+
+        if ($result === 0) {
             throw NumberFormatException::invalidFormat($value);
         }
 

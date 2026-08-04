@@ -7,6 +7,7 @@ parameters:
         - '~Possibly impure call to function assert\(\) in pure method~'
         - '~Possibly impure call to function hex2bin\(\) in pure method~'
         - '~Possibly impure call to function preg_match\(\) in pure method~'
+        - '~Impure call to function preg_last_error_msg\(\) in pure method~'
         - '~Impure static variable in pure method Brick\\Math\\Big(Integer|Decimal|Rational)::(zero|one|ten)\(\)~'
         -
             message: '~Parameter #\d \$\S+ of function bc\S+ expects numeric-string, string given~'
