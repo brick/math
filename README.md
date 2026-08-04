@@ -248,9 +248,9 @@ If you need more granular control over the exceptions thrown, you can catch the 
 - `NegativeNumberException`
 - `NoInverseException`
 - `NumberFormatException`
+- `PlatformException`
 - `RandomSourceException`
 - `RoundingNecessaryException`
-- `UnsupportedPlatformException`
 
 #### Serialization
 
