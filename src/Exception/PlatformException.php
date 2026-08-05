@@ -36,6 +36,16 @@ final class PlatformException extends UnsupportedPlatformException
      *
      * @pure
      */
+    public static function unsupportedIntSize(): self
+    {
+        return new self(sprintf('Unsupported integer size: %d bytes, expected 4 or 8.', PHP_INT_SIZE));
+    }
+
+    /**
+     * @internal
+     *
+     * @pure
+     */
     public static function pcreFailure(): self
     {
         return new self(sprintf(
