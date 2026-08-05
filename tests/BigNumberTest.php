@@ -10,8 +10,10 @@ use Brick\Math\BigNumber;
 use Brick\Math\BigRational;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+use function preg_match;
 use function sprintf;
 
 /**
@@ -46,29 +48,50 @@ class BigNumberTest extends AbstractTestCase
         self::assertNull(BigNumber::ofNullable(null));
     }
 
-    public static function providerOf(): array
+    public static function providerOf(): Generator
     {
-        return [
-            [123, BigInteger::class, '123'],
+        // Int values.
+        yield [123, BigInteger::class, '123'];
+        yield [-123, BigInteger::class, '-123'];
+
+        // BigNumber values.
+        yield [BigInteger::of(123), BigInteger::class, '123'];
+        yield [BigDecimal::of('123.456'), BigDecimal::class, '123.456'];
+        yield [BigRational::of('123/456'), BigRational::class, '41/152'];
+
+        // String values.
+        // Variations (sign, leading zeros) will be generated for each input.
+        $values = [
+            ['0', BigInteger::class, '0'],
             ['1', BigInteger::class, '1'],
             ['123', BigInteger::class, '123'],
             ['123.0', BigDecimal::class, '123.0'],
-            ['-0.1', BigDecimal::class, '-0.1'],
+            ['.0', BigDecimal::class, '0.0'],
             ['.1', BigDecimal::class, '0.1'],
-            ['-.1', BigDecimal::class, '-0.1'],
             ['1.', BigDecimal::class, '1'],
             ['1e2', BigDecimal::class, '100'],
-            ['-1e3', BigDecimal::class, '-1000'],
-            ['1.2e3', BigDecimal::class, '1200'],
-            ['-1.2e3', BigDecimal::class, '-1200'],
+            ['1.2e-2', BigDecimal::class, '0.012'],
+            ['1.2e-1', BigDecimal::class, '0.12'],
+            ['1.2e0', BigDecimal::class, '1.2'],
+            ['1.2e1', BigDecimal::class, '12'],
+            ['1.2e2', BigDecimal::class, '120'],
             ['1e-2', BigDecimal::class, '0.01'],
-            ['-1e-3', BigDecimal::class, '-0.001'],
+            ['1e-3', BigDecimal::class, '0.001'],
             ['2/3', BigRational::class, '2/3'],
-            ['-1/8', BigRational::class, '-1/8'],
-            [BigInteger::of(123), BigInteger::class, '123'],
-            [BigDecimal::of(123), BigDecimal::class, '123'],
-            [BigRational::of(123), BigRational::class, '123'],
+            ['1/8', BigRational::class, '1/8'],
+            ['2/4', BigRational::class, '1/2'],
+            ['0/5', BigRational::class, '0'],
         ];
+
+        foreach ($values as [$number, $expectedClass, $expectedValue]) {
+            $isZero = preg_match('/[1-9]/', $expectedValue) !== 1;
+
+            foreach (self::generateVariations($number) as $variation) {
+                $negated = ! $isZero && $variation[0] === '-';
+
+                yield [$variation, $expectedClass, $negated ? '-' . $expectedValue : $expectedValue];
+            }
+        }
     }
 
     public function testOfEmptyStringThrowsException(): void
@@ -236,5 +259,24 @@ class BigNumberTest extends AbstractTestCase
             [BigInteger::class, [1, '1/2'], 'This rational number cannot be represented as an integer without rounding.'],
             [BigDecimal::class, ['1.5', '1/3'], 'This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.'],
         ];
+    }
+
+    private static function generateVariations(string $number): Generator
+    {
+        $parts = explode('/', $number, 2);
+
+        foreach (['', '+', '-'] as $sign) {
+            foreach (['', '0', '00'] as $zeros) {
+                if (count($parts) === 2) {
+                    [$numerator, $denominator] = $parts;
+
+                    foreach (['', '0', '00'] as $denominatorZeros) {
+                        yield $sign . $zeros . $numerator . '/' . $denominatorZeros . $denominator;
+                    }
+                } else {
+                    yield $sign . $zeros . $number;
+                }
+            }
+        }
     }
 }
