@@ -13,6 +13,8 @@ use Brick\Math\Exception\RoundingNecessaryException;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+use function count;
+use function explode;
 use function preg_match;
 use function sprintf;
 

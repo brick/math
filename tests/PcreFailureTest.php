@@ -12,6 +12,7 @@ use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 use function ini_restore;
 use function ini_set;
+use function sprintf;
 
 /**
  * Tests that a PCRE match failure throws PlatformException instead of being misreported or ignored.

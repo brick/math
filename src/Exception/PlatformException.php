@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Brick\Math\Exception;
 
+use function preg_last_error_msg;
+use function sprintf;
+
+use const PHP_INT_SIZE;
+
 /**
  * Exception thrown when the current PHP platform does not support a required feature.
  *
