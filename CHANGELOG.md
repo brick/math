@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.19.1](https://github.com/brick/math/releases/tag/0.19.1) - 2026-08-08
+
+✨ **New features**
+
+- New exception class: `PlatformException` (replaces `UnsupportedPlatformException`)
+- `PlatformException` is now thrown when `preg_match()` fails due to improper PHP configuration
+- `PlatformException` is now thrown when `PHP_INT_SIZE` is an unsupported value
+
+🗑️ **Deprecations**
+
+- Exception class `UnsupportedPlatformException` is deprecated; catch `PlatformException` instead
+
 ## [0.19.0](https://github.com/brick/math/releases/tag/0.19.0) - 2026-07-30
 
 ✨ **New features**
