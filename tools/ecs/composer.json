@@ -1,6 +1,6 @@
 {
     "require": {
-        "brick/coding-standard": "v4"
+        "brick/coding-standard": "v5"
     },
     "config": {
         "allow-plugins": {

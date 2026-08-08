@@ -7,12 +7,11 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocTypesOrderFixer;
 use SlevomatCodingStandard\Sniffs\Whitespaces\DuplicateSpacesSniff;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ECSConfig $ecsConfig): void {
-    $ecsConfig->import(__DIR__ . '/vendor/brick/coding-standard/ecs.php');
+$libRootPath = realpath(__DIR__ . '/../..');
 
-    $libRootPath = realpath(__DIR__ . '/../..');
-
-    $ecsConfig->paths(
+return ECSConfig::configure()
+    ->withSets([__DIR__ . '/vendor/brick/coding-standard/ecs.php'])
+    ->withPaths(
         [
             $libRootPath . '/src',
             $libRootPath . '/tests',
@@ -20,9 +19,8 @@ return static function (ECSConfig $ecsConfig): void {
             $libRootPath . '/random-tests.php',
             __FILE__,
         ],
-    );
-
-    $ecsConfig->skip([
+    )
+    ->withSkip([
         // Allows alignment in test providers
         DuplicateSpacesSniff::class => [$libRootPath . '/tests'],
 
@@ -30,4 +28,3 @@ return static function (ECSConfig $ecsConfig): void {
         OrderedTypesFixer::class => null,
         PhpdocTypesOrderFixer::class => null,
     ]);
-};
