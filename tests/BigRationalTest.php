@@ -86,7 +86,7 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected The expected rational result.
      */
     #[DataProvider('providerOf')]
-    public function testOfNullableWithValidInputBehavesLikeOf(string $string, string $expected): void
+    public function testOfNullableWithNonNullInput(string $string, string $expected): void
     {
         $result = BigRational::ofNullable($string);
 

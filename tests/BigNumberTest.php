@@ -36,7 +36,7 @@ class BigNumberTest extends AbstractTestCase
     }
 
     #[DataProvider('providerOf')]
-    public function testOfNullableWithValidInputBehavesLikeOf(mixed $value, string $expectedClass, string $expectedValue): void
+    public function testOfNullableWithNonNullInput(mixed $value, string $expectedClass, string $expectedValue): void
     {
         $result = BigNumber::ofNullable($value);
 

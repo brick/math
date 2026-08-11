@@ -55,7 +55,7 @@ class BigDecimalTest extends AbstractTestCase
      * @param string     $expected The expected decimal value.
      */
     #[DataProvider('providerOf')]
-    public function testOfNullableWithValidInputBehavesLikeOf(int|string $value, string $expected): void
+    public function testOfNullableWithNonNullInput(int|string $value, string $expected): void
     {
         $result = BigDecimal::ofNullable($value);
 

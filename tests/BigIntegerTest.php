@@ -58,7 +58,7 @@ class BigIntegerTest extends AbstractTestCase
      * @param string     $expected The expected string value of the result.
      */
     #[DataProvider('providerOf')]
-    public function testOfNullableWithValidInputBehavesLikeOf(mixed $value, string $expected): void
+    public function testOfNullableWithNonNullInput(mixed $value, string $expected): void
     {
         $result = BigInteger::ofNullable($value);
 
