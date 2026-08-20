@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Brick\Math\Exception;
 
+use Brick\Math\NumberSyntax;
 use RuntimeException;
 
 use function ord;
@@ -96,6 +97,33 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     public static function exponentTooLarge(): self
     {
         return new self('The exponent is too large to be represented as an integer.');
+    }
+
+    /**
+     * @internal
+     *
+     * @pure
+     */
+    public static function tooManyDigits(int $maxDigits): self
+    {
+        return new self(sprintf(
+            'The number exceeds the maximum number of %d digits.',
+            $maxDigits,
+        ));
+    }
+
+    /**
+     * @internal
+     *
+     * @pure
+     */
+    public static function syntaxNotAllowed(NumberSyntax $syntax): self
+    {
+        return new self(sprintf('The %s syntax is not allowed.', match ($syntax) {
+            NumberSyntax::DecimalPoint => 'decimal point',
+            NumberSyntax::Exponent => 'exponent',
+            NumberSyntax::Fraction => 'fraction',
+        }));
     }
 
     /**

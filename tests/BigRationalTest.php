@@ -12,6 +12,7 @@ use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\NumberSyntax;
 use Brick\Math\RoundingMode;
 use Generator;
 use LogicException;
@@ -173,6 +174,20 @@ class BigRationalTest extends AbstractTestCase
             ['-'],
             ['/'],
         ];
+    }
+
+    public function testParse(): void
+    {
+        self::assertBigRationalEquals('3/2', BigRational::parse('1.5', NumberSyntax::DECIMAL, 2));
+    }
+
+    public function testParseNullable(): void
+    {
+        // 2 digits as parsed, although the converted result has 4
+        $result = BigRational::parseNullable('3.7', NumberSyntax::DECIMAL, 2);
+
+        self::assertNotNull($result);
+        self::assertBigRationalEquals('37/10', $result);
     }
 
     public function testZero(): void

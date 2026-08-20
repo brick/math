@@ -11,6 +11,7 @@ use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\NumberSyntax;
 use Brick\Math\RoundingMode;
 use Generator;
 use LogicException;
@@ -295,6 +296,34 @@ class BigDecimalTest extends AbstractTestCase
         $decimal = BigDecimal::of(123);
 
         self::assertSame($decimal, BigDecimal::of($decimal));
+    }
+
+    public function testParseConvertibleValue(): void
+    {
+        // 2 digits as parsed, although the converted result has 3
+        self::assertBigDecimalEquals('0.25', BigDecimal::parse('1/4', NumberSyntax::RATIONAL, 2));
+    }
+
+    public function testParseNonConvertibleValueThrowsException(): void
+    {
+        $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessageExact('This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.');
+
+        BigDecimal::parse('1/3', allowedSyntax: NumberSyntax::RATIONAL, maxDigits: 2);
+    }
+
+    public function testParseNullableConvertibleValue(): void
+    {
+        // 2 digits as parsed, although the converted result has 4
+        self::assertBigDecimalEquals('0.125', BigDecimal::parseNullable('1/8', NumberSyntax::RATIONAL, 2));
+    }
+
+    public function testParseNullableNonConvertibleValueThrowsException(): void
+    {
+        $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessageExact('This rational number has a non-terminating decimal expansion and cannot be represented as a decimal without rounding.');
+
+        BigDecimal::parseNullable('1/7', allowedSyntax: NumberSyntax::RATIONAL, maxDigits: 2);
     }
 
     /**

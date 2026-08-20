@@ -17,6 +17,7 @@ use Brick\Math\Exception\RandomSourceException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
+use Brick\Math\NumberSyntax;
 use Brick\Math\RoundingMode;
 use Generator;
 use LogicException;
@@ -201,6 +202,32 @@ class BigIntegerTest extends AbstractTestCase
             ['1e-1', 'This decimal number cannot be represented as an integer without rounding.'],
             ['7/9', 'This rational number cannot be represented as an integer without rounding.'],
         ];
+    }
+
+    public function testParseConvertibleValue(): void
+    {
+        self::assertBigIntegerEquals('123', BigInteger::parse('123.00', NumberSyntax::DECIMAL, 5));
+    }
+
+    public function testParseNonConvertibleValueThrowsException(): void
+    {
+        $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessageExact('This rational number cannot be represented as an integer without rounding.');
+
+        BigInteger::parse('1/3', allowedSyntax: NumberSyntax::RATIONAL, maxDigits: 2);
+    }
+
+    public function testParseNullableConvertibleValue(): void
+    {
+        self::assertBigIntegerEquals('9', BigInteger::parseNullable('9.0', NumberSyntax::DECIMAL, 2));
+    }
+
+    public function testParseNullableNonConvertibleValueThrowsException(): void
+    {
+        $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessageExact('This rational number cannot be represented as an integer without rounding.');
+
+        BigInteger::parseNullable('1/7', allowedSyntax: NumberSyntax::RATIONAL, maxDigits: 2);
     }
 
     /**

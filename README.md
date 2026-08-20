@@ -104,6 +104,17 @@ BigRational::of('1.15'); // 23/20 (reduced to lowest terms)
 > BigDecimal::fromFloatShortest(0.1); // 0.1
 > ```
 
+> [!CAUTION]
+> The `of()` factory method is for trusted input: a string as short as `1e1000000000` can expand to gigabytes of
+> memory and exceed PHP's memory limit.
+>
+> For untrusted user input, use `parse()` instead:
+>
+> ```php
+> BigDecimal::parse('1000000000000000000000', allowedSyntax: NumberSyntax::SCIENTIFIC, maxDigits: 100); // OK
+> BigDecimal::parse('1e1000000000', allowedSyntax: NumberSyntax::SCIENTIFIC, maxDigits: 100); // NumberFormatException
+> ```
+
 #### Immutability & chaining
 
 The `BigInteger`, `BigDecimal` and `BigRational` classes are immutable: their value never changes,
@@ -147,6 +158,10 @@ echo BigInteger::of(2)->multipliedBy(BigDecimal::of('2.0')); // 4
 echo BigInteger::of(2)->multipliedBy(BigDecimal::of('2.5')); // RoundingNecessaryException
 echo BigDecimal::of(2.5)->multipliedBy(BigInteger::of(2)); // 5.0
 ```
+
+> [!CAUTION]
+> These parameters are converted with `of()`, so the same caution applies: never pass an untrusted string
+> directly to an arithmetic or comparison method — `parse()` it first, and pass the resulting number.
 
 #### Division & rounding
 
