@@ -17,6 +17,7 @@ use Brick\Math\Exception\RandomSourceException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
+use Brick\Math\NumberSyntax;
 use Brick\Math\RoundingMode;
 use Generator;
 use LogicException;
@@ -201,6 +202,101 @@ class BigIntegerTest extends AbstractTestCase
             ['1e-1', 'This decimal number cannot be represented as an integer without rounding.'],
             ['7/9', 'This rational number cannot be represented as an integer without rounding.'],
         ];
+    }
+
+    /**
+     * The digit limit applies to the number as parsed, before its conversion to BigInteger.
+     *
+     * @param string $value      The value to parse.
+     * @param int    $digitCount The exact number of digits in $value; parsing must succeed with this limit.
+     * @param string $expected   The expected string value of the result.
+     */
+    #[DataProvider('providerParse')]
+    public function testParse(string $value, int $digitCount, string $expected): void
+    {
+        self::assertBigIntegerEquals($expected, BigInteger::parse($value, allowedSyntax: NumberSyntax::INTEGER, maxDigits: $digitCount));
+    }
+
+    public static function providerParse(): array
+    {
+        return [
+            ['123', 3, '123'],
+            ['00123', 5, '123'], // leading zeros count as written digits
+        ];
+    }
+
+    /**
+     * @param string $value     The value to parse.
+     * @param int    $maxDigits The tightest failing limit: one less than the exact digit count of $value.
+     */
+    #[DataProvider('providerParseExceeded')]
+    public function testParseExceeded(string $value, int $maxDigits): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage("The number exceeds the maximum number of $maxDigits digits.");
+
+        BigInteger::parse($value, allowedSyntax: NumberSyntax::INTEGER, maxDigits: $maxDigits);
+    }
+
+    public static function providerParseExceeded(): Generator
+    {
+        // Every accepted row of the matrix above must be rejected at one digit less.
+        foreach (self::providerParse() as [$value, $digitCount]) {
+            if ($digitCount > 1) {
+                yield [$value, $digitCount - 1];
+            }
+        }
+    }
+
+    public function testParseNonConvertibleValueThrowsException(): void
+    {
+        $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessageExact('This rational number cannot be represented as an integer without rounding.');
+
+        BigInteger::parse('1/3', allowedSyntax: NumberSyntax::RATIONAL, maxDigits: 2);
+    }
+
+    /**
+     * The digit limit applies to the number as parsed, before its conversion to BigInteger.
+     */
+    public function testParseWithFractionSyntaxConvertsExactValue(): void
+    {
+        // 2 digits as parsed, although the converted result has 1
+        self::assertBigIntegerEquals('2', BigInteger::parse('4/2', NumberSyntax::RATIONAL, 2));
+    }
+
+    /**
+     * `NumberSyntax::INTEGER` accepts plain integers only.
+     */
+    #[DataProvider('providerParseWithIntegerSyntaxRejectsOtherNotations')]
+    public function testParseWithIntegerSyntaxRejectsOtherNotations(string $value, string $expectedMessage): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact($expectedMessage);
+
+        BigInteger::parse($value, allowedSyntax: NumberSyntax::INTEGER, maxDigits: 10);
+    }
+
+    public static function providerParseWithIntegerSyntaxRejectsOtherNotations(): array
+    {
+        return [
+            ['1.0', 'The decimal point syntax is not allowed.'],
+            ['1e2', 'The exponent syntax is not allowed.'],
+            ['4/2', 'The fraction syntax is not allowed.'],
+        ];
+    }
+
+    public function testParseWithDecimalPointSyntaxConvertsExactValue(): void
+    {
+        self::assertBigIntegerEquals('1', BigInteger::parse('1.0', [NumberSyntax::DecimalPoint], 2));
+    }
+
+    public function testParseWithoutDecimalPointSyntax(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The decimal point syntax is not allowed.');
+
+        BigInteger::parse('1.0', [], 10);
     }
 
     /**

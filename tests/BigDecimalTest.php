@@ -11,6 +11,7 @@ use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\NumberSyntax;
 use Brick\Math\RoundingMode;
 use Generator;
 use LogicException;
@@ -295,6 +296,123 @@ class BigDecimalTest extends AbstractTestCase
         $decimal = BigDecimal::of(123);
 
         self::assertSame($decimal, BigDecimal::of($decimal));
+    }
+
+    /**
+     * @param string $value      The value to parse.
+     * @param int    $digitCount The exact number of digits in $value; parsing must succeed with this limit.
+     * @param string $expected   The expected decimal value.
+     */
+    #[DataProvider('providerParse')]
+    public function testParse(string $value, int $digitCount, string $expected): void
+    {
+        self::assertBigDecimalEquals($expected, BigDecimal::parse($value, allowedSyntax: NumberSyntax::SCIENTIFIC, maxDigits: $digitCount));
+    }
+
+    /**
+     * @param string $value     The value to parse.
+     * @param int    $maxDigits A limit smaller than the exact digit count of $value.
+     */
+    #[DataProvider('providerParseExceeded')]
+    public function testParseExceeded(string $value, int $maxDigits): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage("The number exceeds the maximum number of $maxDigits digits.");
+
+        BigDecimal::parse($value, allowedSyntax: NumberSyntax::SCIENTIFIC, maxDigits: $maxDigits);
+    }
+
+    public static function providerParse(): array
+    {
+        return [
+            ['123.45', 5, '123.45'],
+            ['1000000000000000000000.999000', 28, '1000000000000000000000.999000'],
+            ['1.5e-3', 5, '0.0015'],
+            ['0.00000000001e11', 14, '1'], // 1 digit in its final form, but 14 as written: leading zeros count
+        ];
+    }
+
+    public static function providerParseExceeded(): Generator
+    {
+        // Every accepted row of the matrix above must be rejected at one digit less.
+        foreach (self::providerParse() as [$value, $digitCount]) {
+            if ($digitCount > 1) {
+                yield [$value, $digitCount - 1];
+            }
+        }
+
+        // Rejection-only case: this number cannot appear in the matrix above, as it would allocate ~1 GB.
+        yield ['1e1000000000', 100];
+    }
+
+    public function testParseWithoutFractionSyntax(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The fraction syntax is not allowed.');
+
+        BigDecimal::parse('1/4', [NumberSyntax::DecimalPoint], 10);
+    }
+
+    /**
+     * The digit limit applies to the number as parsed, before its conversion to BigDecimal.
+     */
+    public function testParseWithFractionSyntaxConvertsExactValue(): void
+    {
+        // 2 digits as parsed, although the converted result has 3
+        self::assertBigDecimalEquals('0.25', BigDecimal::parse('1/4', NumberSyntax::ALL, 2));
+    }
+
+    /**
+     * `NumberSyntax::SCIENTIFIC` accepts integers, decimal numbers, and exponents, but not fractions.
+     */
+    public function testParseWithScientificSyntaxRejectsFractions(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The fraction syntax is not allowed.');
+
+        BigDecimal::parse('1/4', NumberSyntax::SCIENTIFIC, 10);
+    }
+
+    /**
+     * An exponent too large to process must be reported as such: with a limit of 1 digit, the numbers below
+     * also exceed the digit limit, but the exponent check takes precedence.
+     */
+    #[DataProvider('providerParseExponentTooLargeThrowsException')]
+    public function testParseExponentTooLargeThrowsException(string $value): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The exponent is too large to be represented as an integer.');
+
+        BigDecimal::parse($value, allowedSyntax: NumberSyntax::SCIENTIFIC, maxDigits: 1);
+    }
+
+    public static function providerParseExponentTooLargeThrowsException(): array
+    {
+        return [
+            ['1e1000000000000000000000000000000'],
+            ['1e-1000000000000000000000000000000'],
+            ['1.5e-' . PHP_INT_MAX], // the exponent fits in a native integer, but the scale overflows
+        ];
+    }
+
+    /**
+     * A number whose digit count overflows a native integer cannot fit within any digit limit, not even PHP_INT_MAX.
+     */
+    #[DataProvider('providerParseDigitCountOverflow')]
+    public function testParseDigitCountOverflow(string $value): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The number exceeds the maximum number of ' . PHP_INT_MAX . ' digits.');
+
+        BigDecimal::parse($value, allowedSyntax: NumberSyntax::SCIENTIFIC, maxDigits: PHP_INT_MAX);
+    }
+
+    public static function providerParseDigitCountOverflow(): array
+    {
+        return [
+            ['1e' . PHP_INT_MAX], // a 1 followed by PHP_INT_MAX zeros
+            ['1e-' . PHP_INT_MAX], // a zero integer part followed by PHP_INT_MAX fractional digits
+        ];
     }
 
     /**
