@@ -564,6 +564,17 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
             return new BigInteger((string) $value);
         }
 
+        return self::_parse($value);
+    }
+
+    /**
+     * @throws NumberFormatException   If the format of the number is not valid.
+     * @throws DivisionByZeroException If the value represents a rational number with a denominator of zero.
+     *
+     * @pure
+     */
+    private static function _parse(string $value): BigNumber
+    {
         if ($value === '') {
             throw NumberFormatException::emptyNumber();
         }
