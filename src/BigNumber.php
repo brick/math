@@ -25,7 +25,6 @@ use function preg_match;
 use function str_contains;
 use function str_repeat;
 use function strlen;
-use function substr;
 
 use const FILTER_VALIDATE_INT;
 use const PHP_INT_MAX;
@@ -764,32 +763,26 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
                 throw NumberFormatException::syntaxNotAllowed(NumberSyntax::Exponent);
             }
 
+            if ($exponent === null) {
+                $exponent = 0;
+            } else {
+                $exponentSign = $exponent[0] === '-' ? '-' : '';
+                $exponent = ltrim(ltrim($exponent, '+-'), '0');
+
+                if ($exponent === '') {
+                    $exponent = 0;
+                } else {
+                    $exponent = filter_var($exponentSign . $exponent, FILTER_VALIDATE_INT);
+
+                    if ($exponent === false) {
+                        throw NumberFormatException::exponentTooLarge();
+                    }
+                }
+            }
+
             $fractional ??= '';
 
-            if ($exponent !== null) {
-                if ($exponent[0] === '-') {
-                    $exponent = ltrim(substr($exponent, 1), '0') ?: '0';
-                    $exponent = filter_var($exponent, FILTER_VALIDATE_INT);
-                    if ($exponent !== false) {
-                        $exponent = -$exponent;
-                    }
-                } else {
-                    if ($exponent[0] === '+') {
-                        $exponent = substr($exponent, 1);
-                    }
-                    $exponent = ltrim($exponent, '0') ?: '0';
-                    $exponent = filter_var($exponent, FILTER_VALIDATE_INT);
-                }
-            } else {
-                $exponent = 0;
-            }
-
-            if ($exponent === false) {
-                throw NumberFormatException::exponentTooLarge();
-            }
-
             $unscaledValue = self::cleanUp($sign, $integral . $fractional);
-
             $scale = strlen($fractional) - $exponent;
 
             // @phpstan-ignore function.alreadyNarrowedType (may overflow to float)
