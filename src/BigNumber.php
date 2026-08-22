@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Brick\Math;
 
-use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\MathException;
@@ -87,7 +86,6 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * of the subclass when possible; otherwise a RoundingNecessaryException exception is thrown.
      *
      * @throws NumberFormatException      If the format of the number is not valid.
-     * @throws DivisionByZeroException    If the value represents a rational number with a denominator of zero.
      * @throws RoundingNecessaryException If the value cannot be converted to an instance of the subclass without rounding.
      *
      * @pure
@@ -113,7 +111,6 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * @see BigNumber::of()
      *
      * @throws NumberFormatException      If the format of the number is not valid.
-     * @throws DivisionByZeroException    If the value represents a rational number with a denominator of zero.
      * @throws RoundingNecessaryException If the value cannot be converted to an instance of the subclass without rounding.
      *
      * @pure
@@ -553,8 +550,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     }
 
     /**
-     * @throws NumberFormatException   If the format of the number is not valid.
-     * @throws DivisionByZeroException If the value represents a rational number with a denominator of zero.
+     * @throws NumberFormatException If the format of the number is not valid.
      *
      * @pure
      */
@@ -572,8 +568,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     }
 
     /**
-     * @throws NumberFormatException   If the format of the number is not valid.
-     * @throws DivisionByZeroException If the value represents a rational number with a denominator of zero.
+     * @throws NumberFormatException If the format of the number is not valid.
      *
      * @pure
      */
@@ -603,7 +598,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
             $denominator = self::cleanUp(null, $denominator);
 
             if ($denominator === '0') {
-                throw DivisionByZeroException::zeroDenominator();
+                throw NumberFormatException::zeroDenominator();
             }
 
             return new BigRational(

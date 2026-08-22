@@ -99,6 +99,16 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     }
 
     /**
+     * @internal
+     *
+     * @pure
+     */
+    public static function zeroDenominator(): self
+    {
+        return new self('The denominator of a rational number must not be zero.');
+    }
+
+    /**
      * @pure
      */
     private static function charToString(string $char): string

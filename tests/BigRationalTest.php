@@ -130,7 +130,7 @@ class BigRationalTest extends AbstractTestCase
 
     public function testOfWithZeroDenominator(): void
     {
-        $this->expectException(DivisionByZeroException::class);
+        $this->expectException(NumberFormatException::class);
         $this->expectExceptionMessageExact('The denominator of a rational number must not be zero.');
 
         BigRational::of('2/0');
