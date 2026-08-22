@@ -12,6 +12,7 @@ use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\InvalidArgumentException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\NumberSyntax;
 use Brick\Math\RoundingMode;
 use Generator;
 use LogicException;
@@ -86,7 +87,7 @@ class BigRationalTest extends AbstractTestCase
      * @param string $expected The expected rational result.
      */
     #[DataProvider('providerOf')]
-    public function testOfNullableWithValidInputBehavesLikeOf(string $string, string $expected): void
+    public function testOfNullableWithNonNullInput(string $string, string $expected): void
     {
         $result = BigRational::ofNullable($string);
 
@@ -130,7 +131,7 @@ class BigRationalTest extends AbstractTestCase
 
     public function testOfWithZeroDenominator(): void
     {
-        $this->expectException(DivisionByZeroException::class);
+        $this->expectException(NumberFormatException::class);
         $this->expectExceptionMessageExact('The denominator of a rational number must not be zero.');
 
         BigRational::of('2/0');
@@ -145,13 +146,14 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @param string $string An invalid string representation.
+     * @param string      $string                 An invalid string representation.
+     * @param string|null $expectedValueInMessage The value as rendered in the message, when it differs from $string.
      */
     #[DataProvider('providerOfInvalidFormatThrowsException')]
-    public function testOfInvalidFormatThrowsException(string $string): void
+    public function testOfInvalidFormatThrowsException(string $string, ?string $expectedValueInMessage = null): void
     {
         $this->expectException(NumberFormatException::class);
-        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $string));
+        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $expectedValueInMessage ?? $string));
 
         BigRational::of($string);
     }
@@ -165,12 +167,100 @@ class BigRationalTest extends AbstractTestCase
             ['1e2/3'],
             [' 1/2'],
             ['1/2 '],
-            ["\n2/3"],
-            ["2/3\n"],
-            ["1/0\n"],
+            ["\n2/3", '\n2/3'],
+            ["2/3\n", '2/3\n'],
+            ["1/0\n", '1/0\n'],
             ['+'],
             ['-'],
             ['/'],
+        ];
+    }
+
+    /**
+     * The digit limit applies to the number as parsed, before its conversion to BigRational.
+     *
+     * @param string $value      The value to parse.
+     * @param int    $digitCount The exact number of digits in $value; parsing must succeed with this limit.
+     * @param string $expected   The expected rational result.
+     */
+    #[DataProvider('providerParse')]
+    public function testParse(string $value, int $digitCount, string $expected): void
+    {
+        self::assertBigRationalEquals($expected, BigRational::parse($value, allowedSyntax: NumberSyntax::RATIONAL, maxDigits: $digitCount));
+    }
+
+    public static function providerParse(): array
+    {
+        return [
+            ['22/7', 3, '22/7'],
+            ['020/040', 6, '1/2'], // leading zeros count as written digits
+        ];
+    }
+
+    /**
+     * @param string $value     The value to parse.
+     * @param int    $maxDigits The tightest failing limit: one less than the exact digit count of $value.
+     */
+    #[DataProvider('providerParseExceeded')]
+    public function testParseExceeded(string $value, int $maxDigits): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage("The number exceeds the maximum number of $maxDigits digits.");
+
+        BigRational::parse($value, allowedSyntax: NumberSyntax::RATIONAL, maxDigits: $maxDigits);
+    }
+
+    public static function providerParseExceeded(): Generator
+    {
+        // Every accepted row of the matrix above must be rejected at one digit less.
+        foreach (self::providerParse() as [$value, $digitCount]) {
+            if ($digitCount > 1) {
+                yield [$value, $digitCount - 1];
+            }
+        }
+    }
+
+    public function testParseWithZeroDenominator(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The denominator of a rational number must not be zero.');
+
+        BigRational::parse('2/0', NumberSyntax::RATIONAL, 10);
+    }
+
+    public function testParseWithoutDecimalPointSyntax(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The decimal point syntax is not allowed.');
+
+        BigRational::parse('1.5', [NumberSyntax::Fraction], 10);
+    }
+
+    /**
+     * The digit limit applies to the number as parsed, before its conversion to BigRational.
+     */
+    public function testParseWithDecimalPointSyntaxConvertsExactValue(): void
+    {
+        self::assertBigRationalEquals('3/2', BigRational::parse('1.5', [NumberSyntax::DecimalPoint], 2));
+    }
+
+    /**
+     * `NumberSyntax::RATIONAL` accepts integers and fractions only.
+     */
+    #[DataProvider('providerParseWithRationalSyntaxRejectsOtherNotations')]
+    public function testParseWithRationalSyntaxRejectsOtherNotations(string $value, string $expectedMessage): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact($expectedMessage);
+
+        BigRational::parse($value, allowedSyntax: NumberSyntax::RATIONAL, maxDigits: 10);
+    }
+
+    public static function providerParseWithRationalSyntaxRejectsOtherNotations(): array
+    {
+        return [
+            ['1.5', 'The decimal point syntax is not allowed.'],
+            ['1e2', 'The exponent syntax is not allowed.'],
         ];
     }
 

@@ -17,6 +17,7 @@ use Brick\Math\Exception\RandomSourceException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\Internal\Calculator;
 use Brick\Math\Internal\CalculatorRegistry;
+use Brick\Math\NumberSyntax;
 use Brick\Math\RoundingMode;
 use Generator;
 use LogicException;
@@ -58,7 +59,7 @@ class BigIntegerTest extends AbstractTestCase
      * @param string     $expected The expected string value of the result.
      */
     #[DataProvider('providerOf')]
-    public function testOfNullableWithValidInputBehavesLikeOf(mixed $value, string $expected): void
+    public function testOfNullableWithNonNullInput(mixed $value, string $expected): void
     {
         $result = BigInteger::ofNullable($value);
 
@@ -153,11 +154,15 @@ class BigIntegerTest extends AbstractTestCase
         BigInteger::of('');
     }
 
+    /**
+     * @param string      $value                  The invalid value.
+     * @param string|null $expectedValueInMessage The value as rendered in the message, when it differs from $value.
+     */
     #[DataProvider('providerOfInvalidFormatThrowsException')]
-    public function testOfInvalidFormatThrowsException(string $value): void
+    public function testOfInvalidFormatThrowsException(string $value, ?string $expectedValueInMessage = null): void
     {
         $this->expectException(NumberFormatException::class);
-        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $value));
+        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $expectedValueInMessage ?? $value));
 
         BigInteger::of($value);
     }
@@ -168,8 +173,8 @@ class BigIntegerTest extends AbstractTestCase
             ['a'],
             [' 1'],
             ['1 '],
-            ["\n123"],
-            ["123\n"],
+            ["\n123", '\n123'],
+            ["123\n", '123\n'],
             ['+'],
             ['-'],
             ['+a'],
@@ -197,6 +202,101 @@ class BigIntegerTest extends AbstractTestCase
             ['1e-1', 'This decimal number cannot be represented as an integer without rounding.'],
             ['7/9', 'This rational number cannot be represented as an integer without rounding.'],
         ];
+    }
+
+    /**
+     * The digit limit applies to the number as parsed, before its conversion to BigInteger.
+     *
+     * @param string $value      The value to parse.
+     * @param int    $digitCount The exact number of digits in $value; parsing must succeed with this limit.
+     * @param string $expected   The expected string value of the result.
+     */
+    #[DataProvider('providerParse')]
+    public function testParse(string $value, int $digitCount, string $expected): void
+    {
+        self::assertBigIntegerEquals($expected, BigInteger::parse($value, allowedSyntax: NumberSyntax::INTEGER, maxDigits: $digitCount));
+    }
+
+    public static function providerParse(): array
+    {
+        return [
+            ['123', 3, '123'],
+            ['00123', 5, '123'], // leading zeros count as written digits
+        ];
+    }
+
+    /**
+     * @param string $value     The value to parse.
+     * @param int    $maxDigits The tightest failing limit: one less than the exact digit count of $value.
+     */
+    #[DataProvider('providerParseExceeded')]
+    public function testParseExceeded(string $value, int $maxDigits): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessage("The number exceeds the maximum number of $maxDigits digits.");
+
+        BigInteger::parse($value, allowedSyntax: NumberSyntax::INTEGER, maxDigits: $maxDigits);
+    }
+
+    public static function providerParseExceeded(): Generator
+    {
+        // Every accepted row of the matrix above must be rejected at one digit less.
+        foreach (self::providerParse() as [$value, $digitCount]) {
+            if ($digitCount > 1) {
+                yield [$value, $digitCount - 1];
+            }
+        }
+    }
+
+    public function testParseNonConvertibleValueThrowsException(): void
+    {
+        $this->expectException(RoundingNecessaryException::class);
+        $this->expectExceptionMessageExact('This rational number cannot be represented as an integer without rounding.');
+
+        BigInteger::parse('1/3', allowedSyntax: NumberSyntax::RATIONAL, maxDigits: 2);
+    }
+
+    /**
+     * The digit limit applies to the number as parsed, before its conversion to BigInteger.
+     */
+    public function testParseWithFractionSyntaxConvertsExactValue(): void
+    {
+        // 2 digits as parsed, although the converted result has 1
+        self::assertBigIntegerEquals('2', BigInteger::parse('4/2', NumberSyntax::RATIONAL, 2));
+    }
+
+    /**
+     * `NumberSyntax::INTEGER` accepts plain integers only.
+     */
+    #[DataProvider('providerParseWithIntegerSyntaxRejectsOtherNotations')]
+    public function testParseWithIntegerSyntaxRejectsOtherNotations(string $value, string $expectedMessage): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact($expectedMessage);
+
+        BigInteger::parse($value, allowedSyntax: NumberSyntax::INTEGER, maxDigits: 10);
+    }
+
+    public static function providerParseWithIntegerSyntaxRejectsOtherNotations(): array
+    {
+        return [
+            ['1.0', 'The decimal point syntax is not allowed.'],
+            ['1e2', 'The exponent syntax is not allowed.'],
+            ['4/2', 'The fraction syntax is not allowed.'],
+        ];
+    }
+
+    public function testParseWithDecimalPointSyntaxConvertsExactValue(): void
+    {
+        self::assertBigIntegerEquals('1', BigInteger::parse('1.0', [NumberSyntax::DecimalPoint], 2));
+    }
+
+    public function testParseWithoutDecimalPointSyntax(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The decimal point syntax is not allowed.');
+
+        BigInteger::parse('1.0', [], 10);
     }
 
     /**
@@ -373,8 +473,11 @@ class BigIntegerTest extends AbstractTestCase
             ['12g34G56', 16, 'Character "g" is not valid in base 16.'],
             ['-12k34', 20, 'Character "k" is not valid in base 20.'],
             ['+12K34', 20, 'Character "K" is not valid in base 20.'],
-            ["+\0", 10, 'Character 0x00 is not valid in base 10.'],
-            ["+\x01", 10, 'Character 0x01 is not valid in base 10.'],
+            ["+\0", 10, 'Character "\x00" is not valid in base 10.'],
+            ["+\x01", 10, 'Character "\x01" is not valid in base 10.'],
+            // fromBase() is byte-oriented: a multibyte character is reported as its first byte
+            ["12\u{0663}4", 10, 'Character "\xD9" is not valid in base 10.'],
+            ["1\u{00A0}000", 10, 'Character "\xC2" is not valid in base 10.'],
         ];
     }
 
@@ -4975,12 +5078,20 @@ class BigIntegerTest extends AbstractTestCase
             ['1', 'XY', 'Character "1" is not valid in the given alphabet.'],
             [' ', 'XY', 'Character " " is not valid in the given alphabet.'],
 
-            ["\x00", '01', 'Character 0x00 is not valid in the given alphabet.'],
-            ["\x0A", '01', 'Character 0x0A is not valid in the given alphabet.'],
-            ["\x1F", '01', 'Character 0x1F is not valid in the given alphabet.'],
-            ["\x7F", '01', 'Character 0x7F is not valid in the given alphabet.'],
-            ["\x80", '01', 'Character 0x80 is not valid in the given alphabet.'],
-            ["\xFF", '01', 'Character 0xFF is not valid in the given alphabet.'],
+            ["\x00", '01', 'Character "\x00" is not valid in the given alphabet.'],
+            ["\x09", '01', 'Character "\t" is not valid in the given alphabet.'],
+            ["\x0A", '01', 'Character "\n" is not valid in the given alphabet.'],
+            ["\x0D", '01', 'Character "\r" is not valid in the given alphabet.'],
+            ["\x1F", '01', 'Character "\x1F" is not valid in the given alphabet.'],
+            ["\x7F", '01', 'Character "\x7F" is not valid in the given alphabet.'],
+            ["\x80", '01', 'Character "\x80" is not valid in the given alphabet.'],
+            ["\xFF", '01', 'Character "\xFF" is not valid in the given alphabet.'],
+            ['"', '01', 'Character "\"" is not valid in the given alphabet.'],
+            ['\\', '01', 'Character "\\\\" is not valid in the given alphabet.'],
+            // fromArbitraryBase() is byte-oriented: a multibyte character is reported as its first byte
+            ["0\u{0663}1", '01', 'Character "\xD9" is not valid in the given alphabet.'],
+            ["0\u{00A0}1", '01', 'Character "\xC2" is not valid in the given alphabet.'],
+            ["0\xD94", '01', 'Character "\xD9" is not valid in the given alphabet.'],
         ];
     }
 
