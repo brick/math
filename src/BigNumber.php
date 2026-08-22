@@ -18,7 +18,6 @@ use Stringable;
 use function assert;
 use function filter_var;
 use function is_int;
-use function is_null;
 use function ltrim;
 use function preg_match;
 use function str_contains;
@@ -117,7 +116,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      */
     final public static function ofNullable(BigNumber|int|string|null $value): ?static
     {
-        if (is_null($value)) {
+        if ($value === null) {
             return null;
         }
 
