@@ -17,6 +17,7 @@ use function count;
 use function explode;
 use function preg_match;
 use function sprintf;
+use function str_repeat;
 
 /**
  * Unit tests for class BigNumber.
@@ -152,6 +153,29 @@ class BigNumberTest extends AbstractTestCase
             [' 1/2'],
             ['1/2 '],
             ['/'],
+        ];
+    }
+
+    /**
+     * Input designed to force heavy backtracking in the parse regexps must be rejected as an invalid number.
+     * If backtracking is not eliminated, these inputs exhaust pcre.backtrack_limit, and the failed PCRE match
+     * surfaces as a PlatformException instead of the promised NumberFormatException.
+     */
+    #[DataProvider('providerOfAdversarialInputThrowsException')]
+    public function testOfAdversarialInputThrowsException(string $value): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageMatches('/^Value "[^"]++" does not represent a valid number\.$/');
+
+        BigNumber::of($value);
+    }
+
+    public static function providerOfAdversarialInputThrowsException(): array
+    {
+        return [
+            [str_repeat('1', 10_000) . '!'],
+            ['.' . str_repeat('1', 2_000_000) . '!'],
+            ['1/' . str_repeat('2', 2_000_000) . '!'],
         ];
     }
 

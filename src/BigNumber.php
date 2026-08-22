@@ -44,27 +44,31 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * The regular expression used to parse integer or decimal numbers.
      *
      * The end anchor must be \z, not $: the latter would also match before a trailing newline.
+     * The digit quantifiers must be possessive (++): backtracking on malformed input could exhaust
+     * pcre.backtrack_limit, surfacing as PlatformException instead of NumberFormatException.
      */
     private const PARSE_REGEXP_NUMERICAL =
         '/^' .
         '(?<sign>[\-\+])?' .
-        '(?<integral>[0-9]+)?' .
+        '(?<integral>[0-9]++)?' .
         '(?<point>\.)?' .
-        '(?<fractional>[0-9]+)?' .
-        '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
+        '(?<fractional>[0-9]++)?' .
+        '(?:[eE](?<exponent>[\-\+]?[0-9]++))?' .
         '\z/';
 
     /**
      * The regular expression used to parse rational numbers.
      *
      * The end anchor must be \z, not $: the latter would also match before a trailing newline.
+     * The digit quantifiers must be possessive (++): backtracking on malformed input could exhaust
+     * pcre.backtrack_limit, surfacing as PlatformException instead of NumberFormatException.
      */
     private const PARSE_REGEXP_RATIONAL =
         '/^' .
         '(?<sign>[\-\+])?' .
-        '(?<numerator>[0-9]+)' .
+        '(?<numerator>[0-9]++)' .
         '\/' .
-        '(?<denominator>[0-9]+)' .
+        '(?<denominator>[0-9]++)' .
         '\z/';
 
     /**
