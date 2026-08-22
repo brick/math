@@ -6,10 +6,10 @@ namespace Brick\Math\Exception;
 
 use RuntimeException;
 
-use function dechex;
 use function ord;
 use function sprintf;
-use function strtoupper;
+use function strlen;
+use function substr;
 
 /**
  * Exception thrown when attempting to create a number from a string with an invalid format.
@@ -35,7 +35,7 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     {
         return new self(sprintf(
             'Value "%s" does not represent a valid number.',
-            $value,
+            self::truncateAndEscape($value),
         ));
     }
 
@@ -49,8 +49,8 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     public static function charNotInAlphabet(string $char): self
     {
         return new self(sprintf(
-            'Character %s is not valid in the given alphabet.',
-            self::charToString($char),
+            'Character "%s" is not valid in the given alphabet.',
+            self::escapeChar($char),
         ));
     }
 
@@ -62,8 +62,8 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     public static function charNotValidInBase(string $char, int $base): self
     {
         return new self(sprintf(
-            'Character %s is not valid in base %d.',
-            self::charToString($char),
+            'Character "%s" is not valid in base %d.',
+            self::escapeChar($char),
             $base,
         ));
     }
@@ -111,20 +111,37 @@ final class NumberFormatException extends RuntimeException implements MathExcept
     /**
      * @pure
      */
-    private static function charToString(string $char): string
+    private static function truncateAndEscape(string $value): string
+    {
+        if (strlen($value) > 40) {
+            $value = substr($value, 0, 40) . '...';
+        }
+
+        $escaped = '';
+        $length = strlen($value);
+
+        for ($i = 0; $i < $length; $i++) {
+            $escaped .= self::escapeChar($value[$i]);
+        }
+
+        return $escaped;
+    }
+
+    /**
+     * @pure
+     */
+    private static function escapeChar(string $char): string
     {
         $ord = ord($char);
 
-        if ($ord < 32 || $ord > 126) {
-            $char = strtoupper(dechex($ord));
-
-            if ($ord < 16) {
-                $char = '0' . $char;
-            }
-
-            return '0x' . $char;
-        }
-
-        return '"' . $char . '"';
+        return match (true) {
+            $char === "\t" => '\t',
+            $char === "\n" => '\n',
+            $char === "\r" => '\r',
+            $char === '\\' => '\\\\',
+            $char === '"' => '\"',
+            $ord < 32 || $ord > 126 => sprintf('\x%02X', $ord),
+            default => $char,
+        };
     }
 }

@@ -145,15 +145,16 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @param string $string An invalid string representation.
+     * @param string      $value                  An invalid string representation.
+     * @param string|null $expectedValueInMessage The value as rendered in the message, if it differs from $value.
      */
     #[DataProvider('providerOfInvalidFormatThrowsException')]
-    public function testOfInvalidFormatThrowsException(string $string): void
+    public function testOfInvalidFormatThrowsException(string $value, ?string $expectedValueInMessage = null): void
     {
         $this->expectException(NumberFormatException::class);
-        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $string));
+        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $expectedValueInMessage ?? $value));
 
-        BigRational::of($string);
+        BigRational::of($value);
     }
 
     public static function providerOfInvalidFormatThrowsException(): array
@@ -165,9 +166,9 @@ class BigRationalTest extends AbstractTestCase
             ['1e2/3'],
             [' 1/2'],
             ['1/2 '],
-            ["\n2/3"],
-            ["2/3\n"],
-            ["1/0\n"],
+            ["\n2/3", '\n2/3'],
+            ["2/3\n", '2/3\n'],
+            ["1/0\n", '1/0\n'],
             ['+'],
             ['-'],
             ['/'],

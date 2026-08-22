@@ -226,11 +226,15 @@ class BigDecimalTest extends AbstractTestCase
         BigDecimal::of('');
     }
 
+    /**
+     * @param string      $value                  The invalid value.
+     * @param string|null $expectedValueInMessage The value as rendered in the message, if it differs from $value.
+     */
     #[DataProvider('providerOfInvalidFormatThrowsException')]
-    public function testOfInvalidFormatThrowsException(string $value): void
+    public function testOfInvalidFormatThrowsException(string $value, ?string $expectedValueInMessage = null): void
     {
         $this->expectException(NumberFormatException::class);
-        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $value));
+        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $expectedValueInMessage ?? $value));
 
         BigDecimal::of($value);
     }
@@ -241,9 +245,9 @@ class BigDecimalTest extends AbstractTestCase
             ['a'],
             [' 1'],
             ['1 '],
-            ["\n1.2"],
-            ["1.2\n"],
-            ["1e2\n"],
+            ["\n1.2", '\n1.2'],
+            ["1.2\n", '1.2\n'],
+            ["1e2\n", '1e2\n'],
             ['..1'],
             ['1..'],
             ['.1.'],

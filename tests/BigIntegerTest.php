@@ -153,11 +153,15 @@ class BigIntegerTest extends AbstractTestCase
         BigInteger::of('');
     }
 
+    /**
+     * @param string      $value                  The invalid value.
+     * @param string|null $expectedValueInMessage The value as rendered in the message, if it differs from $value.
+     */
     #[DataProvider('providerOfInvalidFormatThrowsException')]
-    public function testOfInvalidFormatThrowsException(string $value): void
+    public function testOfInvalidFormatThrowsException(string $value, ?string $expectedValueInMessage = null): void
     {
         $this->expectException(NumberFormatException::class);
-        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $value));
+        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $expectedValueInMessage ?? $value));
 
         BigInteger::of($value);
     }
@@ -168,8 +172,8 @@ class BigIntegerTest extends AbstractTestCase
             ['a'],
             [' 1'],
             ['1 '],
-            ["\n123"],
-            ["123\n"],
+            ["\n123", '\n123'],
+            ["123\n", '123\n'],
             ['+'],
             ['-'],
             ['+a'],
@@ -373,8 +377,11 @@ class BigIntegerTest extends AbstractTestCase
             ['12g34G56', 16, 'Character "g" is not valid in base 16.'],
             ['-12k34', 20, 'Character "k" is not valid in base 20.'],
             ['+12K34', 20, 'Character "K" is not valid in base 20.'],
-            ["+\0", 10, 'Character 0x00 is not valid in base 10.'],
-            ["+\x01", 10, 'Character 0x01 is not valid in base 10.'],
+            ["+\0", 10, 'Character "\x00" is not valid in base 10.'],
+            ["+\x01", 10, 'Character "\x01" is not valid in base 10.'],
+            // fromBase() is byte-oriented: a multibyte character is reported as its first byte
+            ["12\u{0663}4", 10, 'Character "\xD9" is not valid in base 10.'],
+            ["1\u{00A0}000", 10, 'Character "\xC2" is not valid in base 10.'],
         ];
     }
 
@@ -4975,12 +4982,19 @@ class BigIntegerTest extends AbstractTestCase
             ['1', 'XY', 'Character "1" is not valid in the given alphabet.'],
             [' ', 'XY', 'Character " " is not valid in the given alphabet.'],
 
-            ["\x00", '01', 'Character 0x00 is not valid in the given alphabet.'],
-            ["\x0A", '01', 'Character 0x0A is not valid in the given alphabet.'],
-            ["\x1F", '01', 'Character 0x1F is not valid in the given alphabet.'],
-            ["\x7F", '01', 'Character 0x7F is not valid in the given alphabet.'],
-            ["\x80", '01', 'Character 0x80 is not valid in the given alphabet.'],
-            ["\xFF", '01', 'Character 0xFF is not valid in the given alphabet.'],
+            ["\x00", '01', 'Character "\x00" is not valid in the given alphabet.'],
+            ["\x09", '01', 'Character "\t" is not valid in the given alphabet.'],
+            ["\x0A", '01', 'Character "\n" is not valid in the given alphabet.'],
+            ["\x0D", '01', 'Character "\r" is not valid in the given alphabet.'],
+            ["\x1F", '01', 'Character "\x1F" is not valid in the given alphabet.'],
+            ["\x7F", '01', 'Character "\x7F" is not valid in the given alphabet.'],
+            ["\x80", '01', 'Character "\x80" is not valid in the given alphabet.'],
+            ["\xFF", '01', 'Character "\xFF" is not valid in the given alphabet.'],
+            ['"', '01', 'Character "\"" is not valid in the given alphabet.'],
+            ['\\', '01', 'Character "\\\\" is not valid in the given alphabet.'],
+            // fromArbitraryBase() is byte-oriented: a multibyte character is reported as its first byte
+            ["0\u{0663}1", '01', 'Character "\xD9" is not valid in the given alphabet.'],
+            ["0\u{00A0}1", '01', 'Character "\xC2" is not valid in the given alphabet.'],
         ];
     }
 

@@ -105,11 +105,15 @@ class BigNumberTest extends AbstractTestCase
         BigNumber::of('');
     }
 
+    /**
+     * @param string      $value                  The invalid value.
+     * @param string|null $expectedValueInMessage The value as rendered in the message, if it differs from $value.
+     */
     #[DataProvider('providerOfInvalidFormatThrowsException')]
-    public function testOfInvalidFormatThrowsException(string $value): void
+    public function testOfInvalidFormatThrowsException(string $value, ?string $expectedValueInMessage = null): void
     {
         $this->expectException(NumberFormatException::class);
-        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $value));
+        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $expectedValueInMessage ?? $value));
 
         BigNumber::of($value);
     }
@@ -120,12 +124,12 @@ class BigNumberTest extends AbstractTestCase
             ['a'],
             [' 1'],
             ['1 '],
-            ["\n123"],
-            ["123\n"],
-            ["1.2\n"],
-            ["1e2\n"],
-            ["2/3\n"],
-            ["1/0\n"],
+            ["\n123", '\n123'],
+            ["123\n", '123\n'],
+            ["1.2\n", '1.2\n'],
+            ["1e2\n", '1e2\n'],
+            ["2/3\n", '2/3\n'],
+            ["1/0\n", '1/0\n'],
             ['+'],
             ['-'],
             ['+a'],
@@ -153,6 +157,15 @@ class BigNumberTest extends AbstractTestCase
             [' 1/2'],
             ['1/2 '],
             ['/'],
+            // Special chars.
+            ["12\u{0663}4", '12\xD9\xA34'],
+            ["1\u{00A0}000", '1\xC2\xA0000'],
+            ["\0\x7f\x80", '\x00\x7F\x80'],
+            ["1 \r\n\t", '1 \r\n\t'],
+            // Exception message truncates value at 40 chars.
+            [str_repeat('a', 41), str_repeat('a', 40) . '...'],
+            // The cut falls between the 2 bytes of the U+00A0 sequence.
+            [str_repeat('1', 39) . "\u{00A0}5", str_repeat('1', 39) . '\xC2...'],
         ];
     }
 
