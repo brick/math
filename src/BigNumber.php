@@ -754,74 +754,76 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
             $integral = '0';
         }
 
-        if ($point !== null || $exponent !== null) {
-            if ($point !== null && ! in_array(NumberSyntax::DecimalPoint, $allowedSyntax, true)) {
-                throw NumberFormatException::syntaxNotAllowed(NumberSyntax::DecimalPoint);
-            }
-
-            if ($exponent !== null && ! in_array(NumberSyntax::Exponent, $allowedSyntax, true)) {
-                throw NumberFormatException::syntaxNotAllowed(NumberSyntax::Exponent);
-            }
-
-            if ($exponent === null) {
-                $exponent = 0;
-            } else {
-                $exponentSign = $exponent[0] === '-' ? '-' : '';
-                $exponent = ltrim(ltrim($exponent, '+-'), '0');
-
-                if ($exponent === '') {
-                    $exponent = 0;
-                } else {
-                    $exponent = filter_var($exponentSign . $exponent, FILTER_VALIDATE_INT);
-
-                    if ($exponent === false) {
-                        throw NumberFormatException::exponentTooLarge();
-                    }
-                }
-            }
-
-            $fractional ??= '';
-
-            $unscaledValue = self::cleanUp($sign, $integral . $fractional);
-            $scale = strlen($fractional) - $exponent;
-
-            // @phpstan-ignore function.alreadyNarrowedType (may overflow to float)
-            if (! is_int($scale)) {
-                throw NumberFormatException::exponentTooLarge();
-            }
-
-            $digits = strlen($unscaledValue) - (int) ($unscaledValue[0] === '-');
-
-            if ($scale < 0 && $unscaledValue !== '0') {
-                // The unscaled value is padded with -$scale zeros below.
-                $count = $digits - $scale;
-            } else {
-                // The fractional digits, plus at least a zero integer part.
-                $count = max($digits, $scale + 1);
-            }
-
-            // @phpstan-ignore function.alreadyNarrowedType (may overflow to float)
-            if (! is_int($count) || $count > $maxDigits || $writtenDigits > $maxDigits) {
+        if ($point === null && $exponent === null) {
+            // Integer number.
+            if ($writtenDigits > $maxDigits) {
                 throw NumberFormatException::tooManyDigits($maxDigits);
             }
 
-            if ($scale < 0) {
-                if ($unscaledValue !== '0') {
-                    $unscaledValue .= str_repeat('0', Safe::neg($scale));
-                }
-                $scale = 0;
-            }
+            $integral = self::cleanUp($sign, $integral);
 
-            return new BigDecimal($unscaledValue, $scale);
+            return new BigInteger($integral);
         }
 
-        if ($writtenDigits > $maxDigits) {
+        // Decimal number.
+        if ($point !== null && ! in_array(NumberSyntax::DecimalPoint, $allowedSyntax, true)) {
+            throw NumberFormatException::syntaxNotAllowed(NumberSyntax::DecimalPoint);
+        }
+
+        if ($exponent !== null && ! in_array(NumberSyntax::Exponent, $allowedSyntax, true)) {
+            throw NumberFormatException::syntaxNotAllowed(NumberSyntax::Exponent);
+        }
+
+        if ($exponent === null) {
+            $exponent = 0;
+        } else {
+            $exponentSign = $exponent[0] === '-' ? '-' : '';
+            $exponent = ltrim(ltrim($exponent, '+-'), '0');
+
+            if ($exponent === '') {
+                $exponent = 0;
+            } else {
+                $exponent = filter_var($exponentSign . $exponent, FILTER_VALIDATE_INT);
+
+                if ($exponent === false) {
+                    throw NumberFormatException::exponentTooLarge();
+                }
+            }
+        }
+
+        $fractional ??= '';
+
+        $unscaledValue = self::cleanUp($sign, $integral . $fractional);
+        $scale = strlen($fractional) - $exponent;
+
+        // @phpstan-ignore function.alreadyNarrowedType (may overflow to float)
+        if (! is_int($scale)) {
+            throw NumberFormatException::exponentTooLarge();
+        }
+
+        $digits = strlen($unscaledValue) - (int) ($unscaledValue[0] === '-');
+
+        if ($scale < 0 && $unscaledValue !== '0') {
+            // The unscaled value is padded with -$scale zeros below.
+            $count = $digits - $scale;
+        } else {
+            // The fractional digits, plus at least a zero integer part.
+            $count = max($digits, $scale + 1);
+        }
+
+        // @phpstan-ignore function.alreadyNarrowedType (may overflow to float)
+        if (! is_int($count) || $count > $maxDigits || $writtenDigits > $maxDigits) {
             throw NumberFormatException::tooManyDigits($maxDigits);
         }
 
-        $integral = self::cleanUp($sign, $integral);
+        if ($scale < 0) {
+            if ($unscaledValue !== '0') {
+                $unscaledValue .= str_repeat('0', Safe::neg($scale));
+            }
+            $scale = 0;
+        }
 
-        return new BigInteger($integral);
+        return new BigDecimal($unscaledValue, $scale);
     }
 
     /**
