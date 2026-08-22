@@ -105,11 +105,15 @@ class BigNumberTest extends AbstractTestCase
         BigNumber::of('');
     }
 
+    /**
+     * @param string      $value                  The invalid value.
+     * @param string|null $expectedValueInMessage The value as rendered in the message, when it differs from $value.
+     */
     #[DataProvider('providerOfInvalidFormatThrowsException')]
-    public function testOfInvalidFormatThrowsException(string $value): void
+    public function testOfInvalidFormatThrowsException(string $value, ?string $expectedValueInMessage = null): void
     {
         $this->expectException(NumberFormatException::class);
-        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $value));
+        $this->expectExceptionMessageExact(sprintf('Value "%s" does not represent a valid number.', $expectedValueInMessage ?? $value));
 
         BigNumber::of($value);
     }
@@ -120,12 +124,12 @@ class BigNumberTest extends AbstractTestCase
             ['a'],
             [' 1'],
             ['1 '],
-            ["\n123"],
-            ["123\n"],
-            ["1.2\n"],
-            ["1e2\n"],
-            ["2/3\n"],
-            ["1/0\n"],
+            ["\n123", '\n123'],
+            ["123\n", '123\n'],
+            ["1.2\n", '1.2\n'],
+            ["1e2\n", '1e2\n'],
+            ["2/3\n", '2/3\n'],
+            ["1/0\n", '1/0\n'],
             ['+'],
             ['-'],
             ['+a'],
