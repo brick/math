@@ -84,8 +84,9 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * When of() is called on BigInteger, BigDecimal, or BigRational, the resulting number is converted to an instance
      * of the subclass when possible; otherwise a RoundingNecessaryException exception is thrown.
      *
-     * @throws NumberFormatException      If the format of the number is not valid.
-     * @throws RoundingNecessaryException If the value cannot be converted to an instance of the subclass without rounding.
+     * @throws NumberFormatException      If the input is a string, and the format of the number is not valid.
+     * @throws RoundingNecessaryException If the method is called on a subclass of BigNumber, and the value cannot be
+     *                                    converted to an instance of the subclass without rounding.
      *
      * @pure
      */
@@ -105,12 +106,11 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     /**
      * Creates a BigNumber of the given value, or returns null if the input is null.
      *
-     * Behaves like of() for non-null values.
+     * Behaves like {@see of()} for non-null values.
      *
-     * @see BigNumber::of()
-     *
-     * @throws NumberFormatException      If the format of the number is not valid.
-     * @throws RoundingNecessaryException If the value cannot be converted to an instance of the subclass without rounding.
+     * @throws NumberFormatException      If the input is a string, and the format of the number is not valid.
+     * @throws RoundingNecessaryException If the method is called on a subclass of BigNumber, and the value cannot be
+     *                                    converted to an instance of the subclass without rounding.
      *
      * @pure
      */
@@ -662,7 +662,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
             $scale = strlen($fractional) - $exponent;
 
-            // @phpstan-ignore function.alreadyNarrowedType
+            // @phpstan-ignore function.alreadyNarrowedType (may overflow to float)
             if (! is_int($scale)) {
                 throw NumberFormatException::exponentTooLarge();
             }
