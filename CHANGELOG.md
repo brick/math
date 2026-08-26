@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## UNRELEASED (0.20.0)
+
+💥 **Breaking changes**
+
+The following breaking change only affects you if you specifically catch `DivisionByZeroException` around calls to `of()`:
+
+- `of()` now throws `NumberFormatException` instead of `DivisionByZeroException` when the string is a fraction with a denominator of zero, such as `'2/0'`
+
+✨ **New features**
+
+- New methods: `parse()` and `parseNullable()` safely parse untrusted input, by restricting the allowed syntax and limiting the number of digits
+- New enum: `NumberSyntax` lists the syntax features that `parse()` can accept, with constants for the most common combinations
+
+🐛 **Bug fixes**
+
+- `of()` no longer throws `PlatformException` on malformed input with many digits, crafted to trigger heavy backtracking in its parser; such input now throws `NumberFormatException` as documented
+- `of()` now throws `NumberFormatException` for exponents at the edge of the integer range, previously exhausted memory
+- `NumberFormatException` messages now escape control and non-ASCII characters, and truncate values longer than 40 bytes, instead of copying the raw input into the message
+
 ## [0.19.1](https://github.com/brick/math/releases/tag/0.19.1) - 2026-08-08
 
 ✨ **New features**
