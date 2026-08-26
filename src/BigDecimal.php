@@ -1169,6 +1169,13 @@ final readonly class BigDecimal extends BigNumber
         return $number->toBigDecimal();
     }
 
+    #[Override]
+    protected function digitCount(): int
+    {
+        // At least one integral digit is written: 0.001 counts 4 digits.
+        return max($this->getPrecision(), $this->scale + 1);
+    }
+
     /**
      * Puts the internal values of the given decimal numbers on the same scale.
      *

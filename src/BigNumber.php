@@ -140,18 +140,17 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * only if every feature it uses is allowed. The NumberSyntax enum also provides constants for the most common
      * combinations, from NumberSyntax::INTEGER to NumberSyntax::ALL.
      *
-     * The $maxDigits parameter limits the number of digits, counted in each of these two forms:
+     * The $maxDigits parameter limits the number of digits, counted in each of these forms:
      *
      * - as written, where every digit of the input counts, including leading zeros and exponent digits: `005` counts
-     *   3 digits, `1e-3` counts 2, and `010/012` counts 6;
-     * - in its final form, with the number written out plainly, before simplification for rationals: `005` counts 1
-     *   digit (`5`), `1e-3` counts 4 (`0.001`), and `010/012` counts 4 (`10/12`).
+     *   3 digits, `01e-3` counts 3, and `010/012` counts 6;
+     * - in its expanded form, with exponents materialized and leading zeros trimmed: `01e-3` counts 4 (`0.001`);
+     * - in its converted form, when called on a subclass, as written by toString(): `BigDecimal::parse('1/8', ...)`
+     *   counts 4 digits (`0.125`), although `1/8` counts only 2.
      *
      * When parse() is called on BigNumber, the concrete return type is determined by the format of the string,
      * following the same rules as {@see of()}. When called on a subclass, the value is converted to an instance of
-     * that subclass when possible. The $maxDigits limit applies to the number as parsed, before this conversion: the
-     * converted number may count more digits, as in `BigDecimal::parse('1/8', ...)` where `1/8` counts 2 digits, but
-     * the resulting `0.125` counts 4.
+     * that subclass when possible.
      *
      * @param string             $value         The untrusted value to parse.
      * @param list<NumberSyntax> $allowedSyntax The allowed syntax features; plain integers are always accepted.
@@ -164,8 +163,6 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * @throws InvalidArgumentException   If $maxDigits is less than 1.
      *
      * @pure
-     *
-     * @phpstan-ignore throws.unusedType (the $maxDigits check below is dead code for static analysis, but must exist at runtime)
      */
     final public static function parse(
         string $value,
@@ -178,13 +175,19 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
 
         $value = self::_parse($value, $allowedSyntax, $maxDigits);
 
-        if (static::class === BigNumber::class) {
-            assert($value instanceof static);
-
+        if ($value instanceof static) {
+            // No conversion needed.
             return $value;
         }
 
-        return static::from($value);
+        $result = static::from($value);
+
+        // The conversion may expand the number (1/8 -> 0.125): the limit applies to the result as well.
+        if ($result->digitCount() > $maxDigits) {
+            throw NumberFormatException::tooManyDigits($maxDigits);
+        }
+
+        return $result;
     }
 
     /**
@@ -607,6 +610,13 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * @pure
      */
     abstract protected static function from(BigNumber $number): static;
+
+    /**
+     * Returns the number of digits in this number, as written by toString().
+     *
+     * @pure
+     */
+    abstract protected function digitCount(): int;
 
     /**
      * Proxy method to access BigInteger's protected constructor from sibling classes.

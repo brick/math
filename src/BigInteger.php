@@ -1440,6 +1440,12 @@ final readonly class BigInteger extends BigNumber
         return $number->toBigInteger();
     }
 
+    #[Override]
+    protected function digitCount(): int
+    {
+        return strlen($this->value) - (int) ($this->value[0] === '-');
+    }
+
     /**
      * Returns random bytes from the provided generator or from random_bytes().
      *

@@ -181,13 +181,37 @@ class BigRationalTest extends AbstractTestCase
         self::assertBigRationalEquals('3/2', BigRational::parse('1.5', NumberSyntax::DECIMAL, 2));
     }
 
+    public function testParseConvertedValueExceedingMaxDigitsThrowsException(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The number exceeds the maximum number of 3 digits.');
+
+        // 2 digits as parsed, but the converted result 37/10 has 4
+        BigRational::parse('3.7', allowedSyntax: NumberSyntax::DECIMAL, maxDigits: 3);
+    }
+
+    public function testParseDoesNotCountImplicitDenominator(): void
+    {
+        // 123/1 is written 123: the implicit denominator does not count
+        self::assertBigRationalEquals('123', BigRational::parse('123', NumberSyntax::INTEGER, 3));
+    }
+
     public function testParseNullable(): void
     {
-        // 2 digits as parsed, although the converted result has 4
-        $result = BigRational::parseNullable('3.7', NumberSyntax::DECIMAL, 2);
+        // 2 digits as parsed, but the converted result has 4
+        $result = BigRational::parseNullable('3.7', NumberSyntax::DECIMAL, 4);
 
         self::assertNotNull($result);
         self::assertBigRationalEquals('37/10', $result);
+    }
+
+    public function testParseNullableConvertedValueExceedingMaxDigitsThrowsException(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The number exceeds the maximum number of 3 digits.');
+
+        // 2 digits as parsed, but the converted result 37/10 has 4
+        BigRational::parseNullable('3.7', allowedSyntax: NumberSyntax::DECIMAL, maxDigits: 3);
     }
 
     public function testZero(): void

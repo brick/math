@@ -300,8 +300,17 @@ class BigDecimalTest extends AbstractTestCase
 
     public function testParseConvertibleValue(): void
     {
-        // 2 digits as parsed, although the converted result has 3
-        self::assertBigDecimalEquals('0.25', BigDecimal::parse('1/4', NumberSyntax::RATIONAL, 2));
+        // 2 digits as parsed, but the converted result has 3
+        self::assertBigDecimalEquals('0.25', BigDecimal::parse('1/4', NumberSyntax::RATIONAL, 3));
+    }
+
+    public function testParseConvertedValueExceedingMaxDigitsThrowsException(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The number exceeds the maximum number of 2 digits.');
+
+        // 2 digits as parsed, but the converted result 0.25 has 3
+        BigDecimal::parse('1/4', allowedSyntax: NumberSyntax::RATIONAL, maxDigits: 2);
     }
 
     public function testParseNonConvertibleValueThrowsException(): void
@@ -314,8 +323,17 @@ class BigDecimalTest extends AbstractTestCase
 
     public function testParseNullableConvertibleValue(): void
     {
-        // 2 digits as parsed, although the converted result has 4
-        self::assertBigDecimalEquals('0.125', BigDecimal::parseNullable('1/8', NumberSyntax::RATIONAL, 2));
+        // 2 digits as parsed, but the converted result has 4
+        self::assertBigDecimalEquals('0.125', BigDecimal::parseNullable('1/8', NumberSyntax::RATIONAL, 4));
+    }
+
+    public function testParseNullableConvertedValueExceedingMaxDigitsThrowsException(): void
+    {
+        $this->expectException(NumberFormatException::class);
+        $this->expectExceptionMessageExact('The number exceeds the maximum number of 3 digits.');
+
+        // 2 digits as parsed, but the converted result 0.125 has 4
+        BigDecimal::parseNullable('1/8', allowedSyntax: NumberSyntax::RATIONAL, maxDigits: 3);
     }
 
     public function testParseNullableNonConvertibleValueThrowsException(): void

@@ -591,4 +591,17 @@ final readonly class BigRational extends BigNumber
     {
         return $number->toBigRational();
     }
+
+    #[Override]
+    protected function digitCount(): int
+    {
+        $count = $this->numerator->digitCount();
+
+        // Mirrors toString(), which does not write a denominator of 1.
+        if ($this->denominator->toString() === '1') {
+            return $count;
+        }
+
+        return $count + $this->denominator->digitCount();
+    }
 }
