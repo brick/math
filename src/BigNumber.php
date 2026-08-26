@@ -98,9 +98,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     {
         $value = self::_of($value);
 
-        if (static::class === BigNumber::class) {
-            assert($value instanceof static);
-
+        if ($value instanceof static) {
+            // No conversion needed.
             return $value;
         }
 
