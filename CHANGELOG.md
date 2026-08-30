@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0](https://github.com/brick/math/releases/tag/1.0.0) - 2026-09-12
+
+**First stable release** 🎉
+
+No changes from version `0.20.0`.
+
 ## [0.20.0](https://github.com/brick/math/releases/tag/0.20.0) - 2026-08-28
 
 💥 **Breaking changes**
