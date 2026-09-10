@@ -872,7 +872,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      *
      * @pure
      */
-    private static function cleanUp(string|null $sign, string $number): string
+    private static function cleanUp(?string $sign, string $number): string
     {
         $number = ltrim($number, '0');
 
