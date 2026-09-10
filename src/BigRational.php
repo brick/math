@@ -576,12 +576,10 @@ final readonly class BigRational extends BigNumber
      */
     public function __unserialize(array $data): void
     {
-        /** @phpstan-ignore isset.initializedProperty */
         if (isset($this->numerator)) {
             throw new LogicException('__unserialize() is an internal function, it must not be called directly.');
         }
 
-        /** @phpstan-ignore deadCode.unreachable */
         $this->numerator = $data['numerator'];
         $this->denominator = $data['denominator'];
     }

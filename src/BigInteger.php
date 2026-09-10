@@ -268,7 +268,7 @@ final readonly class BigInteger extends BigNumber
         $byteLength = intdiv($bitCount - 1, 8) + 1;
 
         $extraBits = ($byteLength * 8 - $bitCount);
-        $bitmask = chr(0xFF >> $extraBits);
+        $bitmask = chr(0xFF >> $extraBits); // @phpstan-ignore argument.type
 
         $randomBytes = self::randomBytes($byteLength, $randomBytesGenerator);
         $randomBytes[0] = $randomBytes[0] & $bitmask;
@@ -385,7 +385,7 @@ final readonly class BigInteger extends BigNumber
     {
         $result = BigInteger::of($a)->abs();
 
-        $n = array_map(BigInteger::of(...), $n); // @phpstan-ignore possiblyImpure.functionCall
+        $n = array_map(BigInteger::of(...), $n);
 
         foreach ($n as $next) {
             $result = $result->gcd($next);
@@ -414,7 +414,7 @@ final readonly class BigInteger extends BigNumber
     {
         $result = BigInteger::of($a)->abs();
 
-        $n = array_map(BigInteger::of(...), $n); // @phpstan-ignore possiblyImpure.functionCall
+        $n = array_map(BigInteger::of(...), $n);
 
         foreach ($n as $next) {
             $result = $result->lcm($next);
@@ -1425,12 +1425,10 @@ final readonly class BigInteger extends BigNumber
      */
     public function __unserialize(array $data): void
     {
-        /** @phpstan-ignore isset.initializedProperty */
         if (isset($this->value)) {
             throw new LogicException('__unserialize() is an internal function, it must not be called directly.');
         }
 
-        /** @phpstan-ignore deadCode.unreachable */
         $this->value = $data['value'];
     }
 

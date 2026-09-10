@@ -657,7 +657,7 @@ abstract readonly class Calculator
             $byte = ord($number[$i]);
 
             if (++$byte !== 256) {
-                $number[$i] = chr($byte);
+                $number[$i] = chr($byte); // @phpstan-ignore argument.type
 
                 break;
             }
@@ -685,7 +685,7 @@ abstract readonly class Calculator
 
         while ($number !== '0') {
             [$number, $remainder] = $this->divQR($number, '256');
-            $result .= chr((int) $remainder);
+            $result .= chr((int) $remainder); // @phpstan-ignore argument.type
         }
 
         return strrev($result);

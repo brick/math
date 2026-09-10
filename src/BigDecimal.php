@@ -1153,12 +1153,10 @@ final readonly class BigDecimal extends BigNumber
      */
     public function __unserialize(array $data): void
     {
-        /** @phpstan-ignore isset.initializedProperty */
         if (isset($this->value)) {
             throw new LogicException('__unserialize() is an internal function, it must not be called directly.');
         }
 
-        /** @phpstan-ignore deadCode.unreachable */
         $this->value = $data['value'];
         $this->scale = $data['scale'];
     }
