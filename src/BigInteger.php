@@ -1454,9 +1454,7 @@ final readonly class BigInteger extends BigNumber
      */
     private static function randomBytes(int $byteLength, ?callable $randomBytesGenerator): string
     {
-        if ($randomBytesGenerator === null) {
-            $randomBytesGenerator = random_bytes(...);
-        }
+        $randomBytesGenerator ??= random_bytes(...);
 
         try {
             $randomBytes = $randomBytesGenerator($byteLength);
