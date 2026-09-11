@@ -23,6 +23,7 @@ use Brick\Math\RoundingMode;
 use Generator;
 use LogicException;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 use function abs;
 use function bin2hex;
@@ -441,18 +442,31 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * Runs in a separate process so that the lazy initialization of the static instance is covered:
+     * in the main process, it has already been triggered by data providers, before code coverage starts.
+     */
+    #[RunInSeparateProcess]
     public function testZero(): void
     {
         self::assertBigIntegerEquals('0', BigInteger::zero());
         self::assertSame(BigInteger::zero(), BigInteger::zero());
     }
 
+    /**
+     * @see testZero() for the reason why this test runs in a separate process.
+     */
+    #[RunInSeparateProcess]
     public function testOne(): void
     {
         self::assertBigIntegerEquals('1', BigInteger::one());
         self::assertSame(BigInteger::one(), BigInteger::one());
     }
 
+    /**
+     * @see testZero() for the reason why this test runs in a separate process.
+     */
+    #[RunInSeparateProcess]
     public function testTen(): void
     {
         self::assertBigIntegerEquals('10', BigInteger::ten());
@@ -4701,6 +4715,12 @@ class BigIntegerTest extends AbstractTestCase
             ['1000000000000000000000000000000000000000000000000000000000000000000000000000000000', 1],
             ['-1000000000000000000000000000000000000000000000000000000000000000000000000000000000', -1],
         ];
+    }
+
+    public function testToBigInteger(): void
+    {
+        $number = BigInteger::of('123456789123456789123456789');
+        self::assertSame($number, $number->toBigInteger());
     }
 
     /**

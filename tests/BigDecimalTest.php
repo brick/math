@@ -4097,6 +4097,12 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
+    public function testToBigDecimal(): void
+    {
+        $decimal = BigDecimal::of('123.456');
+        self::assertSame($decimal, $decimal->toBigDecimal());
+    }
+
     /**
      * @param string $decimal  The decimal number to test.
      * @param string $rational The expected rational number.

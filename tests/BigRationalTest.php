@@ -377,6 +377,9 @@ class BigRationalTest extends AbstractTestCase
     public static function providerMinus(): array
     {
         return [
+            ['123/456', '0', '41/152'],
+            ['0', '123/456', '-41/152'],
+            ['0', '0', '0'],
             ['123/456', '1', '-111/152'],
             ['234/567', '123/28', '-1003/252'],
             ['-1234567890123456789/497', '79394345/109859892', '-135629495075630868965196253/54600366324'],
@@ -399,6 +402,9 @@ class BigRationalTest extends AbstractTestCase
     public static function providerMultipliedBy(): array
     {
         return [
+            ['123/456', '0', '0'],
+            ['0', '123/456', '0'],
+            ['0', '0', '0'],
             ['123/456', '1', '41/152'],
             ['123/456', '2', '41/76'],
             ['123/456', '1/2', '41/304'],
@@ -971,6 +977,12 @@ class BigRationalTest extends AbstractTestCase
             yield [$number, $expected];
             yield ['-' . $number, $expected === null ? null : '-' . $expected];
         }
+    }
+
+    public function testToBigRational(): void
+    {
+        $number = BigRational::of('123/456');
+        self::assertSame($number, $number->toBigRational());
     }
 
     /**

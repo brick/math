@@ -30,6 +30,8 @@ final class PlatformException extends RuntimeException implements MathException
      * @internal
      *
      * @pure
+     *
+     * @codeCoverageIgnore
      */
     public static function unsupportedFloatFormat(): self
     {
@@ -40,6 +42,8 @@ final class PlatformException extends RuntimeException implements MathException
      * @internal
      *
      * @pure
+     *
+     * @codeCoverageIgnore
      */
     public static function unsupportedIntSize(): self
     {

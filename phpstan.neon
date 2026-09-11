@@ -19,7 +19,7 @@ parameters:
             path: src/Internal/Calculator/BcMathCalculator.php
         -
             identifier: missingType.iterableValue
-            message: '~^Method Brick\\Math\\Tests\\\w+::provider\w+\(\) return type has no value type specified in iterable type array\.$~'
+            message: '~^Method Brick\\Math\\Tests(\\\w+)+::provider\w+\(\) return type has no value type specified in iterable type array\.$~'
             path: tests/
         -
             identifier: staticMethod.alreadyNarrowedType
