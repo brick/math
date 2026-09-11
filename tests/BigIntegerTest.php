@@ -10,6 +10,7 @@ use Brick\Math\BigNumber;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\IntegerOverflowException;
 use Brick\Math\Exception\InvalidArgumentException;
+use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\Exception\NoInverseException;
 use Brick\Math\Exception\NumberFormatException;
@@ -219,7 +220,10 @@ class BigIntegerTest extends AbstractTestCase
 
     public function testParseNullableConvertibleValue(): void
     {
-        self::assertBigIntegerEquals('9', BigInteger::parseNullable('9.0', NumberSyntax::DECIMAL, 2));
+        $result = BigInteger::parseNullable('9.0', NumberSyntax::DECIMAL, 2);
+
+        self::assertNotNull($result);
+        self::assertBigIntegerEquals('9', $result);
     }
 
     public function testParseNullableNonConvertibleValueThrowsException(): void
@@ -231,9 +235,9 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param string $number   The number to create.
-     * @param int    $base     The base of the number.
-     * @param string $expected The expected result in base 10.
+     * @param non-empty-string $number   The number to create.
+     * @param int<2, 36>       $base     The base of the number.
+     * @param string           $expected The expected result in base 10.
      */
     #[DataProvider('providerFromBase')]
     public function testFromBase(string $number, int $base, string $expected): void
@@ -346,12 +350,16 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @param int<2, 36> $base
+     */
     #[DataProvider('providerFromBaseWithInvalidValue')]
     public function testFromBaseWithInvalidValue(string $value, int $base, string $expectedExceptionMessage): void
     {
         $this->expectException(NumberFormatException::class);
         $this->expectExceptionMessageExact($expectedExceptionMessage);
 
+        // @phpstan-ignore argument.type (we purposely pass an empty string to non-empty-string $value)
         BigInteger::fromBase($value, $base);
     }
 
@@ -418,6 +426,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact(sprintf('Base %d is out of range [2, 36].', $base));
 
+        // @phpstan-ignore argument.type
         BigInteger::fromBase('0', $base);
     }
 
@@ -450,6 +459,9 @@ class BigIntegerTest extends AbstractTestCase
         self::assertSame(BigInteger::ten(), BigInteger::ten());
     }
 
+    /**
+     * @param list<BigNumber|int|string> $values
+     */
     #[DataProvider('providerGcdAll')]
     public function testGcdAll(array $values, string|int $expectedGCD): void
     {
@@ -489,6 +501,9 @@ class BigIntegerTest extends AbstractTestCase
         yield [[12, 14, '18', BigInteger::of(20)], '2'];
     }
 
+    /**
+     * @param list<BigNumber|int|string> $values
+     */
     #[DataProvider('providerLcmAll')]
     public function testLcmAll(array $values, string|int $expectedLCM): void
     {
@@ -524,8 +539,8 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param array  $values The values to compare.
-     * @param string $min    The expected minimum value.
+     * @param list<int|string> $values The values to compare.
+     * @param string           $min    The expected minimum value.
      */
     #[DataProvider('providerMin')]
     public function testMin(array $values, string $min): void
@@ -564,8 +579,8 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param array  $values The values to compare.
-     * @param string $max    The expected maximum value.
+     * @param list<int|string> $values The values to compare.
+     * @param string           $max    The expected maximum value.
      */
     #[DataProvider('providerMax')]
     public function testMax(array $values, string $max): void
@@ -605,8 +620,8 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param array  $values The values to add.
-     * @param string $sum    The expected sum.
+     * @param list<int|string> $values The values to add.
+     * @param string           $sum    The expected sum.
      */
     #[DataProvider('providerSum')]
     public function testSum(array $values, string $sum): void
@@ -1937,9 +1952,9 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param string $number   The base number.
-     * @param int    $exponent The exponent to apply.
-     * @param string $expected The expected result.
+     * @param string           $number   The base number.
+     * @param non-negative-int $exponent The exponent to apply.
+     * @param string           $expected The expected result.
      */
     #[DataProvider('providerPower')]
     public function testPower(string $number, int $exponent, string $expected): void
@@ -2011,6 +2026,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The exponent must not be negative.');
 
+        // @phpstan-ignore argument.type
         $one->power(-1);
     }
 
@@ -2028,6 +2044,9 @@ class BigIntegerTest extends AbstractTestCase
         self::assertBigIntegerEquals($gcd, $a->gcd($b));
     }
 
+    /**
+     * @return Generator<array{string, string, string}>
+     */
     public static function providerGcd(): Generator
     {
         $tests = [
@@ -2127,6 +2146,9 @@ class BigIntegerTest extends AbstractTestCase
         self::assertBigIntegerEquals($lcm, $a->lcm($b));
     }
 
+    /**
+     * @return Generator<array{string, string, string}>
+     */
     public static function providerLcm(): Generator
     {
         $tests = [
@@ -2175,6 +2197,9 @@ class BigIntegerTest extends AbstractTestCase
         }
     }
 
+    /**
+     * @return Generator<array{string, RoundingMode, string|null}>
+     */
     public static function providerSqrt(): Generator
     {
         $tests = [
@@ -3319,6 +3344,9 @@ class BigIntegerTest extends AbstractTestCase
         $number->sqrt();
     }
 
+    /**
+     * @param positive-int $n
+     */
     #[DataProvider('providerNthRoot')]
     #[DataProvider('providerNthRootFromSqrt')]
     public function testNthRoot(string $number, int $n, RoundingMode $roundingMode, ?string $expected): void
@@ -3666,6 +3694,7 @@ class BigIntegerTest extends AbstractTestCase
             // every mode returns the same exact value); non-exact rows ($expected === null)
             // skip the expansion because only Unnecessary itself throws.
             $eqs = match ($roundingMode) {
+                // @phpstan-ignore identical.alwaysFalse (not sure phpstan infers never here)
                 RoundingMode::Unnecessary => $expected === null ? [] : self::ALL_ROUNDING_MODES_BUT_UNNECESSARY,
                 RoundingMode::Up => ($number[0] === '-') ? [RoundingMode::Floor] : [RoundingMode::Ceiling],
                 RoundingMode::Down => ($number[0] === '-') ? [RoundingMode::Ceiling] : [RoundingMode::Floor],
@@ -3676,7 +3705,6 @@ class BigIntegerTest extends AbstractTestCase
                     RoundingMode::HalfEven,
                     RoundingMode::HalfOdd,
                 ],
-                default => [],
             };
 
             foreach ($eqs as $eq) {
@@ -3721,6 +3749,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The degree of an nth root must be a positive integer.');
 
+        // @phpstan-ignore argument.type
         $number->nthRoot(0);
     }
 
@@ -3730,6 +3759,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The degree of an nth root must be a positive integer.');
 
+        // @phpstan-ignore argument.type
         $number->nthRoot(-3);
     }
 
@@ -4311,9 +4341,9 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param BigInteger $number   The number in base 2.
-     * @param int        $n        The bit to test.
-     * @param bool       $expected The expected result.
+     * @param BigInteger       $number   The number in base 2.
+     * @param non-negative-int $n        The bit to test.
+     * @param bool             $expected The expected result.
      */
     #[DataProvider('providerIsBitSet')]
     public function testIsBitSet(BigInteger $number, int $n, bool $expected): void
@@ -4381,6 +4411,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The bit index must not be negative.');
 
+        // @phpstan-ignore argument.type
         $number->isBitSet(-1);
     }
 
@@ -4454,6 +4485,9 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @param class-string<MathException> $expectedException
+     */
     #[DataProvider('providerModInverseThrows')]
     public function testModInverseThrows(string $x, string $m, string $expectedException): void
     {
@@ -4461,7 +4495,7 @@ class BigIntegerTest extends AbstractTestCase
         $m = BigInteger::of($m);
 
         $this->expectException($expectedException);
-        $this->expectExceptionMessageExact(match ($expectedException) {
+        $this->expectExceptionMessageExact(match ($expectedException) { // @phpstan-ignore match.unhandled
             DivisionByZeroException::class => 'The modulus must not be zero.',
             InvalidArgumentException::class => 'The modulus must not be negative.',
             NoInverseException::class => 'This number has no multiplicative inverse modulo the given modulus (they are not coprime).',
@@ -4669,6 +4703,9 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @param non-negative-int $scale
+     */
     #[DataProvider('providerToScale')]
     public function testToScale(string $number, int $scale, string $expected): void
     {
@@ -4691,6 +4728,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The scale must not be negative.');
 
+        // @phpstan-ignore argument.type
         $number->toScale(-1);
     }
 
@@ -4757,9 +4795,9 @@ class BigIntegerTest extends AbstractTestCase
     }
 
     /**
-     * @param string $number   The number to convert, in base 10.
-     * @param int    $base     The base to convert the number to.
-     * @param string $expected The expected result.
+     * @param string     $number   The number to convert, in base 10.
+     * @param int<2, 36> $base     The base to convert the number to.
+     * @param string     $expected The expected result.
      */
     #[DataProvider('providerToBase')]
     public function testToBase(string $number, int $base, string $expected): void
@@ -4866,6 +4904,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact(sprintf('Base %d is out of range [2, 36].', $base));
 
+        // @phpstan-ignore argument.type
         $zero->toBase($base);
     }
 
@@ -4880,6 +4919,10 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @param non-empty-string $alphabet
+     * @param non-empty-string $baseN
+     */
     #[DataProvider('providerFromArbitraryBase')]
     public function testFromArbitraryBase(string $base10, string $alphabet, string $baseN): void
     {
@@ -4899,6 +4942,9 @@ class BigIntegerTest extends AbstractTestCase
         }
     }
 
+    /**
+     * @param non-empty-string $alphabet
+     */
     #[DataProvider('providerArbitraryBase')]
     public function testToArbitraryBase(string $base10, string $alphabet, string $baseN): void
     {
@@ -4908,6 +4954,9 @@ class BigIntegerTest extends AbstractTestCase
         self::assertSame($baseN, $actual);
     }
 
+    /**
+     * @return list<array{string, non-empty-string, non-empty-string}>
+     */
     public static function providerArbitraryBase(): array
     {
         $base7 = '0123456';
@@ -4989,15 +5038,20 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The alphabet must contain at least 2 characters.');
 
+        // @phpstan-ignore argument.type (we purposely pass an empty alphabet)
         BigInteger::fromArbitraryBase('0', $alphabet);
     }
 
+    /**
+     * @param non-empty-string $alphabet
+     */
     #[DataProvider('providerFromArbitraryBaseWithInvalidNumber')]
     public function testFromArbitraryBaseWithInvalidNumber(string $number, string $alphabet, string $expectedMessage): void
     {
         $this->expectException(NumberFormatException::class);
         $this->expectExceptionMessageExact($expectedMessage);
 
+        // @phpstan-ignore argument.type (we purposely pass an empty number)
         BigInteger::fromArbitraryBase($number, $alphabet);
     }
 
@@ -5033,6 +5087,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The alphabet must contain at least 2 characters.');
 
+        // @phpstan-ignore argument.type (we purposely pass an empty alphabet)
         $number->toArbitraryBase($alphabet);
     }
 
@@ -5044,6 +5099,9 @@ class BigIntegerTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @param non-empty-string $alphabet
+     */
     #[DataProvider('providerArbitraryBaseWithDuplicateChars')]
     public function testFromArbitraryBaseWithDuplicateCharsInAlphabet(string $alphabet): void
     {
@@ -5053,6 +5111,9 @@ class BigIntegerTest extends AbstractTestCase
         BigInteger::fromArbitraryBase('0', $alphabet);
     }
 
+    /**
+     * @param non-empty-string $alphabet
+     */
     #[DataProvider('providerArbitraryBaseWithDuplicateChars')]
     public function testToArbitraryBaseWithDuplicateCharsInAlphabet(string $alphabet): void
     {
@@ -5086,7 +5147,10 @@ class BigIntegerTest extends AbstractTestCase
     #[DataProvider('providerFromBytes')]
     public function testFromBytes(string $byteStringHex, bool $signed, string $expectedNumber): void
     {
-        $number = BigInteger::fromBytes(hex2bin($byteStringHex), $signed);
+        /** @var non-empty-string $byteString */
+        $byteString = hex2bin($byteStringHex);
+
+        $number = BigInteger::fromBytes($byteString, $signed);
         self::assertBigIntegerEquals($expectedNumber, $number);
     }
 
@@ -5106,6 +5170,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(NumberFormatException::class);
         $this->expectExceptionMessageExact('The byte string must not be empty.');
 
+        // @phpstan-ignore argument.type
         BigInteger::fromBytes('');
     }
 
@@ -5116,6 +5181,9 @@ class BigIntegerTest extends AbstractTestCase
         self::assertSame($expectedByteStringHex, strtoupper(bin2hex($byteString)));
     }
 
+    /**
+     * @return list<array{string, bool, string}>
+     */
     public static function providerToBytes(): array
     {
         return [
@@ -5313,10 +5381,14 @@ class BigIntegerTest extends AbstractTestCase
         $number->toBytes(false);
     }
 
+    /**
+     * @param non-negative-int $numBits
+     */
     #[DataProvider('providerRandomBits')]
     public function testRandomBits(int $numBits, string $randomBytesHex, string $expectedNumber): void
     {
         $randomBytesGenerator = function (int $numBytes) use ($randomBytesHex): string {
+            /** @var string $randomBytes */
             $randomBytes = hex2bin($randomBytesHex);
             $randomBytesLength = strlen($randomBytes);
 
@@ -5373,6 +5445,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The bit count must not be negative.');
 
+        // @phpstan-ignore argument.type
         BigInteger::randomBits(-1);
     }
 
@@ -5400,6 +5473,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(RandomSourceException::class);
         $this->expectExceptionMessageExact('The random bytes generator must return a string, got int.');
 
+        // @phpstan-ignore argument.type
         BigInteger::randomBits(8, fn () => 123);
     }
 
@@ -5411,6 +5485,9 @@ class BigIntegerTest extends AbstractTestCase
         BigInteger::randomBits(8, fn () => '');
     }
 
+    /**
+     * @param list<string> $randomBytesHex
+     */
     #[DataProvider('providerRandomRange')]
     public function testRandomRange(string $min, string $max, array $randomBytesHex, string $expectedNumber): void
     {
@@ -5430,6 +5507,7 @@ class BigIntegerTest extends AbstractTestCase
                 $failCounter();
             }
 
+            /** @var string $randomBytes */
             $randomBytes = hex2bin($randomBytesHex[$randomBytesCounter]);
             $randomBytesLength = strlen($randomBytes);
 
@@ -5523,6 +5601,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(RandomSourceException::class);
         $this->expectExceptionMessageExact('The random bytes generator must return a string, got int.');
 
+        // @phpstan-ignore argument.type
         BigInteger::randomRange(0, 1, fn () => 123);
     }
 
@@ -5561,7 +5640,10 @@ class BigIntegerTest extends AbstractTestCase
 
         $number = BigInteger::of($value);
 
-        self::assertBigIntegerEquals($value, unserialize(serialize($number)));
+        /** @var BigInteger $deserialized */
+        $deserialized = unserialize(serialize($number));
+
+        self::assertBigIntegerEquals($value, $deserialized);
     }
 
     public function testDirectCallToUnserialize(): void
@@ -5571,6 +5653,7 @@ class BigIntegerTest extends AbstractTestCase
         $this->expectException(LogicException::class);
         $this->expectExceptionMessageExact('__unserialize() is an internal function, it must not be called directly.');
 
+        // @phpstan-ignore argument.type
         $zero->__unserialize([]);
     }
 

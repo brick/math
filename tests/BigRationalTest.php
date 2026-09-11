@@ -233,8 +233,8 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @param array  $values The values to compare.
-     * @param string $min    The expected minimum value, in rational form.
+     * @param list<int|string> $values The values to compare.
+     * @param string           $min    The expected minimum value, in rational form.
      */
     #[DataProvider('providerMin')]
     public function testMin(array $values, string $min): void
@@ -253,8 +253,8 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @param array  $values The values to compare.
-     * @param string $max    The expected maximum value, in rational form.
+     * @param list<int|string> $values The values to compare.
+     * @param string           $max    The expected maximum value, in rational form.
      */
     #[DataProvider('providerMax')]
     public function testMax(array $values, string $max): void
@@ -276,8 +276,8 @@ class BigRationalTest extends AbstractTestCase
     }
 
     /**
-     * @param array  $values The values to add.
-     * @param string $sum    The expected sum, in rational form.
+     * @param list<int|string> $values The values to add.
+     * @param string           $sum    The expected sum, in rational form.
      */
     #[DataProvider('providerSum')]
     public function testSum(array $values, string $sum): void
@@ -973,6 +973,9 @@ class BigRationalTest extends AbstractTestCase
         }
     }
 
+    /**
+     * @param non-negative-int $scale
+     */
     #[DataProvider('providerToScale')]
     public function testToScale(string $number, int $scale, RoundingMode $roundingMode, string $expected): void
     {
@@ -1003,6 +1006,7 @@ class BigRationalTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The scale must not be negative.');
 
+        // @phpstan-ignore argument.type
         $number->toScale(-1);
     }
 
@@ -1247,7 +1251,10 @@ class BigRationalTest extends AbstractTestCase
 
         $rational = BigRational::ofFraction($numerator, $denominator);
 
-        self::assertBigRationalEquals("$numerator/$denominator", unserialize(serialize($rational)));
+        /** @var BigRational $deserialized */
+        $deserialized = unserialize(serialize($rational));
+
+        self::assertBigRationalEquals("$numerator/$denominator", $deserialized);
     }
 
     public function testDirectCallToUnserialize(): void
@@ -1257,6 +1264,7 @@ class BigRationalTest extends AbstractTestCase
         $this->expectException(LogicException::class);
         $this->expectExceptionMessageExact('__unserialize() is an internal function, it must not be called directly.');
 
+        // @phpstan-ignore argument.type
         $number->__unserialize([]);
     }
 }

@@ -1,8 +1,13 @@
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+
 parameters:
     level: 10
     checkUninitializedProperties: true
     paths:
         - src
+        - tests
     ignoreErrors:
         - '~Possibly impure call to function assert\(\) in pure method~'
         - '~Possibly impure call to function hex2bin\(\) in pure method~'
@@ -12,3 +17,16 @@ parameters:
         -
             message: '~Parameter #\d \$\S+ of function bc\S+ expects numeric-string, string given~'
             path: src/Internal/Calculator/BcMathCalculator.php
+        -
+            identifier: missingType.iterableValue
+            message: '~^Method Brick\\Math\\Tests\\\w+::provider\w+\(\) return type has no value type specified in iterable type array\.$~'
+            path: tests/
+        -
+            identifier: staticMethod.alreadyNarrowedType
+            path: tests/NumberSyntaxTest.php
+        -
+            identifier: staticMethod.resultUnused
+            path: tests/Internal/SafeTest.php
+
+rules:
+    - PHPStan\Rules\PHPUnit\DataProviderDataRule

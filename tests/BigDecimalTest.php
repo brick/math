@@ -324,7 +324,10 @@ class BigDecimalTest extends AbstractTestCase
     public function testParseNullableConvertibleValue(): void
     {
         // 2 digits as parsed, but the converted result has 4
-        self::assertBigDecimalEquals('0.125', BigDecimal::parseNullable('1/8', NumberSyntax::RATIONAL, 4));
+        $result = BigDecimal::parseNullable('1/8', NumberSyntax::RATIONAL, 4);
+
+        self::assertNotNull($result);
+        self::assertBigDecimalEquals('0.125', $result);
     }
 
     public function testParseNullableConvertedValueExceedingMaxDigitsThrowsException(): void
@@ -467,8 +470,8 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @param array  $values The values to compare.
-     * @param string $min    The expected minimum value.
+     * @param list<int|string> $values The values to compare.
+     * @param string           $min    The expected minimum value.
      */
     #[DataProvider('providerMin')]
     public function testMin(array $values, string $min): void
@@ -503,8 +506,8 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @param array  $values The values to compare.
-     * @param string $max    The expected maximum value.
+     * @param list<int|string> $values The values to compare.
+     * @param string           $max    The expected maximum value.
      */
     #[DataProvider('providerMax')]
     public function testMax(array $values, string $max): void
@@ -543,8 +546,8 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @param array  $values The values to add.
-     * @param string $sum    The expected sum.
+     * @param list<int|string> $values The values to add.
+     * @param string           $sum    The expected sum.
      */
     #[DataProvider('providerSum')]
     public function testSum(array $values, string $sum): void
@@ -833,11 +836,11 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @param string       $a            The base number.
-     * @param string       $b            The number to divide.
-     * @param int          $scale        The desired scale of the result.
-     * @param RoundingMode $roundingMode The rounding mode.
-     * @param string       $expected     The expected result, or 'DIVISION_NOT_EXACT'|'SCALE_TOO_SMALL' if an exception is expected.
+     * @param string           $a            The base number.
+     * @param string           $b            The number to divide.
+     * @param non-negative-int $scale        The desired scale of the result.
+     * @param RoundingMode     $roundingMode The rounding mode.
+     * @param string           $expected     The expected result, or 'DIVISION_NOT_EXACT'|'SCALE_TOO_SMALL' if an exception is expected.
      */
     #[DataProvider('providerDividedBy')]
     public function testDividedBy(string $a, string $b, int $scale, RoundingMode $roundingMode, string $expected): void
@@ -924,6 +927,7 @@ class BigDecimalTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The scale must not be negative.');
 
+        // @phpstan-ignore argument.type
         $one->dividedBy(2, -1);
     }
 
@@ -939,7 +943,7 @@ class BigDecimalTest extends AbstractTestCase
 
         if (self::isException($expected)) {
             $this->expectException($expected);
-            $this->expectExceptionMessageExact(match ($expected) {
+            $this->expectExceptionMessageExact(match ($expected) { // @phpstan-ignore match.unhandled
                 RoundingNecessaryException::class => 'The division yields a non-terminating decimal expansion and cannot be represented as a decimal without rounding.',
                 DivisionByZeroException::class => 'Division by zero.',
             });
@@ -1870,6 +1874,9 @@ class BigDecimalTest extends AbstractTestCase
         $number->quotientAndRemainder(0);
     }
 
+    /**
+     * @param non-negative-int $scale
+     */
     #[DataProvider('providerSqrt')]
     #[DataProvider('providerSqrtMidpointTies')]
     public function testSqrt(string $number, int $scale, RoundingMode $roundingMode, string $expected): void
@@ -1894,8 +1901,12 @@ class BigDecimalTest extends AbstractTestCase
         }
     }
 
+    /**
+     * @return Generator<array{string, non-negative-int, RoundingMode, string}>
+     */
     public static function providerSqrt(): Generator
     {
+        /** @var list<array{string, non-negative-int, RoundingMode, string}> $tests */
         $tests = [
             ['0', 0, RoundingMode::Unnecessary, '0'],
             ['0', 1, RoundingMode::Unnecessary, '0.0'],
@@ -2723,6 +2734,8 @@ class BigDecimalTest extends AbstractTestCase
     /**
      * Midpoint-tie cases: each Half* mode gives a different answer, so all are listed explicitly.
      * The foreach only does Up/Down ↔ Ceiling/Floor renaming (no HalfUp expansion).
+     *
+     * @return Generator<array{string, non-negative-int, RoundingMode, string}>
      */
     public static function providerSqrtMidpointTies(): Generator
     {
@@ -2804,9 +2817,14 @@ class BigDecimalTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The scale must not be negative.');
 
+        // @phpstan-ignore argument.type
         $number->sqrt(-1);
     }
 
+    /**
+     * @param positive-int     $n
+     * @param non-negative-int $scale
+     */
     #[DataProvider('providerNthRoot')]
     #[DataProvider('providerNthRootFromSqrt')]
     #[DataProvider('providerNthRootMidpointTies')]
@@ -3172,7 +3190,6 @@ class BigDecimalTest extends AbstractTestCase
                     RoundingMode::HalfEven,
                     RoundingMode::HalfOdd,
                 ],
-                default => [],
             };
 
             foreach ($eqs as $eq) {
@@ -3309,6 +3326,7 @@ class BigDecimalTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The degree of an nth root must be a positive integer.');
 
+        // @phpstan-ignore argument.type
         $number->nthRoot(0, 10);
     }
 
@@ -3318,6 +3336,7 @@ class BigDecimalTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The degree of an nth root must be a positive integer.');
 
+        // @phpstan-ignore argument.type
         $number->nthRoot(-2, 10);
     }
 
@@ -3327,6 +3346,7 @@ class BigDecimalTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The scale must not be negative.');
 
+        // @phpstan-ignore argument.type
         $number->nthRoot(3, -1);
     }
 
@@ -3362,9 +3382,9 @@ class BigDecimalTest extends AbstractTestCase
     }
 
     /**
-     * @param string $number   The base number.
-     * @param int    $exponent The exponent to apply.
-     * @param string $expected The expected result.
+     * @param string           $number   The base number.
+     * @param non-negative-int $exponent The exponent to apply.
+     * @param string           $expected The expected result.
      */
     #[DataProvider('providerPower')]
     public function testPower(string $number, int $exponent, string $expected): void
@@ -3430,14 +3450,15 @@ class BigDecimalTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The exponent must not be negative.');
 
+        // @phpstan-ignore argument.type
         $one->power(-1);
     }
 
     /**
-     * @param string       $number       The number to scale.
-     * @param int          $toScale      The scale to apply.
-     * @param RoundingMode $roundingMode The rounding mode to apply.
-     * @param string|null  $expected     The expected result, or null if an exception is expected.
+     * @param string           $number       The number to scale.
+     * @param non-negative-int $toScale      The scale to apply.
+     * @param RoundingMode     $roundingMode The rounding mode to apply.
+     * @param string|null      $expected     The expected result, or null if an exception is expected.
      */
     #[DataProvider('providerToScale')]
     public function testToScale(string $number, int $toScale, RoundingMode $roundingMode, ?string $expected): void
@@ -3491,6 +3512,7 @@ class BigDecimalTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageExact('The scale must not be negative.');
 
+        // @phpstan-ignore argument.type
         $number->toScale(-1);
     }
 
@@ -4285,7 +4307,10 @@ class BigDecimalTest extends AbstractTestCase
         $number = '-123456789098.7654321012345678909876543210123456789';
         $bigDecimal = BigDecimal::of($number);
 
-        self::assertBigDecimalEquals($number, unserialize(serialize($bigDecimal)));
+        /** @var BigDecimal $deserialized */
+        $deserialized = unserialize(serialize($bigDecimal));
+
+        self::assertBigDecimalEquals($number, $deserialized);
     }
 
     public function testDirectCallToUnserialize(): void
@@ -4295,6 +4320,7 @@ class BigDecimalTest extends AbstractTestCase
         $this->expectException(LogicException::class);
         $this->expectExceptionMessageExact('__unserialize() is an internal function, it must not be called directly.');
 
+        // @phpstan-ignore argument.type
         $zero->__unserialize([]);
     }
 

@@ -35,6 +35,9 @@ use const PHP_INT_MAX;
  */
 class BigNumberTest extends AbstractTestCase
 {
+    /**
+     * @param class-string<BigNumber> $expectedClass
+     */
     #[DataProvider('providerOf')]
     public function testOf(BigNumber|int|string $value, string $expectedClass, string $expectedValue): void
     {
@@ -44,8 +47,11 @@ class BigNumberTest extends AbstractTestCase
         self::assertSame($expectedValue, $result->toString());
     }
 
+    /**
+     * @param class-string<BigNumber> $expectedClass
+     */
     #[DataProvider('providerOf')]
-    public function testOfNullableWithNonNullInput(mixed $value, string $expectedClass, string $expectedValue): void
+    public function testOfNullableWithNonNullInput(BigNumber|int|string $value, string $expectedClass, string $expectedValue): void
     {
         $result = BigNumber::ofNullable($value);
 
@@ -214,7 +220,8 @@ class BigNumberTest extends AbstractTestCase
     }
 
     /**
-     * @param int $digitCount The exact number of digits in $value; parsing must succeed with this limit.
+     * @param class-string<BigNumber> $expectedClass
+     * @param positive-int            $digitCount    The exact number of digits in $value; parsing must succeed with this limit.
      */
     #[DataProvider('providerParse')]
     public function testParse(string $value, string $expectedClass, string $expectedValue, int $digitCount): void
@@ -226,7 +233,7 @@ class BigNumberTest extends AbstractTestCase
     }
 
     /**
-     * @param int $maxDigits The tightest failing limit: one less than the exact digit count of $value.
+     * @param positive-int $maxDigits The tightest failing limit: one less than the exact digit count of $value.
      */
     #[DataProvider('providerParseExceeded')]
     public function testParseExceeded(string $value, int $maxDigits): void
@@ -237,6 +244,10 @@ class BigNumberTest extends AbstractTestCase
         BigNumber::parse($value, allowedSyntax: NumberSyntax::ALL, maxDigits: $maxDigits);
     }
 
+    /**
+     * @param class-string<BigNumber> $expectedClass
+     * @param positive-int            $digitCount
+     */
     #[DataProvider('providerParse')]
     public function testParseNullableWithNonNullInput(string $value, string $expectedClass, string $expectedValue, int $digitCount): void
     {
@@ -247,6 +258,9 @@ class BigNumberTest extends AbstractTestCase
         self::assertSame($expectedValue, $result->toString());
     }
 
+    /**
+     * @param positive-int $maxDigits
+     */
     #[DataProvider('providerParseExceeded')]
     public function testParseNullableWithNonNullInputExceeded(string $value, int $maxDigits): void
     {
@@ -305,7 +319,7 @@ class BigNumberTest extends AbstractTestCase
     }
 
     /**
-     * @return Generator<array{string, class-string<BigNumber>, string, int}>
+     * @return Generator<array{string, class-string<BigNumber>, string, positive-int}>
      */
     public static function providerParse(): Generator
     {
@@ -361,19 +375,19 @@ class BigNumberTest extends AbstractTestCase
                 $negated = ! $isZero && $variation[0] === '-';
                 $writtenDigitCount = self::countDigits($variation);
 
+                /** @var positive-int $digitCount */
+                $digitCount = max($resultDigitCount, $writtenDigitCount);
+
                 yield [
                     $variation,
                     $expectedClass,
                     $negated ? '-' . $expectedValue : $expectedValue,
-                    max($resultDigitCount, $writtenDigitCount),
+                    $digitCount,
                 ];
             }
         }
     }
 
-    /**
-     * @return Generator<array{string, int}>
-     */
     public static function providerParseExceeded(): Generator
     {
         // Every accepted row of the main matrix must be rejected at one digit less.
@@ -406,9 +420,6 @@ class BigNumberTest extends AbstractTestCase
         BigNumber::parse($value, allowedSyntax: NumberSyntax::ALL, maxDigits: 100);
     }
 
-    /**
-     * @return list<array{string}>
-     */
     public static function providerParseExponentTooLargeThrowsException(): array
     {
         return [
@@ -430,9 +441,6 @@ class BigNumberTest extends AbstractTestCase
         BigNumber::parse($value, allowedSyntax: NumberSyntax::ALL, maxDigits: PHP_INT_MAX);
     }
 
-    /**
-     * @return list<array{string}>
-     */
     public static function providerParseDigitCountOverflow(): array
     {
         return [
@@ -497,9 +505,6 @@ class BigNumberTest extends AbstractTestCase
         BigNumber::parseNullable($value, $syntax, 10);
     }
 
-    /**
-     * @return Generator<array{string, list<NumberSyntax>, string}>
-     */
     public static function providerParseSyntaxAllowed(): Generator
     {
         foreach (self::syntaxMatrix() as [$value, $syntax, $expectedValue]) {
@@ -509,9 +514,6 @@ class BigNumberTest extends AbstractTestCase
         }
     }
 
-    /**
-     * @return Generator<array{string, list<NumberSyntax>}>
-     */
     public static function providerParseSyntaxNotAllowed(): Generator
     {
         foreach (self::syntaxMatrix() as [$value, $syntax, $expectedValue]) {
@@ -521,6 +523,9 @@ class BigNumberTest extends AbstractTestCase
         }
     }
 
+    /**
+     * @param array<mixed> $allowedSyntax
+     */
     #[DataProvider('providerInvalidAllowedSyntax')]
     public function testParseWithInvalidAllowedSyntax(array $allowedSyntax): void
     {
@@ -531,6 +536,9 @@ class BigNumberTest extends AbstractTestCase
         BigNumber::parse('1', allowedSyntax: $allowedSyntax, maxDigits: 10);
     }
 
+    /**
+     * @param array<mixed> $allowedSyntax
+     */
     #[DataProvider('providerInvalidAllowedSyntax')]
     public function testParseNullableWithInvalidAllowedSyntax(array $allowedSyntax): void
     {
@@ -541,6 +549,9 @@ class BigNumberTest extends AbstractTestCase
         BigNumber::parseNullable('1', allowedSyntax: $allowedSyntax, maxDigits: 10);
     }
 
+    /**
+     * @param array<mixed> $allowedSyntax
+     */
     #[DataProvider('providerInvalidAllowedSyntax')]
     public function testParseNullableWithNullInputAndInvalidAllowedSyntax(array $allowedSyntax): void
     {
@@ -551,9 +562,6 @@ class BigNumberTest extends AbstractTestCase
         BigNumber::parseNullable(null, allowedSyntax: $allowedSyntax, maxDigits: 10);
     }
 
-    /**
-     * @return list<array{array<mixed>}>
-     */
     public static function providerInvalidAllowedSyntax(): array
     {
         return [
@@ -614,6 +622,7 @@ class BigNumberTest extends AbstractTestCase
 
     /**
      * @param list<BigNumber|int|string> $values
+     * @param class-string<BigNumber>    $expectedClass
      */
     #[DataProvider('providerMin')]
     public function testMin(array $values, string $expectedClass, string $expectedValue): void
@@ -638,6 +647,7 @@ class BigNumberTest extends AbstractTestCase
 
     /**
      * @param list<BigNumber|int|string> $values
+     * @param class-string<BigNumber>    $expectedClass
      */
     #[DataProvider('providerMax')]
     public function testMax(array $values, string $expectedClass, string $expectedValue): void
@@ -662,7 +672,7 @@ class BigNumberTest extends AbstractTestCase
     /**
      * @param class-string<BigNumber>    $callingClass  The BigNumber class to call sum() on.
      * @param list<BigNumber|int|string> $values        The values to add.
-     * @param string                     $expectedClass The expected class name.
+     * @param class-string<BigNumber>    $expectedClass The expected class name.
      * @param string                     $expectedSum   The expected sum.
      */
     #[DataProvider('providerSum')]

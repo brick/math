@@ -18,6 +18,8 @@ class CalculatorDetectTest extends TestCase
         $currentCalculator = CalculatorRegistry::get();
 
         CalculatorRegistry::set(null);
+
+        // @phpstan-ignore staticMethod.alreadyNarrowedType
         self::assertInstanceOf(Calculator::class, CalculatorRegistry::get());
 
         CalculatorRegistry::set($currentCalculator);

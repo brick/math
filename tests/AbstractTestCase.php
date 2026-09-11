@@ -8,14 +8,15 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigRational;
 use Brick\Math\RoundingMode;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 use function count;
 use function ctype_digit;
 use function explode;
+use function is_a;
 use function ltrim;
 use function preg_quote;
-use function str_ends_with;
 use function strlen;
 use function substr;
 
@@ -79,9 +80,12 @@ abstract class AbstractTestCase extends TestCase
         self::assertSame($denominator, $actual->getDenominator()->toString());
     }
 
+    /**
+     * @phpstan-assert-if-true class-string<Exception> $name
+     */
     final protected static function isException(string $name): bool
     {
-        return str_ends_with($name, 'Exception');
+        return is_a($name, Exception::class, true);
     }
 
     /**
