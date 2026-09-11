@@ -3708,7 +3708,7 @@ class BigIntegerTest extends AbstractTestCase
             // every mode returns the same exact value); non-exact rows ($expected === null)
             // skip the expansion because only Unnecessary itself throws.
             $eqs = match ($roundingMode) {
-                // @phpstan-ignore identical.alwaysFalse (not sure phpstan infers never here)
+                // @phpstan-ignore identical.alwaysFalse (not sure why phpstan infers never here)
                 RoundingMode::Unnecessary => $expected === null ? [] : self::ALL_ROUNDING_MODES_BUT_UNNECESSARY,
                 RoundingMode::Up => ($number[0] === '-') ? [RoundingMode::Floor] : [RoundingMode::Ceiling],
                 RoundingMode::Down => ($number[0] === '-') ? [RoundingMode::Ceiling] : [RoundingMode::Floor],
