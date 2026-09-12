@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/brick/brick/master/logo.png" alt="" align="left" height="64">
 
-A PHP library to work with arbitrary precision numbers.
+A PHP library to work with arbitrary-precision numbers.
 
 [![Build Status](https://github.com/brick/math/workflows/CI/badge.svg)](https://github.com/brick/math/actions)
 [![Coverage Status](https://codecov.io/github/brick/math/graph/badge.svg)](https://codecov.io/github/brick/math)
@@ -58,7 +58,7 @@ Brick\Math\BigNumber
 
 ## Instantiation
 
-The constructors of the classes are not public, you must use a factory method to obtain an instance.
+The constructors of the classes are not public, so you must use a factory method to obtain an instance.
 
 All classes provide an `of()` factory method that accepts any of the following types:
 
@@ -69,7 +69,7 @@ All classes provide an `of()` factory method that accepts any of the following t
 Example:
 
 ```php
-BigInteger::of(123546);
+BigInteger::of(123456);
 BigInteger::of('9999999999999999999999999999999999999999999');
 
 BigDecimal::of('9.99999999999999999999999999999999999999999999');
@@ -140,7 +140,7 @@ BigDecimal::parse('1e1000000000', allowedSyntax: NumberSyntax::SCIENTIFIC, maxDi
 
 ## Parameter types
 
-All methods that accept a number: `plus()`, `minus()`, `multipliedBy()`, etc. accept the same types as `of()`.
+All methods that accept a number (`plus()`, `minus()`, `multipliedBy()`, etc.) accept the same types as `of()`.
 For example, given the following number:
 
 ```php
@@ -155,7 +155,7 @@ $integer->multipliedBy('123');
 $integer->multipliedBy($integer);
 ```
 
-Just like `of()`, other types of numbers are acceptable, as long as they can be safely converted to the current type:
+As with `of()`, other types of numbers are accepted, as long as they can be safely converted to the current type:
 
 ```php
 echo BigInteger::of(2)->multipliedBy('2.0'); // 4
@@ -204,7 +204,7 @@ Where applicable, this behaviour is configurable through an optional `RoundingMo
 | `RoundingMode::HalfEven`    | Rounds to nearest; ties to the even neighbor.                 |
 | `RoundingMode::HalfOdd`     | Rounds to nearest; ties to the odd neighbor.                  |
 
-See the next section for examples of `RoundingMode` in action.
+See the [Division](#division) section for examples of `RoundingMode` in action.
 
 > [!TIP]
 > PHP 8.4 introduced a native [RoundingMode](https://www.php.net/manual/en/enum.roundingmode.php) enum, used by
@@ -271,7 +271,7 @@ You can also get both in one call:
 #### BigDecimal
 
 Dividing a `BigDecimal` always requires a scale to be specified. If the exact result of the division does not fit in
-the given scale, a `RoundingMode` must be provided.
+the given scale, a `RoundingMode` must be provided:
 
 ```php
 echo BigDecimal::of(1)->dividedBy('8', 3); // 0.125
@@ -280,7 +280,7 @@ echo BigDecimal::of(1)->dividedBy('8', 2, RoundingMode::HalfDown); // 0.12
 echo BigDecimal::of(1)->dividedBy('8', 2, RoundingMode::HalfUp); // 0.13
 ```
 
-If you know that the division yields a finite number of decimals places, you can use `dividedByExact()`, which will
+If you know that the division yields a finite number of decimal places, you can use `dividedByExact()`, which will
 automatically compute the required scale to fit the result, or throw an exception if the division yields an infinite
 repeating decimal:
 
@@ -336,7 +336,7 @@ For sign-related transformations, use:
 
 Comparison works across all number classes (`BigInteger`, `BigDecimal`, `BigRational`):
 
-- `compareTo()` — returns `-1`, `0`, or `1` if this number is `<`, `=`, or `>` than the given number
+- `compareTo()` — returns `-1`, `0`, or `1` if this number is `<`, `=`, or `>` the given number
 - `isEqualTo()`
 - `isLessThan()`
 - `isLessThanOrEqualTo()`
@@ -382,14 +382,14 @@ All classes provide the following methods:
 
 ### Conversion to string
 
-All number classes can be converted to string using either the `toString()` method, or the `(string)` cast. For example, the following lines are equivalent:
+All number classes can be converted to string using either the `toString()` method or the `(string)` cast. For example, the following lines are equivalent:
 
 ```php
 echo BigInteger::of(123)->toString();
 echo (string) BigInteger::of(123);
 ```
 
-Different number classes produce different outputs. Note that a `BigDecimal` with a scale of zero, and a `BigRational` with a denominator of one, print as plain digit strings:
+Different number classes produce different outputs. Note that a `BigDecimal` with a scale of zero and a `BigRational` with a denominator of one both print as plain digit strings:
 
 ```php
 echo BigInteger::of(-123)->toString(); // -123
@@ -408,7 +408,7 @@ BigNumber::of($bigNumber->toString());
 ```
 
 > [!IMPORTANT]
-> Because `BigDecimal::toString()` and `BigRational::toString()` can return whole numbers, these numbers can be parsed
+> Because `BigDecimal::toString()` and `BigRational::toString()` can return whole numbers, these numbers will be parsed
 > as `BigInteger` when using `BigNumber::of()`. If you want to retain the original type when reparsing numbers, be sure
 > to use `of()` on the specific class: `BigDecimal::of()` or `BigRational::of()`.
 
@@ -517,7 +517,7 @@ installed will still work as expected.
 
 ### JSON
 
-`BigNumber` classes support serialization to JSON using the `json_encode()` function:
+All number classes support serialization to JSON using the `json_encode()` function:
 
 ```php
 echo json_encode(BigInteger::of(123)); // "123"
