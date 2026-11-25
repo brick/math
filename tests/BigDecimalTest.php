@@ -3505,6 +3505,36 @@ class BigDecimalTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @param non-negative-int $scale
+     */
+    #[DataProvider('providerToScaleWithLargeScaleReduction')]
+    public function testToScaleWithLargeScaleReduction(int $value, int $scale, RoundingMode $roundingMode, ?string $expected): void
+    {
+        $decimal = BigDecimal::ofUnscaledValue($value, $scale);
+
+        if ($expected === null) {
+            $this->expectException(RoundingNecessaryException::class);
+        }
+
+        $result = $decimal->toScale(0, $roundingMode);
+
+        if ($expected !== null) {
+            self::assertBigDecimalEquals($expected, $result);
+        }
+    }
+
+    public static function providerToScaleWithLargeScaleReduction(): array
+    {
+        return [
+            'below half at maximum scale' => [1, PHP_INT_MAX, RoundingMode::HalfUp, '0'],
+            'positive at maximum scale rounds up' => [1, PHP_INT_MAX, RoundingMode::Ceiling, '1'],
+            'negative at maximum scale rounds down' => [-1, PHP_INT_MAX, RoundingMode::Floor, '-1'],
+            'rounding is necessary at maximum scale' => [1, PHP_INT_MAX, RoundingMode::Unnecessary, null],
+            'half when all digits are discarded' => [5, 1, RoundingMode::HalfUp, '1'],
+        ];
+    }
+
     public function testToScaleWithNegativeScale(): void
     {
         $number = BigDecimal::of('1.2');
