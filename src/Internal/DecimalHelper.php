@@ -6,11 +6,11 @@ namespace Brick\Math\Internal;
 
 use Brick\Math\RoundingMode;
 
-use function ltrim;
 use function rtrim;
 use function str_pad;
 use function str_repeat;
 use function strlen;
+use function strspn;
 use function substr;
 
 use const STR_PAD_LEFT;
@@ -91,9 +91,16 @@ final class DecimalHelper
             return null;
         }
 
-        $divisor = '1' . str_repeat('0', $currentScale - $targetScale);
+        $discardedDigits = $currentScale - $targetScale;
+        $digitCount = strlen($value) - (int) ($value[0] === '-');
+        $calculator = CalculatorRegistry::get();
 
-        return CalculatorRegistry::get()->divRound($value, $divisor, $roundingMode);
+        if ($discardedDigits > $digitCount) {
+            // A nonzero value strictly below half a unit rounds like a signed tenth.
+            return $calculator->divRound($value[0] === '-' ? '-1' : '1', '10', $roundingMode);
+        }
+
+        return $calculator->divRound($value, '1' . str_repeat('0', $discardedDigits), $roundingMode);
     }
 
     /**
@@ -152,29 +159,13 @@ final class DecimalHelper
             return $value . str_repeat('0', $targetScale - $currentScale);
         }
 
-        $negative = ($value[0] === '-');
-        if ($negative) {
-            $value = substr($value, 1);
-        }
-
-        $value = self::padUnscaledValue($value, $currentScale);
         $discardedDigits = $currentScale - $targetScale;
+        $digitCount = strlen($value) - (int) ($value[0] === '-');
 
-        if (substr($value, -$discardedDigits) !== str_repeat('0', $discardedDigits)) {
+        if ($discardedDigits >= $digitCount || strspn($value, '0', -$discardedDigits) !== $discardedDigits) {
             return null;
         }
 
-        $value = substr($value, 0, -$discardedDigits);
-        $value = ltrim($value, '0');
-
-        if ($value === '') {
-            return '0';
-        }
-
-        if ($negative) {
-            $value = '-' . $value;
-        }
-
-        return $value;
+        return substr($value, 0, -$discardedDigits);
     }
 }
