@@ -107,7 +107,9 @@ jobs:
 
   phpunit-32bit:
     name: PHPUnit (32-bit)
-    runs-on: ubuntu-latest
+    # Docker on Ubuntu 26.04 blocks the socket call used by 32-bit glibc.
+    # https://github.com/actions/runner-images/issues/14790
+    runs-on: ubuntu-24.04
 
     strategy:
       fail-fast: false
